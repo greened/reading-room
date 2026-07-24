@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Programming Languages — Landmark Papers (Survey)</title>
+<link rel="stylesheet" href="../../lib/guide.css">
+</head>
+<body>
+
+<h1>Programming Languages &mdash; Landmark Papers</h1>
+<p class="sub">A cross-cutting survey of the field's most important papers. Folder: <span class="file">reading-room/programming-languages/</span> &middot; canonical references live in the sibling subtopic dirs.</p>
+<p class="tally">Roughly a dozen papers that define programming-language theory and practice, in a sensible reading order (language design and types, then logics, memory models, and modern type systems). Each entry points to the subtopic dir that treats it in depth. &nbsp; Legend: <span class="badge b-pdf">PDF</span>open copy available (see <span class="file">fetch.sh</span>) &middot; <span class="badge b-web">DOI</span>publisher link only.</p>
+
+<ol class="papers">
+  <li>
+    <span class="title">The Next 700 Programming Languages</span> &mdash; P. J. Landin
+    <div class="meta"><span class="badge b-pdf">PDF</span>CACM 1966 &middot; <a href="https://doi.org/10.1145/365230.365257">doi:10.1145/365230.365257</a> &middot; &rarr; <span class="file">semantics-and-language-design/</span></div>
+    <div class="why-here">Frames the whole family of languages around a small applicative core (ISWIM).</div>
+  </li>
+  <li>
+    <span class="title">An Axiomatic Basis for Computer Programming</span> &mdash; C. A. R. Hoare
+    <div class="meta"><span class="badge b-web">DOI</span>CACM 1969 &middot; <a href="https://doi.org/10.1145/363235.363259">doi:10.1145/363235.363259</a> &middot; &rarr; <span class="file">program-logics-and-verification/</span></div>
+    <div class="why-here">Introduces Hoare logic and the pre/postcondition triple &mdash; the origin of program logics.</div>
+  </li>
+  <li>
+    <span class="title">Towards a Theory of Type Structure</span> &mdash; John C. Reynolds
+    <div class="meta"><span class="badge b-pdf">PDF</span>Programming Symposium 1974 &middot; <a href="https://doi.org/10.1007/3-540-06859-7_148">doi:10.1007/3-540-06859-7_148</a> &middot; &rarr; <span class="file">types-and-polymorphism/</span></div>
+    <div class="why-here">Introduces the polymorphic lambda calculus (System F), the backbone of typed functional languages.</div>
+  </li>
+  <li>
+    <span class="title">Abstract Interpretation: A Unified Lattice Model for Static Analysis</span> &mdash; Patrick &amp; Radhia Cousot
+    <div class="meta"><span class="badge b-pdf">PDF</span>POPL 1977 &middot; <a href="https://doi.org/10.1145/512950.512973">doi:10.1145/512950.512973</a> &middot; &rarr; <span class="file">semantics-and-language-design/</span></div>
+    <div class="why-here">The lattice-and-Galois-connection theory underlying essentially all sound static analysis.</div>
+  </li>
+  <li>
+    <span class="title">A Theory of Type Polymorphism in Programming</span> &mdash; Robin Milner
+    <div class="meta"><span class="badge b-pdf">PDF</span>JCSS 1978 &middot; <a href="https://doi.org/10.1016/0022-0000(78)90014-4">doi:10.1016/0022-0000(78)90014-4</a> &middot; &rarr; <span class="file">types-and-polymorphism/</span></div>
+    <div class="why-here">Gives let-polymorphism and Algorithm W, the type-inference core of ML/Haskell.</div>
+  </li>
+  <li>
+    <span class="title">Comprehending Monads</span> &mdash; Philip Wadler
+    <div class="meta"><span class="badge b-pdf">PDF</span>LFP 1990 &middot; <a href="https://doi.org/10.1145/91556.91592">doi:10.1145/91556.91592</a> &middot; &rarr; <span class="file">monads-and-effects/</span></div>
+    <div class="why-here">Brings Moggi's monads into practical programming &mdash; effectful pure functional code made tractable.</div>
+  </li>
+  <li>
+    <span class="title">Separation Logic: A Logic for Shared Mutable Data Structures</span> &mdash; John C. Reynolds
+    <div class="meta"><span class="badge b-web">DOI</span>LICS 2002 &middot; <a href="https://doi.org/10.1109/LICS.2002.1029817">doi:10.1109/LICS.2002.1029817</a> &middot; &rarr; <span class="file">program-logics-and-verification/</span></div>
+    <div class="why-here">The frame rule and local reasoning about heap-manipulating programs.</div>
+  </li>
+  <li>
+    <span class="title">The Java Memory Model</span> &mdash; Manson, Pugh, Adve
+    <div class="meta"><span class="badge b-pdf">PDF</span>POPL 2005 &middot; <a href="https://doi.org/10.1145/1040305.1040336">doi:10.1145/1040305.1040336</a> &middot; &rarr; <span class="file">concurrency-and-memory-models/</span></div>
+    <div class="why-here">The first rigorous language-level memory model (data-race-freedom, happens-before).</div>
+  </li>
+  <li>
+    <span class="title">Gradual Typing for Functional Languages</span> &mdash; Siek, Taha
+    <div class="meta"><span class="badge b-pdf">PDF</span>Scheme Workshop 2006 &middot; <a href="https://scheme2006.cs.uchicago.edu/13-siek.pdf">scheme2006</a> &middot; &rarr; <span class="file">practical-type-systems/</span></div>
+    <div class="why-here">Coins gradual typing and the consistency relation for mixing static and dynamic checking.</div>
+  </li>
+  <li>
+    <span class="title">seL4: Formal Verification of an OS Kernel</span> &mdash; Klein et al.
+    <div class="meta"><span class="badge b-pdf">PDF</span>SOSP 2009 &middot; <a href="https://doi.org/10.1145/1629575.1629596">doi:10.1145/1629575.1629596</a> &middot; &rarr; <span class="file">program-logics-and-verification/</span></div>
+    <div class="why-here">First machine-checked functional-correctness proof of a general-purpose OS kernel.</div>
+  </li>
+  <li>
+    <span class="title">Mathematizing C++ Concurrency</span> &mdash; Batty, Owens, Sarkar, Sewell, Weber
+    <div class="meta"><span class="badge b-pdf">PDF</span>POPL 2011 &middot; <a href="https://doi.org/10.1145/1926385.1926394">doi:10.1145/1926385.1926394</a> &middot; &rarr; <span class="file">concurrency-and-memory-models/</span></div>
+    <div class="why-here">Formalizes the C11/C++11 relaxed-atomics model, the template for modern concurrency standards.</div>
+  </li>
+  <li>
+    <span class="title">RustBelt: Securing the Foundations of the Rust Programming Language</span> &mdash; Jung, Jourdan, Krebbers, Dreyer
+    <div class="meta"><span class="badge b-pdf">PDF</span>POPL 2018 &middot; <a href="https://doi.org/10.1145/3158154">doi:10.1145/3158154</a> &middot; &rarr; <span class="file">program-logics-and-verification/</span></div>
+    <div class="why-here">First formal safety proof for a realistic Rust subset, reconciling unsafe libraries with a safe type system.</div>
+  </li>
+</ol>
+
+<h2>Going deeper</h2>
+<p class="grouphdr">This survey is the slice across the whole area; each subtopic dir treats its theme in depth and lists more papers.</p>
+<ul class="comp">
+  <li><span class="badge b-web">DIR</span><span class="file">semantics-and-language-design/</span> &mdash; Landin, Hoare, SOS, abstract interpretation.</li>
+  <li><span class="badge b-web">DIR</span><span class="file">types-and-polymorphism/</span> &mdash; System F, Hindley-Milner, Cardelli-Wegner, parametricity.</li>
+  <li><span class="badge b-web">DIR</span><span class="file">monads-and-effects/</span> &mdash; monads and algebraic effect handlers.</li>
+  <li><span class="badge b-web">DIR</span><span class="file">concurrency-and-memory-models/</span> &mdash; pi-calculus, Java and C++ memory models.</li>
+  <li><span class="badge b-web">DIR</span><span class="file">program-logics-and-verification/</span> &mdash; subtyping, separation logic, seL4, CompCert, RustBelt.</li>
+  <li><span class="badge b-web">DIR</span><span class="file">practical-type-systems/</span> &mdash; gradual, blame, refinement/liquid, linear types, QuickCheck.</li>
+</ul>
+<p class="grouphdr">Run <span class="file">fetch.sh</span> to download the openly-available PDFs; paywalled entries are DOI links above.</p>
+
+</body>
+</html>

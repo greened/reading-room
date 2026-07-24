@@ -1,8 +1,14 @@
 # Programming languages
 
-*Scaffold — no topics yet.* Add a topic directory here following the conventions in
-the root [`CLAUDE.md`](../CLAUDE.md) (a `reading-guide.html` linking
-`../../lib/guide.css`, a `README.md`, a `fetch.sh`, and a `sources.tsv`).
+Reading lists for programming-language theory and practice, organized by subtopic.
+Each subtopic directory holds the canonical paper references;
+**[landmark-papers/](landmark-papers/)** is the cross-cutting survey (printable).
 
-Candidate topics: type systems, lambda calculus & semantics, type inference,
-effects & monads, separation logic.
+## Subtopics
+- **[landmark-papers/](landmark-papers/)** — the area survey (start here; printable PDF)
+- **[semantics-and-language-design/](semantics-and-language-design/)** — language design and formal semantics
+- **[types-and-polymorphism/](types-and-polymorphism/)** — type structure, polymorphism, and inference
+- **[monads-and-effects/](monads-and-effects/)** — monads and algebraic effects
+- **[concurrency-and-memory-models/](concurrency-and-memory-models/)** — process calculi and language memory models
+- **[program-logics-and-verification/](program-logics-and-verification/)** — Hoare/separation logic and verified systems
+- **[practical-type-systems/](practical-type-systems/)** — gradual, refinement, linear types, and property testing
