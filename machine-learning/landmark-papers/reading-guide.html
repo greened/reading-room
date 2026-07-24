@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Machine Learning — Landmark Papers (Survey)</title>
+<link rel="stylesheet" href="../../lib/guide.css">
+</head>
+<body>
+
+<h1>Machine Learning &mdash; Landmark Papers</h1>
+<p class="sub">A cross-cutting survey of the field's most important papers. Folder: <span class="file">reading-room/machine-learning/</span> &middot; canonical references live in the sibling subtopic dirs (transformers in <span class="file">../transformers/</span>).</p>
+<p class="tally">Roughly a dozen papers that define modern machine learning, in a sensible reading order (foundations and recurrent nets, the ImageNet breakthrough, embeddings and generation, deep RL, residual learning, diffusion, scaling). Each entry points to the subtopic dir that treats it in depth. &nbsp; Legend: <span class="badge b-pdf">PDF</span>open copy available (see <span class="file">fetch.sh</span>) &middot; <span class="badge b-web">DOI</span>publisher link only.</p>
+
+<ol class="papers">
+  <li>
+    <span class="title">Learning representations by back-propagating errors</span> &mdash; Rumelhart, Hinton, Williams
+    <div class="meta"><span class="badge b-web">DOI</span>Nature 1986 &middot; <a href="https://doi.org/10.1038/323533a0">doi:10.1038/323533a0</a> &middot; &rarr; <span class="file">deep-learning-foundations/</span></div>
+    <div class="why-here">Established backpropagation as the practical way to train multi-layer networks &mdash; the algorithmic bedrock.</div>
+  </li>
+  <li>
+    <span class="title">Long Short-Term Memory</span> &mdash; Hochreiter, Schmidhuber
+    <div class="meta"><span class="badge b-web">DOI</span>Neural Computation 1997 &middot; <a href="https://doi.org/10.1162/neco.1997.9.8.1735">doi:10.1162/neco.1997.9.8.1735</a> &middot; &rarr; <span class="file">sequence-models/</span></div>
+    <div class="why-here">The gated recurrent cell that solved vanishing gradients and dominated sequence modeling for two decades.</div>
+  </li>
+  <li>
+    <span class="title">ImageNet Classification with Deep Convolutional Neural Networks (AlexNet)</span> &mdash; Krizhevsky, Sutskever, Hinton
+    <div class="meta"><span class="badge b-pdf">PDF</span>NeurIPS 2012 &middot; <a href="https://www.image-net.org/static_files/files/supervision.pdf">PDF</a> &middot; &rarr; <span class="file">computer-vision/</span></div>
+    <div class="why-here">The ImageNet win that started the modern deep-learning boom.</div>
+  </li>
+  <li>
+    <span class="title">Efficient Estimation of Word Representations in Vector Space (word2vec)</span> &mdash; Mikolov, Chen, Corrado, Dean
+    <div class="meta"><span class="badge b-pdf">PDF</span>ICLR Workshop 2013 &middot; <a href="https://arxiv.org/abs/1301.3781">arXiv:1301.3781</a> &middot; &rarr; <span class="file">sequence-models/</span></div>
+    <div class="why-here">Made dense, semantically meaningful word embeddings cheap and popular for NLP.</div>
+  </li>
+  <li>
+    <span class="title">Auto-Encoding Variational Bayes (VAE)</span> &mdash; Kingma, Welling
+    <div class="meta"><span class="badge b-pdf">PDF</span>ICLR 2014 &middot; <a href="https://arxiv.org/abs/1312.6114">arXiv:1312.6114</a> &middot; &rarr; <span class="file">generative-models/</span></div>
+    <div class="why-here">The VAE and reparameterization trick, founding modern deep latent-variable generative modeling.</div>
+  </li>
+  <li>
+    <span class="title">Generative Adversarial Nets</span> &mdash; Goodfellow et al.
+    <div class="meta"><span class="badge b-pdf">PDF</span>NeurIPS 2014 &middot; <a href="https://arxiv.org/abs/1406.2661">arXiv:1406.2661</a> &middot; &rarr; <span class="file">generative-models/</span></div>
+    <div class="why-here">Framed generation as an adversarial game and drove a decade of high-fidelity image synthesis.</div>
+  </li>
+  <li>
+    <span class="title">Sequence to Sequence Learning with Neural Networks</span> &mdash; Sutskever, Vinyals, Le
+    <div class="meta"><span class="badge b-pdf">PDF</span>NeurIPS 2014 &middot; <a href="https://arxiv.org/abs/1409.3215">arXiv:1409.3215</a> &middot; &rarr; <span class="file">sequence-models/</span></div>
+    <div class="why-here">The encoder-decoder framework for mapping sequences to sequences &mdash; the direct precursor to attention.</div>
+  </li>
+  <li>
+    <span class="title">Human-level control through deep reinforcement learning (DQN)</span> &mdash; Mnih et al.
+    <div class="meta"><span class="badge b-pdf">PDF</span>Nature 2015 &middot; <a href="https://doi.org/10.1038/nature14236">doi:10.1038/nature14236</a> &middot; &rarr; <span class="file">reinforcement-learning/</span></div>
+    <div class="why-here">Learned Atari from pixels, founding deep reinforcement learning.</div>
+  </li>
+  <li>
+    <span class="title">Deep Residual Learning for Image Recognition (ResNet)</span> &mdash; He, Zhang, Ren, Sun
+    <div class="meta"><span class="badge b-pdf">PDF</span>CVPR 2016 &middot; <a href="https://arxiv.org/abs/1512.03385">arXiv:1512.03385</a> &middot; &rarr; <span class="file">deep-learning-foundations/</span></div>
+    <div class="why-here">Residual/skip connections let networks scale to 100+ layers &mdash; a primitive that carries into transformers.</div>
+  </li>
+  <li>
+    <span class="title">Mastering the game of Go with deep neural networks and tree search (AlphaGo)</span> &mdash; Silver et al.
+    <div class="meta"><span class="badge b-web">DOI</span>Nature 2016 &middot; <a href="https://doi.org/10.1038/nature16961">doi:10.1038/nature16961</a> &middot; &rarr; <span class="file">reinforcement-learning/</span></div>
+    <div class="why-here">Combined deep policy/value networks with MCTS to beat top humans at Go &mdash; a landmark for learned search.</div>
+  </li>
+  <li>
+    <span class="title">Denoising Diffusion Probabilistic Models (DDPM)</span> &mdash; Ho, Jain, Abbeel
+    <div class="meta"><span class="badge b-pdf">PDF</span>NeurIPS 2020 &middot; <a href="https://arxiv.org/abs/2006.11239">arXiv:2006.11239</a> &middot; &rarr; <span class="file">generative-models/</span></div>
+    <div class="why-here">The DDPM formulation launched diffusion models as the dominant image-generation approach.</div>
+  </li>
+  <li>
+    <span class="title">Scaling Laws for Neural Language Models</span> &mdash; Kaplan et al.
+    <div class="meta"><span class="badge b-pdf">PDF</span>2020 &middot; <a href="https://arxiv.org/abs/2001.08361">arXiv:2001.08361</a> &middot; &rarr; <span class="file">training-and-scaling/</span></div>
+    <div class="why-here">Showed loss follows smooth power laws in model size, data, and compute &mdash; the empirical basis for the scale-up era.</div>
+  </li>
+</ol>
+
+<h2>Going deeper</h2>
+<p class="grouphdr">This survey is the slice across the whole area; each subtopic dir treats its theme in depth and lists more papers.</p>
+<ul class="comp">
+  <li><span class="badge b-web">DIR</span><span class="file">deep-learning-foundations/</span> &mdash; backprop, LeNet, init, dropout, batchnorm, Adam, ResNet.</li>
+  <li><span class="badge b-web">DIR</span><span class="file">computer-vision/</span> &mdash; AlexNet, VGG, Faster R-CNN, YOLO.</li>
+  <li><span class="badge b-web">DIR</span><span class="file">sequence-models/</span> &mdash; LSTM, word2vec, seq2seq.</li>
+  <li><span class="badge b-web">DIR</span><span class="file">generative-models/</span> &mdash; VAE, GAN, diffusion.</li>
+  <li><span class="badge b-web">DIR</span><span class="file">reinforcement-learning/</span> &mdash; DQN, AlphaGo, PPO.</li>
+  <li><span class="badge b-web">DIR</span><span class="file">training-and-scaling/</span> &mdash; distillation, scaling laws, Chinchilla.</li>
+  <li><span class="badge b-web">DIR</span><span class="file">transformers/</span> &mdash; the transformer architecture and its model families (its own in-depth list).</li>
+</ul>
+<p class="grouphdr">Run <span class="file">fetch.sh</span> to download the openly-available PDFs; paywalled entries are DOI links above.</p>
+
+</body>
+</html>
