@@ -9,13 +9,8 @@
 
 <h1>Compilers &mdash; Landmark Papers</h1>
 <p class="sub">A cross-cutting survey of the field's most important papers. Folder: <span class="file">reading-room/compilers/</span> &middot; canonical references live in the sibling subtopic dirs.</p>
-<p class="tally"><b>Reading order:</b> foundations first, then the post-2002 landmarks (weighted per the reader's interest). Each entry points to the subtopic dir that treats it in depth. &nbsp; Legend:
-  <span class="badge b-pdf">PDF</span>open copy (see fetch.sh) &middot; <span class="badge b-web">DOI</span>publisher link.</p>
+<p class="tally">Roughly a dozen papers that define compiler construction and optimization, in a sensible reading order (the machinery every optimizer rests on, then the reusable-infrastructure and verification landmarks). Each entry points to the subtopic dir that treats it in depth. &nbsp; Legend: <span class="badge b-pdf">PDF</span>open copy available (see <span class="file">fetch.sh</span>) &middot; <span class="badge b-web">DOI</span>publisher link only.</p>
 
-<p class="lead">This is the area <em>survey</em> &mdash; roughly a dozen papers that define compiler construction and optimization. For a deeper pass on any theme, follow the subtopic pointer (e.g. <span class="file">register-allocation-and-scheduling/</span>).</p>
-
-<h2>Foundations (pre-2002)</h2>
-<p class="grouphdr">The IR, dataflow, analysis, allocation, and redundancy machinery every optimizer still rests on.</p>
 <ol class="papers">
   <li>
     <span class="title">A Unified Approach to Global Program Optimization</span> &mdash; Gary A. Kildall
@@ -42,11 +37,6 @@
     <div class="meta"><span class="badge b-pdf">PDF</span>PLDI 1992 &middot; <a href="https://doi.org/10.1145/143095.143136">doi:10.1145/143095.143136</a> &middot; &rarr; <span class="file">redundancy-and-vectorization/</span></div>
     <div class="why-here">The clean, optimal formulation of partial-redundancy elimination.</div>
   </li>
-</ol>
-
-<h2>Modern landmarks (post-2002)</h2>
-<p class="grouphdr">Reusable infrastructure, the polyhedral/DSL/tensor wave, verified compilation, and search-based optimization.</p>
-<ol class="papers" start="6" style="counter-reset:item 5;">
   <li>
     <span class="title">LLVM: A Compilation Framework for Lifelong Program Analysis &amp; Transformation</span> &mdash; Lattner, Adve
     <div class="meta"><span class="badge b-pdf">PDF</span>CGO 2004 &middot; <a href="https://doi.org/10.1109/CGO.2004.1281665">doi:10.1109/CGO.2004.1281665</a> &middot; &rarr; <span class="file">compiler-infrastructure/</span></div>
@@ -83,6 +73,18 @@
     <div class="why-here">The multi-level, dialect-based IR framework now central to ML and accelerator compiler stacks.</div>
   </li>
 </ol>
+
+<h2>Going deeper</h2>
+<p class="grouphdr">This survey is the slice across the whole area; each subtopic dir treats its theme in depth and lists more papers.</p>
+<ul class="comp">
+  <li><span class="badge b-web">DIR</span><span class="file">ir-and-dataflow/</span> &mdash; IR design and dataflow frameworks (Kildall, SSA, sea-of-nodes).</li>
+  <li><span class="badge b-web">DIR</span><span class="file">register-allocation-and-scheduling/</span> &mdash; graph coloring, coalescing, linear scan, trace scheduling, software pipelining.</li>
+  <li><span class="badge b-web">DIR</span><span class="file">redundancy-and-vectorization/</span> &mdash; partial-redundancy elimination and SLP vectorization.</li>
+  <li><span class="badge b-web">DIR</span><span class="file">analysis-and-abstract-interpretation/</span> &mdash; abstract interpretation and points-to analysis.</li>
+  <li><span class="badge b-web">DIR</span><span class="file">compiler-infrastructure/</span> &mdash; LLVM, polyhedral, Halide/TVM/MLIR, and BOLT.</li>
+  <li><span class="badge b-web">DIR</span><span class="file">verified-compilation/</span> &mdash; CompCert, CakeML, Alive, egg, STOKE.</li>
+</ul>
+<p class="grouphdr">Run <span class="file">fetch.sh</span> to download the openly-available PDFs; paywalled entries are DOI links above.</p>
 
 </body>
 </html>

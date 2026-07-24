@@ -33,6 +33,17 @@ Makefile                # `make` renders all guides; `make fetch` runs all fetch
 Areas are top-level directories (e.g. `machine-learning/`, `computer-architecture/`,
 `compilers/`, `programming-languages/`). A topic is a directory under an area.
 
+**Two kinds of topic dir:**
+- **Topical subtopics** (e.g. `compilers/register-allocation-and-scheduling/`) hold
+  the **canonical references** for that subtopic — an annotated `README.md` (and a
+  `sources.tsv` once it grows a rendered guide). This is where a paper's entry
+  *lives*.
+- **`<area>/landmark-papers/`** — a **cross-cutting survey**: the handful of most
+  important papers across the whole area, as a rendered guide. It *references* the
+  standouts (which live in the subtopic dirs) and points back to each with a
+  `→ <subtopic>/` pointer; it does not replace the in-depth subtopic lists. A
+  subtopic may also grow its own in-depth `landmark-papers`-style rendered guide.
+
 ## Build / preview
 
 ```sh
@@ -75,6 +86,29 @@ the stylesheet). No PDF is committed by either step.
 - Equations go in `<div class="eqsec">` with `.eq` (the equation) + `.eqm`
   ("Math:" / "Effect:" lines). Callouts use `.why` / `.notekey`.
 - Reading order is **pedagogical, not chronological**; state the ordering logic.
+- **Do not create year/era sections** in a landmark list (e.g. "Foundations
+  pre-2002" / "Modern"). Any cutoff is arbitrary — just list the papers in a sensible
+  reading order (foundations naturally tend to come first).
+
+## Curation & presentation conventions
+
+- **Weight the SELECTION toward what matters to the reader** (recent, seminal, or a
+  stated interest) — but present it as one list, per the no-era rule above.
+- **References live in subtopic dirs.** A `landmark-papers/` survey selects the
+  standouts and points to each with `→ <subtopic>/`; it does not re-home the
+  canonical entry.
+- **Verify metadata before listing** — exact title, authors, year, venue. Prefer a
+  stable URL (DOI `https://doi.org/…` or arXiv).
+- **Find free copies beyond the paywall.** Many classics have legal open PDFs on
+  authors' homepages, university/department pages, institutional repositories, or
+  preprint archives — search those and record a direct `open_pdf` link when one
+  reliably resolves. Paywalled entries with no free copy are DOI links (clearly
+  marked); `fetch.sh` downloads only the open ones.
+- **Fill an even number of pages.** Guides are printed double-sided, so each should
+  fully fill an even page count (2, 4, …). If the papers don't fill the last page,
+  pad with genuinely useful material — a key-terms glossary, a key-equations cheat
+  sheet, a timeline, a "how to read this list" note, or further reading — rather than
+  leaving a sparse page.
 
 ## People / voice
 
