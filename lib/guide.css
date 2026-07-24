@@ -1,0 +1,56 @@
+/* Shared print "house style" for reading guides.
+   Link it from a guide's <head>:  <link rel="stylesheet" href="../../lib/guide.css">
+   render.sh inlines it at build time, so no file:// subresource is needed. */
+:root { --ink:#1a1a1a; --muted:#6a6a6a; --rule:#ccc; --accent:#7a2020; --accent2:#1f4e79; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { font-family:"Charter","Georgia",serif; color:var(--ink);
+       max-width:7.6in; margin:0.4in auto; line-height:1.22; font-size:9.8pt; }
+h1 { font-size:20pt; margin:0 0 2px; }
+.sub { color:var(--muted); font-size:10pt; margin:0 0 10px; }
+.tally { font-size:9.5pt; color:#333; background:#f4f1ea; border:1px solid #e2dccb;
+         padding:6px 10px; border-radius:5px; margin:0 0 14px; }
+h2 { font-size:12.2pt; color:var(--accent); border-bottom:1px solid var(--rule);
+     padding-bottom:2px; margin:12px 0 6px; }
+p.lead { font-size:10.4pt; }
+.why { border-left:3px solid var(--accent2); background:#f2f6fb; padding:8px 12px;
+       margin:12px 0 4px; font-size:10.2pt; break-inside:avoid; }
+.why b { color:var(--accent2); }
+ol.papers { list-style:none; counter-reset:item; padding-left:0; margin:0; }
+ol.papers > li { counter-increment:item; margin:0 0 7px; padding-left:2.4em;
+                 position:relative; break-inside:avoid; }
+ol.papers > li::before { content:counter(item); position:absolute; left:0; top:0;
+   width:1.7em; height:1.7em; line-height:1.7em; text-align:center;
+   background:var(--accent); color:#fff; border-radius:50%; font-size:10pt; font-weight:bold; }
+.title { font-weight:bold; }
+.meta { color:var(--muted); font-size:9.3pt; }
+.file { font-family:"SF Mono","Menlo",monospace; font-size:8.7pt; color:#333; }
+.why-here { margin-top:2px; font-size:10pt; }
+.grouphdr { font-style:italic; color:var(--muted); font-size:9.8pt; margin:2px 0 9px; }
+.badge { display:inline-block; font-family:"SF Mono","Menlo",monospace; font-size:7.6pt;
+         font-weight:bold; letter-spacing:.04em; padding:1px 5px; border-radius:3px;
+         vertical-align:1px; margin-right:5px; }
+.b-pdf  { background:#7a2020; color:#fff; }
+.b-book { background:#2e6b2e; color:#fff; }
+.b-vid  { background:#8a1f6a; color:#fff; }
+.b-web  { background:#1f4e79; color:#fff; }
+.b-buy  { background:#7a5a00; color:#fff; }
+ul.comp { list-style:none; margin:4px 0 0; padding-left:0; }
+ul.comp li { font-size:9.6pt; margin:2px 0; color:#333; }
+.refs { list-style:none; padding-left:0; }
+.refs li { margin:0 0 7px; break-inside:avoid; }
+a { color:var(--ink); text-decoration:none; }
+.u { color:var(--accent2); font-size:8.7pt; font-family:"SF Mono","Menlo",monospace; word-break:break-all; }
+.notekey { font-size:9.4pt; background:#f2f6fb; border:1px solid #dce6f0; border-radius:5px;
+           padding:7px 11px; margin:2px 0 8px; break-inside:avoid; }
+.notekey b { color:var(--accent2); }
+.eqsec ol { list-style:none; counter-reset:eq; padding-left:0; margin:0; }
+.eqsec > ol > li { counter-increment:eq; margin:0 0 7px; padding-left:2.2em; position:relative; break-inside:avoid; }
+.eqsec > ol > li::before { content:counter(eq); position:absolute; left:0; top:1px;
+   width:1.5em; height:1.5em; line-height:1.5em; text-align:center;
+   background:var(--accent2); color:#fff; border-radius:50%; font-size:9pt; font-weight:bold; }
+.eq { font-family:"STIX Two Math","Cambria Math","Georgia",serif; font-size:11.2pt;
+      background:#f7f7f4; border:1px solid #e5e5df; border-radius:4px; padding:5px 9px;
+      margin:1px 0 4px; display:inline-block; }
+.eqm { font-size:9.6pt; margin:2px 0; } .eqm b { color:var(--accent2); }
+.lead { margin:8px 0; }
+@media print { body { margin:0.42in; } }

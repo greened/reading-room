@@ -1,0 +1,34 @@
+kind	order	title	authors	year	venue	url	filename	pages
+paper	1	Neural Machine Translation by Jointly Learning to Align and Translate	Bahdanau, Cho, Bengio	2014	ICLR 2015	https://arxiv.org/abs/1409.0473	02_Bahdanau-Attention_1409.0473.pdf	15
+paper	2	Attention Is All You Need	Vaswani et al.	2017	NeurIPS 2017	https://arxiv.org/abs/1706.03762	01_Attention-Is-All-You-Need_1706.03762.pdf	15
+companion	2	The Annotated Transformer	Harvard NLP	2022	web	https://nlp.seas.harvard.edu/annotated-transformer/	Companion_Annotated-Transformer_HarvardNLP.pdf	58
+companion	2	Dive into Deep Learning — Attention & Transformers chapter	Zhang, Lipton, Li, Smola	2023	book ch.	https://d2l.ai/chapter_attention-mechanisms-and-transformers/index.html	Companion_d2l_Attention-and-Transformers-chapter.pdf	59
+web	2	Transformers from scratch	Peter Bloem	2019	web	https://peterbloem.nl/blog/transformers	-	-
+web	1	The Illustrated Transformer	Jay Alammar	2018	web	https://jalammar.github.io/illustrated-transformer/	-	-
+video	1	But what is a GPT?	3Blue1Brown	2024	YouTube	https://www.youtube.com/watch?v=wjZofJX0v4M	-	-
+video	1	Attention in transformers, visually explained	3Blue1Brown	2024	YouTube	https://www.youtube.com/watch?v=eMlx5fFNoYc	-	-
+paper	3	Using the Output Embedding to Tie Word Embeddings	Press, Wolf	2016	EACL 2017	https://arxiv.org/abs/1608.05859	10_Weight-Tying_Press-Wolf_1608.05859.pdf	7
+paper	4	Neural MT of Rare Words with Subword Units (BPE)	Sennrich, Haddow, Birch	2015	ACL 2016	https://arxiv.org/abs/1508.07909	11_BPE_Subword-Units_1508.07909.pdf	11
+video	4	Let's build the GPT Tokenizer	Andrej Karpathy	2024	YouTube	https://www.youtube.com/watch?v=zduSFxRajkE	-	-
+paper	5	Google's Neural Machine Translation System (WordPiece)	Wu et al.	2016	arXiv	https://arxiv.org/abs/1609.08144	13_WordPiece_GNMT_1609.08144.pdf	23
+paper	6	SentencePiece	Kudo, Richardson	2018	EMNLP 2018	https://arxiv.org/abs/1808.06226	12_SentencePiece_1808.06226.pdf	6
+paper	7	On Layer Normalization in the Transformer Architecture (Pre-LN)	Xiong et al.	2020	ICML 2020	https://arxiv.org/abs/2002.04745	09_Pre-LN_On-Layer-Normalization_2002.04745.pdf	17
+paper	8	Transformer-XL	Dai et al.	2019	ACL 2019	https://arxiv.org/abs/1901.02860	08_Transformer-XL_1901.02860.pdf	20
+paper	9	BERT	Devlin et al.	2018	NAACL 2019	https://arxiv.org/abs/1810.04805	03_BERT_1810.04805.pdf	16
+web	9	The Illustrated BERT	Jay Alammar	2018	web	https://jalammar.github.io/illustrated-bert/	-	-
+paper	10	Improving Language Understanding by Generative Pre-Training (GPT-1)	Radford et al.	2018	OpenAI	https://cdn.openai.com/research-covers/language-unsupervised/language_understanding_paper.pdf	04_GPT-1_Improving-Language-Understanding.pdf	12
+paper	11	Language Models are Unsupervised Multitask Learners (GPT-2)	Radford et al.	2019	OpenAI	https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf	05_GPT-2_LMs-Unsupervised-Multitask-Learners.pdf	24
+web	11	The Illustrated GPT-2	Jay Alammar	2019	web	https://jalammar.github.io/illustrated-gpt2/	-	-
+paper	12	Language Models are Few-Shot Learners (GPT-3)	Brown et al.	2020	NeurIPS 2020	https://arxiv.org/abs/2005.14165	06_GPT-3_Few-Shot-Learners_2005.14165.pdf	75
+video	12	Let's build GPT: from scratch, in code	Andrej Karpathy	2023	YouTube	https://www.youtube.com/watch?v=kCc8FmEb1nY	-	-
+paper	13	An Image is Worth 16x16 Words (ViT)	Dosovitskiy et al.	2020	ICLR 2021	https://arxiv.org/abs/2010.11929	07_ViT_16x16-Words_2010.11929.pdf	22
+book	-	Understanding Deep Learning	Prince	2023	MIT Press	https://udlbook.github.io/udlbook/	Book_UnderstandingDeepLearning_Prince.pdf	541
+book	-	Mathematics for Machine Learning	Deisenroth, Faisal, Ong	2020	Cambridge UP	https://mml-book.github.io	Book_MathForML_Deisenroth.pdf	417
+book	-	The Little Book of Deep Learning	Fleuret	2023	self	https://fleuret.org/public/lbdl.pdf	Book_LittleBookDeepLearning_Fleuret.pdf	189
+book	-	Speech and Language Processing (3rd ed. draft)	Jurafsky, Martin	2025	Stanford	https://web.stanford.edu/~jurafsky/slp3/	Book_SpeechAndLanguageProcessing_JurafskyMartin_ed3.pdf	626
+web	-	Dive into Deep Learning (full book)	Zhang, Lipton, Li, Smola	2023	Cambridge UP	https://d2l.ai	-	-
+web	-	Deep Learning	Goodfellow, Bengio, Courville	2016	MIT Press	https://www.deeplearningbook.org	-	-
+web	-	Attention? Attention!	Lilian Weng	2018	web	https://lilianweng.github.io/posts/2018-06-24-attention/	-	-
+buy	-	Build a Large Language Model (From Scratch)	Raschka	2024	Manning	https://www.manning.com/books/build-a-large-language-model-from-scratch	-	-
+buy	-	Hands-On Large Language Models	Alammar, Grootendorst	2024	O'Reilly	https://www.oreilly.com/library/view/hands-on-large-language/9781098150952/	-	-
+buy	-	Natural Language Processing with Transformers	Tunstall, von Werra, Wolf	2022	O'Reilly	https://www.oreilly.com/library/view/natural-language-processing/9781098136789/	-	-

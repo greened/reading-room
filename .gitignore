@@ -1,0 +1,8 @@
+# Rendered guides are build artifacts (make guides), not committed.
+reading-guide.pdf
+
+# Third-party PDFs are fetched, never committed (copyright).
+pdfs/
+
+*.tmp
+.DS_Store
