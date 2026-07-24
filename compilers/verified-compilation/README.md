@@ -1,0 +1,7 @@
+# Compilers · Verified compilation & superoptimization
+
+- **Formal Verification of a Realistic Compiler (CompCert)** — Xavier Leroy, 2009, CACM. *post-2002.* The first mechanically verified optimizing C compiler; the reference point for verified compilation. [DOI](https://doi.org/10.1145/1538788.1538814) · [PDF](https://xavierleroy.org/publi/compcert-CACM.pdf)
+- **CakeML: A Verified Implementation of ML** — Kumar, Myreen, Norrish, Owens, 2014, POPL. *post-2002.* End-to-end verified compiler and runtime, proof reaching to machine code. [DOI](https://doi.org/10.1145/2535838.2535841) · [PDF](https://cakeml.org/popl14.pdf)
+- **Provably Correct Peephole Optimizations with Alive** — Lopes, Menendez, Nagarakatte, Regehr, 2015, PLDI. *post-2002.* SMT-based verification of LLVM peephole optimizations, now part of LLVM practice. [DOI](https://doi.org/10.1145/2737924.2737965) · [PDF](https://users.cs.utah.edu/~regehr/papers/pldi15.pdf)
+- **egg: Fast and Extensible Equality Saturation** — Willsey et al., 2021, PACMPL (POPL). *post-2002.* The practical e-graph library that made equality saturation broadly usable. [DOI](https://doi.org/10.1145/3434304)
+- **Stochastic Superoptimization (STOKE)** — Schkufza, Sharma, Aiken, 2013, ASPLOS. *post-2002.* Reframes superoptimization as MCMC search over programs. [DOI](https://doi.org/10.1145/2451116.2451150) · [PDF](https://theory.stanford.edu/~aiken/publications/papers/asplos13.pdf)

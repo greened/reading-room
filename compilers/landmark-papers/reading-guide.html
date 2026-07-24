@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Compilers — Landmark Papers (Survey)</title>
+<link rel="stylesheet" href="../../lib/guide.css">
+</head>
+<body>
+
+<h1>Compilers &mdash; Landmark Papers</h1>
+<p class="sub">A cross-cutting survey of the field's most important papers. Folder: <span class="file">reading-room/compilers/</span> &middot; canonical references live in the sibling subtopic dirs.</p>
+<p class="tally"><b>Reading order:</b> foundations first, then the post-2002 landmarks (weighted per the reader's interest). Each entry points to the subtopic dir that treats it in depth. &nbsp; Legend:
+  <span class="badge b-pdf">PDF</span>open copy (see fetch.sh) &middot; <span class="badge b-web">DOI</span>publisher link.</p>
+
+<p class="lead">This is the area <em>survey</em> &mdash; roughly a dozen papers that define compiler construction and optimization. For a deeper pass on any theme, follow the subtopic pointer (e.g. <span class="file">register-allocation-and-scheduling/</span>).</p>
+
+<h2>Foundations (pre-2002)</h2>
+<p class="grouphdr">The IR, dataflow, analysis, allocation, and redundancy machinery every optimizer still rests on.</p>
+<ol class="papers">
+  <li>
+    <span class="title">A Unified Approach to Global Program Optimization</span> &mdash; Gary A. Kildall
+    <div class="meta"><span class="badge b-pdf">PDF</span>POPL 1973 &middot; <a href="https://doi.org/10.1145/512927.512945">doi:10.1145/512927.512945</a> &middot; &rarr; <span class="file">ir-and-dataflow/</span></div>
+    <div class="why-here">Founds the lattice / monotone-framework view of iterative dataflow analysis.</div>
+  </li>
+  <li>
+    <span class="title">Efficiently Computing Static Single Assignment Form and the Control Dependence Graph</span> &mdash; Cytron, Ferrante, Rosen, Wegman, Zadeck
+    <div class="meta"><span class="badge b-pdf">PDF</span>ACM TOPLAS 1991 &middot; <a href="https://doi.org/10.1145/115372.115320">doi:10.1145/115372.115320</a> &middot; &rarr; <span class="file">ir-and-dataflow/</span></div>
+    <div class="why-here">The dominance-frontier SSA-construction algorithm that made SSA the default IR of modern compilers.</div>
+  </li>
+  <li>
+    <span class="title">Abstract Interpretation: A Unified Lattice Model for Static Analysis</span> &mdash; Patrick &amp; Radhia Cousot
+    <div class="meta"><span class="badge b-pdf">PDF</span>POPL 1977 &middot; <a href="https://doi.org/10.1145/512950.512973">doi:10.1145/512950.512973</a> &middot; &rarr; <span class="file">analysis-and-abstract-interpretation/</span></div>
+    <div class="why-here">The theoretical framework for sound static analysis via Galois connections and widening.</div>
+  </li>
+  <li>
+    <span class="title">Register Allocation and Spilling via Graph Coloring</span> &mdash; Gregory J. Chaitin
+    <div class="meta"><span class="badge b-pdf">PDF</span>SIGPLAN Compiler Construction 1982 &middot; <a href="https://doi.org/10.1145/872726.806984">doi:10.1145/872726.806984</a> &middot; &rarr; <span class="file">register-allocation-and-scheduling/</span></div>
+    <div class="why-here">The original graph-coloring formulation that launched the whole line of register-allocation work.</div>
+  </li>
+  <li>
+    <span class="title">Lazy Code Motion</span> &mdash; Knoop, R&uuml;thing, Steffen
+    <div class="meta"><span class="badge b-pdf">PDF</span>PLDI 1992 &middot; <a href="https://doi.org/10.1145/143095.143136">doi:10.1145/143095.143136</a> &middot; &rarr; <span class="file">redundancy-and-vectorization/</span></div>
+    <div class="why-here">The clean, optimal formulation of partial-redundancy elimination.</div>
+  </li>
+</ol>
+
+<h2>Modern landmarks (post-2002)</h2>
+<p class="grouphdr">Reusable infrastructure, the polyhedral/DSL/tensor wave, verified compilation, and search-based optimization.</p>
+<ol class="papers" start="6" style="counter-reset:item 5;">
+  <li>
+    <span class="title">LLVM: A Compilation Framework for Lifelong Program Analysis &amp; Transformation</span> &mdash; Lattner, Adve
+    <div class="meta"><span class="badge b-pdf">PDF</span>CGO 2004 &middot; <a href="https://doi.org/10.1109/CGO.2004.1281665">doi:10.1109/CGO.2004.1281665</a> &middot; &rarr; <span class="file">compiler-infrastructure/</span></div>
+    <div class="why-here">Launched LLVM, now the dominant reusable compiler infrastructure in industry and research.</div>
+  </li>
+  <li>
+    <span class="title">A Practical Automatic Polyhedral Parallelizer and Locality Optimizer (Pluto)</span> &mdash; Bondhugula, Hartono, Ramanujam, Sadayappan
+    <div class="meta"><span class="badge b-pdf">PDF</span>PLDI 2008 &middot; <a href="https://doi.org/10.1145/1375581.1375595">doi:10.1145/1375581.1375595</a> &middot; &rarr; <span class="file">compiler-infrastructure/</span></div>
+    <div class="why-here">Made the polyhedral model a practical automatic tiling and parallelization engine.</div>
+  </li>
+  <li>
+    <span class="title">Formal Verification of a Realistic Compiler (CompCert)</span> &mdash; Xavier Leroy
+    <div class="meta"><span class="badge b-pdf">PDF</span>CACM 2009 &middot; <a href="https://doi.org/10.1145/1538788.1538814">doi:10.1145/1538788.1538814</a> &middot; &rarr; <span class="file">verified-compilation/</span></div>
+    <div class="why-here">The first mechanically verified optimizing C compiler &mdash; the reference point for verified compilation.</div>
+  </li>
+  <li>
+    <span class="title">Halide: A Language and Compiler for Optimizing Image Processing Pipelines</span> &mdash; Ragan-Kelley et al.
+    <div class="meta"><span class="badge b-pdf">PDF</span>PLDI 2013 &middot; <a href="https://doi.org/10.1145/2491956.2462176">doi:10.1145/2491956.2462176</a> &middot; &rarr; <span class="file">compiler-infrastructure/</span></div>
+    <div class="why-here">The algorithm/schedule separation that reshaped how DSL and tensor compilers are designed.</div>
+  </li>
+  <li>
+    <span class="title">Stochastic Superoptimization (STOKE)</span> &mdash; Schkufza, Sharma, Aiken
+    <div class="meta"><span class="badge b-pdf">PDF</span>ASPLOS 2013 &middot; <a href="https://doi.org/10.1145/2451116.2451150">doi:10.1145/2451116.2451150</a> &middot; &rarr; <span class="file">verified-compilation/</span></div>
+    <div class="why-here">Reframes superoptimization as MCMC search over programs, finding code beyond rule-based reach.</div>
+  </li>
+  <li>
+    <span class="title">Provably Correct Peephole Optimizations with Alive</span> &mdash; Lopes, Menendez, Nagarakatte, Regehr
+    <div class="meta"><span class="badge b-pdf">PDF</span>PLDI 2015 &middot; <a href="https://doi.org/10.1145/2737924.2737965">doi:10.1145/2737924.2737965</a> &middot; &rarr; <span class="file">verified-compilation/</span></div>
+    <div class="why-here">SMT-based verification of LLVM peephole optimizations, now a real part of LLVM development.</div>
+  </li>
+  <li>
+    <span class="title">MLIR: Scaling Compiler Infrastructure for Domain Specific Computation</span> &mdash; Lattner et al.
+    <div class="meta"><span class="badge b-pdf">PDF</span>CGO 2021 &middot; <a href="https://doi.org/10.1109/CGO51591.2021.9370308">doi:10.1109/CGO51591.2021.9370308</a> &middot; &rarr; <span class="file">compiler-infrastructure/</span></div>
+    <div class="why-here">The multi-level, dialect-based IR framework now central to ML and accelerator compiler stacks.</div>
+  </li>
+</ol>
+
+</body>
+</html>

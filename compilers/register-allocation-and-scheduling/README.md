@@ -1,0 +1,8 @@
+# Compilers · Register allocation & instruction scheduling
+
+- **Register Allocation and Spilling via Graph Coloring** — Gregory J. Chaitin, 1982, SIGPLAN Compiler Construction. *foundational.* The original graph-coloring formulation. [DOI](https://doi.org/10.1145/872726.806984) · [PDF](https://web.eecs.umich.edu/~mahlke/courses/583f12/reading/chaitin82.pdf)
+- **Improvements to Graph Coloring Register Allocation** — Briggs, Cooper, Torczon, 1994, ACM TOPLAS. *foundational.* Optimistic coloring and better spill heuristics. [DOI](https://doi.org/10.1145/177492.177575)
+- **Iterated Register Coalescing** — Lal George, Andrew W. Appel, 1996, ACM TOPLAS. *foundational.* Reconciles move-coalescing with colorability. [DOI](https://doi.org/10.1145/229542.229546) · [PDF](https://www.cse.iitm.ac.in/~krishna/cs6013/george.pdf)
+- **Linear Scan Register Allocation** — Poletto, Sarkar, 1999, ACM TOPLAS. *foundational.* The fast non-coloring allocator that became the JIT workhorse. [DOI](https://doi.org/10.1145/330249.330250) · [PDF](https://web.cs.ucla.edu/~palsberg/course/cs132/linearscan.pdf)
+- **Trace Scheduling: A Technique for Global Microcode Compaction** — Joseph A. Fisher, 1981, IEEE TC. *foundational.* Origin of global instruction scheduling and the VLIW philosophy. [DOI](https://doi.org/10.1109/TC.1981.1675827) · [PDF](https://people.eecs.berkeley.edu/~kubitron/courses/cs252-S12/handouts/papers/TraceScheduling.pdf)
+- **Software Pipelining: An Effective Scheduling Technique for VLIW Machines** — Monica S. Lam, 1988, PLDI. *foundational.* Modulo scheduling for loops. [DOI](https://doi.org/10.1145/53990.54022) · [PDF](https://www.cs.cmu.edu/afs/cs/academic/class/15740-f18/www/papers/pldi88-lam-softwarepipelining.pdf)
