@@ -1,0 +1,6 @@
+# Computer architecture · Accelerators & warehouse-scale
+
+- **NVIDIA Tesla: A Unified Graphics and Computing Architecture** — Lindholm, Nickolls, Oberman, Montrym, 2008, IEEE Micro. *post-2002.* The unified-shader SIMT GPU that made GPGPU (and later deep learning) practical. [DOI](https://doi.org/10.1109/MM.2008.31) · [PDF](https://www.cs.cmu.edu/afs/cs/academic/class/15869-f11/www/readings/lindholm08_tesla.pdf)
+- **DianNao: A Small-Footprint High-Throughput Accelerator for Ubiquitous Machine-Learning** — Chen et al., 2014, ASPLOS-19. *post-2002.* Reignited neural-network ASIC design. [DOI](https://doi.org/10.1145/2541940.2541967)
+- **In-Datacenter Performance Analysis of a Tensor Processing Unit (TPU)** — Jouppi et al., 2017, ISCA-44. *post-2002.* Google's deployed systolic-array TPU; the canonical production-ML-accelerator study. [DOI](https://doi.org/10.1145/3079856.3080246) · [PDF](https://arxiv.org/pdf/1704.04760)
+- **The Datacenter as a Computer** — Barroso, Hölzle, 2009, Synthesis Lectures. *post-2002.* Reframes the warehouse as the unit of computing. [DOI](https://doi.org/10.2200/S00193ED1V01Y200905CAC006) · [PDF](https://cs.brown.edu/courses/csci2950-u/s18/papers/barroso09warehouse.pdf)
