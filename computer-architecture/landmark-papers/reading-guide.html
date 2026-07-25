@@ -19,7 +19,7 @@
   </li>
   <li>
     <span class="title">An Efficient Algorithm for Exploiting Multiple Arithmetic Units</span> &mdash; Robert M. Tomasulo
-    <div class="meta"><span class="badge b-web">DOI</span>IBM J. R&amp;D 1967 &middot; <a href="https://doi.org/10.1147/rd.111.0025">doi:10.1147/rd.111.0025</a> &middot; &rarr; <span class="file">instruction-level-parallelism/</span></div>
+    <div class="meta"><span class="badge b-web">DOI</span>IBM J. R&amp;D 1967 &middot; <a href="https://doi.org/10.1147/rd.111.0025">doi:10.1147/rd.111.0025</a> &middot; &rarr; <span class="file">superscalar-and-out-of-order/</span></div>
     <div class="why-here">Register renaming plus the common data bus &mdash; the basis of every modern out-of-order engine.</div>
   </li>
   <li>
@@ -49,12 +49,12 @@
   </li>
   <li>
     <span class="title">NVIDIA Tesla: A Unified Graphics and Computing Architecture</span> &mdash; Lindholm, Nickolls, Oberman, Montrym
-    <div class="meta"><span class="badge b-pdf">PDF</span>IEEE Micro 2008 &middot; <a href="https://doi.org/10.1109/MM.2008.31">doi:10.1109/MM.2008.31</a> &middot; &rarr; <span class="file">accelerators-and-warehouse-scale/</span></div>
+    <div class="meta"><span class="badge b-pdf">PDF</span>IEEE Micro 2008 &middot; <a href="https://doi.org/10.1109/MM.2008.31">doi:10.1109/MM.2008.31</a> &middot; &rarr; <span class="file">domain-specific-accelerators/</span></div>
     <div class="why-here">The unified-shader SIMT GPU architecture that made GPGPU and later deep learning practical.</div>
   </li>
   <li>
     <span class="title">The Datacenter as a Computer</span> &mdash; Barroso, H&ouml;lzle
-    <div class="meta"><span class="badge b-pdf">PDF</span>Synthesis Lectures 2009 &middot; <a href="https://doi.org/10.2200/S00193ED1V01Y200905CAC006">doi:10.2200/S00193ED1V01Y200905CAC006</a> &middot; &rarr; <span class="file">accelerators-and-warehouse-scale/</span></div>
+    <div class="meta"><span class="badge b-pdf">PDF</span>Synthesis Lectures 2009 &middot; <a href="https://doi.org/10.2200/S00193ED1V01Y200905CAC006">doi:10.2200/S00193ED1V01Y200905CAC006</a> &middot; &rarr; <span class="file">warehouse-scale-computing/</span></div>
     <div class="why-here">Reframes the warehouse as the unit of computing, founding warehouse-scale architecture and its energy/TCO discipline.</div>
   </li>
   <li>
@@ -64,12 +64,12 @@
   </li>
   <li>
     <span class="title">In-Datacenter Performance Analysis of a Tensor Processing Unit</span> &mdash; Jouppi et al.
-    <div class="meta"><span class="badge b-pdf">PDF</span>ISCA-44 2017 &middot; <a href="https://doi.org/10.1145/3079856.3080246">doi:10.1145/3079856.3080246</a> &middot; &rarr; <span class="file">accelerators-and-warehouse-scale/</span></div>
+    <div class="meta"><span class="badge b-pdf">PDF</span>ISCA-44 2017 &middot; <a href="https://doi.org/10.1145/3079856.3080246">doi:10.1145/3079856.3080246</a> &middot; &rarr; <span class="file">domain-specific-accelerators/</span></div>
     <div class="why-here">Google's deployed systolic-array TPU &mdash; the canonical case study in production ML acceleration.</div>
   </li>
   <li>
     <span class="title">Spectre Attacks: Exploiting Speculative Execution</span> &mdash; Kocher et al.
-    <div class="meta"><span class="badge b-pdf">PDF</span>IEEE S&amp;P 2019 &middot; <a href="https://doi.org/10.1109/SP.2019.00002">doi:10.1109/SP.2019.00002</a> &middot; &rarr; <span class="file">tools-and-security/</span></div>
+    <div class="meta"><span class="badge b-pdf">PDF</span>IEEE S&amp;P 2019 &middot; <a href="https://doi.org/10.1109/SP.2019.00002">doi:10.1109/SP.2019.00002</a> &middot; &rarr; <span class="file">hardware-security/</span></div>
     <div class="why-here">Speculation itself becomes a covert channel, opening the transient-execution attack class that reshaped microarchitecture.</div>
   </li>
 </ol>
@@ -77,12 +77,17 @@
 <h2>Going deeper</h2>
 <p class="grouphdr">This survey is the slice across the whole area; each subtopic dir treats its theme in depth and lists more papers.</p>
 <ul class="comp">
-  <li><span class="badge b-web">DIR</span><span class="file">quantitative-principles/</span> &mdash; Amdahl, multicore Amdahl, roofline, the golden-age manifesto.</li>
-  <li><span class="badge b-web">DIR</span><span class="file">instruction-level-parallelism/</span> &mdash; Tomasulo and branch prediction (Yeh &amp; Patt, gshare).</li>
-  <li><span class="badge b-web">DIR</span><span class="file">multicore-and-memory-consistency/</span> &mdash; SMT, single-chip MP, consistency models, transactional memory, dark silicon.</li>
-  <li><span class="badge b-web">DIR</span><span class="file">memory-systems-and-storage/</span> &mdash; caches, NUCA, RAID, RowHammer.</li>
-  <li><span class="badge b-web">DIR</span><span class="file">accelerators-and-warehouse-scale/</span> &mdash; GPUs, DianNao, TPU, warehouse-scale.</li>
-  <li><span class="badge b-web">DIR</span><span class="file">tools-and-security/</span> &mdash; gem5, Meltdown, Spectre.</li>
+  <li><span class="badge b-web">DIR</span><span class="file">quantitative-principles/</span> &mdash; Amdahl, RISC, Dennard, memory wall, roofline, golden age.</li>
+  <li><span class="badge b-web">DIR</span><span class="file">superscalar-and-out-of-order/</span> &mdash; Tomasulo, scoreboarding, ROB, HPS, ILP limits.</li>
+  <li><span class="badge b-web">DIR</span><span class="file">branch-prediction-and-speculation/</span> &mdash; Smith, two-level, gshare/TAGE, perceptrons, value prediction, Multiscalar.</li>
+  <li><span class="badge b-web">DIR</span><span class="file">memory-systems-and-storage/</span> &mdash; caches, NUCA, replacement, DRAM scheduling, RAID, flash, NVM.</li>
+  <li><span class="badge b-web">DIR</span><span class="file">multicore-and-memory-consistency/</span> &mdash; consistency, coherence (MESI/directory), TM, SMT, CMP, RCU.</li>
+  <li><span class="badge b-web">DIR</span><span class="file">domain-specific-accelerators/</span> &mdash; systolic arrays, GPUs, DianNao/Eyeriss/EIE, TPU, Catapult.</li>
+  <li><span class="badge b-web">DIR</span><span class="file">warehouse-scale-computing/</span> &mdash; datacenter-as-computer, GFS/MapReduce, Clos networks, Borg, disaggregation.</li>
+  <li><span class="badge b-web">DIR</span><span class="file">simulation-and-modeling-tools/</span> &mdash; gem5, SimpleScalar, Wattch/McPAT, DRAMSim, Pin, SimPoint.</li>
+  <li><span class="badge b-web">DIR</span><span class="file">hardware-security/</span> &mdash; timing/power/cache side channels, RowHammer, Meltdown/Spectre/Foreshadow.</li>
+  <li><span class="badge b-web">DIR</span><span class="file">weird-architectures/</span> &mdash; dataflow, transport-triggered, VLIW, Connection Machine, Transputer, Raw.</li>
+  <li><span class="badge b-web">DIR</span><span class="file">important-machines/</span> &mdash; CDC 6600, System/360, Cray-1, RISC I/MIPS, VAX, Alpha, x86.</li>
 </ul>
 <p class="grouphdr">Run <span class="file">fetch.sh</span> to download the openly-available PDFs; paywalled entries are DOI links above.</p>
 

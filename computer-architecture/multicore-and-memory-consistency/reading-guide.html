@@ -8,50 +8,61 @@
 <body>
 
 <h1>Computer architecture · Multicore &amp; memory consistency</h1>
+<p class="sub">Shared-memory correctness and parallelism: consistency models, cache coherence, transactional memory, SMT/CMP, and the scaling wall.</p>
 <p class="tally">In-depth landmark list for this subtopic. <span class="badge b-pdf">PDF</span>open copy available &middot; <span class="badge b-web">DOI</span>publisher link only.</p>
 
 <ol class="papers">
   <li>
     <span class="title">How to Make a Multiprocessor Computer That Correctly Executes Multiprocess Programs</span>
     <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1109/TC.1979.1675439">DOI</a></div>
-    <div class="why-here">Leslie Lamport, 1979, IEEE TC. The definition of sequential consistency.</div>
+    <div class="why-here">Leslie Lamport, 1979, IEEE TC. Defines sequential consistency.</div>
   </li>
   <li>
-    <span class="title">Shared Memory Consistency Models: A Tutorial</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1109/2.546611">DOI</a> &middot; <a href="https://www.cs.unc.edu/~prins/Classes/633/Readings/MemoryConsistencyModelsTutorial.pdf">PDF</a></div>
-    <div class="why-here">Adve, Gharachorloo, 1996, IEEE Computer. The canonical map of relaxed-consistency models.</div>
+    <span class="title">A New Solution to Coherence Problems in Multicache Systems</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1109/TC.1978.1675013">DOI</a></div>
+    <div class="why-here">Censier, Feautrier, 1978, IEEE TC. The directory-based coherence scheme behind scalable systems.</div>
+  </li>
+  <li>
+    <span class="title">A Low-Overhead Coherence Solution for Multiprocessors with Private Cache Memories</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/800015.808204">DOI</a></div>
+    <div class="why-here">Papamarcos, Patel, 1984, ISCA. The MESI/Illinois snooping protocol.</div>
+  </li>
+  <li>
+    <span class="title">Memory Consistency and Event Ordering in Scalable Shared-Memory Multiprocessors</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1109/ISCA.1990.134503">DOI</a></div>
+    <div class="why-here">Gharachorloo, Lenoski, Laudon, Gibbons, Gupta, Hennessy, 1990, ISCA. Introduces release consistency.</div>
   </li>
   <li>
     <span class="title">Transactional Memory: Architectural Support for Lock-Free Data Structures</span>
     <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/165123.165164">DOI</a> &middot; <a href="https://courses.csail.mit.edu/6.895/fall03/handouts/papers/HerlihyMo93.pdf">PDF</a></div>
-    <div class="why-here">Herlihy, Moss, 1993, ISCA-20. Launched hardware transactional memory (root of Intel TSX).</div>
+    <div class="why-here">Herlihy, Moss, 1993, ISCA. Launched hardware transactional memory.</div>
   </li>
   <li>
     <span class="title">Simultaneous Multithreading: Maximizing On-Chip Parallelism</span>
     <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/223982.224449">DOI</a> &middot; <a href="https://www.cs.sfu.ca/~alaa/courses/cmpt450/fall2022/papers/tullsen-isca-1995.pdf">PDF</a></div>
-    <div class="why-here">Tullsen, Eggers, Levy, 1995, ISCA-22. The SMT paper that became Hyper-Threading.</div>
+    <div class="why-here">Tullsen, Eggers, Levy, 1995, ISCA. SMT: interleaving threads to fill idle issue slots.</div>
   </li>
   <li>
     <span class="title">The Case for a Single-Chip Multiprocessor</span>
     <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/237090.237140">DOI</a> &middot; <a href="http://arsenalfc.stanford.edu/kunle/publications/hydra_ASPLOS_VII.pdf">PDF</a></div>
-    <div class="why-here">Olukotun, Nayfeh, Hammond, Wilson, Chang, 1996, ASPLOS-VII. The Hydra argument that many simple cores beat one wide core.</div>
+    <div class="why-here">Olukotun, Nayfeh, Hammond, Wilson, Chang, 1996, ASPLOS-VII. The multicore turn.</div>
+  </li>
+  <li>
+    <span class="title">Shared Memory Consistency Models: A Tutorial</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1109/2.546611">DOI</a></div>
+    <div class="why-here">Adve, Gharachorloo, 1996, IEEE Computer. The canonical map of relaxed-consistency models.</div>
+  </li>
+  <li>
+    <span class="title">Read-Copy Update: Using Execution History to Solve Concurrency Problems</span>
+    <div class="meta"><span class="badge b-web">DOI</span></div>
+    <div class="why-here">McKenney, Slingwine, 1998, PDCS. RCU: near-zero-overhead lock-free reads (now core to Linux).</div>
   </li>
   <li>
     <span class="title">Dark Silicon and the End of Multicore Scaling</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/2000064.2000108">DOI</a> &middot; <a href="https://www.cs.toronto.edu/~pekhimenko/courses/csc2224-f18/docs/Dark%20Silicon.pdf">PDF</a></div>
-    <div class="why-here">Esmaeilzadeh, Blem, St. Amant, Sankaralingam, Burger, 2011, ISCA-38. Models how the end of Dennard scaling caps usable cores.</div>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/2000064.2000108">DOI</a></div>
+    <div class="why-here">Esmaeilzadeh, Blem, St. Amant, Sankaralingam, Burger, 2011, ISCA. The utilization wall capping multicore scaling.</div>
   </li>
 </ol>
-
-<h2>Key terms</h2>
-<p class="grouphdr">Vocabulary used across this area.</p>
-<div class="notekey">
-<b>ILP (instruction-level parallelism)</b> &mdash; independent instructions that can execute simultaneously. &nbsp; <b>pipeline</b> &mdash; overlapping instruction stages (fetch/decode/execute/...) for throughput. &nbsp; <b>out-of-order execution</b> &mdash; running instructions as operands become ready, not in program order. &nbsp; <b>register renaming</b> &mdash; mapping architectural registers to a larger physical set to remove false dependences. &nbsp; <b>branch prediction</b> &mdash; guessing branch outcomes to keep the pipeline full; mispredicts cost a flush. &nbsp; <b>speculation</b> &mdash; executing work before it is known to be needed (and squashing if wrong). &nbsp; <b>cache / hit / miss</b> &mdash; fast on-chip memory; a miss falls back to slower levels. &nbsp; <b>cache coherence</b> &mdash; keeping per-core cached copies of a location consistent. &nbsp; <b>memory consistency model</b> &mdash; the rules for how memory operations from different cores appear ordered. &nbsp; <b>SMT (simultaneous multithreading)</b> &mdash; issuing from multiple threads each cycle to fill idle slots. &nbsp; <b>CMP / multicore</b> &mdash; multiple processor cores on one chip. &nbsp; <b>SIMT</b> &mdash; the GPU model: many threads run the same instruction on different data. &nbsp; <b>systolic array</b> &mdash; a grid of MACs streaming data, used by ML accelerators (e.g., the TPU). &nbsp; <b>roofline</b> &mdash; a performance model bounding attainable FLOP/s by compute and memory bandwidth. &nbsp; <b>Amdahl's Law</b> &mdash; speedup is capped by the serial fraction of a program. &nbsp; <b>Dennard scaling</b> &mdash; the (now-ended) trend of constant power density as transistors shrank. &nbsp; <b>dark silicon</b> &mdash; the fraction of a chip that must stay powered off within a power budget. &nbsp; <b>operational intensity</b> &mdash; FLOPs performed per byte of memory traffic.
-</div>
-
-<h2>Related in this area</h2>
-<p class="grouphdr">Other lists in this area; <span class="file">../landmark-papers/</span> is the cross-cutting survey.</p>
-<ul class="comp"><li><span class="file">../accelerators-and-warehouse-scale/</span></li><li><span class="file">../instruction-level-parallelism/</span></li><li><span class="file">../landmark-papers/</span></li><li><span class="file">../memory-systems-and-storage/</span></li><li><span class="file">../quantitative-principles/</span></li><li><span class="file">../tools-and-security/</span></li></ul>
 
 </body>
 </html>

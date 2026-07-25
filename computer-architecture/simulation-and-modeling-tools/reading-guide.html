@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Computer architecture · Simulation &amp; modeling tools</title>
+<link rel="stylesheet" href="../../lib/guide.css">
+</head>
+<body>
+
+<h1>Computer architecture · Simulation &amp; modeling tools</h1>
+<p class="sub">The infrastructure of the field: cycle-level and full-system simulators, power/area models, DRAM models, instrumentation, and sampling methodology.</p>
+<p class="tally">In-depth landmark list for this subtopic. <span class="badge b-pdf">PDF</span>open copy available &middot; <span class="badge b-web">DOI</span>publisher link only.</p>
+
+<ol class="papers">
+  <li>
+    <span class="title">The gem5 Simulator</span>
+    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/2024716.2024718">DOI</a> &middot; <a href="https://research.cs.wisc.edu/multifacet/papers/can11_gem5.pdf">PDF</a></div>
+    <div class="why-here">Binkert, Beckmann, Black, Reinhardt, Saidi, Basu, Hestness, Hower, Krishna, Sardashti, Sen, Sewell, Shoaib, Vaish, Hill, Wood, 2011, SIGARCH CAN. The M5+GEMS merger that became the de facto full-system, cycle-level simulator.</div>
+  </li>
+  <li>
+    <span class="title">The gem5 Simulator: Version 20.0+</span>
+    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/2007.03152">arXiv</a> &middot; <a href="https://arxiv.org/pdf/2007.03152">PDF</a></div>
+    <div class="why-here">Lowe-Power et al., 2020, arXiv. The decade-later community retrospective and standard modern citation.</div>
+  </li>
+  <li>
+    <span class="title">The SimpleScalar Tool Set, Version 2.0</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/268806.268810">DOI</a></div>
+    <div class="why-here">Burger, Austin, 1997, SIGARCH CAN. The dominant execution-driven microarchitecture simulator of its era.</div>
+  </li>
+  <li>
+    <span class="title">Wattch: A Framework for Architectural-Level Power Analysis and Optimizations</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/339647.339657">DOI</a></div>
+    <div class="why-here">Brooks, Tiwari, Martonosi, 2000, ISCA. The first widely-adopted architectural dynamic-power model.</div>
+  </li>
+  <li>
+    <span class="title">McPAT: An Integrated Power, Area, and Timing Modeling Framework</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/1669112.1669172">DOI</a></div>
+    <div class="why-here">Li, Ahn, Strong, Brockman, Tullsen, Jouppi, 2009, MICRO-42. The standard multicore power/area/timing companion to perf simulators.</div>
+  </li>
+  <li>
+    <span class="title">DRAMSim2: A Cycle Accurate Memory System Simulator</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1109/L-CA.2011.4">DOI</a></div>
+    <div class="why-here">Rosenfeld, Cooper-Balis, Jacob, 2011, IEEE CAL. A widely-used cycle-accurate DRAM model.</div>
+  </li>
+  <li>
+    <span class="title">ZSim: Fast and Accurate Microarchitectural Simulation of Thousand-Core Systems</span>
+    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/2485922.2485963">DOI</a> &middot; <a href="http://hdl.handle.net/1721.1/90820">PDF</a></div>
+    <div class="why-here">Sanchez, Kozyrakis, 2013, ISCA. Instruction-driven timing + bound-weave parallelization at thousand-core scale.</div>
+  </li>
+  <li>
+    <span class="title">Sniper: Exploring the Level of Abstraction for Scalable and Accurate Parallel Multi-Core Simulation</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/2063384.2063454">DOI</a></div>
+    <div class="why-here">Carlson, Heirman, Eeckhout, 2011, SC. Popularized interval simulation for large multicores.</div>
+  </li>
+  <li>
+    <span class="title">Pin: Building Customized Program Analysis Tools with Dynamic Instrumentation</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/1065010.1065034">DOI</a></div>
+    <div class="why-here">Luk, Cohn, Muth, Patil, Klauser, Lowney, Wallace, Reddi, Hazelwood, 2005, PLDI. The DBI framework underpinning countless trace-driven tools.</div>
+  </li>
+  <li>
+    <span class="title">CACTI: An Enhanced Cache Access and Cycle Time Model</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1109/4.509850">DOI</a></div>
+    <div class="why-here">Wilton, Jouppi, 1996, IEEE JSSC. The analytical cache/SRAM access-time/area/energy model embedded in later tools.</div>
+  </li>
+  <li>
+    <span class="title">Automatically Characterizing Large Scale Program Behavior (SimPoint)</span>
+    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/605397.605403">DOI</a> &middot; <a href="https://escholarship.org/content/qt9bm2g3p7/qt9bm2g3p7.pdf">PDF</a></div>
+    <div class="why-here">Sherwood, Perelman, Hamerly, Calder, 2002, ASPLOS-X. Phase analysis making long workloads tractable to simulate.</div>
+  </li>
+  <li>
+    <span class="title">Simics: A Full System Simulation Platform</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1109/2.982916">DOI</a></div>
+    <div class="why-here">Magnusson et al., 2002, IEEE Computer. The landmark commercial full-system functional simulator.</div>
+  </li>
+</ol>
+
+</body>
+</html>

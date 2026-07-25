@@ -5,9 +5,7 @@ cd "$(dirname "$0")"
 OUT=pdfs; mkdir -p "$OUT"
 UA='Mozilla/5.0'
 dl(){ local u="$1" f="$OUT/$2"; if curl -fsSL -A "$UA" -o "$f" "$u" && [ "$(head -c4 "$f")" = "%PDF" ]; then echo "ok   $2"; else echo "FAIL $2"; rm -f "$f"; fi; }
-dl "https://www.cs.unc.edu/~prins/Classes/633/Readings/MemoryConsistencyModelsTutorial.pdf" "Shared-Memory-Consistency-Models-A-Tutorial.pdf"
 dl "https://courses.csail.mit.edu/6.895/fall03/handouts/papers/HerlihyMo93.pdf" "Transactional-Memory-Architectural-Support-for-L.pdf"
 dl "https://www.cs.sfu.ca/~alaa/courses/cmpt450/fall2022/papers/tullsen-isca-1995.pdf" "Simultaneous-Multithreading-Maximizing-On-Chip-P.pdf"
 dl "http://arsenalfc.stanford.edu/kunle/publications/hydra_ASPLOS_VII.pdf" "The-Case-for-a-Single-Chip-Multiprocessor.pdf"
-dl "https://www.cs.toronto.edu/~pekhimenko/courses/csc2224-f18/docs/Dark%20Silicon.pdf" "Dark-Silicon-and-the-End-of-Multicore-Scaling.pdf"
 echo "done -> $OUT/"

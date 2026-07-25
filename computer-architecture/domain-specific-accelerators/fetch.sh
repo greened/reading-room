@@ -5,6 +5,4 @@ cd "$(dirname "$0")"
 OUT=pdfs; mkdir -p "$OUT"
 UA='Mozilla/5.0'
 dl(){ local u="$1" f="$OUT/$2"; if curl -fsSL -A "$UA" -o "$f" "$u" && [ "$(head -c4 "$f")" = "%PDF" ]; then echo "ok   $2"; else echo "FAIL $2"; rm -f "$f"; fi; }
-dl "https://www.usenix.org/system/files/conference/usenixsecurity18/sec18-lipp.pdf" "Meltdown-Reading-Kernel-Memory-from-User-Space.pdf"
-dl "https://www.cs.sfu.ca/~ashriram/Courses/CS7ARCH/papers/Kocher-security-2019.pdf" "Spectre-Attacks-Exploiting-Speculative-Execution.pdf"
 echo "done -> $OUT/"

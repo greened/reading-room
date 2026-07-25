@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Computer architecture · Hardware security</title>
+<link rel="stylesheet" href="../../lib/guide.css">
+</head>
+<body>
+
+<h1>Computer architecture · Hardware security</h1>
+<p class="sub">Microarchitectural side channels and transient-execution attacks — from timing and power analysis through cache attacks, RowHammer, and Spectre/Meltdown.</p>
+<p class="tally">In-depth landmark list for this subtopic. <span class="badge b-pdf">PDF</span>open copy available &middot; <span class="badge b-web">DOI</span>publisher link only.</p>
+
+<ol class="papers">
+  <li>
+    <span class="title">Timing Attacks on Implementations of Diffie-Hellman, RSA, DSS, and Other Systems</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1007/3-540-68697-5_9">DOI</a></div>
+    <div class="why-here">Paul C. Kocher, 1996, CRYPTO. Founded timing side-channel attacks.</div>
+  </li>
+  <li>
+    <span class="title">Differential Power Analysis</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1007/3-540-48405-1_25">DOI</a></div>
+    <div class="why-here">Kocher, Jaffe, Jun, 1999, CRYPTO. Power traces leak cryptographic keys.</div>
+  </li>
+  <li>
+    <span class="title">Cache Attacks and Countermeasures: The Case of AES</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1007/11605805_1">DOI</a></div>
+    <div class="why-here">Osvik, Shamir, Tromer, 2006, CT-RSA. Systematized cache-timing attacks (incl. Prime+Probe).</div>
+  </li>
+  <li>
+    <span class="title">Flipping Bits in Memory Without Accessing Them (RowHammer)</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/2678373.2665726">DOI</a></div>
+    <div class="why-here">Kim, Daly, Kim, et al., 2014, ISCA. Repeated DRAM row access flips bits in adjacent rows.</div>
+  </li>
+  <li>
+    <span class="title">FLUSH+RELOAD: A High Resolution, Low Noise, L3 Cache Side-Channel Attack</span>
+    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://www.usenix.org/conference/usenixsecurity14/technical-sessions/presentation/yarom">page</a></div>
+    <div class="why-here">Yarom, Falkner, 2014, USENIX Security. A precise shared-cache channel underpinning many later attacks.</div>
+  </li>
+  <li>
+    <span class="title">Last-Level Cache Side-Channel Attacks are Practical</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1109/SP.2015.43">DOI</a></div>
+    <div class="why-here">Liu, Yarom, Ge, Heiser, Lee, 2015, IEEE S&amp;P. Practical cross-core/cross-VM Prime+Probe via the shared LLC.</div>
+  </li>
+  <li>
+    <span class="title">Meltdown: Reading Kernel Memory from User Space</span>
+    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://www.usenix.org/conference/usenixsecurity18/presentation/lipp">page</a> &middot; <a href="https://arxiv.org/pdf/1801.01207">PDF</a></div>
+    <div class="why-here">Lipp, Schwarz, Gruss, et al., 2018, USENIX Security. Out-of-order execution reads protected kernel memory.</div>
+  </li>
+  <li>
+    <span class="title">Foreshadow: Extracting the Keys to the Intel SGX Kingdom</span>
+    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://www.usenix.org/conference/usenixsecurity18/presentation/van-bulck">page</a></div>
+    <div class="why-here">Van Bulck, Minkin, Weisse, et al., 2018, USENIX Security. An L1TF transient-execution attack defeating SGX.</div>
+  </li>
+  <li>
+    <span class="title">Spectre Attacks: Exploiting Speculative Execution</span>
+    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1109/SP.2019.00002">DOI</a> &middot; <a href="https://arxiv.org/pdf/1801.01203">PDF</a></div>
+    <div class="why-here">Kocher, Horn, Fogh, et al., 2019, IEEE S&amp;P. Speculation steered to leak secrets across boundaries — a new attack class.</div>
+  </li>
+</ol>
+
+</body>
+</html>

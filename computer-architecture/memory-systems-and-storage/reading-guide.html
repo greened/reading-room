@@ -8,40 +8,66 @@
 <body>
 
 <h1>Computer architecture · Memory systems &amp; storage</h1>
+<p class="sub">Caches and replacement, on-chip cache networks, DRAM scheduling and reliability, and the storage stack from RAID through flash and persistent memory.</p>
 <p class="tally">In-depth landmark list for this subtopic. <span class="badge b-pdf">PDF</span>open copy available &middot; <span class="badge b-web">DOI</span>publisher link only.</p>
 
 <ol class="papers">
   <li>
     <span class="title">Cache Memories</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/356887.356892">DOI</a> &middot; <a href="https://people.engr.tamu.edu/djimenez/taco/utsa-www/cs5513-fall07/reader/smith-cache-memories.pdf">PDF</a></div>
-    <div class="why-here">Alan Jay Smith, 1982, ACM Computing Surveys. The definitive early survey of the cache design space.</div>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/356887.356892">DOI</a></div>
+    <div class="why-here">Alan Jay Smith, 1982, ACM Computing Surveys. The foundational survey that systematized cache design.</div>
   </li>
   <li>
-    <span class="title">An Adaptive, Non-Uniform Cache Structure for Wire-Delay Dominated On-Chip Caches (NUCA)</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/605397.605420">DOI</a> &middot; <a href="https://users.cs.utah.edu/~rajeev/cs7810/papers/kim02.pdf">PDF</a></div>
-    <div class="why-here">Kim, Burger, Keckler, 2002, ASPLOS-X. Treats a large last-level cache as a distance-varying network.</div>
+    <span class="title">Improving Direct-Mapped Cache Performance by the Addition of a Small Fully-Associative Cache and Prefetch Buffers</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1109/ISCA.1990.134547">DOI</a></div>
+    <div class="why-here">Norman P. Jouppi, 1990, ISCA. Victim caches and stream buffers.</div>
+  </li>
+  <li>
+    <span class="title">An Adaptive, Non-Uniform Cache Structure (NUCA)</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/605432.605420">DOI</a></div>
+    <div class="why-here">Kim, Burger, Keckler, 2002, ASPLOS-X. A large cache as a network of banks with distance-dependent latency.</div>
   </li>
   <li>
     <span class="title">A Case for Redundant Arrays of Inexpensive Disks (RAID)</span>
     <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/50202.50214">DOI</a></div>
-    <div class="why-here">Patterson, Gibson, Katz, 1988, SIGMOD. The RAID-levels taxonomy underpinning modern storage.</div>
+    <div class="why-here">Patterson, Gibson, Katz, 1988, SIGMOD. The RAID taxonomy.</div>
+  </li>
+  <li>
+    <span class="title">Memory Access Scheduling</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1109/ISCA.2000.854384">DOI</a></div>
+    <div class="why-here">Rixner, Dally, Kapasi, Mattson, Owens, 2000, ISCA. Reordering DRAM accesses to exploit bank/row state.</div>
+  </li>
+  <li>
+    <span class="title">Adaptive Insertion Policies for High Performance Caching (DIP)</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/1273440.1250709">DOI</a></div>
+    <div class="why-here">Qureshi, Jaleel, Patt, Steely, Emer, 2007, ISCA. Set-dueling + dynamic insertion; thrash-resistant LRU at near-zero cost.</div>
+  </li>
+  <li>
+    <span class="title">High Performance Cache Replacement Using Re-Reference Interval Prediction (RRIP)</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/1815961.1815971">DOI</a></div>
+    <div class="why-here">Jaleel, Theobald, Steely, Emer, 2010, ISCA. SRRIP/DRRIP: scan/thrash-resistant replacement.</div>
   </li>
   <li>
     <span class="title">Flipping Bits in Memory Without Accessing Them (RowHammer)</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1109/ISCA.2014.6853210">DOI</a></div>
-    <div class="why-here">Kim et al., 2014, ISCA-41. DRAM density turns activation patterns into reliability/security failures.</div>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/2678373.2665726">DOI</a></div>
+    <div class="why-here">Kim, Daly, Kim, Fallin, Lee, Lee, Wilkerson, Lai, Mutlu, 2014, ISCA. DRAM disturbance errors: a scaling reliability/security problem.</div>
+  </li>
+  <li>
+    <span class="title">The Design and Implementation of a Log-Structured File System</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/146941.146943">DOI</a></div>
+    <div class="why-here">Rosenblum, Ousterhout, 1992, ACM TOCS. The log-structured design behind modern flash/copy-on-write storage.</div>
+  </li>
+  <li>
+    <span class="title">DFTL: A Flash Translation Layer Employing Demand-Based Selective Caching of Page-Level Address Mappings</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/1508284.1508271">DOI</a></div>
+    <div class="why-here">Gupta, Kim, Urgaonkar, 2009, ASPLOS. The reference demand-paged FTL for SSDs.</div>
+  </li>
+  <li>
+    <span class="title">Better I/O Through Byte-Addressable, Persistent Memory (BPFS)</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/1629575.1629589">DOI</a></div>
+    <div class="why-here">Condit, Nightingale, Frost, Ipek, Lee, Burger, Coetzee, 2009, SOSP. An early influential NVM programming/consistency model.</div>
   </li>
 </ol>
-
-<h2>Key terms</h2>
-<p class="grouphdr">Vocabulary used across this area.</p>
-<div class="notekey">
-<b>ILP (instruction-level parallelism)</b> &mdash; independent instructions that can execute simultaneously. &nbsp; <b>pipeline</b> &mdash; overlapping instruction stages (fetch/decode/execute/...) for throughput. &nbsp; <b>out-of-order execution</b> &mdash; running instructions as operands become ready, not in program order. &nbsp; <b>register renaming</b> &mdash; mapping architectural registers to a larger physical set to remove false dependences. &nbsp; <b>branch prediction</b> &mdash; guessing branch outcomes to keep the pipeline full; mispredicts cost a flush. &nbsp; <b>speculation</b> &mdash; executing work before it is known to be needed (and squashing if wrong). &nbsp; <b>cache / hit / miss</b> &mdash; fast on-chip memory; a miss falls back to slower levels. &nbsp; <b>cache coherence</b> &mdash; keeping per-core cached copies of a location consistent. &nbsp; <b>memory consistency model</b> &mdash; the rules for how memory operations from different cores appear ordered. &nbsp; <b>SMT (simultaneous multithreading)</b> &mdash; issuing from multiple threads each cycle to fill idle slots. &nbsp; <b>CMP / multicore</b> &mdash; multiple processor cores on one chip. &nbsp; <b>SIMT</b> &mdash; the GPU model: many threads run the same instruction on different data. &nbsp; <b>systolic array</b> &mdash; a grid of MACs streaming data, used by ML accelerators (e.g., the TPU). &nbsp; <b>roofline</b> &mdash; a performance model bounding attainable FLOP/s by compute and memory bandwidth. &nbsp; <b>Amdahl's Law</b> &mdash; speedup is capped by the serial fraction of a program. &nbsp; <b>Dennard scaling</b> &mdash; the (now-ended) trend of constant power density as transistors shrank. &nbsp; <b>dark silicon</b> &mdash; the fraction of a chip that must stay powered off within a power budget. &nbsp; <b>operational intensity</b> &mdash; FLOPs performed per byte of memory traffic.
-</div>
-
-<h2>Related in this area</h2>
-<p class="grouphdr">Other lists in this area; <span class="file">../landmark-papers/</span> is the cross-cutting survey.</p>
-<ul class="comp"><li><span class="file">../accelerators-and-warehouse-scale/</span></li><li><span class="file">../instruction-level-parallelism/</span></li><li><span class="file">../landmark-papers/</span></li><li><span class="file">../multicore-and-memory-consistency/</span></li><li><span class="file">../quantitative-principles/</span></li><li><span class="file">../tools-and-security/</span></li></ul>
 
 </body>
 </html>

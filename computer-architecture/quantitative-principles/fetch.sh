@@ -5,5 +5,10 @@ cd "$(dirname "$0")"
 OUT=pdfs; mkdir -p "$OUT"
 UA='Mozilla/5.0'
 dl(){ local u="$1" f="$OUT/$2"; if curl -fsSL -A "$UA" -o "$f" "$u" && [ "$(head -c4 "$f")" = "%PDF" ]; then echo "ok   $2"; else echo "FAIL $2"; rm -f "$f"; fi; }
-dl "https://www3.cs.stonybrook.edu/~rezaul/Spring-2012/CSE613/reading/Amdahl-1967.pdf" "Validity-of-the-Single-Processor-Approach-to-Ach.pdf"
+dl "https://research.cs.wisc.edu/multifacet/papers/ieeecomputer08_amdahl_multicore.pdf" "Amdahl-s-Law-in-the-Multicore-Era.pdf"
+dl "https://escholarship.org/content/qt78h8v7mr/qt78h8v7mr.pdf" "Roofline-An-Insightful-Visual-Performance-Model.pdf"
+dl "https://research.cs.wisc.edu/vertical/papers/2011/isca11-darksilicon.pdf" "Dark-Silicon-and-the-End-of-Multicore-Scaling.pdf"
+dl "https://users.elis.ugent.be/~leeckhou/papers/tocs09.pdf" "A-Mechanistic-Performance-Model-for-Superscalar.pdf"
+dl "https://www.doc.ic.ac.uk/~wl/teachlocal/arch/papers/cacm19golden-age.pdf" "A-New-Golden-Age-for-Computer-Architecture.pdf"
+dl "http://research.cs.wisc.edu/vertical/papers/2013/hpca13-isa-power-struggles.pdf" "Power-Struggles-Revisiting-the-RISC-vs-CISC-Deba.pdf"
 echo "done -> $OUT/"

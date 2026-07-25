@@ -5,4 +5,6 @@ cd "$(dirname "$0")"
 OUT=pdfs; mkdir -p "$OUT"
 UA='Mozilla/5.0'
 dl(){ local u="$1" f="$OUT/$2"; if curl -fsSL -A "$UA" -o "$f" "$u" && [ "$(head -c4 "$f")" = "%PDF" ]; then echo "ok   $2"; else echo "FAIL $2"; rm -f "$f"; fi; }
+dl "https://arxiv.org/pdf/1801.01207" "Meltdown-Reading-Kernel-Memory-from-User-Space.pdf"
+dl "https://arxiv.org/pdf/1801.01203" "Spectre-Attacks-Exploiting-Speculative-Execution.pdf"
 echo "done -> $OUT/"

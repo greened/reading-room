@@ -8,40 +8,66 @@
 <body>
 
 <h1>Computer architecture · Quantitative principles</h1>
+<p class="sub">The laws and models that frame architecture as a quantitative discipline — Amdahl, Dennard, the memory wall, roofline, and the end-of-scaling arguments.</p>
 <p class="tally">In-depth landmark list for this subtopic. <span class="badge b-pdf">PDF</span>open copy available &middot; <span class="badge b-web">DOI</span>publisher link only.</p>
 
 <ol class="papers">
   <li>
     <span class="title">Validity of the Single Processor Approach to Achieving Large Scale Computing Capabilities</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/1465482.1465560">DOI</a> &middot; <a href="https://www3.cs.stonybrook.edu/~rezaul/Spring-2012/CSE613/reading/Amdahl-1967.pdf">PDF</a></div>
-    <div class="why-here">Gene M. Amdahl, 1967, AFIPS. The origin of Amdahl's Law and the serial-fraction speedup ceiling.</div>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/1465482.1465560">DOI</a></div>
+    <div class="why-here">Gene M. Amdahl, 1967, AFIPS. Origin of Amdahl's Law: the speedup bound from a serial fraction.</div>
+  </li>
+  <li>
+    <span class="title">The Case for the Reduced Instruction Set Computer</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/641914.641917">DOI</a></div>
+    <div class="why-here">Patterson, Ditzel, 1980, SIGARCH CAN. The manifesto that framed the RISC-vs-CISC debate.</div>
+  </li>
+  <li>
+    <span class="title">Design of Ion-Implanted MOSFETs with Very Small Physical Dimensions</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1109/JSSC.1974.1050511">DOI</a></div>
+    <div class="why-here">Dennard, Gaensslen, Yu, Rideout, Bassous, LeBlanc, 1974, IEEE JSSC. States Dennard scaling — the device-physics rule whose end reshaped everything.</div>
+  </li>
+  <li>
+    <span class="title">Hitting the Memory Wall: Implications of the Obvious</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/216585.216588">DOI</a></div>
+    <div class="why-here">Wulf, McKee, 1995, SIGARCH CAN. Coined the "memory wall."</div>
   </li>
   <li>
     <span class="title">Amdahl's Law in the Multicore Era</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1109/MC.2008.209">DOI</a></div>
-    <div class="why-here">Mark D. Hill, Michael R. Marty, 2008, IEEE Computer. Recasts Amdahl's Law for chip multiprocessors (symmetric/asymmetric/dynamic core mixes).</div>
+    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1109/MC.2008.209">DOI</a> &middot; <a href="https://research.cs.wisc.edu/multifacet/papers/ieeecomputer08_amdahl_multicore.pdf">PDF</a></div>
+    <div class="why-here">Hill, Marty, 2008, IEEE Computer. Amdahl for chip multiprocessors (symmetric/asymmetric/dynamic).</div>
+  </li>
+  <li>
+    <span class="title">The Future of Microprocessors</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/1941487.1941507">DOI</a></div>
+    <div class="why-here">Borkar, Chien, 2011, CACM. Energy efficiency, not transistor count, is the fundamental limiter.</div>
   </li>
   <li>
     <span class="title">Roofline: An Insightful Visual Performance Model for Multicore Architectures</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/1498765.1498785">DOI</a></div>
-    <div class="why-here">Williams, Waterman, Patterson, 2009, CACM. A single bound-and-bottleneck plot tying performance to operational intensity and bandwidth.</div>
+    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/1498765.1498785">DOI</a> &middot; <a href="https://escholarship.org/content/qt78h8v7mr/qt78h8v7mr.pdf">PDF</a></div>
+    <div class="why-here">Williams, Waterman, Patterson, 2009, CACM. Operational intensity vs compute/bandwidth ceilings.</div>
+  </li>
+  <li>
+    <span class="title">Dark Silicon and the End of Multicore Scaling</span>
+    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/2000064.2000108">DOI</a> &middot; <a href="https://research.cs.wisc.edu/vertical/papers/2011/isca11-darksilicon.pdf">PDF</a></div>
+    <div class="why-here">Esmaeilzadeh, Blem, St. Amant, Sankaralingam, Burger, 2011, ISCA. Post-Dennard power limits cap usable cores.</div>
+  </li>
+  <li>
+    <span class="title">A Mechanistic Performance Model for Superscalar Out-of-Order Processors</span>
+    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/1534909.1534910">DOI</a> &middot; <a href="https://users.elis.ugent.be/~leeckhou/papers/tocs09.pdf">PDF</a></div>
+    <div class="why-here">Eyerman, Eeckhout, Karkhanis, Smith, 2009, ACM TOCS. Interval analysis explaining superscalar performance mechanistically.</div>
   </li>
   <li>
     <span class="title">A New Golden Age for Computer Architecture</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/3282307">DOI</a></div>
-    <div class="why-here">Hennessy, Patterson, 2019, CACM. The Turing-Lecture manifesto for domain-specific architectures and open ISAs.</div>
+    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/3282307">DOI</a> &middot; <a href="https://www.doc.ic.ac.uk/~wl/teachlocal/arch/papers/cacm19golden-age.pdf">PDF</a></div>
+    <div class="why-here">Hennessy, Patterson, 2019, CACM. Turing Lecture: the turn to domain-specific architectures.</div>
+  </li>
+  <li>
+    <span class="title">Power Struggles: Revisiting the RISC vs. CISC Debate on Contemporary ARM and x86 Architectures</span>
+    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1109/HPCA.2013.6522302">DOI</a> &middot; <a href="http://research.cs.wisc.edu/vertical/papers/2013/hpca13-isa-power-struggles.pdf">PDF</a></div>
+    <div class="why-here">Blem, Menon, Sankaralingam, 2013, HPCA. Empirically shows ISA is largely irrelevant to power/performance on modern implementations.</div>
   </li>
 </ol>
-
-<h2>Key terms</h2>
-<p class="grouphdr">Vocabulary used across this area.</p>
-<div class="notekey">
-<b>ILP (instruction-level parallelism)</b> &mdash; independent instructions that can execute simultaneously. &nbsp; <b>pipeline</b> &mdash; overlapping instruction stages (fetch/decode/execute/...) for throughput. &nbsp; <b>out-of-order execution</b> &mdash; running instructions as operands become ready, not in program order. &nbsp; <b>register renaming</b> &mdash; mapping architectural registers to a larger physical set to remove false dependences. &nbsp; <b>branch prediction</b> &mdash; guessing branch outcomes to keep the pipeline full; mispredicts cost a flush. &nbsp; <b>speculation</b> &mdash; executing work before it is known to be needed (and squashing if wrong). &nbsp; <b>cache / hit / miss</b> &mdash; fast on-chip memory; a miss falls back to slower levels. &nbsp; <b>cache coherence</b> &mdash; keeping per-core cached copies of a location consistent. &nbsp; <b>memory consistency model</b> &mdash; the rules for how memory operations from different cores appear ordered. &nbsp; <b>SMT (simultaneous multithreading)</b> &mdash; issuing from multiple threads each cycle to fill idle slots. &nbsp; <b>CMP / multicore</b> &mdash; multiple processor cores on one chip. &nbsp; <b>SIMT</b> &mdash; the GPU model: many threads run the same instruction on different data. &nbsp; <b>systolic array</b> &mdash; a grid of MACs streaming data, used by ML accelerators (e.g., the TPU). &nbsp; <b>roofline</b> &mdash; a performance model bounding attainable FLOP/s by compute and memory bandwidth. &nbsp; <b>Amdahl's Law</b> &mdash; speedup is capped by the serial fraction of a program. &nbsp; <b>Dennard scaling</b> &mdash; the (now-ended) trend of constant power density as transistors shrank. &nbsp; <b>dark silicon</b> &mdash; the fraction of a chip that must stay powered off within a power budget. &nbsp; <b>operational intensity</b> &mdash; FLOPs performed per byte of memory traffic.
-</div>
-
-<h2>Related in this area</h2>
-<p class="grouphdr">Other lists in this area; <span class="file">../landmark-papers/</span> is the cross-cutting survey.</p>
-<ul class="comp"><li><span class="file">../accelerators-and-warehouse-scale/</span></li><li><span class="file">../instruction-level-parallelism/</span></li><li><span class="file">../landmark-papers/</span></li><li><span class="file">../memory-systems-and-storage/</span></li><li><span class="file">../multicore-and-memory-consistency/</span></li><li><span class="file">../tools-and-security/</span></li></ul>
 
 </body>
 </html>
