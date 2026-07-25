@@ -15,7 +15,8 @@ Usage: lib/gen-guide.py <subtopic-dir> [<css-relative-path>]
 import os, re, sys
 
 d = sys.argv[1].rstrip("/")
-css = sys.argv[2] if len(sys.argv) > 2 else "../../lib/guide.css"
+css = sys.argv[2] if len(sys.argv) > 2 and not sys.argv[2].startswith("--") else "../../lib/guide.css"
+extras = "--extras" in sys.argv   # papers-first: glossary/related only when asked
 readme = os.path.join(d, "README.md")
 text = open(readme, encoding="utf-8").read()
 
@@ -81,7 +82,7 @@ for ptitle, body, badge, anchors in papers:
 parent = os.path.dirname(os.path.abspath(d))
 extra = ""
 gpath = os.path.join(parent, "_glossary.md")
-if os.path.exists(gpath):
+if extras and os.path.exists(gpath):
     terms = []
     for line in open(gpath, encoding="utf-8"):
         m = re.match(r"-\s+\*\*(.+?)\*\*\s*(.*)$", line)
@@ -96,7 +97,7 @@ try:
                   if os.path.isdir(os.path.join(parent, x)) and not x.startswith("_") and x != self_name)
 except OSError:
     sibs = []
-if sibs:
+if extras and sibs:
     items = "".join(f'<li><span class="file">../{s}/</span></li>' for s in sibs)
     extra += ('<h2>Related in this area</h2>\n'
               '<p class="grouphdr">Other lists in this area; <span class="file">../landmark-papers/</span> is the cross-cutting survey.</p>\n'

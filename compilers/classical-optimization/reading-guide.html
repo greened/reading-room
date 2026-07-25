@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Compilers · Classical (scalar) optimization</title>
+<link rel="stylesheet" href="../../lib/guide.css">
+</head>
+<body>
+
+<h1>Compilers · Classical (scalar) optimization</h1>
+<p class="sub">The scalar optimizations that define the vocabulary of the field: constant propagation, value numbering, redundancy elimination, strength reduction, inlining, and partial evaluation.</p>
+<p class="tally">In-depth landmark list for this subtopic. <span class="badge b-pdf">PDF</span>open copy available &middot; <span class="badge b-web">DOI</span>publisher link only.</p>
+
+<ol class="papers">
+  <li>
+    <span class="title">A Catalogue of Optimizing Transformations</span>
+    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://www.clear.rice.edu/comp512/Lectures/Papers/1971-allen-catalog.pdf">PDF</a></div>
+    <div class="why-here">Allen, Cocke, 1972, in *Design and Optimization of Compilers*. The first systematic catalogue (CSE, DCE, code motion, strength reduction, inlining).</div>
+  </li>
+  <li>
+    <span class="title">A Unified Approach to Global Program Optimization</span>
+    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/512927.512945">DOI</a> &middot; <a href="https://calhoun.nps.edu/server/api/core/bitstreams/54e90734-ceb5-4f4f-94f6-83e51cd2da73/content">PDF</a></div>
+    <div class="why-here">Gary A. Kildall, 1973, POPL. The dataflow foundation underlying constant propagation, CSE, and liveness.</div>
+  </li>
+  <li>
+    <span class="title">An Algorithm for Reduction of Operator Strength</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/359863.359888">DOI</a></div>
+    <div class="why-here">Cocke, Kennedy, 1977, CACM. Replacing loop induction-variable multiplies with additions.</div>
+  </li>
+  <li>
+    <span class="title">An Analysis of Inline Substitution for a Structured Programming Language</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/359810.359830">DOI</a></div>
+    <div class="why-here">Robert W. Scheifler, 1977, CACM. Inlining as a cost-constrained optimization.</div>
+  </li>
+  <li>
+    <span class="title">Global Optimization by Suppression of Partial Redundancies</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/359060.359069">DOI</a></div>
+    <div class="why-here">Morel, Renvoise, 1979, CACM. The seminal partial-redundancy elimination (PRE), unifying CSE and LICM.</div>
+  </li>
+  <li>
+    <span class="title">Detecting Equality of Variables in Programs</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/73560.73561">DOI</a></div>
+    <div class="why-here">Alpern, Wegman, Zadeck, 1988, POPL. Congruence over SSA value graphs; the basis of global value numbering.</div>
+  </li>
+  <li>
+    <span class="title">Global Value Numbers and Redundant Computations</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/73560.73562">DOI</a></div>
+    <div class="why-here">Rosen, Wegman, Zadeck, 1988, POPL. GVN detecting equivalent expressions and second-order redundancy.</div>
+  </li>
+  <li>
+    <span class="title">Constant Propagation with Conditional Branches (SCCP)</span>
+    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/103135.103136">DOI</a> &middot; <a href="https://www.cs.utexas.edu/~pingali/CS380C/2010/papers/p291-wegman.pdf">PDF</a></div>
+    <div class="why-here">Wegman, Zadeck, 1991, ACM TOPLAS. Sparse conditional constant propagation with unreachable-branch pruning.</div>
+  </li>
+  <li>
+    <span class="title">Lazy Code Motion</span>
+    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/143095.143136">DOI</a> &middot; <a href="http://rsim.cs.uiuc.edu/arch/qual_papers/compilers/knoop92.pdf">PDF</a></div>
+    <div class="why-here">Knoop, Rüthing, Steffen, 1992, PLDI. PRE recast as unidirectional analyses with computationally optimal placement.</div>
+  </li>
+  <li>
+    <span class="title">Partial Evaluation and Automatic Program Generation</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://www.itu.dk/people/sestoft/pebook/">book</a></div>
+    <div class="why-here">Jones, Gomard, Sestoft, 1993, Prentice Hall. The definitive text; specialization and the Futamura projections.</div>
+  </li>
+  <li>
+    <span class="title">Global Code Motion / Global Value Numbering</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/207110.207154">DOI</a></div>
+    <div class="why-here">Cliff Click, 1995, PLDI. Separating value optimization from scheduling; standard in SSA compilers.</div>
+  </li>
+</ol>
+
+</body>
+</html>

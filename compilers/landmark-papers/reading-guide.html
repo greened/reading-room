@@ -14,17 +14,17 @@
 <ol class="papers">
   <li>
     <span class="title">A Unified Approach to Global Program Optimization</span> &mdash; Gary A. Kildall
-    <div class="meta"><span class="badge b-pdf">PDF</span>POPL 1973 &middot; <a href="https://doi.org/10.1145/512927.512945">doi:10.1145/512927.512945</a> &middot; &rarr; <span class="file">ir-and-dataflow/</span></div>
+    <div class="meta"><span class="badge b-pdf">PDF</span>POPL 1973 &middot; <a href="https://doi.org/10.1145/512927.512945">doi:10.1145/512927.512945</a> &middot; &rarr; <span class="file">intermediate-representations-and-dataflow/</span></div>
     <div class="why-here">Founds the lattice / monotone-framework view of iterative dataflow analysis.</div>
   </li>
   <li>
     <span class="title">Efficiently Computing Static Single Assignment Form and the Control Dependence Graph</span> &mdash; Cytron, Ferrante, Rosen, Wegman, Zadeck
-    <div class="meta"><span class="badge b-pdf">PDF</span>ACM TOPLAS 1991 &middot; <a href="https://doi.org/10.1145/115372.115320">doi:10.1145/115372.115320</a> &middot; &rarr; <span class="file">ir-and-dataflow/</span></div>
+    <div class="meta"><span class="badge b-pdf">PDF</span>ACM TOPLAS 1991 &middot; <a href="https://doi.org/10.1145/115372.115320">doi:10.1145/115372.115320</a> &middot; &rarr; <span class="file">intermediate-representations-and-dataflow/</span></div>
     <div class="why-here">The dominance-frontier SSA-construction algorithm that made SSA the default IR of modern compilers.</div>
   </li>
   <li>
     <span class="title">Abstract Interpretation: A Unified Lattice Model for Static Analysis</span> &mdash; Patrick &amp; Radhia Cousot
-    <div class="meta"><span class="badge b-pdf">PDF</span>POPL 1977 &middot; <a href="https://doi.org/10.1145/512950.512973">doi:10.1145/512950.512973</a> &middot; &rarr; <span class="file">analysis-and-abstract-interpretation/</span></div>
+    <div class="meta"><span class="badge b-pdf">PDF</span>POPL 1977 &middot; <a href="https://doi.org/10.1145/512950.512973">doi:10.1145/512950.512973</a> &middot; &rarr; <span class="file">abstract-interpretation/</span></div>
     <div class="why-here">The theoretical framework for sound static analysis via Galois connections and widening.</div>
   </li>
   <li>
@@ -34,7 +34,7 @@
   </li>
   <li>
     <span class="title">Lazy Code Motion</span> &mdash; Knoop, R&uuml;thing, Steffen
-    <div class="meta"><span class="badge b-pdf">PDF</span>PLDI 1992 &middot; <a href="https://doi.org/10.1145/143095.143136">doi:10.1145/143095.143136</a> &middot; &rarr; <span class="file">redundancy-and-vectorization/</span></div>
+    <div class="meta"><span class="badge b-pdf">PDF</span>PLDI 1992 &middot; <a href="https://doi.org/10.1145/143095.143136">doi:10.1145/143095.143136</a> &middot; &rarr; <span class="file">classical-optimization/</span></div>
     <div class="why-here">The clean, optimal formulation of partial-redundancy elimination.</div>
   </li>
   <li>
@@ -77,11 +77,13 @@
 <h2>Going deeper</h2>
 <p class="grouphdr">This survey is the slice across the whole area; each subtopic dir treats its theme in depth and lists more papers.</p>
 <ul class="comp">
-  <li><span class="badge b-web">DIR</span><span class="file">ir-and-dataflow/</span> &mdash; IR design and dataflow frameworks (Kildall, SSA, sea-of-nodes).</li>
-  <li><span class="badge b-web">DIR</span><span class="file">register-allocation-and-scheduling/</span> &mdash; graph coloring, coalescing, linear scan, trace scheduling, software pipelining.</li>
-  <li><span class="badge b-web">DIR</span><span class="file">redundancy-and-vectorization/</span> &mdash; partial-redundancy elimination and SLP vectorization.</li>
-  <li><span class="badge b-web">DIR</span><span class="file">analysis-and-abstract-interpretation/</span> &mdash; abstract interpretation and points-to analysis.</li>
-  <li><span class="badge b-web">DIR</span><span class="file">compiler-infrastructure/</span> &mdash; LLVM, polyhedral, Halide/TVM/MLIR, and BOLT.</li>
+  <li><span class="badge b-web">DIR</span><span class="file">intermediate-representations-and-dataflow/</span> &mdash; reducibility, dataflow frameworks, SSA, PDG, sea-of-nodes.</li>
+  <li><span class="badge b-web">DIR</span><span class="file">classical-optimization/</span> &mdash; SCCP, value numbering, PRE/lazy code motion, strength reduction, partial evaluation.</li>
+  <li><span class="badge b-web">DIR</span><span class="file">register-allocation-and-scheduling/</span> &mdash; graph coloring, coalescing, linear scan, SSA-based allocation, scheduling, software pipelining.</li>
+  <li><span class="badge b-web">DIR</span><span class="file">vectorization-and-parallelization/</span> &mdash; dependence analysis, loop transforms, polyhedral, SLP, work-stealing, TLS.</li>
+  <li><span class="badge b-web">DIR</span><span class="file">pointer-analysis/</span> &mdash; Andersen/Steensgaard, context/flow/object sensitivity at scale.</li>
+  <li><span class="badge b-web">DIR</span><span class="file">abstract-interpretation/</span> &mdash; numeric domains, widening/narrowing, IFDS, shape analysis, Astr&eacute;e.</li>
+  <li><span class="badge b-web">DIR</span><span class="file">compiler-infrastructure/</span> &mdash; LLVM, polyhedral/Pluto, Halide/TVM/MLIR, BOLT.</li>
   <li><span class="badge b-web">DIR</span><span class="file">verified-compilation/</span> &mdash; CompCert, CakeML, Alive, egg, STOKE.</li>
 </ul>
 <p class="grouphdr">Run <span class="file">fetch.sh</span> to download the openly-available PDFs; paywalled entries are DOI links above.</p>

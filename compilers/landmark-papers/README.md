@@ -9,11 +9,11 @@ the standouts and points back to them.
 Printable guide: `reading-guide.html` → `reading-guide.pdf` (run `make` from the
 repo root). Run `./fetch.sh` to download the openly-available PDFs.
 
-1. **Kildall, A Unified Approach to Global Program Optimization** (1973) — dataflow as a lattice framework. → *ir-and-dataflow*
-2. **Cytron et al., Efficiently Computing SSA and the Control Dependence Graph** (1991) — SSA construction. → *ir-and-dataflow*
-3. **Cousot & Cousot, Abstract Interpretation** (1977) — the theory of sound static analysis. → *analysis-and-abstract-interpretation*
+1. **Kildall, A Unified Approach to Global Program Optimization** (1973) — dataflow as a lattice framework. → *intermediate-representations-and-dataflow*
+2. **Cytron et al., Efficiently Computing SSA and the Control Dependence Graph** (1991) — SSA construction. → *intermediate-representations-and-dataflow*
+3. **Cousot & Cousot, Abstract Interpretation** (1977) — the theory of sound static analysis. → *abstract-interpretation*
 4. **Chaitin, Register Allocation and Spilling via Graph Coloring** (1982) — the graph-coloring formulation. → *register-allocation-and-scheduling*
-5. **Knoop, Rüthing & Steffen, Lazy Code Motion** (1992) — optimal partial-redundancy elimination. → *redundancy-and-vectorization*
+5. **Knoop, Rüthing & Steffen, Lazy Code Motion** (1992) — optimal partial-redundancy elimination. → *classical-optimization*
 6. **Lattner & Adve, LLVM** (2004) — the reusable compiler infrastructure. → *compiler-infrastructure*
 7. **Bondhugula et al., Pluto** (2008) — practical polyhedral optimization. → *compiler-infrastructure*
 8. **Leroy, CompCert — Formal Verification of a Realistic Compiler** (2009) — verified compilation. → *verified-compilation*

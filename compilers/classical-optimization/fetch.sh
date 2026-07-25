@@ -5,6 +5,8 @@ cd "$(dirname "$0")"
 OUT=pdfs; mkdir -p "$OUT"
 UA='Mozilla/5.0'
 dl(){ local u="$1" f="$OUT/$2"; if curl -fsSL -A "$UA" -o "$f" "$u" && [ "$(head -c4 "$f")" = "%PDF" ]; then echo "ok   $2"; else echo "FAIL $2"; rm -f "$f"; fi; }
+dl "https://www.clear.rice.edu/comp512/Lectures/Papers/1971-allen-catalog.pdf" "A-Catalogue-of-Optimizing-Transformations.pdf"
+dl "https://calhoun.nps.edu/server/api/core/bitstreams/54e90734-ceb5-4f4f-94f6-83e51cd2da73/content" "A-Unified-Approach-to-Global-Program-Optimizatio.pdf"
+dl "https://www.cs.utexas.edu/~pingali/CS380C/2010/papers/p291-wegman.pdf" "Constant-Propagation-with-Conditional-Branches-S.pdf"
 dl "http://rsim.cs.uiuc.edu/arch/qual_papers/compilers/knoop92.pdf" "Lazy-Code-Motion.pdf"
-dl "https://groups.csail.mit.edu/cag/slp/SLP-PLDI-2000.pdf" "Exploiting-Superword-Level-Parallelism-with-Mult.pdf"
 echo "done -> $OUT/"

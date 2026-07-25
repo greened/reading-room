@@ -8,50 +8,86 @@
 <body>
 
 <h1>Compilers · Register allocation &amp; instruction scheduling</h1>
+<p class="sub">Graph-coloring, coalescing, linear scan, and the SSA-era allocators; plus global instruction scheduling and software pipelining.</p>
 <p class="tally">In-depth landmark list for this subtopic. <span class="badge b-pdf">PDF</span>open copy available &middot; <span class="badge b-web">DOI</span>publisher link only.</p>
 
 <ol class="papers">
   <li>
-    <span class="title">Register Allocation and Spilling via Graph Coloring</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/872726.806984">DOI</a> &middot; <a href="https://web.eecs.umich.edu/~mahlke/courses/583f12/reading/chaitin82.pdf">PDF</a></div>
-    <div class="why-here">Gregory J. Chaitin, 1982, SIGPLAN Compiler Construction. The original graph-coloring formulation.</div>
+    <span class="title">Register Allocation via Coloring</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1016/0096-0551(81">DOI</a></div>
+    <div class="why-here">Chaitin, Auslander, Chandra, Cocke, Hopkins, Markstein, 1981, Computer Languages. Cast register assignment as coloring the interference graph. 90048-5)</div>
+  </li>
+  <li>
+    <span class="title">Register Allocation &amp; Spilling via Graph Coloring</span>
+    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/800230.806984">DOI</a> &middot; <a href="https://web.eecs.umich.edu/~mahlke/courses/583f12/reading/chaitin82.pdf">PDF</a></div>
+    <div class="why-here">Gregory J. Chaitin, 1982, SIGPLAN Compiler Construction. The canonical Chaitin allocator: spill-cost model + simplify/spill.</div>
   </li>
   <li>
     <span class="title">Improvements to Graph Coloring Register Allocation</span>
     <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/177492.177575">DOI</a></div>
-    <div class="why-here">Briggs, Cooper, Torczon, 1994, ACM TOPLAS. Optimistic coloring and better spill heuristics.</div>
+    <div class="why-here">Briggs, Cooper, Torczon, 1994, ACM TOPLAS. Optimistic coloring + rematerialization (Chaitin-Briggs).</div>
   </li>
   <li>
     <span class="title">Iterated Register Coalescing</span>
     <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/229542.229546">DOI</a> &middot; <a href="https://www.cse.iitm.ac.in/~krishna/cs6013/george.pdf">PDF</a></div>
-    <div class="why-here">Lal George, Andrew W. Appel, 1996, ACM TOPLAS. Reconciles move-coalescing with colorability.</div>
+    <div class="why-here">George, Appel, 1996, ACM TOPLAS. Conservative coalescing interleaved with simplification.</div>
   </li>
   <li>
     <span class="title">Linear Scan Register Allocation</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/330249.330250">DOI</a> &middot; <a href="https://web.cs.ucla.edu/~palsberg/course/cs132/linearscan.pdf">PDF</a></div>
-    <div class="why-here">Poletto, Sarkar, 1999, ACM TOPLAS. The fast non-coloring allocator that became the JIT workhorse.</div>
+    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/330249.330250">DOI</a> &middot; <a href="http://web.cs.ucla.edu/~palsberg/course/cs132/linearscan.pdf">PDF</a></div>
+    <div class="why-here">Poletto, Sarkar, 1999, ACM TOPLAS. The fast non-coloring allocator over live intervals; ideal for JITs.</div>
   </li>
   <li>
-    <span class="title">Trace Scheduling: A Technique for Global Microcode Compaction</span>
+    <span class="title">Trace Scheduling</span>
     <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1109/TC.1981.1675827">DOI</a> &middot; <a href="https://people.eecs.berkeley.edu/~kubitron/courses/cs252-S12/handouts/papers/TraceScheduling.pdf">PDF</a></div>
-    <div class="why-here">Joseph A. Fisher, 1981, IEEE TC. Origin of global instruction scheduling and the VLIW philosophy.</div>
+    <div class="why-here">Joseph A. Fisher, 1981, IEEE TC. The founding paper of global instruction scheduling across basic blocks.</div>
+  </li>
+  <li>
+    <span class="title">Some Scheduling Techniques and an Easily Schedulable Horizontal Architecture</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/1014192.802449">DOI</a></div>
+    <div class="why-here">Rau, Glaeser, 1981, MICRO-14. Origin of modulo scheduling and rotating registers.</div>
   </li>
   <li>
     <span class="title">Software Pipelining: An Effective Scheduling Technique for VLIW Machines</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/53990.54022">DOI</a> &middot; <a href="https://www.cs.cmu.edu/afs/cs/academic/class/15740-f18/www/papers/pldi88-lam-softwarepipelining.pdf">PDF</a></div>
-    <div class="why-here">Monica S. Lam, 1988, PLDI. Modulo scheduling for loops.</div>
+    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/53990.54022">DOI</a> &middot; <a href="https://suif.stanford.edu/papers/lam-sp.pdf">PDF</a></div>
+    <div class="why-here">Monica Lam, 1988, PLDI. Modulo scheduling with hierarchical reduction.</div>
+  </li>
+  <li>
+    <span class="title">Optimal Spilling for CISC Machines with Few Registers</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/381694.378854">DOI</a></div>
+    <div class="why-here">Appel, George, 2001, PLDI. ILP-optimal live-range splitting + spill placement.</div>
+  </li>
+  <li>
+    <span class="title">Register Allocation via Coloring of Chordal Graphs</span>
+    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1007/11575467_21">DOI</a> &middot; <a href="http://www.cs.ucla.edu/~palsberg/paper/aplas05.pdf">PDF</a></div>
+    <div class="why-here">Pereira, Palsberg, 2005, APLAS. SSA interference graphs are chordal → optimal polynomial coloring.</div>
+  </li>
+  <li>
+    <span class="title">Register Allocation for Programs in SSA Form</span>
+    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1007/11688839_20">DOI</a> &middot; <a href="https://compilers.cs.uni-saarland.de/papers/ssara.pdf">PDF</a></div>
+    <div class="why-here">Hack, Grund, Goos, 2006, CC. Chordality → separate spilling, optimal coloring, coalescing phases.</div>
+  </li>
+  <li>
+    <span class="title">Register Allocation by Puzzle Solving</span>
+    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/1375581.1375609">DOI</a> &middot; <a href="http://www.cs.ucla.edu/~palsberg/paper/PereiraPalsberg08.pdf">PDF</a></div>
+    <div class="why-here">Pereira, Palsberg, 2008, PLDI. Handles register aliasing (e.g. x86) as tractable puzzle-solving.</div>
+  </li>
+  <li>
+    <span class="title">Revisiting Out-of-SSA Translation for Correctness, Code Quality and Efficiency</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1109/CGO.2009.19">DOI</a></div>
+    <div class="why-here">Boissinot, Darte, Rastello, Dupont de Dinechin, Guillon, 2009, CGO. Correct/efficient phi-elimination + coalescing for SSA-based allocation.</div>
+  </li>
+  <li>
+    <span class="title">Linear Scan Register Allocation on SSA Form</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/1772954.1772979">DOI</a></div>
+    <div class="why-here">Wimmer, Franz, 2010, CGO. Linear scan + SSA (HotSpot client allocator).</div>
+  </li>
+  <li>
+    <span class="title">Trace-based Register Allocation in a JIT Compiler</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/2972206.2972211">DOI</a></div>
+    <div class="why-here">Eisl, Grimmer, Simon, Würthinger, Mössenböck, 2016, PPPJ. Per-trace strategies trading compile time vs code quality.</div>
   </li>
 </ol>
-
-<h2>Key terms</h2>
-<p class="grouphdr">Vocabulary used across this area.</p>
-<div class="notekey">
-<b>IR (intermediate representation)</b> &mdash; the compiler's internal program form between source and machine code. &nbsp; <b>SSA (static single assignment)</b> &mdash; an IR where each variable is assigned exactly once, simplifying analysis. &nbsp; <b>basic block / CFG</b> &mdash; a straight-line code run; the control-flow graph connects blocks by branches. &nbsp; <b>dataflow analysis</b> &mdash; computing facts (liveness, reaching defs) at each program point via a lattice fixpoint. &nbsp; <b>dominator / dominance frontier</b> &mdash; block A dominates B if every path to B goes through A; the frontier drives SSA φ-placement. &nbsp; <b>register allocation</b> &mdash; mapping unbounded values to a finite register file (often via graph coloring). &nbsp; <b>spilling</b> &mdash; storing a value to memory when registers run out. &nbsp; <b>coalescing</b> &mdash; removing a copy by giving source and destination the same register. &nbsp; <b>instruction scheduling</b> &mdash; reordering instructions to hide latency and fill pipeline/VLIW slots. &nbsp; <b>software pipelining</b> &mdash; overlapping successive loop iterations (modulo scheduling). &nbsp; <b>PRE (partial-redundancy elimination)</b> &mdash; hoisting a computation so it isn't recomputed on some paths. &nbsp; <b>alias / points-to analysis</b> &mdash; deciding whether two pointers can refer to the same memory. &nbsp; <b>abstract interpretation</b> &mdash; sound static analysis by executing over abstract (approximate) values. &nbsp; <b>JIT</b> &mdash; just-in-time compilation of code at run time, often with profile feedback. &nbsp; <b>polyhedral model</b> &mdash; representing loop nests as integer polyhedra to reason about tiling and parallelism. &nbsp; <b>superoptimization</b> &mdash; searching for the optimal instruction sequence for a fragment. &nbsp; <b>vectorization / SLP</b> &mdash; packing scalar operations into SIMD instructions. &nbsp; <b>peephole optimization</b> &mdash; local rewrites over a small sliding window of instructions.
-</div>
-
-<h2>Related in this area</h2>
-<p class="grouphdr">Other lists in this area; <span class="file">../landmark-papers/</span> is the cross-cutting survey.</p>
-<ul class="comp"><li><span class="file">../analysis-and-abstract-interpretation/</span></li><li><span class="file">../compiler-infrastructure/</span></li><li><span class="file">../ir-and-dataflow/</span></li><li><span class="file">../landmark-papers/</span></li><li><span class="file">../redundancy-and-vectorization/</span></li><li><span class="file">../verified-compilation/</span></li></ul>
 
 </body>
 </html>

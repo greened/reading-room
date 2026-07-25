@@ -104,11 +104,14 @@ the stylesheet). No PDF is committed by either step.
   preprint archives — search those and record a direct `open_pdf` link when one
   reliably resolves. Paywalled entries with no free copy are DOI links (clearly
   marked); `fetch.sh` downloads only the open ones.
-- **Fill an even number of pages.** Guides are printed double-sided, so each should
-  fully fill an even page count (2, 4, …). If the papers don't fill the last page,
-  pad with genuinely useful material — a key-terms glossary, a key-equations cheat
-  sheet, a timeline, a "how to read this list" note, or further reading — rather than
-  leaving a sparse page.
+- **Fill an even number of pages — papers first.** These are *reading lists*, so
+  fill primarily by adding more real papers (most subtopics have far more landmark
+  work than a first pass lists). Guides are printed double-sided, so each should
+  fully fill an even page count (2, 4, …) — an odd page count wastes the blank back.
+  Do NOT list 2–3 papers and pad the rest with filler. Only once the papers run out
+  should you top off remaining space with genuinely useful material — a key-terms
+  glossary, a timeline, a "how to read this list" note, or further reading. Verify
+  the rendered page count (render on the Mac; the VM has no HTML→PDF engine).
 
 ## People / voice
 

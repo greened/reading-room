@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Compilers · Intermediate representations &amp; dataflow</title>
+<link rel="stylesheet" href="../../lib/guide.css">
+</head>
+<body>
+
+<h1>Compilers · Intermediate representations &amp; dataflow</h1>
+<p class="sub">IR design and the dataflow-analysis frameworks every optimizer rests on — from flow-graph reducibility and interval/structural analysis through SSA and the sea-of-nodes graph. (Muchnick's *Advanced Compiler Design* is the companion text.)</p>
+<p class="tally">In-depth landmark list for this subtopic. <span class="badge b-pdf">PDF</span>open copy available &middot; <span class="badge b-web">DOI</span>publisher link only.</p>
+
+<ol class="papers">
+  <li>
+    <span class="title">A Unified Approach to Global Program Optimization</span>
+    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/512927.512945">DOI</a> &middot; <a href="https://calhoun.nps.edu/server/api/core/bitstreams/54e90734-ceb5-4f4f-94f6-83e51cd2da73/content">PDF</a></div>
+    <div class="why-here">Gary A. Kildall, 1973, POPL. Founded lattice-theoretic dataflow: the first unified fixed-point framework.</div>
+  </li>
+  <li>
+    <span class="title">Characterizations of Reducible Flow Graphs</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/321832.321835">DOI</a></div>
+    <div class="why-here">Hecht, Ullman, 1974, JACM. Equivalent characterizations of reducibility (T1/T2, dominator back edges).</div>
+  </li>
+  <li>
+    <span class="title">Testing Flow Graph Reducibility</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1016/S0022-0000(74">DOI</a></div>
+    <div class="why-here">Robert E. Tarjan, 1974, JCSS. Efficient DFS + union-find reducibility test. 80049-8)</div>
+  </li>
+  <li>
+    <span class="title">A Program Data Flow Analysis Procedure</span>
+    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/360018.360025">DOI</a> &middot; <a href="https://amturing.acm.org/p137-allen.pdf">PDF</a></div>
+    <div class="why-here">Allen, Cocke, 1976, CACM. Introduced interval analysis (the classic elimination approach).</div>
+  </li>
+  <li>
+    <span class="title">A Fast and Usually Linear Algorithm for Global Flow Analysis</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/321921.321939">DOI</a></div>
+    <div class="why-here">Graham, Wegman, 1976, JACM. Near-linear elimination for reducible graphs.</div>
+  </li>
+  <li>
+    <span class="title">Monotone Data Flow Analysis Frameworks</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1007/BF00290339">DOI</a></div>
+    <div class="why-here">Kam, Ullman, 1977, Acta Informatica. Generalized Kildall to monotone functions; MFP vs MOP.</div>
+  </li>
+  <li>
+    <span class="title">Structural Analysis: A New Approach to Flow Analysis</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1016/0096-0551(80">DOI</a></div>
+    <div class="why-here">Micha Sharir, 1980, Computer Languages. Syntax-directed elimination over control-flow constructs. 90007-7)</div>
+  </li>
+  <li>
+    <span class="title">The Program Dependence Graph and Its Use in Optimization</span>
+    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/24039.24041">DOI</a> &middot; <a href="https://web.eecs.umich.edu/~mahlke/courses/583f23/reading/ferrante_toplas_87.pdf">PDF</a></div>
+    <div class="why-here">Ferrante, Ottenstein, Warren, 1987, ACM TOPLAS. Made data and control dependences explicit; basis for slicing/vectorization.</div>
+  </li>
+  <li>
+    <span class="title">Global Value Numbers and Redundant Computations</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/73560.73562">DOI</a></div>
+    <div class="why-here">Rosen, Wegman, Zadeck, 1988, POPL. SSA + value numbering for value-equivalent redundancy.</div>
+  </li>
+  <li>
+    <span class="title">The Program Dependence Web</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/93542.93578">DOI</a></div>
+    <div class="why-here">Ballance, Maccabe, Ottenstein, 1990, PLDI. Gated SSA + a control/data/demand-driven IR.</div>
+  </li>
+  <li>
+    <span class="title">Efficiently Computing SSA Form and the Control Dependence Graph</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/115372.115320">DOI</a></div>
+    <div class="why-here">Cytron, Ferrante, Rosen, Wegman, Zadeck, 1991, ACM TOPLAS. The dominance-frontier SSA construction; made SSA the standard IR.</div>
+  </li>
+  <li>
+    <span class="title">A Simple Graph-Based Intermediate Representation</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/202529.202534">DOI</a></div>
+    <div class="why-here">Click, Paleczny, 1995, IR'95. The sea-of-nodes IR behind HotSpot C2, V8 TurboFan, and other JITs.</div>
+  </li>
+</ol>
+
+</body>
+</html>
