@@ -11,4 +11,8 @@ dl "https://jmlr.org/papers/volume15/srivastava14a/srivastava14a.pdf" "Dropout-A
 dl "https://arxiv.org/pdf/1502.03167" "Batch-Normalization.pdf"
 dl "https://arxiv.org/pdf/1412.6980" "Adam-A-Method-for-Stochastic-Optimization.pdf"
 dl "https://arxiv.org/pdf/1512.03385" "Deep-Residual-Learning-for-Image-Recognition.pdf"
+dl "https://arxiv.org/pdf/1502.01852" "Delving-Deep-into-Rectifiers-PReLU-Kaiming-init.pdf"
+dl "https://arxiv.org/pdf/1607.06450" "Layer-Normalization.pdf"
+dl "https://proceedings.mlr.press/v28/sutskever13.pdf" "On-the-Importance-of-Initialization-and-Momentum.pdf"
+dl "https://arxiv.org/pdf/1606.08415" "Gaussian-Error-Linear-Units-GELUs.pdf"
 echo "done -> $OUT/"

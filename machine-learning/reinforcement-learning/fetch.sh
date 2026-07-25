@@ -7,4 +7,9 @@ UA='Mozilla/5.0'
 dl(){ local u="$1" f="$OUT/$2"; if curl -fsSL -A "$UA" -o "$f" "$u" && [ "$(head -c4 "$f")" = "%PDF" ]; then echo "ok   $2"; else echo "FAIL $2"; rm -f "$f"; fi; }
 dl "https://web.stanford.edu/class/psych209/Readings/MnihEtAlHassibis15NatureControlDeepRL.pdf" "Human-level-control-through-deep-reinforcement-l.pdf"
 dl "https://arxiv.org/pdf/1707.06347" "Proximal-Policy-Optimization-Algorithms-PPO.pdf"
+dl "https://arxiv.org/pdf/1602.01783" "Asynchronous-Methods-for-Deep-RL-A3C.pdf"
+dl "https://arxiv.org/pdf/1509.02971" "Continuous-Control-with-Deep-RL-DDPG.pdf"
+dl "https://arxiv.org/pdf/1502.05477" "Trust-Region-Policy-Optimization-TRPO.pdf"
+dl "https://arxiv.org/pdf/1712.01815" "AlphaZero-Mastering-Chess-and-Shogi-by-Self-Play.pdf"
+dl "https://arxiv.org/pdf/1911.08265" "MuZero-Mastering-Atari-Go-Chess-and-Shogi-by-Pla.pdf"
 echo "done -> $OUT/"

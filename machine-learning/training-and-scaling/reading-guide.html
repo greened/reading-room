@@ -26,17 +26,42 @@
     <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/2203.15556">arXiv</a> &middot; <a href="https://arxiv.org/pdf/2203.15556">PDF</a></div>
     <div class="why-here">Hoffmann et al., 2022, NeurIPS. Corrected the compute-optimal recipe (scale data and parameters together).</div>
   </li>
+  <li>
+    <span class="title">Mixed Precision Training</span>
+    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/1710.03740">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1710.03740">PDF</a></div>
+    <div class="why-here">Micikevicius et al., 2018, ICLR. FP16 training with loss scaling + FP32 master weights; half the memory.</div>
+  </li>
+  <li>
+    <span class="title">Decoupled Weight Decay Regularization (AdamW)</span>
+    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/1711.05101">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1711.05101">PDF</a></div>
+    <div class="why-here">Loshchilov, Hutter, 2019, ICLR. Decoupled weight decay; the default Transformer optimizer.</div>
+  </li>
+  <li>
+    <span class="title">SGDR: Warm Restarts</span>
+    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/1608.03983">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1608.03983">PDF</a></div>
+    <div class="why-here">Loshchilov, Hutter, 2017, ICLR. Cosine-annealing LR schedules with warm restarts.</div>
+  </li>
+  <li>
+    <span class="title">Deep RL from Human Preferences</span>
+    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/1706.03741">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1706.03741">PDF</a></div>
+    <div class="why-here">Christiano et al., 2017, NeurIPS. Foundational RLHF: training from human preference comparisons.</div>
+  </li>
+  <li>
+    <span class="title">Training Language Models to Follow Instructions (InstructGPT)</span>
+    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/2203.02155">arXiv</a> &middot; <a href="https://arxiv.org/pdf/2203.02155">PDF</a></div>
+    <div class="why-here">Ouyang et al., 2022, NeurIPS. RLHF instruction tuning; the recipe behind ChatGPT-style assistants.</div>
+  </li>
+  <li>
+    <span class="title">LoRA: Low-Rank Adaptation of Large Language Models</span>
+    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/2106.09685">arXiv</a> &middot; <a href="https://arxiv.org/pdf/2106.09685">PDF</a></div>
+    <div class="why-here">Hu et al., 2022, ICLR. Low-rank adapters that slashed fine-tuning cost; launched PEFT.</div>
+  </li>
+  <li>
+    <span class="title">Emergent Abilities of Large Language Models</span>
+    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/2206.07682">arXiv</a> &middot; <a href="https://arxiv.org/pdf/2206.07682">PDF</a></div>
+    <div class="why-here">Wei et al., 2022, TMLR. Scale-driven capabilities appearing abruptly beyond a threshold.</div>
+  </li>
 </ol>
-
-<h2>Key terms</h2>
-<p class="grouphdr">Vocabulary used across this area.</p>
-<div class="notekey">
-<b>neuron / layer</b> &mdash; a weighted sum + nonlinearity; layers stack to form a network. &nbsp; <b>gradient descent</b> &mdash; updating parameters against the loss gradient. &nbsp; <b>backpropagation</b> &mdash; the chain-rule algorithm computing those gradients efficiently. &nbsp; <b>loss function</b> &mdash; the scalar objective being minimized during training. &nbsp; <b>overfitting</b> &mdash; fitting training noise so test performance suffers. &nbsp; <b>regularization</b> &mdash; techniques (weight decay, dropout) that curb overfitting. &nbsp; <b>dropout</b> &mdash; randomly zeroing activations during training as regularization. &nbsp; <b>batch normalization</b> &mdash; normalizing layer activations to stabilize and speed training. &nbsp; <b>activation (ReLU)</b> &mdash; the elementwise nonlinearity; ReLU(x)=max(0,x) is the common default. &nbsp; <b>CNN</b> &mdash; convolutional network exploiting spatial locality (vision). &nbsp; <b>RNN / LSTM</b> &mdash; recurrent networks for sequences; LSTM adds gates to fight vanishing gradients. &nbsp; <b>embedding</b> &mdash; a learned dense vector representing a token/item. &nbsp; <b>softmax</b> &mdash; maps scores to a probability distribution. &nbsp; <b>residual connection</b> &mdash; adding a layer's input to its output so gradients flow through deep stacks. &nbsp; <b>attention</b> &mdash; a content-based weighted read over a set of representations. &nbsp; <b>GAN / VAE / diffusion</b> &mdash; three families of generative models (adversarial, latent-variable, denoising). &nbsp; <b>reinforcement learning</b> &mdash; learning a policy from reward via interaction. &nbsp; <b>policy / value</b> &mdash; what action to take vs how good a state is. &nbsp; <b>scaling laws</b> &mdash; smooth power-law relations between loss and model/data/compute.
-</div>
-
-<h2>Related in this area</h2>
-<p class="grouphdr">Other lists in this area; <span class="file">../landmark-papers/</span> is the cross-cutting survey.</p>
-<ul class="comp"><li><span class="file">../computer-vision/</span></li><li><span class="file">../deep-learning-foundations/</span></li><li><span class="file">../generative-models/</span></li><li><span class="file">../landmark-papers/</span></li><li><span class="file">../reinforcement-learning/</span></li><li><span class="file">../sequence-models/</span></li><li><span class="file">../transformers/</span></li></ul>
 
 </body>
 </html>

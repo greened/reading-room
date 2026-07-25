@@ -7,4 +7,9 @@ UA='Mozilla/5.0'
 dl(){ local u="$1" f="$OUT/$2"; if curl -fsSL -A "$UA" -o "$f" "$u" && [ "$(head -c4 "$f")" = "%PDF" ]; then echo "ok   $2"; else echo "FAIL $2"; rm -f "$f"; fi; }
 dl "https://arxiv.org/pdf/1301.3781" "Efficient-Estimation-of-Word-Representations-in.pdf"
 dl "https://arxiv.org/pdf/1409.3215" "Sequence-to-Sequence-Learning-with-Neural-Networ.pdf"
+dl "https://arxiv.org/pdf/1406.1078" "Learning-Phrase-Representations-using-RNN-Encode.pdf"
+dl "https://arxiv.org/pdf/1308.0850" "Generating-Sequences-With-Recurrent-Neural-Netwo.pdf"
+dl "https://arxiv.org/pdf/1802.05365" "Deep-Contextualized-Word-Representations-ELMo.pdf"
+dl "https://aclanthology.org/D14-1162.pdf" "GloVe-Global-Vectors-for-Word-Representation.pdf"
+dl "https://arxiv.org/pdf/1506.03134" "Pointer-Networks.pdf"
 echo "done -> $OUT/"
