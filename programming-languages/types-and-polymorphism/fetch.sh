@@ -9,4 +9,6 @@ dl "https://www.cis.upenn.edu/~stevez/cis670/pdfs/Reynolds74.pdf" "Towards-a-The
 dl "https://research.cs.queensu.ca/home/cordy/cisc860/Biblio/hurd/misc/milner78.pdf" "A-Theory-of-Type-Polymorphism-in-Programming.pdf"
 dl "https://courses.cs.washington.edu/courses/cse503/10wi/readings/p207-damas.pdf" "Principal-Type-Schemes-for-Functional-Programs.pdf"
 dl "https://lucacardelli.name/papers/onunderstanding.a4.pdf" "On-Understanding-Types-Data-Abstraction-and-Poly.pdf"
+dl "https://arxiv.org/pdf/1306.6032" "Complete-and-Easy-Bidirectional-Typechecking-for.pdf"
+dl "https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/jfp-outsidein.pdf" "OutsideIn-X-Modular-Type-Inference-with-Local-As.pdf"
 echo "done -> $OUT/"

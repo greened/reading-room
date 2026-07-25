@@ -8,4 +8,5 @@ dl(){ local u="$1" f="$OUT/$2"; if curl -fsSL -A "$UA" -o "$f" "$u" && [ "$(head
 dl "https://plsyssec.github.io/cse227-spring25/papers/sel4.pdf" "seL4-Formal-Verification-of-an-OS-Kernel.pdf"
 dl "https://xavierleroy.org/publi/compcert-CACM.pdf" "Formal-Verification-of-a-Realistic-Compiler-Comp.pdf"
 dl "https://plv.mpi-sws.org/rustbelt/popl18/paper.pdf" "RustBelt-Securing-the-Foundations-of-the-Rust-Pr.pdf"
+dl "https://iris-project.org/pdfs/2015-popl-iris1-final.pdf" "Iris-Monoids-and-Invariants-as-an-Orthogonal-Bas.pdf"
 echo "done -> $OUT/"

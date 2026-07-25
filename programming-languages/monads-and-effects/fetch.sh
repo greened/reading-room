@@ -6,4 +6,7 @@ OUT=pdfs; mkdir -p "$OUT"
 UA='Mozilla/5.0'
 dl(){ local u="$1" f="$OUT/$2"; if curl -fsSL -A "$UA" -o "$f" "$u" && [ "$(head -c4 "$f")" = "%PDF" ]; then echo "ok   $2"; else echo "FAIL $2"; rm -f "$f"; fi; }
 dl "https://plv.mpi-sws.org/plerg/papers/comprehending-monads.pdf" "Comprehending-Monads.pdf"
+dl "https://okmij.org/ftp/Haskell/extensible/exteff.pdf" "Extensible-Effects-An-Alternative-to-Monad-Trans.pdf"
+dl "https://arxiv.org/pdf/1406.2061" "Koka-Programming-with-Row-Polymorphic-Effect-Typ.pdf"
+dl "https://arxiv.org/pdf/1203.1539" "Programming-with-Algebraic-Effects-and-Handlers.pdf"
 echo "done -> $OUT/"

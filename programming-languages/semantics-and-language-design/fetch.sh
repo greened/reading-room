@@ -8,4 +8,5 @@ dl(){ local u="$1" f="$OUT/$2"; if curl -fsSL -A "$UA" -o "$f" "$u" && [ "$(head
 dl "https://www.cs.cmu.edu/~crary/819-f09/Landin66.pdf" "The-Next-700-Programming-Languages.pdf"
 dl "https://homepages.inf.ed.ac.uk/gdp/publications/sos_jlap.pdf" "A-Structural-Approach-to-Operational-Semantics.pdf"
 dl "https://www.di.ens.fr/~cousot/publications.www/CousotCousot-POPL-77-ACM-p238--252-1977.pdf" "Abstract-Interpretation.pdf"
+dl "https://www.cs.ox.ac.uk/files/3228/PRG06.pdf" "Toward-a-Mathematical-Semantics-for-Computer-Lan.pdf"
 echo "done -> $OUT/"

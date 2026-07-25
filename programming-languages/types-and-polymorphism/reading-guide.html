@@ -36,17 +36,37 @@
     <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/99370.99404">DOI</a></div>
     <div class="why-here">Philip Wadler, 1989, FPCA. Turns parametricity into free theorems.</div>
   </li>
+  <li>
+    <span class="title">Interprétation fonctionnelle… (System F)</span>
+    <div class="meta"><span class="badge b-web">DOI</span></div>
+    <div class="why-here">Jean-Yves Girard, 1972, Thèse d'État, Paris VII. Introduced System F (second-order lambda calculus) and reducibility.</div>
+  </li>
+  <li>
+    <span class="title">Abstract Types Have Existential Type</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/44501.45065">DOI</a></div>
+    <div class="why-here">Mitchell, Plotkin, 1988, ACM TOPLAS. ADTs are precisely existential types; the basis of data abstraction/modules.</div>
+  </li>
+  <li>
+    <span class="title">How to Make ad-hoc Polymorphism Less ad hoc (type classes)</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/75277.75283">DOI</a></div>
+    <div class="why-here">Wadler, Blott, 1989, POPL. Introduced type classes.</div>
+  </li>
+  <li>
+    <span class="title">Local Type Inference</span>
+    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/345099.345100">DOI</a></div>
+    <div class="why-here">Pierce, Turner, 2000, ACM TOPLAS. Practical inference for subtyping + explicit polymorphism.</div>
+  </li>
+  <li>
+    <span class="title">Complete and Easy Bidirectional Typechecking for Higher-Rank Polymorphism</span>
+    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/2500365.2500582">DOI</a> &middot; <a href="https://arxiv.org/pdf/1306.6032">PDF</a></div>
+    <div class="why-here">Dunfield, Krishnaswami, 2013, ICFP. The standard bidirectional algorithm blueprint.</div>
+  </li>
+  <li>
+    <span class="title">OutsideIn(X): Modular Type Inference with Local Assumptions</span>
+    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1017/S0956796811000098">DOI</a> &middot; <a href="https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/jfp-outsidein.pdf">PDF</a></div>
+    <div class="why-here">Vytiniotis, Peyton Jones, Schrijvers, Sulzmann, 2011, JFP. GHC's inference for GADTs/type families.</div>
+  </li>
 </ol>
-
-<h2>Key terms</h2>
-<p class="grouphdr">Vocabulary used across this area.</p>
-<div class="notekey">
-<b>syntax vs semantics</b> &mdash; a program's form vs its meaning. &nbsp; <b>operational semantics</b> &mdash; meaning given by rules for how a program steps/executes (SOS). &nbsp; <b>denotational semantics</b> &mdash; meaning given by mapping programs to mathematical objects. &nbsp; <b>type system</b> &mdash; rules that classify terms and rule out classes of errors before running. &nbsp; <b>polymorphism</b> &mdash; code that works uniformly over many types (parametric) or per-type (ad-hoc). &nbsp; <b>System F</b> &mdash; the polymorphic lambda calculus with universal types (∀). &nbsp; <b>Hindley-Milner</b> &mdash; the type discipline (let-polymorphism) with complete inference (Algorithm W). &nbsp; <b>type inference</b> &mdash; deducing types without annotations. &nbsp; <b>subtyping</b> &mdash; when a value of one type may be used where another is expected. &nbsp; <b>parametricity</b> &mdash; the "free theorems" a polymorphic type guarantees about behavior. &nbsp; <b>monad</b> &mdash; a structure for sequencing effectful computations in a pure language. &nbsp; <b>algebraic effect / handler</b> &mdash; a modular way to define and interpret effects. &nbsp; <b>Hoare logic</b> &mdash; reasoning with pre/postcondition triples {P} c {Q}. &nbsp; <b>separation logic</b> &mdash; a Hoare logic with a frame rule for local reasoning about the heap. &nbsp; <b>abstract interpretation</b> &mdash; sound static analysis over abstract values. &nbsp; <b>gradual typing</b> &mdash; mixing static and dynamic typing with a consistency relation and blame. &nbsp; <b>refinement types</b> &mdash; types carrying logical predicates (e.g., {v:Int | v &gt; 0}). &nbsp; <b>linear / affine types</b> &mdash; types tracking that a value is used exactly once / at most once. &nbsp; <b>memory model</b> &mdash; the rules for observable orderings of concurrent memory operations.
-</div>
-
-<h2>Related in this area</h2>
-<p class="grouphdr">Other lists in this area; <span class="file">../landmark-papers/</span> is the cross-cutting survey.</p>
-<ul class="comp"><li><span class="file">../concurrency-and-memory-models/</span></li><li><span class="file">../landmark-papers/</span></li><li><span class="file">../monads-and-effects/</span></li><li><span class="file">../practical-type-systems/</span></li><li><span class="file">../program-logics-and-verification/</span></li><li><span class="file">../semantics-and-language-design/</span></li></ul>
 
 </body>
 </html>

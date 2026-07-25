@@ -8,4 +8,7 @@ dl(){ local u="$1" f="$OUT/$2"; if curl -fsSL -A "$UA" -o "$f" "$u" && [ "$(head
 dl "https://www.cis.upenn.edu/~stevez/cis670/pdfs/pi-calculus.pdf" "A-Calculus-of-Mobile-Processes-I.pdf"
 dl "http://rsim.cs.uiuc.edu/Pubs/popl05.pdf" "The-Java-Memory-Model.pdf"
 dl "https://www.cl.cam.ac.uk/~pes20/cpp/popl085ap-sewell.pdf" "Mathematizing-C-Concurrency.pdf"
+dl "https://lamport.azurewebsites.net/pubs/time-clocks.pdf" "Time-Clocks-and-the-Ordering-of-Events-in-a-Dist.pdf"
+dl "https://www.cl.cam.ac.uk/~pes20/weakmemory/cacm.pdf" "x86-TSO-A-Rigorous-and-Usable-Programmer-s-Model.pdf"
+dl "https://people.mpi-sws.org/~dreyer/papers/promising/paper.pdf" "A-Promising-Semantics-for-Relaxed-Memory-Concurr.pdf"
 echo "done -> $OUT/"

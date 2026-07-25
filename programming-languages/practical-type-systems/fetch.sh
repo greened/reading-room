@@ -10,4 +10,7 @@ dl "https://users.cs.northwestern.edu/~robby/pubs/papers/esop2009-wf.pdf" "Well-
 dl "https://goto.ucsd.edu/~rjhala/liquid/liquid_types_techrep.pdf" "Liquid-Types.pdf"
 dl "https://arxiv.org/pdf/1710.09756" "Linear-Haskell.pdf"
 dl "https://www.cis.upenn.edu/~bcpierce/courses/552-2008/resources/icfp-quickcheck.pdf" "QuickCheck-A-Lightweight-Tool-for-Random-Testing.pdf"
+dl "https://www2.ccs.neu.edu/racket/pubs/icfp2002-ff.pdf" "Contracts-for-Higher-Order-Functions.pdf"
+dl "https://www2.ccs.neu.edu/racket/pubs/popl08-thf.pdf" "The-Design-and-Implementation-of-Typed-Scheme.pdf"
+dl "https://www.cse.chalmers.se/~ulfn/papers/thesis.pdf" "Towards-a-Practical-Programming-Language-Based-o.pdf"
 echo "done -> $OUT/"
