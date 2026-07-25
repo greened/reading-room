@@ -182,5 +182,26 @@ text &rarr; <b>tokenize</b> (BPE / WordPiece / SentencePiece &mdash; papers 11&n
 </ol>
 </div>
 
+<h2>Key terms</h2>
+<p class="grouphdr">The vocabulary these papers assume.</p>
+<div class="notekey">
+<b>token</b> &mdash; the atomic unit of input (a subword piece), mapped to an integer id. &nbsp;
+<b>embedding</b> &mdash; the learned vector a token id maps to. &nbsp;
+<b>positional encoding</b> &mdash; a per-position vector added to embeddings so order matters. &nbsp;
+<b>attention</b> &mdash; a weighted read where each token pulls in others' information by relevance. &nbsp;
+<b>Q / K / V</b> &mdash; query, key, value: three learned projections used to compute attention. &nbsp;
+<b>head</b> &mdash; one independent attention computation; <b>multi-head</b> runs several in parallel. &nbsp;
+<b>softmax</b> &mdash; turns scores into positive weights that sum to 1. &nbsp;
+<b>logits</b> &mdash; the pre-softmax output scores (here, one per vocabulary entry). &nbsp;
+<b>residual connection</b> &mdash; adding a sub-layer's input to its output so gradients flow. &nbsp;
+<b>layer normalization</b> &mdash; rescaling activations to keep them well-behaved. &nbsp;
+<b>FFN</b> &mdash; the per-token feed-forward (2-layer MLP) sub-layer. &nbsp;
+<b>causal / masked attention</b> &mdash; attention restricted so a token sees only earlier tokens (decoder-only / generation). &nbsp;
+<b>encoder / decoder</b> &mdash; the two block stacks; encoders see the whole input, decoders generate left-to-right. &nbsp;
+<b>pretraining / fine-tuning</b> &mdash; train once on a broad objective, then adapt to a task. &nbsp;
+<b>context length</b> &mdash; how many tokens the model can attend over at once. &nbsp;
+<b>parameter</b> &mdash; a learned weight; model size is counted in these.
+</div>
+
 </body>
 </html>
