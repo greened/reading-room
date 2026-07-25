@@ -22,3 +22,13 @@ Run `./fetch.sh` to download the openly-available PDFs.
 12. **Jung et al., RustBelt** (2018) — a formal safety proof for Rust. → *program-logics-and-verification*
 
 For depth on any theme, follow the subtopic pointer.
+
+## Reference shelf — books
+
+- **BUY** **Types and Programming Languages (TAPL)** — Benjamin C. Pierce (2002). the standard graduate introduction to type systems. [page](https://www.cis.upenn.edu/~bcpierce/tapl/)
+- **BUY** **Advanced Topics in Types and Programming Languages** — Pierce (ed.) (2005). deeper chapters: dependent types, effects, modules. [page](https://www.cis.upenn.edu/~bcpierce/attapl/)
+- **FREE** **Practical Foundations for Programming Languages** — Robert Harper (2nd ed., 2016). reconstructs language features from type-structure first principles (free abridged PDF). [PDF](https://www.cs.cmu.edu/~rwh/pfpl/abbrev.pdf)
+- **BUY** **The Formal Semantics of Programming Languages** — Glynn Winskel (1993). accessible first course in operational/denotational/axiomatic semantics. [page](https://mitpress.mit.edu/9780262731034/the-formal-semantics-of-programming-languages/)
+- **FREE** **Software Foundations** — Pierce et al.. machine-checked (Coq/Rocq) course in logic, PL semantics, verification (free HTML). [page](https://softwarefoundations.cis.upenn.edu/)
+- **FREE** **Concrete Semantics with Isabelle/HOL** — Nipkow, Klein (2014). operational semantics + verification, fully mechanized (free PDF). [PDF](https://concrete-semantics.org/concrete-semantics.pdf)
+- **FREE** **Certified Programming with Dependent Types** — Adam Chlipala (2013). building certified programs and proofs in Coq (free PDF). [PDF](http://adam.chlipala.net/cpdt/cpdt.pdf)

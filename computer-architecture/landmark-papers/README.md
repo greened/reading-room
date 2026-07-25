@@ -22,3 +22,13 @@ Run `./fetch.sh` to download the openly-available PDFs.
 12. **Kocher et al., Spectre Attacks** (2019) — speculative-execution side channels. → *hardware-security*
 
 For depth on any theme, follow the subtopic pointer.
+
+## Reference shelf — books
+
+- **BUY** **Computer Architecture: A Quantitative Approach** — Hennessy, Patterson (6th ed., 2017). the definitive graduate reference on quantitative design. [page](https://shop.elsevier.com/books/computer-architecture/hennessy/978-0-12-811905-1)
+- **BUY** **Computer Organization and Design (RISC-V)** — Patterson, Hennessy (2nd ed., 2020). the standard undergraduate introduction. [page](https://shop.elsevier.com/books/computer-organization-and-design-risc-v-edition/patterson/978-0-12-820331-6)
+- **BUY** **Modern Processor Design: Fundamentals of Superscalar Processors** — Shen, Lipasti (2005). the canonical deep dive on superscalar microarchitecture. [page](https://www.waveland.com/browse.php?t=624)
+- **BUY** **Parallel Computer Architecture: A Hardware/Software Approach** — Culler, Singh, Gupta (1998). the foundational multiprocessor text (coherence, interconnects). [page](https://shop.elsevier.com/books/parallel-computer-architecture/culler/978-1-55860-343-1)
+- **BUY** **Memory Systems: Cache, DRAM, Disk** — Jacob, Ng, Wang (2007). the most comprehensive memory-hierarchy volume. [page](https://shop.elsevier.com/books/memory-systems/jacob/978-0-12-379751-3)
+- **BUY** **Digital Design and Computer Architecture (RISC-V)** — Harris, Harris (2021). bridges digital logic and architecture, gates up. [page](https://shop.elsevier.com/books/digital-design-and-computer-architecture-risc-v-edition/harris/978-0-12-820064-3)
+- **BUY** **Programming Massively Parallel Processors** — Hwu, Kirk, El Hajj (4th ed., 2022). the standard GPU-architecture and CUDA reference. [page](https://shop.elsevier.com/books/programming-massively-parallel-processors/hwu/978-0-323-91231-0)

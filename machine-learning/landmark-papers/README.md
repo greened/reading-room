@@ -20,3 +20,13 @@ in the sibling subtopic directories (and the transformer papers live in
 
 The transformer architecture and its model families (Attention Is All You Need,
 BERT, GPT, ViT) have their own in-depth list in **`../transformers/`**.
+
+## Reference shelf — books
+
+- **FREE** **Understanding Deep Learning** — Simon J.D. Prince (2023). modern, intuition-first deep-learning survey (free PDF). [PDF](https://github.com/udlbook/udlbook/releases/download/v5.0.3/UnderstandingDeepLearning_02_09_26_C.pdf)
+- **FREE** **Mathematics for Machine Learning** — Deisenroth, Faisal, Ong (2020). the math prerequisites for ML, from scratch (free PDF). [PDF](https://mml-book.github.io/book/mml-book.pdf)
+- **FREE** **Deep Learning** — Goodfellow, Bengio, Courville (2016). the foundational graduate DL reference (free HTML). [page](https://www.deeplearningbook.org/)
+- **FREE** **Dive into Deep Learning** — Zhang, Lipton, Li, Smola (2023). runnable, code-first book with executable notebooks (free PDF). [PDF](https://d2l.ai/d2l-en.pdf)
+- **FREE** **Pattern Recognition and Machine Learning** — Christopher M. Bishop (2006). the classic Bayesian/probabilistic PR text (free from the author). [page](https://www.microsoft.com/en-us/research/publication/pattern-recognition-machine-learning/)
+- **FREE** **Probabilistic Machine Learning: An Introduction** — Kevin P. Murphy (2022). comprehensive modern probabilistic ML (free PDF). [PDF](https://github.com/probml/pml-book/releases/latest/download/book1.pdf)
+- **FREE** **Reinforcement Learning: An Introduction** — Sutton, Barto (2nd ed., 2018). the definitive introductory RL text (free PDF). [PDF](http://incompleteideas.net/book/RLbook2020.pdf)

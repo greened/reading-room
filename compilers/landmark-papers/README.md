@@ -24,3 +24,13 @@ repo root). Run `./fetch.sh` to download the openly-available PDFs.
 
 For depth on any theme, follow the subtopic pointer (each subtopic dir lists more
 papers than this survey includes).
+
+## Reference shelf — books
+
+- **BUY** **Compilers: Principles, Techniques, and Tools (Dragon Book)** — Aho, Lam, Sethi, Ullman (2nd ed., 2006). the canonical survey of lexing, parsing, semantics, and code generation. [page](https://en.wikipedia.org/wiki/Compilers:_Principles,_Techniques,_and_Tools)
+- **BUY** **Advanced Compiler Design and Implementation** — Steven S. Muchnick (1997). the deepest single-volume treatment of production optimization and SSA-era analyses. [page](https://openlibrary.org/isbn/1558603204)
+- **BUY** **Engineering a Compiler** — Cooper, Torczon (3rd ed., 2022). modern, engineering-focused course text. [page](https://shop.elsevier.com/books/engineering-a-compiler/cooper/978-0-12-815412-0)
+- **BUY** **Modern Compiler Implementation in ML** — Andrew W. Appel (1998). builds a complete compiler end to end. [page](https://www.cs.princeton.edu/~appel/modern/ml/)
+- **BUY** **Optimizing Compilers for Modern Architectures** — Allen, Kennedy (2001). the reference on dependence analysis, loop transforms, and parallelization. [page](https://shop.elsevier.com/books/optimizing-compilers-for-modern-architectures/allen/978-1-55860-286-1)
+- **BUY** **Principles of Program Analysis** — Nielson, Nielson, Hankin (1999). rigorous unifying treatment of dataflow, CFA, abstract interpretation, type/effect analyses. [page](https://link.springer.com/book/10.1007/978-3-662-03811-6)
+- **FREE** **Crafting Interpreters** — Robert Nystrom (2021). hands-on: builds a tree-walk and a bytecode interpreter from scratch (free HTML). [page](https://craftinginterpreters.com/)
