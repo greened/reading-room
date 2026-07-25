@@ -76,6 +76,32 @@ for ptitle, body, badge, anchors in papers:
         f'  </li>'
     )
 
+# Extra page: the area key-terms glossary + related subtopics, so a short list
+# still fills a full (even) page of useful material rather than a blank back.
+parent = os.path.dirname(os.path.abspath(d))
+extra = ""
+gpath = os.path.join(parent, "_glossary.md")
+if os.path.exists(gpath):
+    terms = []
+    for line in open(gpath, encoding="utf-8"):
+        m = re.match(r"-\s+\*\*(.+?)\*\*\s*(.*)$", line)
+        if m:
+            terms.append(f"<b>{esc(m.group(1))}</b> &mdash; {esc(m.group(2).lstrip(chr(8212)+chr(8211)+'- ').strip())}")
+    if terms:
+        extra += ('<h2>Key terms</h2>\n<p class="grouphdr">Vocabulary used across this area.</p>\n'
+                  '<div class="notekey">\n' + " &nbsp; ".join(terms) + "\n</div>\n\n")
+try:
+    self_name = os.path.basename(os.path.abspath(d))
+    sibs = sorted(x for x in os.listdir(parent)
+                  if os.path.isdir(os.path.join(parent, x)) and not x.startswith("_") and x != self_name)
+except OSError:
+    sibs = []
+if sibs:
+    items = "".join(f'<li><span class="file">../{s}/</span></li>' for s in sibs)
+    extra += ('<h2>Related in this area</h2>\n'
+              '<p class="grouphdr">Other lists in this area; <span class="file">../landmark-papers/</span> is the cross-cutting survey.</p>\n'
+              f'<ul class="comp">{items}</ul>\n\n')
+
 html = (
     '<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n'
     f'<title>{esc(title)}</title>\n<link rel="stylesheet" href="{css}">\n'
@@ -86,7 +112,8 @@ html = (
       '<span class="badge b-pdf">PDF</span>open copy available &middot; '
       '<span class="badge b-web">DOI</span>publisher link only.</p>\n\n'
     '<ol class="papers">\n' + "\n".join(lis) + "\n</ol>\n\n"
-    "</body>\n</html>\n"
+    + extra
+    + "</body>\n</html>\n"
 )
 open(os.path.join(d, "reading-guide.html"), "w", encoding="utf-8").write(html)
 

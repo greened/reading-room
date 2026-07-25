@@ -1,0 +1,18 @@
+- **ILP (instruction-level parallelism)** — independent instructions that can execute simultaneously.
+- **pipeline** — overlapping instruction stages (fetch/decode/execute/...) for throughput.
+- **out-of-order execution** — running instructions as operands become ready, not in program order.
+- **register renaming** — mapping architectural registers to a larger physical set to remove false dependences.
+- **branch prediction** — guessing branch outcomes to keep the pipeline full; mispredicts cost a flush.
+- **speculation** — executing work before it is known to be needed (and squashing if wrong).
+- **cache / hit / miss** — fast on-chip memory; a miss falls back to slower levels.
+- **cache coherence** — keeping per-core cached copies of a location consistent.
+- **memory consistency model** — the rules for how memory operations from different cores appear ordered.
+- **SMT (simultaneous multithreading)** — issuing from multiple threads each cycle to fill idle slots.
+- **CMP / multicore** — multiple processor cores on one chip.
+- **SIMT** — the GPU model: many threads run the same instruction on different data.
+- **systolic array** — a grid of MACs streaming data, used by ML accelerators (e.g., the TPU).
+- **roofline** — a performance model bounding attainable FLOP/s by compute and memory bandwidth.
+- **Amdahl's Law** — speedup is capped by the serial fraction of a program.
+- **Dennard scaling** — the (now-ended) trend of constant power density as transistors shrank.
+- **dark silicon** — the fraction of a chip that must stay powered off within a power budget.
+- **operational intensity** — FLOPs performed per byte of memory traffic.

@@ -1,0 +1,18 @@
+- **IR (intermediate representation)** — the compiler's internal program form between source and machine code.
+- **SSA (static single assignment)** — an IR where each variable is assigned exactly once, simplifying analysis.
+- **basic block / CFG** — a straight-line code run; the control-flow graph connects blocks by branches.
+- **dataflow analysis** — computing facts (liveness, reaching defs) at each program point via a lattice fixpoint.
+- **dominator / dominance frontier** — block A dominates B if every path to B goes through A; the frontier drives SSA φ-placement.
+- **register allocation** — mapping unbounded values to a finite register file (often via graph coloring).
+- **spilling** — storing a value to memory when registers run out.
+- **coalescing** — removing a copy by giving source and destination the same register.
+- **instruction scheduling** — reordering instructions to hide latency and fill pipeline/VLIW slots.
+- **software pipelining** — overlapping successive loop iterations (modulo scheduling).
+- **PRE (partial-redundancy elimination)** — hoisting a computation so it isn't recomputed on some paths.
+- **alias / points-to analysis** — deciding whether two pointers can refer to the same memory.
+- **abstract interpretation** — sound static analysis by executing over abstract (approximate) values.
+- **JIT** — just-in-time compilation of code at run time, often with profile feedback.
+- **polyhedral model** — representing loop nests as integer polyhedra to reason about tiling and parallelism.
+- **superoptimization** — searching for the optimal instruction sequence for a fragment.
+- **vectorization / SLP** — packing scalar operations into SIMD instructions.
+- **peephole optimization** — local rewrites over a small sliding window of instructions.

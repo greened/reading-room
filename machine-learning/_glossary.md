@@ -1,0 +1,19 @@
+- **neuron / layer** — a weighted sum + nonlinearity; layers stack to form a network.
+- **gradient descent** — updating parameters against the loss gradient.
+- **backpropagation** — the chain-rule algorithm computing those gradients efficiently.
+- **loss function** — the scalar objective being minimized during training.
+- **overfitting** — fitting training noise so test performance suffers.
+- **regularization** — techniques (weight decay, dropout) that curb overfitting.
+- **dropout** — randomly zeroing activations during training as regularization.
+- **batch normalization** — normalizing layer activations to stabilize and speed training.
+- **activation (ReLU)** — the elementwise nonlinearity; ReLU(x)=max(0,x) is the common default.
+- **CNN** — convolutional network exploiting spatial locality (vision).
+- **RNN / LSTM** — recurrent networks for sequences; LSTM adds gates to fight vanishing gradients.
+- **embedding** — a learned dense vector representing a token/item.
+- **softmax** — maps scores to a probability distribution.
+- **residual connection** — adding a layer's input to its output so gradients flow through deep stacks.
+- **attention** — a content-based weighted read over a set of representations.
+- **GAN / VAE / diffusion** — three families of generative models (adversarial, latent-variable, denoising).
+- **reinforcement learning** — learning a policy from reward via interaction.
+- **policy / value** — what action to take vs how good a state is.
+- **scaling laws** — smooth power-law relations between loss and model/data/compute.

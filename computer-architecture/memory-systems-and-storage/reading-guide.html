@@ -33,5 +33,15 @@
   </li>
 </ol>
 
+<h2>Key terms</h2>
+<p class="grouphdr">Vocabulary used across this area.</p>
+<div class="notekey">
+<b>ILP (instruction-level parallelism)</b> &mdash; independent instructions that can execute simultaneously. &nbsp; <b>pipeline</b> &mdash; overlapping instruction stages (fetch/decode/execute/...) for throughput. &nbsp; <b>out-of-order execution</b> &mdash; running instructions as operands become ready, not in program order. &nbsp; <b>register renaming</b> &mdash; mapping architectural registers to a larger physical set to remove false dependences. &nbsp; <b>branch prediction</b> &mdash; guessing branch outcomes to keep the pipeline full; mispredicts cost a flush. &nbsp; <b>speculation</b> &mdash; executing work before it is known to be needed (and squashing if wrong). &nbsp; <b>cache / hit / miss</b> &mdash; fast on-chip memory; a miss falls back to slower levels. &nbsp; <b>cache coherence</b> &mdash; keeping per-core cached copies of a location consistent. &nbsp; <b>memory consistency model</b> &mdash; the rules for how memory operations from different cores appear ordered. &nbsp; <b>SMT (simultaneous multithreading)</b> &mdash; issuing from multiple threads each cycle to fill idle slots. &nbsp; <b>CMP / multicore</b> &mdash; multiple processor cores on one chip. &nbsp; <b>SIMT</b> &mdash; the GPU model: many threads run the same instruction on different data. &nbsp; <b>systolic array</b> &mdash; a grid of MACs streaming data, used by ML accelerators (e.g., the TPU). &nbsp; <b>roofline</b> &mdash; a performance model bounding attainable FLOP/s by compute and memory bandwidth. &nbsp; <b>Amdahl's Law</b> &mdash; speedup is capped by the serial fraction of a program. &nbsp; <b>Dennard scaling</b> &mdash; the (now-ended) trend of constant power density as transistors shrank. &nbsp; <b>dark silicon</b> &mdash; the fraction of a chip that must stay powered off within a power budget. &nbsp; <b>operational intensity</b> &mdash; FLOPs performed per byte of memory traffic.
+</div>
+
+<h2>Related in this area</h2>
+<p class="grouphdr">Other lists in this area; <span class="file">../landmark-papers/</span> is the cross-cutting survey.</p>
+<ul class="comp"><li><span class="file">../accelerators-and-warehouse-scale/</span></li><li><span class="file">../instruction-level-parallelism/</span></li><li><span class="file">../landmark-papers/</span></li><li><span class="file">../multicore-and-memory-consistency/</span></li><li><span class="file">../quantitative-principles/</span></li><li><span class="file">../tools-and-security/</span></li></ul>
+
 </body>
 </html>

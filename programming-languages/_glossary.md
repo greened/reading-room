@@ -1,0 +1,19 @@
+- **syntax vs semantics** — a program's form vs its meaning.
+- **operational semantics** — meaning given by rules for how a program steps/executes (SOS).
+- **denotational semantics** — meaning given by mapping programs to mathematical objects.
+- **type system** — rules that classify terms and rule out classes of errors before running.
+- **polymorphism** — code that works uniformly over many types (parametric) or per-type (ad-hoc).
+- **System F** — the polymorphic lambda calculus with universal types (∀).
+- **Hindley-Milner** — the type discipline (let-polymorphism) with complete inference (Algorithm W).
+- **type inference** — deducing types without annotations.
+- **subtyping** — when a value of one type may be used where another is expected.
+- **parametricity** — the "free theorems" a polymorphic type guarantees about behavior.
+- **monad** — a structure for sequencing effectful computations in a pure language.
+- **algebraic effect / handler** — a modular way to define and interpret effects.
+- **Hoare logic** — reasoning with pre/postcondition triples {P} c {Q}.
+- **separation logic** — a Hoare logic with a frame rule for local reasoning about the heap.
+- **abstract interpretation** — sound static analysis over abstract values.
+- **gradual typing** — mixing static and dynamic typing with a consistency relation and blame.
+- **refinement types** — types carrying logical predicates (e.g., {v:Int | v > 0}).
+- **linear / affine types** — types tracking that a value is used exactly once / at most once.
+- **memory model** — the rules for observable orderings of concurrent memory operations.
