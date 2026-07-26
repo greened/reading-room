@@ -8,66 +8,188 @@
 <body>
 
 <h1>Computer architecture · Memory systems &amp; storage</h1>
-<p class="sub">Caches and replacement, on-chip cache networks, DRAM scheduling and reliability, and the storage stack from RAID through flash and persistent memory.</p>
-<p class="tally">In-depth landmark list for this subtopic. <span class="badge b-pdf">PDF</span>open copy available &middot; <span class="badge b-web">DOI</span>publisher link only.</p>
+<p class="sub">The whole field is one idea repeated at every scale: a small fast store backed by a large slow one, managed so the fast store almost always has what you need. These papers walk that idea from the top down — the founding notion of an automatic hierarchy and the tools to reason about it, then a single cache (avoiding and hiding misses), replacement policy, on-chip scaling, DRAM main memory, address translation, and finally the storage stack from disk through flash to persistent and disaggregated memory. Read them in the order below rather than by date; each section says why it sits where it does.</p>
+<p class="tally">23 papers &middot; &asymp; <b>371 pp</b> of primary reading. &nbsp; Legend: <span class="badge b-pdf">PDF</span>open copy (see <span class="file">fetch.sh</span>) &middot; <span class="badge b-web">DOI</span>publisher link only</p>
+<div class="why"><b>How to read this list.</b> Start with Atlas, Bélády, Mattson, and Smith to get the vocabulary and the <em>measurement</em> mindset — miss ratios, stack distance, and the optimal bound everything else is judged against. After that each section descends one level down the hierarchy, so a mechanism you meet early (prefetch, replacement, scheduling) shows up again, transformed, in flash FTLs and memory controllers later.</div>
 
-<ol class="papers">
+<h2>The memory hierarchy, from first principles</h2>
+<p class="grouphdr">Begin with the idea that a two-level store can be managed automatically, and with the tools for reasoning about any hierarchy — everything below is an instance of this.</p>
+<ol class="papers" start="1">
   <li>
-    <span class="title">Cache Memories</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/356887.356892">DOI</a></div>
-    <div class="why-here">Alan Jay Smith, 1982, ACM Computing Surveys. The foundational survey that systematized cache design.</div>
+    <span class="title">One-Level Storage System (Atlas)</span> &mdash; Kilburn, Edwards, Lanigan, Sumner
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>IRE Trans. Electronic Computers 1962 &middot; <a href="https://doi.org/10.1109/TEC.1962.5219356">DOI</a> &middot; <a href="https://www.dcs.gla.ac.uk/~wpc/grcs/kilburn.pdf">PDF</a></div>
+    <div class="why-here">The origin of virtual memory and demand paging: make core + drum look like one large store to the programmer. Every hierarchy since is this trick repeated.</div>
   </li>
   <li>
-    <span class="title">Improving Direct-Mapped Cache Performance by the Addition of a Small Fully-Associative Cache and Prefetch Buffers</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1109/ISCA.1990.134547">DOI</a></div>
-    <div class="why-here">Norman P. Jouppi, 1990, ISCA. Victim caches and stream buffers.</div>
+    <span class="title">A Study of Replacement Algorithms for a Virtual-Storage Computer (MIN)</span> &mdash; László Bélády
+    <div class="meta"><span class="badge b-web">DOI&middot;24pp</span>IBM Systems Journal 1966 &middot; <a href="https://doi.org/10.1147/sj.52.0078">DOI</a></div>
+    <div class="why-here">Defines the optimal offline replacement policy (evict the line reused farthest in the future) — the unbeatable bound every real cache policy is measured against.</div>
   </li>
   <li>
-    <span class="title">An Adaptive, Non-Uniform Cache Structure (NUCA)</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/605432.605420">DOI</a></div>
-    <div class="why-here">Kim, Burger, Keckler, 2002, ASPLOS-X. A large cache as a network of banks with distance-dependent latency.</div>
+    <span class="title">Evaluation Techniques for Storage Hierarchies</span> &mdash; Mattson, Gecsei, Slutz, Traiger
+    <div class="meta"><span class="badge b-web">DOI&middot;40pp</span>IBM Systems Journal 1970 &middot; <a href="https://doi.org/10.1147/sj.92.0078">DOI</a></div>
+    <div class="why-here">Stack distances and the inclusion property: one pass over a trace yields the miss ratio for <em>all</em> cache sizes at once. Still how cache studies are run.</div>
   </li>
   <li>
-    <span class="title">A Case for Redundant Arrays of Inexpensive Disks (RAID)</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/50202.50214">DOI</a></div>
-    <div class="why-here">Patterson, Gibson, Katz, 1988, SIGMOD. The RAID taxonomy.</div>
-  </li>
-  <li>
-    <span class="title">Memory Access Scheduling</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1109/ISCA.2000.854384">DOI</a></div>
-    <div class="why-here">Rixner, Dally, Kapasi, Mattson, Owens, 2000, ISCA. Reordering DRAM accesses to exploit bank/row state.</div>
-  </li>
-  <li>
-    <span class="title">Adaptive Insertion Policies for High Performance Caching (DIP)</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/1273440.1250709">DOI</a></div>
-    <div class="why-here">Qureshi, Jaleel, Patt, Steely, Emer, 2007, ISCA. Set-dueling + dynamic insertion; thrash-resistant LRU at near-zero cost.</div>
-  </li>
-  <li>
-    <span class="title">High Performance Cache Replacement Using Re-Reference Interval Prediction (RRIP)</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/1815961.1815971">DOI</a></div>
-    <div class="why-here">Jaleel, Theobald, Steely, Emer, 2010, ISCA. SRRIP/DRRIP: scan/thrash-resistant replacement.</div>
-  </li>
-  <li>
-    <span class="title">Flipping Bits in Memory Without Accessing Them (RowHammer)</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/2678373.2665726">DOI</a></div>
-    <div class="why-here">Kim, Daly, Kim, Fallin, Lee, Lee, Wilkerson, Lai, Mutlu, 2014, ISCA. DRAM disturbance errors: a scaling reliability/security problem.</div>
-  </li>
-  <li>
-    <span class="title">The Design and Implementation of a Log-Structured File System</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/146941.146943">DOI</a></div>
-    <div class="why-here">Rosenblum, Ousterhout, 1992, ACM TOCS. The log-structured design behind modern flash/copy-on-write storage.</div>
-  </li>
-  <li>
-    <span class="title">DFTL: A Flash Translation Layer Employing Demand-Based Selective Caching of Page-Level Address Mappings</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/1508284.1508271">DOI</a></div>
-    <div class="why-here">Gupta, Kim, Urgaonkar, 2009, ASPLOS. The reference demand-paged FTL for SSDs.</div>
-  </li>
-  <li>
-    <span class="title">Better I/O Through Byte-Addressable, Persistent Memory (BPFS)</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/1629575.1629589">DOI</a></div>
-    <div class="why-here">Condit, Nightingale, Frost, Ipek, Lee, Burger, Coetzee, 2009, SOSP. An early influential NVM programming/consistency model.</div>
+    <span class="title">Cache Memories</span> &mdash; Alan Jay Smith
+    <div class="meta"><span class="badge b-pdf">PDF&middot;58pp</span>ACM Computing Surveys 1982 &middot; <a href="https://doi.org/10.1145/356887.356892">DOI</a> &middot; <a href="https://home.engineering.iastate.edu/~zzhang/courses/cpre581-f05/reading/smith-csur82-cache.pdf">PDF</a></div>
+    <div class="why-here">The survey that systematized cache design — fetch, placement, replacement, line size, write policy, splits. The single best foundation for everything that follows.</div>
   </li>
 </ol>
+
+<h2>Making one cache fast</h2>
+<p class="grouphdr">With the hierarchy in place, the game becomes avoiding and hiding misses in a single cache.</p>
+<ol class="papers" start="5" style="counter-reset:item 4;">
+  <li>
+    <span class="title">Lockup-Free Instruction Fetch/Prefetch Cache Organization</span> &mdash; David Kroft
+    <div class="meta"><span class="badge b-pdf">PDF&middot;7pp</span>ISCA 1981 &middot; <a href="https://dl.acm.org/doi/10.5555/800052.801868">DOI</a> &middot; <a href="https://people.eecs.berkeley.edu/~kubitron/courses/cs252-F03/handouts/papers/p195-kroft.pdf">PDF</a></div>
+    <div class="why-here">Miss Status Holding Registers: let a cache keep serving hits while misses are outstanding. Non-blocking caches are the reason out-of-order cores tolerate memory latency at all.</div>
+  </li>
+  <li>
+    <span class="title">Improving Direct-Mapped Cache Performance by Adding a Small Fully-Associative Cache and Prefetch Buffers</span> &mdash; Norman P. Jouppi
+    <div class="meta"><span class="badge b-pdf">PDF&middot;10pp</span>ISCA 1990 &middot; <a href="https://doi.org/10.1109/ISCA.1990.134547">DOI</a> &middot; <a href="http://bitsavers.trailing-edge.com/pdf/dec/tech_reports/WRL-TN-14.pdf">PDF</a></div>
+    <div class="why-here">Victim caches remove conflict misses cheaply; stream buffers prefetch sequential lines. Two ideas that still ship in real caches.</div>
+  </li>
+  <li>
+    <span class="title">Effective Hardware-Based Data Prefetching for High-Performance Processors</span> &mdash; Tien-Fu Chen, Jean-Loup Baer
+    <div class="meta"><span class="badge b-web">DOI&middot;15pp</span>IEEE Trans. Computers 1995 &middot; <a href="https://doi.org/10.1109/12.381947">DOI</a></div>
+    <div class="why-here">The Reference Prediction Table: learn per-instruction access <em>strides</em> and prefetch ahead of them. The canonical stride prefetcher.</div>
+  </li>
+  <li>
+    <span class="title">Prefetching Using Markov Predictors</span> &mdash; Doug Joseph, Dirk Grunwald
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>ISCA 1997 &middot; <a href="https://doi.org/10.1145/264107.264207">DOI</a> &middot; <a href="https://safari.ethz.ch/architecture/fall2022/lib/exe/fetch.php?media=joseph_isca97.pdf">PDF</a></div>
+    <div class="why-here">When accesses aren't strided, learn the <em>correlation</em> between misses. The bridge from regular to irregular prefetching.</div>
+  </li>
+</ol>
+
+<h2>Choosing what to keep</h2>
+<p class="grouphdr">Given a fixed cache, replacement and insertion policy is where large, near-free wins hide.</p>
+<ol class="papers" start="9" style="counter-reset:item 8;">
+  <li>
+    <span class="title">Adaptive Insertion Policies for High Performance Caching (DIP)</span> &mdash; Qureshi, Jaleel, Patt, Steely, Emer
+    <div class="meta"><span class="badge b-pdf">PDF&middot;11pp</span>ISCA 2007 &middot; <a href="https://doi.org/10.1145/1273440.1250709">DOI</a> &middot; <a href="https://www.jaleels.org/ajaleel/publications/isca2007-dip.pdf">PDF</a></div>
+    <div class="why-here">Set dueling picks between LRU and a thrash-resistant insertion policy at run time — near-zero hardware, big wins on scans and thrashing.</div>
+  </li>
+  <li>
+    <span class="title">High Performance Cache Replacement Using Re-Reference Interval Prediction (RRIP)</span> &mdash; Jaleel, Theobald, Steely, Emer
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>ISCA 2010 &middot; <a href="https://doi.org/10.1145/1815961.1815971">DOI</a> &middot; <a href="https://www.jaleels.org/ajaleel/publications/isca2010-rrip.pdf">PDF</a></div>
+    <div class="why-here">Predict <em>when</em> a line will be reused instead of just tracking recency; SRRIP/DRRIP are scan- and thrash-resistant and now common in real LLCs.</div>
+  </li>
+</ol>
+
+<h2>Scaling the on-chip cache</h2>
+<p class="grouphdr">Once a cache spans a chip, wire delay turns a monolithic array into a network — location becomes latency.</p>
+<ol class="papers" start="11" style="counter-reset:item 10;">
+  <li>
+    <span class="title">An Adaptive, Non-Uniform Cache Structure (NUCA)</span> &mdash; Changkyu Kim, Doug Burger, Steve Keckler
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>ASPLOS 2002 &middot; <a href="https://doi.org/10.1145/605397.605420">DOI</a> &middot; <a href="https://users.cs.utah.edu/~rajeev/cs7810/papers/kim02.pdf">PDF</a></div>
+    <div class="why-here">A large cache as a network of banks with distance-dependent latency, migrating hot lines closer. The model for every modern many-banked last-level cache.</div>
+  </li>
+</ol>
+
+<h2>Main memory: DRAM scheduling, stacking, reliability</h2>
+<p class="grouphdr">Off-chip DRAM has physical state — the order you issue requests, the geometry you build, and the ways it fails all shape performance.</p>
+<ul class="comp">
+  <li><span class="badge b-vid">VIDEO</span><b>Watch first — Main Memory and DRAM Basics (Onur Mutlu, CMU 18-447)</b> Banks, rows, and DRAM timing, and why request ordering matters — the backdrop for the three papers below. <a href="https://www.youtube.com/watch?v=ZLCy3pG7Rc0">lecture video</a></li>
+</ul>
+<ol class="papers" start="12" style="counter-reset:item 11;">
+  <li>
+    <span class="title">Memory Access Scheduling</span> &mdash; Rixner, Dally, Kapasi, Mattson, Owens
+    <div class="meta"><span class="badge b-pdf">PDF&middot;11pp</span>ISCA 2000 &middot; <a href="https://doi.org/10.1109/ISCA.2000.854384">DOI</a> &middot; <a href="https://www.cs.rice.edu/CS/Architecture/docs/rixner-isca00.pdf">PDF</a></div>
+    <div class="why-here">Reorder DRAM references (FR-FCFS) to exploit open rows and bank parallelism. The foundation of every memory controller scheduler since.</div>
+  </li>
+  <li>
+    <span class="title">Parallelism-Aware Batch Scheduling</span> &mdash; Onur Mutlu, Thomas Moscibroda
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>ISCA 2008 &middot; <a href="https://doi.org/10.1109/ISCA.2008.7">DOI</a> &middot; <a href="https://people.inf.ethz.ch/omutlu/pub/parbs_isca08.pdf">PDF</a></div>
+    <div class="why-here">When many cores share DRAM, naive scheduling starves threads; PAR-BS batches requests for fairness <em>and</em> bank-level parallelism.</div>
+  </li>
+  <li>
+    <span class="title">3D-Stacked Memory Architectures for Multi-Core Processors</span> &mdash; Gabriel H. Loh
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>ISCA 2008 &middot; <a href="https://doi.org/10.1109/ISCA.2008.15">DOI</a> &middot; <a href="https://www.cs.cmu.edu/~18742/papers/Loh2008.pdf">PDF</a></div>
+    <div class="why-here">Stack DRAM dies on the processor over through-silicon vias for enormous bandwidth. The architecture that became High-Bandwidth Memory (HBM).</div>
+  </li>
+  <li>
+    <span class="title">Flipping Bits in Memory Without Accessing Them (RowHammer)</span> &mdash; Kim, Daly, Kim, Fallin, Lee, Lee, Wilkerson, Lai, Mutlu
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>ISCA 2014 &middot; <a href="https://doi.org/10.1145/2678373.2665726">DOI</a> &middot; <a href="https://people.inf.ethz.ch/omutlu/pub/dram-row-hammer_isca14.pdf">PDF</a></div>
+    <div class="why-here">Hammering one DRAM row flips bits in its neighbors — a scaling reliability flaw that became a security problem.</div>
+  </li>
+</ol>
+
+<h2>Address translation</h2>
+<p class="grouphdr">The hierarchy only feels like "one level" if translation is cheap; TLBs and page-walk caching keep it so.</p>
+<ol class="papers" start="16" style="counter-reset:item 15;">
+  <li>
+    <span class="title">Translation Caching: Skip, Don't Walk (the Page Table)</span> &mdash; Thomas Barr, Alan Cox, Scott Rixner
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>ISCA 2010 &middot; <a href="https://doi.org/10.1145/1815961.1815970">DOI</a> &middot; <a href="https://www.cs.rice.edu/CS/Architecture/docs/barr-isca10.pdf">PDF</a></div>
+    <div class="why-here">A taxonomy of MMU caches that shortcut the radix-tree page walk. Why TLB misses stay cheap as address spaces and virtualization deepen the page table.</div>
+  </li>
+</ol>
+
+<h2>The storage stack: disk, flash, persistent memory</h2>
+<p class="grouphdr">Below DRAM the same hierarchy ideas meet mechanical latency, flash's erase-before-write, and byte-addressable non-volatile memory.</p>
+<ol class="papers" start="17" style="counter-reset:item 16;">
+  <li>
+    <span class="title">A Case for Redundant Arrays of Inexpensive Disks (RAID)</span> &mdash; David Patterson, Garth Gibson, Randy Katz
+    <div class="meta"><span class="badge b-pdf">PDF&middot;8pp</span>SIGMOD 1988 &middot; <a href="https://doi.org/10.1145/50202.50214">DOI</a> &middot; <a href="https://www.cs.cmu.edu/~garth/RAIDpaper/Patterson88.pdf">PDF</a></div>
+    <div class="why-here">Trade many cheap disks for the reliability and bandwidth of one expensive one. The taxonomy (RAID 0–5) that named the storage-reliability design space.</div>
+  </li>
+  <li>
+    <span class="title">The Design and Implementation of a Log-Structured File System</span> &mdash; Mendel Rosenblum, John Ousterhout
+    <div class="meta"><span class="badge b-pdf">PDF&middot;27pp</span>ACM TOCS 1992 &middot; <a href="https://doi.org/10.1145/146941.146943">DOI</a> &middot; <a href="https://web.stanford.edu/~ouster/cgi-bin/papers/lfs.pdf">PDF</a></div>
+    <div class="why-here">Treat the disk as an append-only log to make writes sequential. The copy-on-write idea behind modern flash, WAFL, and ZFS-style file systems.</div>
+  </li>
+  <li>
+    <span class="title">Design Tradeoffs for SSD Performance</span> &mdash; Agrawal, Prabhakaran, Wobber, Davis, Manasse, Panigrahy
+    <div class="meta"><span class="badge b-pdf">PDF&middot;14pp</span>USENIX ATC 2008 &middot; <a href="https://www.usenix.org/legacy/events/usenix08/tech/full_papers/agrawal/agrawal.pdf">PDF</a></div>
+    <div class="why-here">How an SSD's internal parallelism, mapping, and cleaning interact — the systems framing of what a flash device actually is.</div>
+  </li>
+  <li>
+    <span class="title">DFTL: A Flash Translation Layer Employing Demand-Based Selective Caching of Page-Level Address Mappings</span> &mdash; Aayush Gupta, Youngjae Kim, Bhuvan Urgaonkar
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>ASPLOS 2009 &middot; <a href="https://doi.org/10.1145/1508284.1508271">DOI</a> &middot; <a href="https://pdfs.semanticscholar.org/5016/c8c7f2795f9f6828edbedd0f1a587863ea6d.pdf">PDF</a></div>
+    <div class="why-here">The reference demand-paged FTL: keep only hot address mappings on-chip. How SSDs hide erase-before-write and wear behind a block interface.</div>
+  </li>
+  <li>
+    <span class="title">Architecting Phase Change Memory as a Scalable DRAM Alternative</span> &mdash; Benjamin Lee, Engin Ipek, Onur Mutlu, Doug Burger
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>ISCA 2009 &middot; <a href="https://doi.org/10.1145/1555754.1555758">DOI</a> &middot; <a href="https://www.seas.upenn.edu/~leebcc/documents/lee2009-isca.pdf">PDF</a></div>
+    <div class="why-here">Makes slow, wear-limited PCM viable as main memory via buffering, partial writes, and wear management. The paper that put non-volatile main memory on the architecture agenda.</div>
+  </li>
+  <li>
+    <span class="title">Better I/O Through Byte-Addressable, Persistent Memory (BPFS)</span> &mdash; Condit, Nightingale, Frost, Ipek, Lee, Burger, Coetzee
+    <div class="meta"><span class="badge b-pdf">PDF&middot;14pp</span>SOSP 2009 &middot; <a href="https://doi.org/10.1145/1629575.1629589">DOI</a> &middot; <a href="https://www.sigops.org/s/conferences/sosp/2009/papers/condit-sosp09.pdf">PDF</a></div>
+    <div class="why-here">A file system for byte-addressable NVM with an atomic-update discipline (short-circuit shadow paging) — an early, influential persistent-memory consistency model.</div>
+  </li>
+</ol>
+
+<h2>Beyond the box: disaggregation</h2>
+<p class="grouphdr">The last move detaches memory from the server and reaches it across a fabric.</p>
+<ol class="papers" start="23" style="counter-reset:item 22;">
+  <li>
+    <span class="title">Disaggregated Memory for Expansion and Sharing in Blade Servers</span> &mdash; Lim, Chang, Mudge, Ranganathan, Reinhardt, Wenisch
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>ISCA 2009 &middot; <a href="https://doi.org/10.1145/1555754.1555789">DOI</a> &middot; <a href="https://safari.ethz.ch/architecture/fall2021/lib/exe/fetch.php?media=isca09-disaggregate.pdf">PDF</a></div>
+    <div class="why-here">A network-attached "memory blade" that servers page into — the architectural root of today's CXL and rack-scale memory pooling.</div>
+  </li>
+</ol>
+
+<div class="why">
+<b>One idea, every scale.</b> A cache line, a DRAM row buffer, a TLB entry, an FTL
+mapping, and a paged-in remote blade are all the same move: a small fast tier caching
+a large slow one. The recurring levers — <em>what to fetch</em> (prefetch),
+<em>what to keep</em> (replacement/insertion), <em>what order to service</em>
+(scheduling), and <em>how to translate</em> (paging/FTL) — reappear top to bottom.
+Read the list and you're really learning one mechanism five times.
+</div>
+
+<h2>Reference shelf &mdash; books</h2>
+<p class="grouphdr">The standard texts for the area; free copies linked where a legal one exists.</p>
+<ul class="refs">
+  <li><span class="badge b-book">BOOK&middot;700pp</span><b>Operating Systems: Three Easy Pieces</b> &mdash; Remzi &amp; Andrea Arpaci-Dusseau (2018) &middot; Free, superbly clear chapters on paging &amp; TLBs, RAID, log-structured file systems, and flash-based SSDs — the systems-side companion to the hardware papers above. <a href="https://pages.cs.wisc.edu/~remzi/OSTEP/">book</a></li>
+  <li><span class="badge b-buy">BUY&middot;936pp</span><b>Computer Architecture: A Quantitative Approach</b> &mdash; John Hennessy, David Patterson (6th ed. 2017) &middot; Chapter 2 and Appendix B are the standard textbook treatment of caches and the memory hierarchy. <a href="https://shop.elsevier.com/books/computer-architecture/hennessy/978-0-12-811905-1">page</a></li>
+  <li><span class="badge b-buy">BUY&middot;1017pp</span><b>Memory Systems: Cache, DRAM, Disk</b> &mdash; Bruce Jacob, Spencer Ng, David Wang (2007) &middot; The most thorough single reference on the entire memory-and-storage stack, from SRAM cells to disk mechanics. <a href="https://shop.elsevier.com/books/memory-systems/jacob/978-0-12-379751-3">page</a></li>
+</ul>
+
+<h2>Key terms</h2>
+<p class="grouphdr">Vocabulary used across this list.</p>
+<div class="notekey"><b>miss ratio</b> &mdash; fraction of accesses not satisfied by a cache level; the primary figure of merit throughout &nbsp; <b>stack distance</b> &mdash; how many distinct lines were touched since a line's last use; the basis of one-pass, all-sizes miss-ratio simulation &nbsp; <b>MIN / Bélády's optimal</b> &mdash; the unrealizable policy that evicts the line reused farthest in the future; the lower bound on misses &nbsp; <b>MSHR</b> &mdash; Miss Status Holding Register; lets a non-blocking cache track outstanding misses and keep serving hits &nbsp; <b>victim cache</b> &mdash; a small fully-associative buffer holding recently evicted lines to undo conflict misses &nbsp; <b>stream buffer</b> &mdash; a prefetch queue that runs ahead of sequential accesses without polluting the cache &nbsp; <b>stride / Markov prefetch</b> &mdash; predicting future addresses from constant strides, or from learned miss-to-miss correlations &nbsp; <b>insertion / replacement policy</b> &mdash; where a new line enters the recency order (DIP) and which line leaves (LRU, RRIP) &nbsp; <b>NUCA</b> &mdash; Non-Uniform Cache Architecture; a banked cache where hit latency depends on a line's physical distance &nbsp; <b>row buffer</b> &mdash; the sense-amp latch holding an open DRAM row; a hit here is far faster than opening a new row &nbsp; <b>FR-FCFS</b> &mdash; First-Ready, First-Come-First-Served; the DRAM scheduling policy that prioritizes row-buffer hits &nbsp; <b>bank-level parallelism</b> &mdash; overlapping accesses to independent DRAM banks to hide activation/precharge latency &nbsp; <b>RowHammer</b> &mdash; repeated activations of one DRAM row flipping bits in adjacent rows; a reliability and security flaw &nbsp; <b>TLB / page-walk cache</b> &mdash; hardware that caches virtual-to-physical translations and intermediate page-table nodes &nbsp; <b>RAID</b> &mdash; Redundant Array of Inexpensive Disks; striping plus parity for bandwidth and fault tolerance &nbsp; <b>log-structured</b> &mdash; writing all updates sequentially to an append-only log, cleaning free space in the background &nbsp; <b>FTL</b> &mdash; Flash Translation Layer; the SSD firmware mapping logical blocks onto flash pages, hiding erase-before-write &nbsp; <b>write amplification / wear leveling</b> &mdash; extra physical writes caused by flash cleaning, and spreading them to prolong device life &nbsp; <b>PCM / persistent memory</b> &mdash; non-volatile, byte-addressable memory (e.g. phase-change) usable as slow, durable main memory &nbsp; <b>memory disaggregation</b> &mdash; detaching memory from the server so it can be pooled and shared across a fabric (e.g. CXL)</div>
 
 </body>
 </html>

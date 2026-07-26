@@ -8,51 +8,195 @@
 <body>
 
 <h1>Computer architecture · Superscalar &amp; out-of-order execution</h1>
-<p class="sub">The datapath of high-performance cores: dynamic scheduling, register renaming, precise state, wide issue, and the limits of instruction-level parallelism.</p>
-<p class="tally">In-depth landmark list for this subtopic. <span class="badge b-pdf">PDF</span>open copy available &middot; <span class="badge b-web">DOI</span>publisher link only.</p>
+<p class="sub">The datapath of high-performance cores: dynamic scheduling, register renaming, precise state, wide issue, and the limits of instruction-level parallelism. The path below starts with the two original dynamic-scheduling engines, adds the machinery that makes speculation <em>safe</em> (precise state), pins down the vocabulary and design space, asks how much parallelism is actually out there, then shows how real machines chase it past the obvious limits — widening the front end, then scaling the window without melting the clock — and ends in three shipped cores that assemble every idea.</p>
+<p class="tally">24 papers &middot; &asymp; <b>277 pp</b> of primary reading. &nbsp; Legend: <span class="badge b-pdf">PDF</span>open copy (see <span class="file">fetch.sh</span>) &middot; <span class="badge b-web">DOI</span>publisher link only</p>
+<div class="why"><b>How to read this list.</b> Read the CDC 6600 and Tomasulo first: every modern core is still one of these two mechanisms (a scoreboard, or reservation stations with renaming) made precise and made wide. Next comes the precise-state work that turned out-of-order execution from a curiosity into something you can build a real ISA on. Only then are the survey, the limit studies, and the speculation papers worth reading — they all argue over how far to push those first two engines. The last two sections are the modern refinement: how to keep widening and deepening the window when the issue logic, register file, and memory latency all fight back.</div>
 
-<ol class="papers">
+<h2>The two original engines</h2>
+<p class="grouphdr">Where out-of-order execution began; every core since descends from one of these two.</p>
+<ol class="papers" start="1">
   <li>
-    <span class="title">An Efficient Algorithm for Exploiting Multiple Arithmetic Units</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1147/rd.111.0025">DOI</a> &middot; <a href="https://www.cs.virginia.edu/~evans/greatworks/tomasulo.pdf">PDF</a></div>
-    <div class="why-here">Robert M. Tomasulo, 1967, IBM J. R&amp;D. Reservation stations + register renaming + the common data bus.</div>
+    <span class="title">Parallel Operation in the Control Data 6600</span> &mdash; James E. Thornton
+    <div class="meta"><span class="badge b-pdf">PDF&middot;8pp</span>AFIPS FJCC 1964 &middot; <a href="https://doi.org/10.1145/1464039.1464045">DOI</a> &middot; <a href="https://bitsavers.org/pdf/afips/1964-10_%2326_Part_2.pdf">PDF</a></div>
+    <div class="why-here">The CDC 6600 scoreboard: the first hardware dynamic instruction scheduling. (Open PDF is the full AFIPS proceedings scan; the paper begins at p. 33.)</div>
   </li>
   <li>
-    <span class="title">Parallel Operation in the Control Data 6600</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/1464039.1464045">DOI</a></div>
-    <div class="why-here">James E. Thornton, 1964, AFIPS. The CDC 6600 scoreboard: the first dynamic instruction scheduling.</div>
-  </li>
-  <li>
-    <span class="title">Implementation of Precise Interrupts in Pipelined Processors</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/327070.327125">DOI</a> &middot; <a href="https://courses.cs.washington.edu/courses/cse590g/04sp/Smith-1985-Implementation-of-Precise-Interrupts-in-Pipelined-Processors.pdf">PDF</a></div>
-    <div class="why-here">Smith, Pleszkun, 1985, ISCA. The reorder buffer and precise interrupts (in-order retirement).</div>
-  </li>
-  <li>
-    <span class="title">HPS, a New Microarchitecture: Rationale and Introduction</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/18927.18916">DOI</a></div>
-    <div class="why-here">Patt, Hwu, Shebanow, 1985, MICRO-18. Restricted dataflow: the blueprint for aggressive OoO speculation.</div>
-  </li>
-  <li>
-    <span class="title">Superscalar Microprocessor Design</span>
-    <div class="meta"><span class="badge b-web">DOI</span></div>
-    <div class="why-here">Mike Johnson, 1991, Prentice Hall. The first book systematizing fetch/rename/dispatch/completion. (ISBN 0-13-875634-1)</div>
-  </li>
-  <li>
-    <span class="title">The Microarchitecture of Superscalar Processors</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1109/5.476078">DOI</a></div>
-    <div class="why-here">Smith, Sohi, 1995, Proceedings of the IEEE. The canonical survey defining the field's vocabulary.</div>
-  </li>
-  <li>
-    <span class="title">Limits of Instruction-Level Parallelism</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/106972.106991">DOI</a></div>
-    <div class="why-here">David W. Wall, 1991, ASPLOS-IV. The landmark limit study on realistically available ILP.</div>
-  </li>
-  <li>
-    <span class="title">Memory Dependence Prediction Using Store Sets</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/279361.279378">DOI</a></div>
-    <div class="why-here">Chrysos, Emer, 1998, ISCA. Store-sets memory disambiguation for accurate speculative load/store reordering.</div>
+    <span class="title">An Efficient Algorithm for Exploiting Multiple Arithmetic Units</span> &mdash; Robert M. Tomasulo
+    <div class="meta"><span class="badge b-pdf">PDF&middot;9pp</span>IBM J. R&amp;D 1967 &middot; <a href="https://doi.org/10.1147/rd.111.0025">DOI</a> &middot; <a href="https://www.cs.virginia.edu/~evans/greatworks/tomasulo.pdf">PDF</a></div>
+    <div class="why-here">Reservation stations, register renaming, and the common data bus — the algorithm at the heart of every OoO core.</div>
   </li>
 </ol>
+
+<h2>Making speculation safe: precise state</h2>
+<p class="grouphdr">Out-of-order execution is only usable if the machine can still present in-order architectural state on an interrupt or misprediction; these define how.</p>
+<ol class="papers" start="3" style="counter-reset:item 2;">
+  <li>
+    <span class="title">Implementation of Precise Interrupts in Pipelined Processors</span> &mdash; James E. Smith, Andrew R. Pleszkun
+    <div class="meta"><span class="badge b-pdf">PDF&middot;9pp</span>ISCA 1985 &middot; <a href="https://doi.org/10.1145/327070.327125">DOI</a> &middot; <a href="https://www.ardent-tool.com/CPU/docs/AMD/anatomy/misc/articles/smith.pdf">PDF</a></div>
+    <div class="why-here">Introduces the reorder buffer and in-order retirement — the standard way to keep precise state under out-of-order completion. (Open PDF is the extended IEEE Trans. Computers 1988 version.)</div>
+  </li>
+  <li>
+    <span class="title">HPS, a New Microarchitecture: Rationale and Introduction</span> &mdash; Yale Patt, Wen-mei Hwu, Michael Shebanow
+    <div class="meta"><span class="badge b-pdf">PDF&middot;6pp</span>MICRO-18 1985 &middot; <a href="https://doi.org/10.1145/18927.18916">DOI</a> &middot; <a href="https://hps.ece.utexas.edu/pub/patt_micro18.pdf">PDF</a></div>
+    <div class="why-here">"Restricted dataflow": the blueprint for aggressive OoO with checkpoint/recovery that later cores followed.</div>
+  </li>
+  <li>
+    <span class="title">Instruction Issue Logic for High-Performance, Interruptible, Multiple Functional Unit, Pipelined Computers</span> &mdash; Gurindar S. Sohi
+    <div class="meta"><span class="badge b-pdf">PDF&middot;11pp</span>IEEE Trans. Computers 1990 &middot; <a href="https://doi.org/10.1109/12.48865">DOI</a> &middot; <a href="https://www.eecs.harvard.edu/cs146-246/sohi-ruu.pdf">PDF</a></div>
+    <div class="why-here">The register update unit (RUU): a single structure unifying issue, renaming, and precise interrupts — the most concrete "how to build it" of this group.</div>
+  </li>
+</ol>
+
+<h2>Naming the machine: the canonical models</h2>
+<p class="grouphdr">With the pieces in place, these give the vocabulary and the design space you'll use to reason about any core.</p>
+<ol class="papers" start="6" style="counter-reset:item 5;">
+  <li>
+    <span class="title">The Microarchitecture of Superscalar Processors</span> &mdash; James E. Smith, Gurindar S. Sohi
+    <div class="meta"><span class="badge b-pdf">PDF&middot;16pp</span>Proceedings of the IEEE 1995 &middot; <a href="https://doi.org/10.1109/5.476078">DOI</a> &middot; <a href="https://minds.wisconsin.edu/bitstream/1793/9476/1/file_1.pdf">PDF</a></div>
+    <div class="why-here">The canonical survey that fixed the field's vocabulary (fetch, dispatch, issue, complete, retire); read this to organize everything else.</div>
+  </li>
+  <li>
+    <span class="title">The Design Space of Register Renaming Techniques</span> &mdash; Dezső Sima
+    <div class="meta"><span class="badge b-web">DOI&middot;14pp</span>IEEE Micro 2000 &middot; <a href="https://doi.org/10.1109/40.877952">DOI</a></div>
+    <div class="why-here">Systematizes renaming into scope, rename-buffer layout, mapping method, and rename rate — the taxonomy behind RATs, physical register files, and merged register files.</div>
+  </li>
+</ol>
+
+<h2>How much parallelism is really there?</h2>
+<p class="grouphdr">Before building ever-wider machines, know the ceiling; these two limit studies set the terms of the debate for a decade.</p>
+<ol class="papers" start="8" style="counter-reset:item 7;">
+  <li>
+    <span class="title">Available Instruction-Level Parallelism for Superscalar and Superpipelined Machines</span> &mdash; Norman P. Jouppi, David W. Wall
+    <div class="meta"><span class="badge b-pdf">PDF&middot;11pp</span>ASPLOS 1989 &middot; <a href="https://doi.org/10.1145/68182.68207">DOI</a> &middot; <a href="https://web.archive.org/web/2020id_/https://www.hpl.hp.com/techreports/Compaq-DEC/WRL-89-7.pdf">PDF</a></div>
+    <div class="why-here">Measures how much ILP realistic hardware can find, and how superscalar and superpipelined designs compare. (Open PDF is the extended WRL Research Report 89/7.)</div>
+  </li>
+  <li>
+    <span class="title">Limits of Instruction-Level Parallelism</span> &mdash; David W. Wall
+    <div class="meta"><span class="badge b-pdf">PDF&middot;13pp</span>ASPLOS-IV 1991 &middot; <a href="https://doi.org/10.1145/106972.106991">DOI</a> &middot; <a href="https://web.archive.org/web/20220116144814id_/https://www.hpl.hp.com/techreports/Compaq-DEC/WRL-93-6.pdf">PDF</a></div>
+    <div class="why-here">The landmark study on realistically available ILP under perfect and imperfect prediction — the number that told architects where speculation had to go next. (Open PDF is the fuller WRL Research Report 93/6.)</div>
+  </li>
+</ol>
+
+<h2>Beating the dataflow limit: speculating on data and memory</h2>
+<p class="grouphdr">The limit studies motivated speculating past true dependences — on memory ordering, then on values themselves.</p>
+<ol class="papers" start="10" style="counter-reset:item 9;">
+  <li>
+    <span class="title">Memory Dependence Prediction Using Store Sets</span> &mdash; George Z. Chrysos, Joel S. Emer
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>ISCA 1998 &middot; <a href="https://doi.org/10.1145/279361.279378">DOI</a> &middot; <a href="https://people.csail.mit.edu/emer/media/papers/1990s/1998/1998.06.isca.storesets.pdf">PDF</a></div>
+    <div class="why-here">Store-sets memory disambiguation: lets loads speculate past stores accurately, the scheme the Alpha 21264 shipped.</div>
+  </li>
+  <li>
+    <span class="title">Value Locality and Load Value Prediction</span> &mdash; Mikko H. Lipasti, Christopher B. Wilkerson, John Paul Shen
+    <div class="meta"><span class="badge b-pdf">PDF&middot;10pp</span>ASPLOS 1996 &middot; <a href="https://doi.org/10.1145/237090.237173">DOI</a> &middot; <a href="https://pharm.ece.wisc.edu/mikko/oldpapers/asplos7.pdf">PDF</a></div>
+    <div class="why-here">Observes that loads often return the same value and predicts it — the opening move in value prediction, which speculates <em>through</em> true data dependences.</div>
+  </li>
+</ol>
+
+<h2>Feeding and widening the machine</h2>
+<p class="grouphdr">Wide issue is worthless if you can't fetch fast enough or there aren't enough independent instructions in one thread; four different answers, from a wider fetch to splitting the stream across engines.</p>
+<ol class="papers" start="12" style="counter-reset:item 11;">
+  <li>
+    <span class="title">Trace Cache: a Low Latency Approach to High Bandwidth Instruction Fetching</span> &mdash; Eric Rotenberg, Steve Bennett, James E. Smith
+    <div class="meta"><span class="badge b-pdf">PDF&middot;11pp</span>MICRO-29 1996 &middot; <a href="https://doi.org/10.1109/MICRO.1996.566447">DOI</a> &middot; <a href="https://www.eecs.harvard.edu/cs146-246/micro.trace-cache.pdf">PDF</a></div>
+    <div class="why-here">Caches dynamic instruction traces so a wide front end can fetch past taken branches — later shipped as the Pentium 4's execution trace cache.</div>
+  </li>
+  <li>
+    <span class="title">Multiscalar Processors</span> &mdash; Gurindar S. Sohi, Scott E. Breach, T. N. Vijaykumar
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>ISCA 1995 &middot; <a href="https://doi.org/10.1145/223982.224451">DOI</a> &middot; <a href="https://ftp.cs.wisc.edu/sohi/papers/1995/isca.multiscalar.pdf">PDF</a></div>
+    <div class="why-here">Splits one program across cooperating processing units to reach ILP a single window can't — the road not taken by mainstream cores, and still influential.</div>
+  </li>
+  <li>
+    <span class="title">Trace Processors</span> &mdash; Eric Rotenberg, Quinn Jacobson, Yiannakis Sazeides, James E. Smith
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>MICRO-30 1997 &middot; <a href="https://doi.org/10.1109/MICRO.1997.645805">DOI</a> &middot; <a href="https://ftp.cs.wisc.edu/sohi/papers/1997/micro.trace-processors.pdf">PDF</a></div>
+    <div class="why-here">Builds a distributed core around the trace: hierarchical registers and multiple processing elements each run one trace, so the effective window grows without a single monolithic issue window — the multiscalar idea fused with the trace cache.</div>
+  </li>
+  <li>
+    <span class="title">Simultaneous Multithreading: Maximizing On-Chip Parallelism</span> &mdash; Dean M. Tullsen, Susan J. Eggers, Henry M. Levy
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>ISCA 1995 &middot; <a href="https://doi.org/10.1109/isca.1995.524578">DOI</a> &middot; <a href="https://cseweb.ucsd.edu/~tullsen/isca95.pdf">PDF</a></div>
+    <div class="why-here">When one thread runs dry, fill the wide issue width from several — the idea behind Hyper-Threading and modern SMT cores.</div>
+  </li>
+</ol>
+
+<h2>Scaling the window without melting the clock</h2>
+<p class="grouphdr">Making the window wide and deep runs into quadratic wakeup/bypass/register cost and the memory wall; these are the refinements that let real cores keep scaling.</p>
+<ol class="papers" start="16" style="counter-reset:item 15;">
+  <li>
+    <span class="title">Complexity-Effective Superscalar Processors</span> &mdash; Subbarao Palacharla, Norman P. Jouppi, James E. Smith
+    <div class="meta"><span class="badge b-pdf">PDF&middot;13pp</span>ISCA 1997 &middot; <a href="https://doi.org/10.1145/264107.264201">DOI</a> &middot; <a href="https://ftp.cs.wisc.edu/sohi/papers/1997/isca.complexity.pdf">PDF</a></div>
+    <div class="why-here">Shows which structures (wakeup, selection, bypass) grow quadratically and cap the clock, then proposes a clustered, dependence-steered issue window — the framing paper for every later scaling trick.</div>
+  </li>
+  <li>
+    <span class="title">Reducing the Complexity of the Register File in Dynamic Superscalar Processors</span> &mdash; Rajeev Balasubramonian, Sandhya Dwarkadas, David H. Albonesi
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>MICRO-34 2001 &middot; <a href="https://doi.org/10.1109/MICRO.2001.991122">DOI</a> &middot; <a href="https://www.csl.cornell.edu/~albonesi/research/papers/micro01.pdf">PDF</a></div>
+    <div class="why-here">A two-level, banked physical register file that keeps the fast structure small — the direct attack on the register-file cost Palacharla flags.</div>
+  </li>
+  <li>
+    <span class="title">Runahead Execution: An Alternative to Very Large Instruction Windows for Out-of-Order Processors</span> &mdash; Onur Mutlu, Jared Stark, Chris Wilkerson, Yale N. Patt
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>HPCA 2003 &middot; <a href="https://doi.org/10.1109/HPCA.2003.1183532">DOI</a> &middot; <a href="https://hps.ece.utexas.edu/pub/mutlu_hpca03.pdf">PDF</a></div>
+    <div class="why-here">Rather than build a huge window, keep executing speculatively past a stalling L2 miss purely to generate prefetches — buying memory-level parallelism with a small window.</div>
+  </li>
+  <li>
+    <span class="title">Checkpoint Processing and Recovery: Towards Scalable Large Instruction Window Processors</span> &mdash; Haitham Akkary, Ravi Rajwar, Srikanth T. Srinivasan
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>MICRO-36 2003 &middot; <a href="https://doi.org/10.1109/MICRO.2003.1253246">DOI</a> &middot; <a href="https://microarch.org/micro36/html/pdf/akkary-CheckpointProcessing.pdf">PDF</a></div>
+    <div class="why-here">Replaces the per-instruction reorder buffer with sparse checkpoints and aggressive register reclamation, so a very large window needs no correspondingly large cycle-critical structures.</div>
+  </li>
+  <li>
+    <span class="title">Continual Flow Pipelines</span> &mdash; Srikanth T. Srinivasan, Ravi Rajwar, Haitham Akkary, Amit Gandhi, Mike Upton
+    <div class="meta"><span class="badge b-pdf">PDF&middot;13pp</span>ASPLOS 2004 &middot; <a href="https://doi.org/10.1145/1024393.1024407">DOI</a> &middot; <a href="https://pages.cs.wisc.edu/~rajwar/papers/asplos04.pdf">PDF</a></div>
+    <div class="why-here">Drains miss-dependent instructions out of the scheduler and register file into a slice buffer and replays them when the miss returns — a large effective window with small scheduler and register file.</div>
+  </li>
+  <li>
+    <span class="title">Pipeline Gating: Speculation Control for Energy Reduction</span> &mdash; Srilatha Manne, Artur Klauser, Dirk Grunwald
+    <div class="meta"><span class="badge b-pdf">PDF&middot;10pp</span>ISCA 1998 &middot; <a href="https://doi.org/10.1109/ISCA.1998.694769">DOI</a> &middot; <a href="https://users.cs.utah.edu/~rajeev/cs7810/papers/manne98.pdf">PDF</a></div>
+    <div class="why-here">Wide speculation wastes energy on wrong-path work; gate the front end when branch confidence is low — the power counterpart to all the performance-chasing above.</div>
+  </li>
+</ol>
+
+<h2>Three machines that put it all together</h2>
+<p class="grouphdr">See the ideas above as shipped silicon, from three very different design philosophies.</p>
+<ol class="papers" start="22" style="counter-reset:item 21;">
+  <li>
+    <span class="title">The MIPS R10000 Superscalar Microprocessor</span> &mdash; Kenneth C. Yeager
+    <div class="meta"><span class="badge b-pdf">PDF&middot;13pp</span>IEEE Micro 1996 &middot; <a href="https://doi.org/10.1109/40.491460">DOI</a> &middot; <a href="https://ece552.ece.wisc.edu/mipsr10000.pdf">PDF</a></div>
+    <div class="why-here">The first widely shipped commercial OoO core to use a physical register file with map tables and an active list — textbook renaming made real, and the concrete model most courses teach.</div>
+  </li>
+  <li>
+    <span class="title">The Alpha 21264 Microprocessor</span> &mdash; Richard E. Kessler
+    <div class="meta"><span class="badge b-web">DOI&middot;13pp</span>IEEE Micro 1999 &middot; <a href="https://doi.org/10.1109/40.755465">DOI</a></div>
+    <div class="why-here">A clean, aggressive OoO core: register renaming, a large instruction window, store-sets memory speculation, and a clustered integer datapath.</div>
+  </li>
+  <li>
+    <span class="title">The Microarchitecture of the Pentium 4 Processor</span> &mdash; Glenn Hinton et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;13pp</span>Intel Technology Journal 2001 &middot; <a href="http://www.ecs.umass.edu/ece/koren/ece568/papers/Pentium4.pdf">PDF</a></div>
+    <div class="why-here">NetBurst: a very deep pipeline, an execution trace cache, and a double-pumped ALU — the contrasting bet on frequency over width.</div>
+  </li>
+</ol>
+
+<div class="why">
+<b>One window, two mechanisms.</b> Strip away four decades of engineering and every
+out-of-order core is still either a <em>scoreboard</em> (CDC 6600 — track readiness in a
+central table) or <em>reservation stations with renaming</em> (Tomasulo — let each
+operation wait on a tag and grab its inputs off a broadcast bus). Everything after is
+about making that engine <em>precise</em> (reorder buffer, RUU), <em>wide</em> (trace
+cache, trace/multiscalar processors, SMT), and <em>speculative</em> — past branches, past
+memory ordering, even past data values — because the limit studies showed the parallelism
+is only there if you are willing to guess. The last turn is <em>scale</em>: once wakeup,
+bypass, the register file, and memory latency all push back, the wins come from clustering,
+smaller cycle-critical structures, checkpoints, and running ahead — not from a bigger
+monolithic window.
+</div>
+
+<h2>Reference shelf &mdash; books</h2>
+<p class="grouphdr">The standard texts for the area; free copies linked where a legal one exists.</p>
+<ul class="refs">
+  <li><span class="badge b-buy">BUY&middot;642pp</span><b>Modern Processor Design: Fundamentals of Superscalar Processors</b> &mdash; John Paul Shen, Mikko H. Lipasti (2013) &middot; The standard graduate text on superscalar organization; the natural home base for every paper above. <a href="https://www.waveland.com/browse.php?t=624">page</a></li>
+  <li><span class="badge b-buy">BUY&middot;288pp</span><b>Superscalar Microprocessor Design</b> &mdash; Mike Johnson (1991) &middot; The first book to systematize fetch / rename / dispatch / completion, written from the HPS-era design experience. (ISBN 0-13-875634-1) <a href="https://openlibrary.org/isbn/0138756341">page</a></li>
+  <li><span class="badge b-buy">BUY&middot;936pp</span><b>Computer Architecture: A Quantitative Approach</b> &mdash; John L. Hennessy, David A. Patterson (6th ed. 2017) &middot; Chapter 3 ("Instruction-Level Parallelism and Its Exploitation") is the quantitative companion to this whole list. <a href="https://shop.elsevier.com/books/computer-architecture/hennessy/978-0-12-811905-1">page</a></li>
+</ul>
+
+<h2>Key terms</h2>
+<p class="grouphdr">Vocabulary used across this list.</p>
+<div class="notekey"><b>scoreboard</b> &mdash; a central table tracking which registers and functional units are busy, used to issue instructions out of order while stalling on hazards (CDC 6600) &nbsp; <b>reservation station</b> &mdash; a buffer holding a waiting operation and its operands (or the tags it is waiting for), so the operation can fire as soon as its inputs are ready (Tomasulo) &nbsp; <b>register renaming</b> &mdash; mapping architectural registers to a larger pool of physical/rename registers to remove false (WAR/WAW) dependences &nbsp; <b>register alias table (RAT)</b> &mdash; the map from architectural to physical registers that renaming maintains and checkpoints &nbsp; <b>physical register file (PRF)</b> &mdash; a single pool of physical registers holding both in-flight and committed values, addressed through the rename map; the R10000/21264 organization Sima's taxonomy calls the merged file &nbsp; <b>reorder buffer (ROB)</b> &mdash; a FIFO that holds results until instructions retire in program order, giving precise interrupts under out-of-order completion &nbsp; <b>precise interrupt</b> &mdash; an interrupt or exception at which architectural state is exactly as if instructions executed strictly in order up to the faulting one &nbsp; <b>in-order retirement (commit)</b> &mdash; committing results to architectural state in program order, even though execution finished out of order &nbsp; <b>checkpoint recovery</b> &mdash; restoring state to a saved snapshot rather than unwinding a per-instruction buffer, so the window can grow without a large ROB (CPR) &nbsp; <b>wakeup and select</b> &mdash; the issue-logic step that flags ready operations (wakeup) and picks which fire this cycle (select); its delay grows with window size and issue width &nbsp; <b>clustered microarchitecture</b> &mdash; splitting the issue window, register file, and bypass network into smaller clusters to keep per-cluster delay low, at the cost of inter-cluster forwarding &nbsp; <b>instruction-level parallelism (ILP)</b> &mdash; independent instructions that can execute concurrently; the resource all of this hardware exists to harvest &nbsp; <b>memory-level parallelism (MLP)</b> &mdash; overlapping several outstanding cache misses so their latencies hide behind one another; what runahead and continual-flow pipelines chase &nbsp; <b>memory disambiguation</b> &mdash; deciding at run time whether a load and an earlier store touch the same address, so loads can be reordered ahead of stores safely &nbsp; <b>value prediction</b> &mdash; predicting an instruction's result to break a true data dependence speculatively &nbsp; <b>trace cache</b> &mdash; an instruction cache holding dynamic execution traces so a wide front end can fetch across taken branches in one access &nbsp; <b>runahead execution</b> &mdash; continuing speculative execution past a stalling long-latency miss purely to prefetch, then discarding the results and restarting &nbsp; <b>pipeline gating</b> &mdash; throttling the front end when branch confidence is low, to stop wrong-path instructions from wasting energy &nbsp; <b>simultaneous multithreading (SMT)</b> &mdash; issuing instructions from several threads in the same cycle to fill a wide core's unused issue slots</div>
 
 </body>
 </html>

@@ -8,61 +8,171 @@
 <body>
 
 <h1>Computer architecture · Multicore &amp; memory consistency</h1>
-<p class="sub">Shared-memory correctness and parallelism: consistency models, cache coherence, transactional memory, SMT/CMP, and the scaling wall.</p>
-<p class="tally">In-depth landmark list for this subtopic. <span class="badge b-pdf">PDF</span>open copy available &middot; <span class="badge b-web">DOI</span>publisher link only.</p>
+<p class="sub">Shared-memory correctness and parallelism: consistency models, cache coherence, synchronization, transactional memory, and the multicore scaling wall. The path below starts from the gold-standard contract — sequential consistency — then builds the coherence mechanism that makes many private caches behave like one memory, relaxes that model for speed, shows how software actually synchronizes on top of it, raises the abstraction with transactional memory, and ends at the hardware that made multicore ubiquitous and the energy limit that capped it.</p>
+<p class="tally">22 papers &middot; &asymp; <b>270 pp</b> of primary reading. &nbsp; Legend: <span class="badge b-pdf">PDF</span>open copy (see <span class="file">fetch.sh</span>) &middot; <span class="badge b-web">DOI</span>publisher link only</p>
+<div class="why"><b>Coherence vs. consistency — keep them separate.</b> <em>Coherence</em> is about a single memory location: all processors must agree on the order of writes to it. <em>Consistency</em> (the memory model) is about how accesses to <em>different</em> locations may be reordered and observed across processors. Coherence is a mechanism; the consistency model is the programmer-visible contract. Most confusion in this area comes from conflating the two.</div>
 
-<ol class="papers">
+<h2>The contract: sequential consistency</h2>
+<p class="grouphdr">Start here — the intuitive gold-standard model every later relaxation is measured against.</p>
+<ol class="papers" start="1">
   <li>
-    <span class="title">How to Make a Multiprocessor Computer That Correctly Executes Multiprocess Programs</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1109/TC.1979.1675439">DOI</a></div>
-    <div class="why-here">Leslie Lamport, 1979, IEEE TC. Defines sequential consistency.</div>
-  </li>
-  <li>
-    <span class="title">A New Solution to Coherence Problems in Multicache Systems</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1109/TC.1978.1675013">DOI</a></div>
-    <div class="why-here">Censier, Feautrier, 1978, IEEE TC. The directory-based coherence scheme behind scalable systems.</div>
-  </li>
-  <li>
-    <span class="title">A Low-Overhead Coherence Solution for Multiprocessors with Private Cache Memories</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/800015.808204">DOI</a></div>
-    <div class="why-here">Papamarcos, Patel, 1984, ISCA. The MESI/Illinois snooping protocol.</div>
-  </li>
-  <li>
-    <span class="title">Memory Consistency and Event Ordering in Scalable Shared-Memory Multiprocessors</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1109/ISCA.1990.134503">DOI</a></div>
-    <div class="why-here">Gharachorloo, Lenoski, Laudon, Gibbons, Gupta, Hennessy, 1990, ISCA. Introduces release consistency.</div>
-  </li>
-  <li>
-    <span class="title">Transactional Memory: Architectural Support for Lock-Free Data Structures</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/165123.165164">DOI</a> &middot; <a href="https://courses.csail.mit.edu/6.895/fall03/handouts/papers/HerlihyMo93.pdf">PDF</a></div>
-    <div class="why-here">Herlihy, Moss, 1993, ISCA. Launched hardware transactional memory.</div>
-  </li>
-  <li>
-    <span class="title">Simultaneous Multithreading: Maximizing On-Chip Parallelism</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/223982.224449">DOI</a> &middot; <a href="https://www.cs.sfu.ca/~alaa/courses/cmpt450/fall2022/papers/tullsen-isca-1995.pdf">PDF</a></div>
-    <div class="why-here">Tullsen, Eggers, Levy, 1995, ISCA. SMT: interleaving threads to fill idle issue slots.</div>
-  </li>
-  <li>
-    <span class="title">The Case for a Single-Chip Multiprocessor</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/237090.237140">DOI</a> &middot; <a href="http://arsenalfc.stanford.edu/kunle/publications/hydra_ASPLOS_VII.pdf">PDF</a></div>
-    <div class="why-here">Olukotun, Nayfeh, Hammond, Wilson, Chang, 1996, ASPLOS-VII. The multicore turn.</div>
-  </li>
-  <li>
-    <span class="title">Shared Memory Consistency Models: A Tutorial</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1109/2.546611">DOI</a></div>
-    <div class="why-here">Adve, Gharachorloo, 1996, IEEE Computer. The canonical map of relaxed-consistency models.</div>
-  </li>
-  <li>
-    <span class="title">Read-Copy Update: Using Execution History to Solve Concurrency Problems</span>
-    <div class="meta"><span class="badge b-web">DOI</span></div>
-    <div class="why-here">McKenney, Slingwine, 1998, PDCS. RCU: near-zero-overhead lock-free reads (now core to Linux).</div>
-  </li>
-  <li>
-    <span class="title">Dark Silicon and the End of Multicore Scaling</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/2000064.2000108">DOI</a></div>
-    <div class="why-here">Esmaeilzadeh, Blem, St. Amant, Sankaralingam, Burger, 2011, ISCA. The utilization wall capping multicore scaling.</div>
+    <span class="title">How to Make a Multiprocessor Computer That Correctly Executes Multiprocess Programs</span> &mdash; Leslie Lamport
+    <div class="meta"><span class="badge b-pdf">PDF&middot;2pp</span>IEEE TC 1979 &middot; <a href="https://doi.org/10.1109/TC.1979.1675439">DOI</a> &middot; <a href="https://lamport.azurewebsites.net/pubs/multi.pdf">PDF</a></div>
+    <div class="why-here">Two pages that define sequential consistency: the result of any execution is as if all operations ran in some single order respecting each processor's program order. The reference point for the whole area.</div>
   </li>
 </ol>
+
+<h2>Cache coherence: keeping one location consistent</h2>
+<p class="grouphdr">The mechanism that makes many private caches look like one memory — snooping first, then directories that scale.</p>
+<ol class="papers" start="2" style="counter-reset:item 1;">
+  <li>
+    <span class="title">A New Solution to Coherence Problems in Multicache Systems</span> &mdash; Lucien Censier, Paul Feautrier
+    <div class="meta"><span class="badge b-pdf">PDF&middot;7pp</span>IEEE TC 1978 &middot; <a href="https://doi.org/10.1109/TC.1978.1675013">DOI</a> &middot; <a href="https://safari.ethz.ch/architecture/fall2020/lib/exe/fetch.php?media=a_new_solution_to_coherence_problems_in_multicache_systems.pdf">PDF</a></div>
+    <div class="why-here">The original directory-based scheme: keep a central record of which caches hold each block instead of broadcasting. The idea behind every scalable coherent system.</div>
+  </li>
+  <li>
+    <span class="title">Using Cache Memory to Reduce Processor-Memory Traffic</span> &mdash; James Goodman
+    <div class="meta"><span class="badge b-pdf">PDF&middot;8pp</span>ISCA 1983 &middot; <a href="https://doi.org/10.1145/800046.801647">DOI</a> &middot; <a href="https://safari.ethz.ch/architecture/fall2018/lib/exe/fetch.php?media=using_cache_memory_to_reduce_processor-memory_traffic.pdf">PDF</a></div>
+    <div class="why-here">Introduces write-once snooping — the first bus-based coherence protocol, and the ancestor of every snoopy design.</div>
+  </li>
+  <li>
+    <span class="title">A Low-Overhead Coherence Solution for Multiprocessors with Private Cache Memories</span> &mdash; Mark Papamarcos, Janak Patel
+    <div class="meta"><span class="badge b-pdf">PDF&middot;7pp</span>ISCA 1984 &middot; <a href="https://doi.org/10.1145/800015.808204">DOI</a> &middot; <a href="https://safari.ethz.ch/architecture/fall2020/lib/exe/fetch.php?media=a_low-overhead_coherence_solution_for_multiprocessors_with_private_cache_memories.pdf">PDF</a></div>
+    <div class="why-here">The Illinois protocol — MESI — which added the Exclusive state so a private write needs no bus traffic. The snooping protocol still taught and shipped today.</div>
+  </li>
+  <li>
+    <span class="title">A Class of Compatible Cache Consistency Protocols and Their Support by the IEEE Futurebus</span> &mdash; Paul Sweazey, Alan Jay Smith
+    <div class="meta"><span class="badge b-pdf">PDF&middot;10pp</span>ISCA 1986 &middot; <a href="https://doi.org/10.1145/17356.17404">DOI</a> &middot; <a href="https://pages.cs.wisc.edu/~markhill/restricted/isca86_moesi.pdf">PDF</a></div>
+    <div class="why-here">Names the MOESI state space and shows the protocols form a compatible family — the taxonomy behind AMD's and others' coherence.</div>
+  </li>
+  <li>
+    <span class="title">The Directory-Based Cache Coherence Protocol for the DASH Multiprocessor</span> &mdash; Daniel Lenoski, James Laudon, Kourosh Gharachorloo, Anoop Gupta, John Hennessy
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>ISCA 1990 &middot; <a href="https://doi.org/10.1145/325164.325132">DOI</a> &middot; <a href="https://people.eecs.berkeley.edu/~kubitron/cs258/handouts/papers/p148-lenoski.pdf">PDF</a></div>
+    <div class="why-here">Snooping cannot scale past a shared bus; DASH shows a working distributed directory over a point-to-point network. The blueprint for scalable ccNUMA.</div>
+  </li>
+  <li>
+    <span class="title">The SGI Origin: A ccNUMA Highly Scalable Server</span> &mdash; James Laudon, Daniel Lenoski
+    <div class="meta"><span class="badge b-pdf">PDF&middot;11pp</span>ISCA 1997 &middot; <a href="https://doi.org/10.1145/264107.264206">DOI</a> &middot; <a href="https://www.csl.cornell.edu/courses/ece5750/laudon.isca97.pdf">PDF</a></div>
+    <div class="why-here">DASH's directory ideas taken to a shipping commercial machine — the canonical case study of production ccNUMA.</div>
+  </li>
+</ol>
+
+<h2>Relaxing the model for speed</h2>
+<p class="grouphdr">Real hardware reorders memory accesses; these papers define what it may do and the contract that keeps programs correct.</p>
+<ol class="papers" start="8" style="counter-reset:item 7;">
+  <li>
+    <span class="title">Memory Access Buffering in Multiprocessors</span> &mdash; Michel Dubois, Christoph Scheurich, Fayé Briggs
+    <div class="meta"><span class="badge b-pdf">PDF&middot;9pp</span>ISCA 1986 &middot; <a href="https://doi.org/10.1145/17356.17406">DOI</a> &middot; <a href="https://safari.ethz.ch/architecture/fall2024/lib/exe/fetch.php?media=duboismemoryaccessbuffering.pdf">PDF</a></div>
+    <div class="why-here">Shows how write buffers and lock-up-free caches break sequential consistency, and defines <em>weak ordering</em> — the first principled relaxed model.</div>
+  </li>
+  <li>
+    <span class="title">Weak Ordering — A New Definition</span> &mdash; Sarita Adve, Mark Hill
+    <div class="meta"><span class="badge b-pdf">PDF&middot;13pp</span>ISCA 1990 &middot; <a href="https://doi.org/10.1145/325164.325100">DOI</a> &middot; <a href="https://people.eecs.berkeley.edu/~kubitron/courses/cs252-F03/handouts/papers/p363-adve.pdf">PDF</a></div>
+    <div class="why-here">Reframes weak ordering as a contract: programs that are data-race-free see SC, and hardware is free to reorder everything else. The intellectual root of the data-race-free approach in modern language models.</div>
+  </li>
+  <li>
+    <span class="title">Memory Consistency and Event Ordering in Scalable Shared-Memory Multiprocessors</span> &mdash; Kourosh Gharachorloo, Daniel Lenoski, James Laudon, Phillip Gibbons, Anoop Gupta, John Hennessy
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>ISCA 1990 &middot; <a href="https://doi.org/10.1109/ISCA.1990.134503">DOI</a> &middot; <a href="https://safari.ethz.ch/architecture/fall2020/lib/exe/fetch.php?media=memory_consistency_and_event_ordering_in_scalable_shared-memory_multiprocessors.pdf">PDF</a></div>
+    <div class="why-here">Introduces release consistency: order memory only at acquire and release synchronization points. The model DASH implemented and the one that shaped later hardware.</div>
+  </li>
+  <li>
+    <span class="title">Shared Memory Consistency Models: A Tutorial</span> &mdash; Sarita Adve, Kourosh Gharachorloo
+    <div class="meta"><span class="badge b-pdf">PDF&middot;11pp</span>IEEE Computer 1996 &middot; <a href="https://doi.org/10.1109/2.546611">DOI</a> &middot; <a href="http://sadve.cs.illinois.edu/Publications/computer96.pdf">PDF</a></div>
+    <div class="why-here">The canonical map of the relaxed-consistency zoo — read it once you have seen a couple of concrete models and want the whole landscape.</div>
+  </li>
+  <li>
+    <span class="title">Foundations of the C++ Concurrency Memory Model</span> &mdash; Hans-J. Boehm, Sarita Adve
+    <div class="meta"><span class="badge b-pdf">PDF&middot;11pp</span>PLDI 2008 &middot; <a href="https://doi.org/10.1145/1375581.1375591">DOI</a> &middot; <a href="http://rsim.cs.illinois.edu/Pubs/08PLDI.pdf">PDF</a></div>
+    <div class="why-here">How the data-race-free idea became a real programming-language memory model — the basis of the C++11 and C11 standards every systems programmer now relies on.</div>
+  </li>
+  <li>
+    <span class="title">x86-TSO: A Rigorous and Usable Programmer's Model for x86 Multiprocessors</span> &mdash; Peter Sewell, Susmit Sarkar, Scott Owens, Francesco Zappa Nardelli, Magnus Myreen
+    <div class="meta"><span class="badge b-pdf">PDF&middot;9pp</span>CACM 2010 &middot; <a href="https://doi.org/10.1145/1785414.1785443">DOI</a> &middot; <a href="https://www.cl.cam.ac.uk/~pes20/weakmemory/cacm.pdf">PDF</a></div>
+    <div class="why-here">A precise, tested model of what x86 actually guarantees (total store order) after years of vague vendor prose — the model behind real reasoning about x86 concurrency.</div>
+  </li>
+</ol>
+
+<h2>Synchronization: locks and lock-free</h2>
+<p class="grouphdr">How software actually coordinates on top of these models — and how to make it scale.</p>
+<ol class="papers" start="14" style="counter-reset:item 13;">
+  <li>
+    <span class="title">Algorithms for Scalable Synchronization on Shared-Memory Multiprocessors</span> &mdash; John Mellor-Crummey, Michael Scott
+    <div class="meta"><span class="badge b-pdf">PDF&middot;45pp</span>ACM TOCS 1991 &middot; <a href="https://doi.org/10.1145/103727.103729">DOI</a> &middot; <a href="https://www.cs.rochester.edu/u/scott/papers/1991_TOCS_synch.pdf">PDF</a></div>
+    <div class="why-here">The MCS lock and its kin: spin locally instead of on one shared line, so a lock scales to many cores. Still the reference for scalable locking.</div>
+  </li>
+  <li>
+    <span class="title">Wait-Free Synchronization</span> &mdash; Maurice Herlihy
+    <div class="meta"><span class="badge b-pdf">PDF&middot;26pp</span>ACM TOPLAS 1991 &middot; <a href="https://doi.org/10.1145/114005.102808">DOI</a> &middot; <a href="https://cs.brown.edu/~mph/Herlihy91/p124-herlihy.pdf">PDF</a></div>
+    <div class="why-here">Establishes the consensus hierarchy — which primitives (test-and-set, compare-and-swap) can build wait-free objects — the theoretical foundation of lock-free programming.</div>
+  </li>
+  <li>
+    <span class="title">Simple, Fast, and Practical Non-Blocking and Blocking Concurrent Queue Algorithms</span> &mdash; Maged Michael, Michael Scott
+    <div class="meta"><span class="badge b-pdf">PDF&middot;9pp</span>PODC 1996 &middot; <a href="https://doi.org/10.1145/248052.248106">DOI</a> &middot; <a href="https://www.cs.rochester.edu/u/scott/papers/1996_PODC_queues.pdf">PDF</a></div>
+    <div class="why-here">The Michael-Scott queue: the lock-free queue that actually ships (it is in java.util.concurrent). Where the theory meets a data structure people use.</div>
+  </li>
+  <li>
+    <span class="title">Read-Copy Update: Using Execution History to Solve Concurrency Problems</span> &mdash; Paul McKenney, John Slingwine
+    <div class="meta"><span class="badge b-pdf">PDF&middot;10pp</span>PDCS 1998 &middot; <a href="http://www.rdrop.com/users/paulmck/RCU/rclockpdcsproof.pdf">PDF</a></div>
+    <div class="why-here">RCU: readers run with near-zero overhead while updates publish new versions and defer reclamation until old readers finish. Now pervasive in the Linux kernel.</div>
+  </li>
+</ol>
+
+<h2>Transactional memory</h2>
+<p class="grouphdr">Raising the abstraction: let the hardware make critical sections atomic instead of hand-rolled locks.</p>
+<ol class="papers" start="18" style="counter-reset:item 17;">
+  <li>
+    <span class="title">Transactional Memory: Architectural Support for Lock-Free Data Structures</span> &mdash; Maurice Herlihy, J. Eliot B. Moss
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>ISCA 1993 &middot; <a href="https://doi.org/10.1145/165123.165164">DOI</a> &middot; <a href="https://courses.csail.mit.edu/6.895/fall03/handouts/papers/HerlihyMo93.pdf">PDF</a></div>
+    <div class="why-here">Launched hardware transactional memory: a small set of coherence extensions that make a block of accesses atomic. Two decades later it shipped as Intel TSX.</div>
+  </li>
+  <li>
+    <span class="title">Transactional Memory Coherence and Consistency (TCC)</span> &mdash; Lance Hammond, Vicky Wong, Mike Chen, Christos Kozyrakis, Kunle Olukotun, et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>ISCA 2004 &middot; <a href="https://doi.org/10.1145/1028176.1006711">DOI</a> &middot; <a href="https://csl.stanford.edu/~christos/publications/2004.tcc.isca.pdf">PDF</a></div>
+    <div class="why-here">The bold version: make transactions the <em>only</em> unit of coherence and consistency, replacing both cache coherence and the memory model at once.</div>
+  </li>
+</ol>
+
+<h2>The multicore substrate and its wall</h2>
+<p class="grouphdr">The chips that made all of this everyday, and the energy limit that ended the free lunch.</p>
+<ol class="papers" start="20" style="counter-reset:item 19;">
+  <li>
+    <span class="title">Simultaneous Multithreading: Maximizing On-Chip Parallelism</span> &mdash; Dean Tullsen, Susan Eggers, Henry Levy
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>ISCA 1995 &middot; <a href="https://doi.org/10.1145/223982.224449">DOI</a> &middot; <a href="https://www.cs.sfu.ca/~alaa/courses/cmpt450/fall2022/papers/tullsen-isca-1995.pdf">PDF</a></div>
+    <div class="why-here">SMT: interleave several threads to fill a superscalar core's idle issue slots. The idea behind Intel Hyper-Threading and shared-memory parallelism on a single core.</div>
+  </li>
+  <li>
+    <span class="title">The Case for a Single-Chip Multiprocessor</span> &mdash; Kunle Olukotun, Basem Nayfeh, Lance Hammond, Ken Wilson, Kunyung Chang
+    <div class="meta"><span class="badge b-pdf">PDF&middot;10pp</span>ASPLOS 1996 &middot; <a href="https://doi.org/10.1145/237090.237140">DOI</a> &middot; <a href="http://arsenalfc.stanford.edu/kunle/publications/hydra_ASPLOS_VII.pdf">PDF</a></div>
+    <div class="why-here">Argues — years early — that many simple cores on one die beat one ever-wider core. The multicore turn, and why coherence and consistency became everyone's problem.</div>
+  </li>
+  <li>
+    <span class="title">Dark Silicon and the End of Multicore Scaling</span> &mdash; Hadi Esmaeilzadeh, Emily Blem, Renée St. Amant, Karthikeyan Sankaralingam, Doug Burger
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>ISCA 2011 &middot; <a href="https://doi.org/10.1145/2000064.2000108">DOI</a> &middot; <a href="https://research.cs.wisc.edu/vertical/papers/2011/isca11-darksilicon.pdf">PDF</a></div>
+    <div class="why-here">The utilization wall: with the end of Dennard scaling, a growing fraction of a chip must stay dark, capping the multicore free lunch and forcing specialization.</div>
+  </li>
+</ol>
+
+<div class="why">
+<b>The through-line.</b> Sequential consistency (Lamport) sets the ideal. Coherence
+(Censier-Feautrier, Goodman, Papamarcos-Patel, DASH) makes a single location behave;
+relaxed models (weak ordering, release consistency, TSO, the C++ model) trade strictness
+for speed while keeping data-race-free programs correct. Software then coordinates with
+scalable locks (MCS), lock-free structures, and RCU, or steps up to transactional memory.
+All of it became everyone's problem once the single-chip multiprocessor arrived — and
+Dark Silicon marks where simply adding cores stopped paying off.
+</div>
+
+<h2>Reference shelf &mdash; books</h2>
+<p class="grouphdr">The standard texts for the area; free copies linked where a legal one exists.</p>
+<ul class="refs">
+  <li><span class="badge b-book">BOOK&middot;296pp</span><b>A Primer on Memory Consistency and Cache Coherence</b> &mdash; Vijay Nagarajan, Daniel Sorin, Mark Hill, David Wood (2nd ed 2020) &middot; The definitive, open-access text on both halves of this topic; start here if you want a coherent narrative rather than papers. <a href="https://pages.cs.wisc.edu/~markhill/papers/primer2020_2nd_edition.pdf">PDF</a></li>
+  <li><span class="badge b-book">BOOK&middot;662pp</span><b>Is Parallel Programming Hard, And, If So, What Can You Do About It?</b> &mdash; Paul McKenney (2023) &middot; Real-world scalable synchronization, memory ordering, and RCU from the Linux kernel's chief RCU maintainer. <a href="https://mirrors.edge.kernel.org/pub/linux/kernel/people/paulmck/perfbook/perfbook.2023.06.11a.pdf">PDF</a></li>
+  <li><span class="badge b-buy">BUY&middot;576pp</span><b>The Art of Multiprocessor Programming</b> &mdash; Maurice Herlihy, Nir Shavit, Victor Luchangco, Michael Spear (2nd ed 2020) &middot; Synchronization, lock-free data structures, and transactional memory from the theory up. <a href="https://shop.elsevier.com/books/the-art-of-multiprocessor-programming/herlihy/978-0-12-415950-1">page</a></li>
+</ul>
+
+<h2>Key terms</h2>
+<p class="grouphdr">Vocabulary used across this list.</p>
+<div class="notekey"><b>coherence</b> &mdash; every processor sees a single value for each memory location, with writes to it serialized into one order &nbsp; <b>consistency (memory model)</b> &mdash; the rules for how reads and writes to <em>different</em> locations may be reordered and observed across processors &nbsp; <b>sequential consistency (SC)</b> &mdash; the result is as if all operations ran in one interleaving that respects each thread's program order &nbsp; <b>snooping</b> &mdash; cache controllers watch a shared bus to observe others' accesses and update their line state &nbsp; <b>directory</b> &mdash; a per-block record of which caches hold a copy, letting coherence scale without broadcast &nbsp; <b>MESI / MOESI</b> &mdash; cache-line state protocols (Modified, Owned, Exclusive, Shared, Invalid) that cut coherence traffic &nbsp; <b>write buffer</b> &mdash; a queue that lets a processor retire a store before it reaches memory; a primary source of reordering &nbsp; <b>release consistency</b> &mdash; a relaxed model that orders memory only at acquire and release synchronization points &nbsp; <b>data-race-free (DRF)</b> &mdash; a program that synchronizes every conflicting access; DRF programs see SC even on relaxed hardware &nbsp; <b>transactional memory</b> &mdash; hardware or software support that makes a block of memory operations appear atomic &nbsp; <b>lock-free / wait-free</b> &mdash; progress guarantees for concurrent algorithms that avoid mutual-exclusion locks &nbsp; <b>RCU</b> &mdash; read-copy-update; readers run with near-zero overhead while updates publish new versions and defer reclamation &nbsp; <b>dark silicon</b> &mdash; the fraction of a chip that must stay powered off at once because of energy limits</div>
 
 </body>
 </html>

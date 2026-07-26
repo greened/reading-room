@@ -8,71 +8,177 @@
 <body>
 
 <h1>Computer architecture · Weird / unconventional architectures</h1>
-<p class="sub">The roads less taken: dataflow machines, transport-triggered and decoupled designs, systolic and VLIW, massively-parallel SIMD, and tiled processors.</p>
-<p class="tally">In-depth landmark list for this subtopic. <span class="badge b-pdf">PDF</span>open copy available &middot; <span class="badge b-web">DOI</span>publisher link only.</p>
+<p class="sub">The roads less taken: machines shaped to a language, dataflow processors that abandon the program counter, VLIW/EPIC designs that hand parallelism to the compiler, decoupled and systolic pipelines, massively-parallel SIMD and multithreaded machines, and the tiled, spatial, and reconfigurable revival. The path below starts with the gentlest departure from von Neumann — hardware bent to fit a programming model — then removes the program counter entirely, then walks outward through the compiler, the pipeline, space, threads, and finally the instruction set itself, until the datapath is all that is left to program.</p>
+<p class="tally">22 papers &middot; &asymp; <b>260 pp</b> of primary reading. &nbsp; Legend: <span class="badge b-pdf">PDF</span>open copy (see <span class="file">fetch.sh</span>) &middot; <span class="badge b-web">DOI</span>publisher link only</p>
+<div class="why"><b>How to read this list.</b> Each section names one thing the designers gave up from the conventional stored-program machine. Read top to bottom and the departures compound: first the ISA follows a language, then execution follows data instead of a counter, then the compiler (not the hardware) finds the parallelism, then the pipeline splits apart, then the datapath multiplies in space and in threads, and at the end there is no fixed instruction set at all.</div>
 
-<ol class="papers">
+<h2>Machines shaped by a language</h2>
+<p class="grouphdr">Begin where hardware bends to fit a programming model — the smallest step off the von Neumann path.</p>
+<ol class="papers" start="1">
   <li>
-    <span class="title">A Preliminary Architecture for a Basic Data-Flow Processor</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/642089.642111">DOI</a></div>
-    <div class="why-here">Dennis, Misunas, 1974, ISCA. The seminal static dataflow processor.</div>
+    <span class="title">A New Approach to the Functional Design of a Digital Computer (Burroughs B5000)</span> &mdash; Robert S. Barton
+    <div class="meta"><span class="badge b-pdf">PDF&middot;5pp</span>Western Joint IRE-AIEE-ACM 1961 &middot; <a href="https://doi.org/10.1145/1460690.1460736">DOI</a> &middot; <a href="http://people.eecs.berkeley.edu/~kubitron/courses/cs252-S11/handouts/papers/barton.pdf">PDF</a></div>
+    <div class="why-here">The stack machine whose control structure was derived from ALGOL 60 — the ur-example of a language-directed architecture.</div>
   </li>
   <li>
-    <span class="title">Executing a Program on the MIT Tagged-Token Dataflow Architecture</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1109/12.48862">DOI</a></div>
-    <div class="why-here">Arvind, Nikhil, 1990, IEEE TC. Dynamic (tagged-token) dataflow.</div>
-  </li>
-  <li>
-    <span class="title">Monsoon: An Explicit Token-Store Architecture</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/325164.325117">DOI</a></div>
-    <div class="why-here">Papadopoulos, Culler, 1990, ISCA. The explicit token-store design that made dynamic dataflow buildable.</div>
-  </li>
-  <li>
-    <span class="title">MOVE: A Framework for High-Performance Processor Design</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/125826.126159">DOI</a></div>
-    <div class="why-here">Corporaal, Mulder, 1991, Supercomputing. Transport-triggered architectures (program the data movement).</div>
-  </li>
-  <li>
-    <span class="title">Why Systolic Architectures?</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1109/MC.1982.1653825">DOI</a></div>
-    <div class="why-here">H. T. Kung, 1982, IEEE Computer. The systolic-array paradigm (also foundational to modern ML accelerators).</div>
-  </li>
-  <li>
-    <span class="title">The WM Computer Architecture</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/44571.44577">DOI</a></div>
-    <div class="why-here">Wm. A. Wulf, 1988, SIGARCH CAN. An unconventional streaming design treating operand streams as first-class.</div>
-  </li>
-  <li>
-    <span class="title">Decoupled Access/Execute Computer Architectures</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/1067649.801719">DOI</a></div>
-    <div class="why-here">James E. Smith, 1982, ISCA. Splitting memory-access from execution into decoupled queues.</div>
-  </li>
-  <li>
-    <span class="title">Very Long Instruction Word Architectures and the ELI-512</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/800046.801649">DOI</a></div>
-    <div class="why-here">Joseph A. Fisher, 1983, ISCA. The founding VLIW paper (with trace scheduling).</div>
-  </li>
-  <li>
-    <span class="title">The Manchester Prototype Dataflow Computer</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/2465.2468">DOI</a></div>
-    <div class="why-here">Gurd, Kirkham, Watson, 1985, CACM. The most complete built-and-measured tagged-token dataflow machine.</div>
-  </li>
-  <li>
-    <span class="title">Data Parallel Algorithms</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/7902.7903">DOI</a></div>
-    <div class="why-here">Hillis, Steele, 1986, CACM. The Connection Machine article crystallizing massively-parallel SIMD.</div>
-  </li>
-  <li>
-    <span class="title">The Transputer</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/327070.327269">DOI</a></div>
-    <div class="why-here">Colin Whitby-Strevens, 1985, ISCA. INMOS's message-passing, on-chip-links processor (with occam/CSP).</div>
-  </li>
-  <li>
-    <span class="title">Baring It All to Software: Raw Machines</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1109/2.612254">DOI</a></div>
-    <div class="why-here">Waingold, Taylor, et al., 1997, IEEE Computer. The tiled, software-exposed Raw architecture, prefiguring spatial accelerators.</div>
+    <span class="title">Design of a LISP-based microprocessor</span> &mdash; Guy L. Steele, Gerald J. Sussman
+    <div class="meta"><span class="badge b-pdf">PDF&middot;18pp</span>CACM 1980 &middot; <a href="https://doi.org/10.1145/359024.359031">DOI</a> &middot; <a href="http://bitsavers.org/pdf/mit/ai/aim/AIM-514.pdf">PDF</a></div>
+    <div class="why-here">Lisp as the instruction set, garbage collection in silicon — "LAMBDA: the ultimate opcode." (PDF is the fuller MIT AI Memo 514.)</div>
   </li>
 </ol>
+
+<h2>Abandon the program counter — dataflow</h2>
+<p class="grouphdr">The most radical idea in the set: let the availability of data, not a sequential PC, drive execution.</p>
+<ol class="papers" start="3" style="counter-reset:item 2;">
+  <li>
+    <span class="title">A Preliminary Architecture for a Basic Data-Flow Processor</span> &mdash; Jack Dennis, David Misunas
+    <div class="meta"><span class="badge b-pdf">PDF&middot;7pp</span>ISCA 1974 &middot; <a href="https://doi.org/10.1145/642089.642111">DOI</a> &middot; <a href="https://web.archive.org/web/20070128024415id_/http://courses.ece.uiuc.edu/ece512/Papers/Dennis.1975.ISCA.pdf">PDF</a></div>
+    <div class="why-here">The seminal static dataflow processor; start here for the model itself.</div>
+  </li>
+  <li>
+    <span class="title">Executing a Program on the MIT Tagged-Token Dataflow Architecture</span> &mdash; Arvind, Rishiyur Nikhil
+    <div class="meta"><span class="badge b-pdf">PDF&middot;19pp</span>IEEE TC 1990 &middot; <a href="https://doi.org/10.1109/12.48862">DOI</a> &middot; <a href="https://csg.csail.mit.edu/pubs/memos/Memo-271/Memo-271.pdf">PDF</a></div>
+    <div class="why-here">Dynamic (tagged-token) dataflow: tags let many instances of a loop body run at once. (PDF is the extended CSAIL memo.)</div>
+  </li>
+  <li>
+    <span class="title">The Manchester Prototype Dataflow Computer</span> &mdash; John Gurd, Chris Kirkham, Ian Watson
+    <div class="meta"><span class="badge b-pdf">PDF&middot;19pp</span>CACM 1985 &middot; <a href="https://doi.org/10.1145/2465.2468">DOI</a> &middot; <a href="https://web.archive.org/web/20150114024834id_/http://www.ece.cmu.edu/~ece447/s14/lib/exe/fetch.php?media=p34-gurd.pdf">PDF</a></div>
+    <div class="why-here">The most complete built-and-measured tagged-token machine — what dataflow actually cost in hardware.</div>
+  </li>
+  <li>
+    <span class="title">Monsoon: An Explicit Token-Store Architecture</span> &mdash; Greg Papadopoulos, David Culler
+    <div class="meta"><span class="badge b-pdf">PDF&middot;10pp</span>ISCA 1990 &middot; <a href="https://doi.org/10.1145/325164.325117">DOI</a> &middot; <a href="https://people.eecs.berkeley.edu/~culler/courses/cs252-s05/papers/p398-papadopoulos.pdf">PDF</a></div>
+    <div class="why-here">The explicit token store that fixed dataflow's associative-matching bottleneck and made dynamic dataflow buildable.</div>
+  </li>
+</ol>
+
+<h2>Hand parallelism to the compiler — VLIW / EPIC</h2>
+<p class="grouphdr">Keep the program counter, but expose all the parallelism statically so the hardware can stay simple.</p>
+<ol class="papers" start="7" style="counter-reset:item 6;">
+  <li>
+    <span class="title">Very Long Instruction Word Architectures and the ELI-512</span> &mdash; Joseph A. Fisher
+    <div class="meta"><span class="badge b-pdf">PDF&middot;11pp</span>ISCA 1983 &middot; <a href="https://doi.org/10.1145/800046.801649">DOI</a> &middot; <a href="https://people.eecs.berkeley.edu/~kubitron/courses/cs252-S09/handouts/papers/p263-fisher.pdf">PDF</a></div>
+    <div class="why-here">The founding VLIW paper, and the argument that trace scheduling can fill very wide instructions.</div>
+  </li>
+  <li>
+    <span class="title">EPIC: Explicitly Parallel Instruction Computing</span> &mdash; Michael Schlansker, B. Ramakrishna Rau
+    <div class="meta"><span class="badge b-web">DOI&middot;9pp</span>IEEE Computer 2000 &middot; <a href="https://doi.org/10.1109/2.820037">DOI</a></div>
+    <div class="why-here">VLIW reborn with predication and speculation as the philosophy behind Itanium — where handing everything to the compiler met its limits.</div>
+  </li>
+</ol>
+
+<h2>Decouple and stream the pipeline</h2>
+<p class="grouphdr">Instead of one tightly-coupled pipeline, split the machine into cooperating engines and let operands flow as streams.</p>
+<ol class="papers" start="9" style="counter-reset:item 8;">
+  <li>
+    <span class="title">Decoupled Access/Execute Computer Architectures</span> &mdash; James E. Smith
+    <div class="meta"><span class="badge b-pdf">PDF&middot;8pp</span>ISCA 1982 &middot; <a href="https://doi.org/10.1145/1067649.801719">DOI</a> &middot; <a href="https://people.eecs.berkeley.edu/~kubitron/courses/cs252-F00/handouts/papers/p231-smith.pdf">PDF</a></div>
+    <div class="why-here">Split memory access from execution into two queue-coupled processors so memory latency overlaps compute — the ancestor of modern access/execute decoupling.</div>
+  </li>
+  <li>
+    <span class="title">The Effectiveness of Decoupling</span> &mdash; Peter L. Bird, Alasdair Rawsthorne, Nigel P. Topham
+    <div class="meta"><span class="badge b-pdf">PDF&middot;20pp</span>ICS 1993 &middot; <a href="https://homepages.inf.ed.ac.uk/npt/pubs/ics-93.pdf">PDF</a></div>
+    <div class="why-here">The ACRI-1 machine’s <em>control decoupling</em>: a third instruction stream runs ahead issuing work to separate access and execute units — extending Smith’s access/execute split to three cooperating processors.</div>
+  </li>
+  <li>
+    <span class="title">The WM Computer Architecture</span> &mdash; Wm. A. Wulf
+    <div class="meta"><span class="badge b-web">DOI&middot;15pp</span>SIGARCH CAN 1988 &middot; <a href="https://doi.org/10.1145/44571.44577">DOI</a></div>
+    <div class="why-here">Takes decoupling further: operand streams are first-class, and the ISA reads and writes queues rather than registers.</div>
+  </li>
+  <li>
+    <span class="title">MOVE: A Framework for High-Performance Processor Design</span> &mdash; Henk Corporaal, Hans Mulder
+    <div class="meta"><span class="badge b-web">DOI&middot;10pp</span>Supercomputing 1991 &middot; <a href="https://doi.org/10.1145/125826.126159">DOI</a></div>
+    <div class="why-here">Transport-triggered architectures — the program schedules data <em>movement</em> over buses, and computation is a side effect of moving operands to a function unit.</div>
+  </li>
+  <li>
+    <span class="title">Why Systolic Architectures?</span> &mdash; H. T. Kung
+    <div class="meta"><span class="badge b-pdf">PDF&middot;10pp</span>IEEE Computer 1982 &middot; <a href="https://doi.org/10.1109/MC.1982.1653825">DOI</a> &middot; <a href="https://www.eecs.harvard.edu/~htk/publication/1982-kung-why-systolic-architecture.pdf">PDF</a></div>
+    <div class="why-here">Arrays of simple cells rhythmically pumping data through each other — the paradigm behind today's ML matrix engines.</div>
+  </li>
+</ol>
+
+<h2>Parallelism in space and in threads</h2>
+<p class="grouphdr">Multiply the datapath: one instruction over thousands of elements, or thousands of live threads to hide latency.</p>
+<ol class="papers" start="14" style="counter-reset:item 13;">
+  <li>
+    <span class="title">The ILLIAC IV System</span> &mdash; W. Bouknight, S. Denenberg, D. McIntyre, J. Randall, A. Sameh, Daniel Slotnick
+    <div class="meta"><span class="badge b-pdf">PDF&middot;20pp</span>Proc. IEEE 1972 &middot; <a href="https://www.cs.auckland.ac.nz/courses/compsci703s1c/resources/Bouknight-ILIAC-IV.pdf">PDF</a></div>
+    <div class="why-here">The original large-scale SIMD array (256 lock-step PEs) — the machine every later data-parallel design answers to.</div>
+  </li>
+  <li>
+    <span class="title">Data Parallel Algorithms</span> &mdash; Danny Hillis, Guy L. Steele
+    <div class="meta"><span class="badge b-pdf">PDF&middot;14pp</span>CACM 1986 &middot; <a href="https://doi.org/10.1145/7902.7903">DOI</a> &middot; <a href="http://cva.stanford.edu/classes/cs99s/papers/hillis-steele-data-parallel-algorithms.pdf">PDF</a></div>
+    <div class="why-here">The Connection Machine article that crystallized massively-parallel SIMD as a <em>programming</em> model, not just hardware.</div>
+  </li>
+  <li>
+    <span class="title">The Tera Computer System</span> &mdash; Robert Alverson, David Callahan, Daniel Cummings, Brian Koblenz, Allan Porterfield, Burton Smith
+    <div class="meta"><span class="badge b-pdf">PDF&middot;6pp</span>ICS 1990 &middot; <a href="https://doi.org/10.1145/77726.255132">DOI</a> &middot; <a href="http://www.ai.mit.edu/projects/aries/course/notes/tera.pdf">PDF</a></div>
+    <div class="why-here">Hide memory latency with massive fine-grained multithreading and no data cache — the MTA, the other way to keep a datapath busy.</div>
+  </li>
+  <li>
+    <span class="title">The Transputer</span> &mdash; Colin Whitby-Strevens
+    <div class="meta"><span class="badge b-web">DOI&middot;9pp</span>ISCA 1985 &middot; <a href="https://doi.org/10.1145/327070.327269">DOI</a></div>
+    <div class="why-here">INMOS's message-passing processor with on-chip serial links and an ISA co-designed with occam/CSP — parallelism as composition of communicating processes.</div>
+  </li>
+</ol>
+
+<h2>The spatial / tiled revival</h2>
+<p class="grouphdr">Dataflow and streaming ideas return as tiled, software-exposed chips built to beat the wire-delay wall.</p>
+<ol class="papers" start="18" style="counter-reset:item 17;">
+  <li>
+    <span class="title">Baring It All to Software: Raw Machines</span> &mdash; Elliot Waingold, Michael Taylor, et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;8pp</span>IEEE Computer 1997 &middot; <a href="https://doi.org/10.1109/2.612254">DOI</a> &middot; <a href="https://groups.csail.mit.edu/cag/raw/documents/Waingold-Computer-1997.pdf">PDF</a></div>
+    <div class="why-here">A tiled array with a software-exposed, statically-scheduled on-chip network — the template for modern spatial accelerators.</div>
+  </li>
+  <li>
+    <span class="title">Scaling to the End of Silicon with EDGE Architectures (TRIPS)</span> &mdash; Doug Burger, Steve Keckler, et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>IEEE Computer 2004 &middot; <a href="https://doi.org/10.1109/MC.2004.65">DOI</a> &middot; <a href="https://www.cs.utexas.edu/~mckinley/papers/trips-computer-2004.pdf">PDF</a></div>
+    <div class="why-here">Explicit Data Graph Execution: map dataflow graphs of instructions onto a grid of ALUs — dataflow's ideas inside a modern tiled core.</div>
+  </li>
+  <li>
+    <span class="title">WaveScalar</span> &mdash; Steven Swanson, Ken Michelson, Andrew Schwerin, Mark Oskin
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>MICRO 2003 &middot; <a href="https://cseweb.ucsd.edu/~swanson/papers/Micro2003WaveScalar.pdf">PDF</a></div>
+    <div class="why-here">A dataflow ISA that supports imperative memory ordering ("wave-ordered memory") on a tiled substrate — dataflow made compatible with C.</div>
+  </li>
+</ol>
+
+<h2>Dissolve the ISA — reconfigurable fabric</h2>
+<p class="grouphdr">The end of the road: no fixed instruction set at all; the datapath itself is what you program.</p>
+<ol class="papers" start="21" style="counter-reset:item 20;">
+  <li>
+    <span class="title">Garp: A MIPS Processor with a Reconfigurable Coprocessor</span> &mdash; John Hauser, John Wawrzynek
+    <div class="meta"><span class="badge b-pdf">PDF&middot;10pp</span>FCCM 1997 &middot; <a href="https://doi.org/10.1109/fpga.1997.624600">DOI</a> &middot; <a href="http://www.cs.ucr.edu/~kmiller/references/hauser97garp.pdf">PDF</a></div>
+    <div class="why-here">Bolt an FPGA-like reconfigurable array onto a standard CPU as a first-class functional unit — the pragmatic route to hardware-as-instruction.</div>
+  </li>
+  <li>
+    <span class="title">PipeRench: A Reconfigurable Architecture and Compiler</span> &mdash; Seth Goldstein, Herman Schmit, et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;8pp</span>IEEE Computer 2000 &middot; <a href="https://doi.org/10.1109/2.839324">DOI</a> &middot; <a href="http://www.cs.cmu.edu/~seth/papers/goldstein-ieee00.pdf">PDF</a></div>
+    <div class="why-here">Pipeline reconfiguration: virtualize a large hardware pipeline onto a small physical fabric, streaming configurations in as the computation runs.</div>
+  </li>
+</ol>
+
+<div class="why">
+<b>One idea per section, and the costs compound.</b> Each family here trades away a
+guarantee that conventional CPUs quietly provide. Language-directed and stack machines
+give up a general-purpose ISA. Dataflow gives up the program counter — and pays in
+associative token matching. VLIW/EPIC give up dynamic scheduling and lean entirely on the
+compiler. Decoupled, streaming, and systolic designs give up the single monolithic
+pipeline. SIMD and multithreaded machines give up per-element control flow or per-thread
+latency guarantees. Tiled/EDGE machines give up a global register file and a fast global
+wire. Reconfigurable fabrics give up a fixed instruction set entirely. Read in order, the
+list is a tour of what you can remove from a computer and still compute.
+</div>
+
+<h2>Reference shelf &mdash; books</h2>
+<p class="grouphdr">The standard texts for the area; free copies linked where a legal one exists.</p>
+<ul class="refs">
+  <li><span class="badge b-buy">BUY&middot;190pp</span><b>The Connection Machine</b> &mdash; Danny Hillis (MIT Press 1986) &middot; The vision behind massively-parallel SIMD, from the machine's own architect; the long-form companion to the Hillis–Steele paper. <a href="https://mitpress.mit.edu/9780262580977/the-connection-machine/">page</a></li>
+  <li><span class="badge b-buy">BUY&middot;132pp</span><b>Computer System Organization: The B5700/B6700 Series</b> &mdash; Elliott Organick (Academic Press 1973) &middot; The definitive account of the Burroughs stack architecture and its ALGOL-directed, descriptor-based design. <a href="https://archive.org/details/computersystemor0000orga">book</a></li>
+</ul>
+
+<h2>Key terms</h2>
+<p class="grouphdr">Vocabulary used across this list.</p>
+<div class="notekey"><b>dataflow</b> &mdash; an execution model where an instruction fires as soon as its operands are available, with no program counter sequencing the code &nbsp; <b>static vs. dynamic (tagged-token) dataflow</b> &mdash; static allows one token per arc at a time; dynamic tags tokens so multiple activations (e.g. loop iterations) coexist &nbsp; <b>token store / explicit token store</b> &mdash; the memory that holds operands waiting to be matched; making it explicit (Monsoon) removed the associative-matching bottleneck &nbsp; <b>VLIW</b> &mdash; very long instruction word: one instruction encodes many independent operations the <em>compiler</em> has proven parallel, so the hardware issues them in lock step &nbsp; <b>EPIC</b> &mdash; VLIW plus predication and control/data speculation, letting the compiler expose parallelism across branches and memory; the Itanium philosophy &nbsp; <b>trace scheduling</b> &mdash; a compiler technique that schedules the likely path through a program as a single long block, then patches up the off-path cases &nbsp; <b>decoupled access/execute</b> &mdash; splitting a processor into a memory-access engine and a compute engine connected by queues, so long memory latencies overlap useful work &nbsp; <b>transport-triggered</b> &mdash; the program specifies data <em>moves</em> between function units; an operation happens as a side effect of transporting operands to a unit's input &nbsp; <b>systolic array</b> &mdash; a grid of simple processing elements that rhythmically pass data to their neighbors, reusing each datum across many cells &nbsp; <b>SIMD</b> &mdash; single instruction, multiple data: one control unit broadcasts each instruction to many datapaths operating in lock step &nbsp; <b>fine-grained multithreading</b> &mdash; interleaving many hardware threads cycle-by-cycle to hide memory and pipeline latency instead of caching around it (the MTA approach) &nbsp; <b>EDGE</b> &mdash; explicit data graph execution: the ISA encodes dataflow dependences directly and maps instruction graphs onto an array of ALUs &nbsp; <b>reconfigurable computing</b> &mdash; implementing the datapath itself in a programmable fabric (FPGA-like), so "instructions" become hardware configurations</div>
 
 </body>
 </html>

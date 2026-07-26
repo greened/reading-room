@@ -8,51 +8,175 @@
 <body>
 
 <h1>Computer architecture · Branch prediction &amp; speculation</h1>
-<p class="sub">Keeping deep pipelines fed: dynamic branch prediction and data-value speculation.</p>
-<p class="tally">In-depth landmark list for this subtopic. <span class="badge b-pdf">PDF</span>open copy available &middot; <span class="badge b-web">DOI</span>publisher link only.</p>
+<p class="sub">Deep, wide pipelines only pay off if the machine can guess what comes next and recover cheaply when it guesses wrong. This list follows that idea from the ground up: start with the primitives every predictor still uses — the saturating counter, the branch target buffer, and misprediction recovery — then add branch <em>history</em> (two-level and correlating predictors), learn to <em>combine</em> predictors and fight table aliasing, reach the modern accuracy frontier (perceptron and TAGE), turn from predicting <em>direction</em> to predicting the <em>target</em> (returns, indirect jumps, fetch), learn to score a prediction's <em>confidence</em>, and finally push speculation past control flow entirely — into data values, addresses, and whole speculative threads.</p>
+<p class="tally">23 papers &middot; &asymp; <b>278 pp</b> of primary reading. &nbsp; Legend: <span class="badge b-pdf">PDF</span>open copy (see <span class="file">fetch.sh</span>) &middot; <span class="badge b-web">DOI</span>publisher link only</p>
+<div class="why"><b>How to read this list.</b> Read top to bottom: each section assumes the mechanism from the one before it. If you want the shape of the whole area first, read Smith's 1981 taxonomy and Mittal's survey (both under §1), then come back and work forward. Papers marked <b>DOI</b> only are paywalled; the rest have a free, legal open PDF.</div>
 
-<ol class="papers">
+<h2>Foundations: counters, targets, and safe recovery</h2>
+<p class="grouphdr">Start here — the primitives every later predictor still refines: the saturating counter, the branch target buffer, and the recovery that makes speculating past a branch safe.</p>
+<ol class="papers" start="1">
   <li>
-    <span class="title">A Study of Branch Prediction Strategies</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.5555/800052.801871">DOI</a> &middot; <a href="https://www.cs.binghamton.edu/~ghose/CS522/papers/smith81isca.pdf">PDF</a></div>
-    <div class="why-here">James E. Smith, 1981, ISCA. The founding taxonomy; the saturating bimodal counter.</div>
+    <span class="title">A Study of Branch Prediction Strategies</span> &mdash; James E. Smith
+    <div class="meta"><span class="badge b-pdf">PDF&middot;14pp</span>ISCA 1981 &middot; <a href="https://www.cs.binghamton.edu/~ghose/CS522/papers/smith81isca.pdf">PDF</a></div>
+    <div class="why-here">The founding taxonomy and the saturating 2-bit bimodal counter — the baseline every paper below is measured against.</div>
   </li>
   <li>
-    <span class="title">Two-Level Adaptive Training Branch Prediction</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/123465.123475">DOI</a></div>
-    <div class="why-here">Yeh, Patt, 1991, MICRO-24. History-register + pattern-table prediction; the template for correlating predictors.</div>
+    <span class="title">Branch Prediction Strategies and Branch Target Buffer Design</span> &mdash; Johnny K. F. Lee, Alan Jay Smith
+    <div class="meta"><span class="badge b-web">DOI&middot;17pp</span>IEEE Computer 1984 &middot; <a href="https://doi.org/10.1109/MC.1984.1658927">DOI</a></div>
+    <div class="why-here">The systematic study that named the branch problem and defined the branch target buffer that supplies the predicted target.</div>
   </li>
   <li>
-    <span class="title">Combining Branch Predictors</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://www.hpl.hp.com/techreports/Compaq-DEC/WRL-TN-36.html">page</a> &middot; <a href="https://www.ece.ucdavis.edu/~akella/270W05/mcfarling93combining.pdf">PDF</a></div>
-    <div class="why-here">Scott McFarling, 1993, DEC WRL TN-36. Defined gshare and the tournament/combining predictor.</div>
-  </li>
-  <li>
-    <span class="title">Dynamic Branch Prediction with Perceptrons</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1109/HPCA.2001.903263">DOI</a></div>
-    <div class="why-here">Jiménez, Lin, 2001, HPCA-7. The first neural (perceptron) predictor exploiting very long histories.</div>
-  </li>
-  <li>
-    <span class="title">A Case for (Partially) Tagged Geometric History Length Branch Prediction (TAGE)</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://inria.hal.science/hal-03408381">HAL</a></div>
-    <div class="why-here">Seznec, Michaud, 2006, JILP. Multiple geometric-length tagged tables; still the accuracy benchmark.</div>
-  </li>
-  <li>
-    <span class="title">Value Locality and Load Value Prediction</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/237090.237173">DOI</a></div>
-    <div class="why-here">Lipasti, Wilkerson, Shen, 1996, ASPLOS-VII. Introduced value locality and load-value prediction.</div>
-  </li>
-  <li>
-    <span class="title">Exceeding the Dataflow Limit via Value Prediction</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.5555/243846.243889">DOI</a></div>
-    <div class="why-here">Lipasti, Shen, 1996, MICRO-29. Predicting results to surpass the true-dependence (dataflow) ILP limit.</div>
-  </li>
-  <li>
-    <span class="title">Multiscalar Processors</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/223982.224451">DOI</a> &middot; <a href="https://ftp.cs.wisc.edu/sohi/papers/1995/isca.multiscalar.pdf">PDF</a></div>
-    <div class="why-here">Sohi, Breach, Vijaykumar, 1995, ISCA. The speculative-multithreading paradigm: tasks executed speculatively in parallel.</div>
+    <span class="title">Checkpoint Repair for Out-of-Order Execution Machines</span> &mdash; Wen-mei Hwu, Yale N. Patt
+    <div class="meta"><span class="badge b-pdf">PDF&middot;9pp</span>ISCA 1987 &middot; <a href="https://doi.org/10.1145/30350.30353">DOI</a> &middot; <a href="http://impact.crhc.illinois.edu/shared/Papers/p18-hwu.pdf">PDF</a></div>
+    <div class="why-here">How to roll the machine back to a precise point after a misprediction — the recovery mechanism that makes aggressive speculation affordable.</div>
   </li>
 </ol>
+
+<h2>History matters: two-level and correlating predictors</h2>
+<p class="grouphdr">The central insight — condition the prediction on the recent pattern of outcomes, not just this branch's own bias.</p>
+<ol class="papers" start="4" style="counter-reset:item 3;">
+  <li>
+    <span class="title">Two-Level Adaptive Training Branch Prediction</span> &mdash; Tse-Yu Yeh, Yale N. Patt
+    <div class="meta"><span class="badge b-web">DOI&middot;11pp</span>MICRO 1991 &middot; <a href="https://doi.org/10.1145/123465.123475">DOI</a></div>
+    <div class="why-here">The history register + pattern table that lifted accuracy past the bimodal counter; the template for every correlating predictor.</div>
+  </li>
+  <li>
+    <span class="title">Improving the Accuracy of Dynamic Branch Prediction Using Branch Correlation</span> &mdash; Shien-Tai Pan, Kimming So, Joseph T. Rahmeh
+    <div class="meta"><span class="badge b-pdf">PDF&middot;9pp</span>ASPLOS 1992 &middot; <a href="https://doi.org/10.1145/143365.143490">DOI</a> &middot; <a href="https://www.cs.binghamton.edu/~ghose/CS522/papers/pansorahmeh.pdf">PDF</a></div>
+    <div class="why-here">Independent discovery that <em>other</em> branches' outcomes predict this one — correlation, the idea behind gselect.</div>
+  </li>
+  <li>
+    <span class="title">Alternative Implementations of Two-Level Adaptive Branch Prediction</span> &mdash; Tse-Yu Yeh, Yale N. Patt
+    <div class="meta"><span class="badge b-pdf">PDF&middot;11pp</span>ISCA 1992 &middot; <a href="https://doi.org/10.1145/139669.139709">DOI</a> &middot; <a href="https://people.eecs.berkeley.edu/~kubitron/courses/cs252-F03/handouts/papers/p451-yeh.pdf">PDF</a></div>
+    <div class="why-here">The GAg/PAg/PAp design space: global vs. per-address history and pattern tables, with the vocabulary the field still uses.</div>
+  </li>
+</ol>
+
+<h2>Combining predictors and fighting aliasing</h2>
+<p class="grouphdr">Real predictors mix components and spend their bits fighting table interference.</p>
+<ol class="papers" start="7" style="counter-reset:item 6;">
+  <li>
+    <span class="title">Combining Branch Predictors</span> &mdash; Scott McFarling
+    <div class="meta"><span class="badge b-pdf">PDF&middot;29pp</span>DEC WRL TN-36 1993 &middot; <a href="https://www.ece.ucdavis.edu/~akella/270W05/mcfarling93combining.pdf">PDF</a></div>
+    <div class="why-here">Defined gshare and the tournament/combining predictor that picks between components per branch — the design most 1990s cores shipped.</div>
+  </li>
+  <li>
+    <span class="title">An Analysis of Correlation and Predictability: What Makes Two-Level Branch Predictors Work</span> &mdash; Marius Evers, Sanjay J. Patel, Robert S. Chappell, Yale N. Patt
+    <div class="meta"><span class="badge b-pdf">PDF&middot;10pp</span>ISCA 1998 &middot; <a href="https://doi.org/10.1145/279361.279368">DOI</a> &middot; <a href="https://people.eecs.berkeley.edu/~kubitron/courses/cs252-F03/handouts/papers/p52-evers.pdf">PDF</a></div>
+    <div class="why-here"><em>Why</em> history works — which correlations carry the predictability — turning the design from folklore into analysis.</div>
+  </li>
+  <li>
+    <span class="title">The YAGS Branch Prediction Scheme</span> &mdash; A. N. Eden, Trevor Mudge
+    <div class="meta"><span class="badge b-pdf">PDF&middot;9pp</span>MICRO 1998 &middot; <a href="https://doi.org/10.1109/MICRO.1998.742770">DOI</a> &middot; <a href="https://tnm.engin.umich.edu/wp-content/uploads/sites/353/2017/12/1998.12.YAGS-branch-predictor.pdf">PDF</a></div>
+    <div class="why-here">Tag the pattern-history entries so two branches stop corrupting each other — a clean answer to destructive aliasing.</div>
+  </li>
+</ol>
+
+<h2>The accuracy frontier: neural and geometric-history predictors</h2>
+<p class="grouphdr">Where the field ended up: perceptrons over very long histories, and TAGE's tagged geometric tables — still the accuracy benchmark in championship competitions.</p>
+<ol class="papers" start="10" style="counter-reset:item 9;">
+  <li>
+    <span class="title">Dynamic Branch Prediction with Perceptrons</span> &mdash; Daniel A. Jiménez, Calvin Lin
+    <div class="meta"><span class="badge b-pdf">PDF&middot;10pp</span>HPCA 2001 &middot; <a href="https://doi.org/10.1109/HPCA.2001.903263">DOI</a> &middot; <a href="https://www.cs.utexas.edu/~lin/papers/hpca01.pdf">PDF</a></div>
+    <div class="why-here">The first neural predictor: a perceptron per branch exploits histories far longer than a pattern table can index.</div>
+  </li>
+  <li>
+    <span class="title">Fast Path-Based Neural Branch Prediction</span> &mdash; Daniel A. Jiménez
+    <div class="meta"><span class="badge b-pdf">PDF&middot;10pp</span>MICRO 2003 &middot; <a href="https://doi.org/10.1109/MICRO.2003.1253199">DOI</a> &middot; <a href="https://www.cecs.uci.edu/~papers/micro03/pdf/jimenez-FastPath.pdf">PDF</a></div>
+    <div class="why-here">Makes the perceptron practical — path-based indexing cuts latency to something a real pipeline can afford.</div>
+  </li>
+  <li>
+    <span class="title">A Case for (Partially) Tagged Geometric History Length Branch Prediction (TAGE)</span> &mdash; André Seznec, Pierre Michaud
+    <div class="meta"><span class="badge b-pdf">PDF&middot;23pp</span>JILP 2006 &middot; <a href="https://jilp.org/vol8/v8paper1.pdf">PDF</a></div>
+    <div class="why-here">Multiple tagged tables indexed with geometrically growing history lengths; still the accuracy reference point.</div>
+  </li>
+  <li>
+    <span class="title">A New Case for the TAGE Branch Predictor</span> &mdash; André Seznec
+    <div class="meta"><span class="badge b-pdf">PDF&middot;11pp</span>MICRO 2011 &middot; <a href="https://doi.org/10.1145/2155620.2155635">DOI</a> &middot; <a href="https://www.cs.cmu.edu/~18742/papers/Seznec2011.pdf">PDF</a></div>
+    <div class="why-here">Cuts TAGE's hardware cost and bolts on a statistical corrector — the form modern cores actually build.</div>
+  </li>
+</ol>
+
+<h2>Predicting the target, not just the direction</h2>
+<p class="grouphdr">Direction is only half the problem; returns, indirect jumps, and the fetch engine all need the target address.</p>
+<ol class="papers" start="14" style="counter-reset:item 13;">
+  <li>
+    <span class="title">Branch History Table Prediction of Moving Target Branches Due to Subroutine Returns</span> &mdash; David R. Kaeli, Philip G. Emma
+    <div class="meta"><span class="badge b-web">DOI&middot;9pp</span>ISCA 1991 &middot; <a href="https://doi.org/10.1145/115952.115957">DOI</a></div>
+    <div class="why-here">The return address stack: a call/return stack that nails the one target a BTB always gets wrong.</div>
+  </li>
+  <li>
+    <span class="title">Fast and Accurate Instruction Fetch and Branch Prediction</span> &mdash; Brad Calder, Dirk Grunwald
+    <div class="meta"><span class="badge b-pdf">PDF&middot;10pp</span>ISCA 1994 &middot; <a href="https://doi.org/10.1145/192007.192011">DOI</a> &middot; <a href="https://cseweb.ucsd.edu/~calder/papers/ISCA-94.pdf">PDF</a></div>
+    <div class="why-here">Co-designs the fetch engine and the BTB so a correct direction prediction actually delivers the right instructions next cycle.</div>
+  </li>
+  <li>
+    <span class="title">Target Prediction for Indirect Jumps</span> &mdash; Po-Yung Chang, Eric Hao, Yale N. Patt
+    <div class="meta"><span class="badge b-web">DOI&middot;10pp</span>ISCA 1997 &middot; <a href="https://doi.org/10.1145/264107.264209">DOI</a></div>
+    <div class="why-here">The target cache: use history to predict the <em>changing</em> targets of indirect jumps (switches, virtual calls), which a plain BTB cannot.</div>
+  </li>
+  <li>
+    <span class="title">Accurate Indirect Branch Prediction</span> &mdash; Karel Driesen, Urs Hölzle
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>ISCA 1998 &middot; <a href="https://doi.org/10.1145/279361.279380">DOI</a> &middot; <a href="https://american.cs.ucdavis.edu/academic/readings/papers/driesen.pdf">PDF</a></div>
+    <div class="why-here">Two-level and cascaded predictors for indirect branches — the accuracy story for polymorphic, object-oriented code.</div>
+  </li>
+</ol>
+
+<h2>Knowing when not to trust a prediction</h2>
+<p class="grouphdr">A prediction you can score is a prediction you can act on — throttle, gate, or reverse speculation by its confidence.</p>
+<ol class="papers" start="18" style="counter-reset:item 17;">
+  <li>
+    <span class="title">Assigning Confidence to Conditional Branch Predictions</span> &mdash; Erik Jacobsen, Eric Rotenberg, James E. Smith
+    <div class="meta"><span class="badge b-pdf">PDF&middot;11pp</span>MICRO 1996 &middot; <a href="https://doi.org/10.1109/MICRO.1996.566457">DOI</a> &middot; <a href="https://ftp.cs.wisc.edu/sohi/papers/1996/micro.confidence.pdf">PDF</a></div>
+    <div class="why-here">Confidence estimation: know which predictions are likely wrong, so you can gate speculation, fetch both paths, or save energy.</div>
+  </li>
+</ol>
+
+<h2>Beyond control flow: value and address speculation</h2>
+<p class="grouphdr">Speculation is not only about branches — predict data and addresses to break true (dataflow) dependences.</p>
+<ol class="papers" start="19" style="counter-reset:item 18;">
+  <li>
+    <span class="title">Value Locality and Load Value Prediction</span> &mdash; Mikko H. Lipasti, Christopher B. Wilkerson, John P. Shen
+    <div class="meta"><span class="badge b-pdf">PDF&middot;10pp</span>ASPLOS 1996 &middot; <a href="https://doi.org/10.1145/237090.237173">DOI</a> &middot; <a href="https://pharm.ece.wisc.edu/mikko/oldpapers/asplos7.pdf">PDF</a></div>
+    <div class="why-here">Introduced value locality and load-value prediction — loads often return the value they returned last time.</div>
+  </li>
+  <li>
+    <span class="title">Exceeding the Dataflow Limit via Value Prediction</span> &mdash; Mikko H. Lipasti, John P. Shen
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>MICRO 1996 &middot; <a href="https://doi.org/10.1109/MICRO.1996.566464">DOI</a> &middot; <a href="https://pharm.ece.wisc.edu/mikko/oldpapers/micro29.pdf">PDF</a></div>
+    <div class="why-here">Predicting results lets dependent instructions issue early, beating the true-dependence limit on ILP.</div>
+  </li>
+  <li>
+    <span class="title">The Predictability of Data Values</span> &mdash; Yiannakis Sazeides, James E. Smith
+    <div class="meta"><span class="badge b-pdf">PDF&middot;11pp</span>MICRO 1997 &middot; <a href="https://doi.org/10.1109/MICRO.1997.645815">DOI</a> &middot; <a href="https://people.eecs.berkeley.edu/~kubitron/cs252/handouts/papers/smith_value.pdf">PDF</a></div>
+    <div class="why-here">Classifies value predictability (last-value, stride, context) — the taxonomy that grounds every value predictor.</div>
+  </li>
+  <li>
+    <span class="title">Speculative Execution via Address Prediction and Data Prefetching</span> &mdash; José González, Antonio González
+    <div class="meta"><span class="badge b-web">DOI&middot;8pp</span>ICS 1997 &middot; <a href="https://doi.org/10.1145/263580.263631">DOI</a></div>
+    <div class="why-here">Predict a load's <em>address</em> early to prefetch and speculatively execute past it — control speculation's data-side cousin.</div>
+  </li>
+</ol>
+
+<h2>Speculation at thread granularity</h2>
+<p class="grouphdr">Push speculation past the basic block to whole tasks executed in parallel.</p>
+<ol class="papers" start="23" style="counter-reset:item 22;">
+  <li>
+    <span class="title">Multiscalar Processors</span> &mdash; Gurindar S. Sohi, Scott E. Breach, T. N. Vijaykumar
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>ISCA 1995 &middot; <a href="https://doi.org/10.1145/223982.224451">DOI</a> &middot; <a href="https://ftp.cs.wisc.edu/sohi/papers/1995/isca.multiscalar.pdf">PDF</a></div>
+    <div class="why-here">Speculative multithreading: split a program into tasks and run them in parallel, speculating across control and data — where branch and value speculation meet parallelism.</div>
+  </li>
+</ol>
+
+<h2>Reference shelf &mdash; books</h2>
+<p class="grouphdr">The standard texts for the area; free copies linked where a legal one exists.</p>
+<ul class="refs">
+  <li><span class="badge b-buy">BUY&middot;656pp</span><b>Modern Processor Design: Fundamentals of Superscalar Processors</b> &mdash; John Paul Shen, Mikko H. Lipasti (2013) &middot; The textbook treatment of prediction, speculation, and recovery in a real out-of-order core. <a href="https://www.waveland.com/browse.php?t=624">page</a></li>
+  <li><span class="badge b-buy">BUY&middot;936pp</span><b>Computer Architecture: A Quantitative Approach</b> &mdash; John L. Hennessy, David A. Patterson (6th ed. 2017) &middot; Chapter 3 (ILP) is the standard first exposure to branch prediction and speculation. <a href="https://shop.elsevier.com/books/computer-architecture/hennessy/978-0-12-811905-1">page</a></li>
+</ul>
+
+<h2>Key terms</h2>
+<p class="grouphdr">Vocabulary used across this list.</p>
+<div class="notekey"><b>saturating counter</b> &mdash; an <em>n</em>-bit up/down counter (usually 2-bit) whose high bit predicts taken/not-taken; adds hysteresis so one anomaly doesn't flip the prediction &nbsp; <b>bimodal</b> &mdash; a table of saturating counters indexed by branch address; the simplest dynamic predictor &nbsp; <b>BHR / PHT</b> &mdash; branch history register (recent outcomes) indexing a pattern history table of counters; the two levels of a two-level predictor &nbsp; <b>global vs. local history</b> &mdash; global (GAg) uses one shared outcome history; local/per-address (PAp) keeps a separate history per branch &nbsp; <b>gshare / gselect</b> &mdash; index the PHT by hashing (XOR / concatenation) the global history with the branch address to spread branches across the table &nbsp; <b>aliasing / interference</b> &mdash; two branches mapping to the same table entry; <em>destructive</em> when their outcomes disagree. Tags (YAGS) and skewing reduce it &nbsp; <b>tournament / combining predictor</b> &mdash; a meta-predictor that learns, per branch, which of several component predictors to trust &nbsp; <b>perceptron predictor</b> &mdash; a neural predictor whose weighted sum over a long history yields the prediction; exploits histories too long to index a table &nbsp; <b>TAGE</b> &mdash; tagged geometric-history-length predictor: several tagged tables at geometrically growing history lengths, longest matching tag wins &nbsp; <b>BTB</b> &mdash; branch target buffer: a cache from branch address to predicted target, read in the fetch stage &nbsp; <b>RAS</b> &mdash; return address stack: a hardware stack pushed on calls and popped on returns to predict return targets &nbsp; <b>indirect branch</b> &mdash; a branch whose target is computed (switch, function pointer, virtual call); needs target-history prediction, not just a BTB &nbsp; <b>confidence estimation</b> &mdash; a score for how likely a given prediction is correct, used to gate or throttle speculation &nbsp; <b>value / address prediction</b> &mdash; predicting a load's result value or its address to break true data dependences &nbsp; <b>misprediction recovery (squash)</b> &mdash; discarding wrong-path work and restoring precise state (via a reorder buffer or checkpoint) when a prediction is found wrong &nbsp; <b>dataflow limit</b> &mdash; the ILP ceiling set by true data dependences; value prediction aims to exceed it</div>
 
 </body>
 </html>

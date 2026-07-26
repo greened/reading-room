@@ -2,106 +2,141 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Computer Architecture — Landmark Papers (Survey)</title>
+<title>Computer architecture · Landmark papers (a survey)</title>
 <link rel="stylesheet" href="../../lib/guide.css">
 </head>
 <body>
 
-<h1>Computer Architecture &mdash; Landmark Papers</h1>
-<p class="sub">A cross-cutting survey of the field's most important papers. Folder: <span class="file">reading-room/computer-architecture/</span> &middot; canonical references live in the sibling subtopic dirs.</p>
-<p class="tally">Roughly a dozen papers that define the field, in a sensible reading order (quantitative principles and the ILP/multicore core, then GPUs, warehouse-scale, accelerators, and microarchitectural security). Each entry points to the subtopic dir that treats it in depth. &nbsp; Legend: <span class="badge b-pdf">PDF</span>open copy available (see <span class="file">fetch.sh</span>) &middot; <span class="badge b-web">DOI</span>publisher link only.</p>
+<h1>Computer architecture · Landmark papers (a survey)</h1>
+<p class="sub">Twelve papers a computer architect should have met at least once — one or two standouts sliced from each subtopic of the area, each pointing back to the directory that treats it in depth. Read them as a path, not by date: start with the quantitative laws that bound every design (Amdahl, roofline), then the machinery of a single fast core (Tomasulo's out-of-order engine and the branch predictor that keeps it fed) and the memory hierarchy behind it (Smith's cache survey); cross from one core to many with sequential consistency (Lamport); watch general-purpose scaling give way to specialized silicon (the TPU) and to the datacenter-as-a-computer (Google's cluster); see how architects evaluate designs before building them (gem5) and how the speculation that made cores fast came back to bite them (Spectre); and close on a road not taken (VLIW) and the machine whose ISA-as-contract idea organizes everything else (System/360). For depth on any theme, follow the arrow to its subtopic.</p>
+<p class="tally">12 papers &middot; &asymp; <b>186 pp</b> of primary reading. &nbsp; Legend: <span class="badge b-pdf">PDF</span>open copy (see <span class="file">fetch.sh</span>) &middot; <span class="badge b-web">DOI</span>publisher link only</p>
+<div class="why"><b>How to read this survey.</b> Each entry is a landmark, not the last word — the subtopic directory it points to lists the surrounding work: the predecessors, the refinements, and the production systems that grew out of it. The order is conceptual, not chronological: it climbs from the laws that bound a design, up through one fast core and its memory, out to many cores and to specialized and warehouse-scale machines, and finally to the tools, the security fallout, and the machines that set the vocabulary.</div>
 
-<ol class="papers">
+<h2>Ground rules — how we measure and what bounds us</h2>
+<p class="grouphdr">Start here: architecture is a quantitative discipline, so before any mechanism, fix what caps a design and the one model architects reason with.</p>
+<ol class="papers" start="1">
   <li>
-    <span class="title">Validity of the Single Processor Approach to Achieving Large Scale Computing Capabilities</span> &mdash; Gene M. Amdahl
-    <div class="meta"><span class="badge b-pdf">PDF</span>AFIPS 1967 &middot; <a href="https://doi.org/10.1145/1465482.1465560">doi:10.1145/1465482.1465560</a> &middot; &rarr; <span class="file">quantitative-principles/</span></div>
-    <div class="why-here">The origin of Amdahl's Law and the enduring speedup ceiling imposed by any serial fraction.</div>
-  </li>
-  <li>
-    <span class="title">An Efficient Algorithm for Exploiting Multiple Arithmetic Units</span> &mdash; Robert M. Tomasulo
-    <div class="meta"><span class="badge b-web">DOI</span>IBM J. R&amp;D 1967 &middot; <a href="https://doi.org/10.1147/rd.111.0025">doi:10.1147/rd.111.0025</a> &middot; &rarr; <span class="file">superscalar-and-out-of-order/</span></div>
-    <div class="why-here">Register renaming plus the common data bus &mdash; the basis of every modern out-of-order engine.</div>
-  </li>
-  <li>
-    <span class="title">Cache Memories</span> &mdash; Alan Jay Smith
-    <div class="meta"><span class="badge b-pdf">PDF</span>ACM Computing Surveys 1982 &middot; <a href="https://doi.org/10.1145/356887.356892">doi:10.1145/356887.356892</a> &middot; &rarr; <span class="file">memory-systems-and-storage/</span></div>
-    <div class="why-here">The definitive early survey establishing the vocabulary and design space of processor caches.</div>
-  </li>
-  <li>
-    <span class="title">How to Make a Multiprocessor Computer That Correctly Executes Multiprocess Programs</span> &mdash; Leslie Lamport
-    <div class="meta"><span class="badge b-web">DOI</span>IEEE TC 1979 &middot; <a href="https://doi.org/10.1109/TC.1979.1675439">doi:10.1109/TC.1979.1675439</a> &middot; &rarr; <span class="file">multicore-and-memory-consistency/</span></div>
-    <div class="why-here">The formal definition of sequential consistency &mdash; the reference point for every weaker memory model.</div>
-  </li>
-  <li>
-    <span class="title">Simultaneous Multithreading: Maximizing On-Chip Parallelism</span> &mdash; Tullsen, Eggers, Levy
-    <div class="meta"><span class="badge b-pdf">PDF</span>ISCA-22 1995 &middot; <a href="https://doi.org/10.1145/223982.224449">doi:10.1145/223982.224449</a> &middot; &rarr; <span class="file">multicore-and-memory-consistency/</span></div>
-    <div class="why-here">The SMT paper that became Intel Hyper-Threading, filling idle superscalar slots from multiple threads.</div>
-  </li>
-  <li>
-    <span class="title">The Case for a Single-Chip Multiprocessor</span> &mdash; Olukotun, Nayfeh, Hammond, Wilson, Chang
-    <div class="meta"><span class="badge b-pdf">PDF</span>ASPLOS-VII 1996 &middot; <a href="https://doi.org/10.1145/237090.237140">doi:10.1145/237090.237140</a> &middot; &rarr; <span class="file">multicore-and-memory-consistency/</span></div>
-    <div class="why-here">The Hydra argument that many simple cores beat one wide core, presaging the multicore turn.</div>
+    <span class="title">Validity of the Single Processor Approach to Achieving Large Scale Computing Capabilities</span> &mdash; Gene Amdahl
+    <div class="meta"><span class="badge b-pdf">PDF&middot;4pp</span>AFIPS 1967 &middot; <a href="https://doi.org/10.1145/1465482.1465560">DOI</a> &middot; <a href="https://web.archive.org/web/20191029093307id_/http://www-inst.eecs.berkeley.edu/~n252/paper/Amdahl.pdf">PDF</a></div>
+    <div class="why-here">The origin of Amdahl's Law: however many processors you add, a fixed serial fraction caps the speedup — the first and most durable limit every later design runs into. → quantitative-principles/</div>
   </li>
   <li>
     <span class="title">Roofline: An Insightful Visual Performance Model for Multicore Architectures</span> &mdash; Williams, Waterman, Patterson
-    <div class="meta"><span class="badge b-web">DOI</span>CACM 2009 &middot; <a href="https://doi.org/10.1145/1498765.1498785">doi:10.1145/1498765.1498785</a> &middot; &rarr; <span class="file">quantitative-principles/</span></div>
-    <div class="why-here">A single bound-and-bottleneck plot tying attainable performance to operational intensity and bandwidth.</div>
-  </li>
-  <li>
-    <span class="title">NVIDIA Tesla: A Unified Graphics and Computing Architecture</span> &mdash; Lindholm, Nickolls, Oberman, Montrym
-    <div class="meta"><span class="badge b-pdf">PDF</span>IEEE Micro 2008 &middot; <a href="https://doi.org/10.1109/MM.2008.31">doi:10.1109/MM.2008.31</a> &middot; &rarr; <span class="file">domain-specific-accelerators/</span></div>
-    <div class="why-here">The unified-shader SIMT GPU architecture that made GPGPU and later deep learning practical.</div>
-  </li>
-  <li>
-    <span class="title">The Datacenter as a Computer</span> &mdash; Barroso, H&ouml;lzle
-    <div class="meta"><span class="badge b-pdf">PDF</span>Synthesis Lectures 2009 &middot; <a href="https://doi.org/10.2200/S00193ED1V01Y200905CAC006">doi:10.2200/S00193ED1V01Y200905CAC006</a> &middot; &rarr; <span class="file">warehouse-scale-computing/</span></div>
-    <div class="why-here">Reframes the warehouse as the unit of computing, founding warehouse-scale architecture and its energy/TCO discipline.</div>
-  </li>
-  <li>
-    <span class="title">Dark Silicon and the End of Multicore Scaling</span> &mdash; Esmaeilzadeh, Blem, St. Amant, Sankaralingam, Burger
-    <div class="meta"><span class="badge b-pdf">PDF</span>ISCA-38 2011 &middot; <a href="https://doi.org/10.1145/2000064.2000108">doi:10.1145/2000064.2000108</a> &middot; &rarr; <span class="file">multicore-and-memory-consistency/</span></div>
-    <div class="why-here">Models how the end of Dennard scaling caps usable cores, motivating the pivot to specialization.</div>
-  </li>
-  <li>
-    <span class="title">In-Datacenter Performance Analysis of a Tensor Processing Unit</span> &mdash; Jouppi et al.
-    <div class="meta"><span class="badge b-pdf">PDF</span>ISCA-44 2017 &middot; <a href="https://doi.org/10.1145/3079856.3080246">doi:10.1145/3079856.3080246</a> &middot; &rarr; <span class="file">domain-specific-accelerators/</span></div>
-    <div class="why-here">Google's deployed systolic-array TPU &mdash; the canonical case study in production ML acceleration.</div>
-  </li>
-  <li>
-    <span class="title">Spectre Attacks: Exploiting Speculative Execution</span> &mdash; Kocher et al.
-    <div class="meta"><span class="badge b-pdf">PDF</span>IEEE S&amp;P 2019 &middot; <a href="https://doi.org/10.1109/SP.2019.00002">doi:10.1109/SP.2019.00002</a> &middot; &rarr; <span class="file">hardware-security/</span></div>
-    <div class="why-here">Speculation itself becomes a covert channel, opening the transient-execution attack class that reshaped microarchitecture.</div>
+    <div class="meta"><span class="badge b-pdf">PDF&middot;11pp</span>CACM 2009 &middot; <a href="https://doi.org/10.1145/1498765.1498785">DOI</a> &middot; <a href="https://escholarship.org/content/qt78h8v7mr/qt78h8v7mr.pdf">PDF</a></div>
+    <div class="why-here">The back-of-the-envelope model architects still reach for: plot attainable performance against operational intensity and one picture shows whether a design is compute- or bandwidth-bound. → quantitative-principles/</div>
   </li>
 </ol>
 
-<h2>Going deeper</h2>
-<p class="grouphdr">This survey is the slice across the whole area; each subtopic dir treats its theme in depth and lists more papers.</p>
-<ul class="comp">
-  <li><span class="badge b-web">DIR</span><span class="file">quantitative-principles/</span> &mdash; Amdahl, RISC, Dennard, memory wall, roofline, golden age.</li>
-  <li><span class="badge b-web">DIR</span><span class="file">superscalar-and-out-of-order/</span> &mdash; Tomasulo, scoreboarding, ROB, HPS, ILP limits.</li>
-  <li><span class="badge b-web">DIR</span><span class="file">branch-prediction-and-speculation/</span> &mdash; Smith, two-level, gshare/TAGE, perceptrons, value prediction, Multiscalar.</li>
-  <li><span class="badge b-web">DIR</span><span class="file">memory-systems-and-storage/</span> &mdash; caches, NUCA, replacement, DRAM scheduling, RAID, flash, NVM.</li>
-  <li><span class="badge b-web">DIR</span><span class="file">multicore-and-memory-consistency/</span> &mdash; consistency, coherence (MESI/directory), TM, SMT, CMP, RCU.</li>
-  <li><span class="badge b-web">DIR</span><span class="file">domain-specific-accelerators/</span> &mdash; systolic arrays, GPUs, DianNao/Eyeriss/EIE, TPU, Catapult.</li>
-  <li><span class="badge b-web">DIR</span><span class="file">warehouse-scale-computing/</span> &mdash; datacenter-as-computer, GFS/MapReduce, Clos networks, Borg, disaggregation.</li>
-  <li><span class="badge b-web">DIR</span><span class="file">simulation-and-modeling-tools/</span> &mdash; gem5, SimpleScalar, Wattch/McPAT, DRAMSim, Pin, SimPoint.</li>
-  <li><span class="badge b-web">DIR</span><span class="file">hardware-security/</span> &mdash; timing/power/cache side channels, RowHammer, Meltdown/Spectre/Foreshadow.</li>
-  <li><span class="badge b-web">DIR</span><span class="file">weird-architectures/</span> &mdash; dataflow, transport-triggered, VLIW, Connection Machine, Transputer, Raw.</li>
-  <li><span class="badge b-web">DIR</span><span class="file">important-machines/</span> &mdash; CDC 6600, System/360, Cray-1, RISC I/MIPS, VAX, Alpha, x86.</li>
-</ul>
-<p class="grouphdr">Run <span class="file">fetch.sh</span> to download the openly-available PDFs; paywalled entries are DOI links above.</p>
+<h2>The high-performance core — parallelism in one instruction stream</h2>
+<p class="grouphdr">With the limits in view, the first lever is overlapping instructions within a single thread — and keeping that wide core fed past its branches.</p>
+<ol class="papers" start="3" style="counter-reset:item 2;">
+  <li>
+    <span class="title">An Efficient Algorithm for Exploiting Multiple Arithmetic Units</span> &mdash; Robert M. Tomasulo
+    <div class="meta"><span class="badge b-pdf">PDF&middot;9pp</span>IBM J. R&amp;D 1967 &middot; <a href="https://doi.org/10.1147/rd.111.0025">DOI</a> &middot; <a href="https://www.cs.virginia.edu/~evans/greatworks/tomasulo.pdf">PDF</a></div>
+    <div class="why-here">Reservation stations, register renaming, and the common data bus — the dynamic-scheduling engine at the heart of every out-of-order core built since. → superscalar-and-out-of-order/</div>
+  </li>
+  <li>
+    <span class="title">Combining Branch Predictors</span> &mdash; Scott McFarling
+    <div class="meta"><span class="badge b-pdf">PDF&middot;29pp</span>DEC WRL TN-36 1993 &middot; <a href="https://www.ece.ucdavis.edu/~akella/270W05/mcfarling93combining.pdf">PDF</a></div>
+    <div class="why-here">A wide out-of-order core stalls without accurate branch prediction; this defined gshare and the tournament predictor that most 1990s cores shipped — the template later predictors refine. → branch-prediction-and-speculation/</div>
+  </li>
+</ol>
+
+<h2>Feeding the core — the memory hierarchy</h2>
+<p class="grouphdr">A fast core starves without a memory system that hides latency; it is one idea repeated at every scale.</p>
+<ol class="papers" start="5" style="counter-reset:item 4;">
+  <li>
+    <span class="title">Cache Memories</span> &mdash; Alan Jay Smith
+    <div class="meta"><span class="badge b-pdf">PDF&middot;58pp</span>ACM Computing Surveys 1982 &middot; <a href="https://doi.org/10.1145/356887.356892">DOI</a> &middot; <a href="https://home.engineering.iastate.edu/~zzhang/courses/cpre581-f05/reading/smith-csur82-cache.pdf">PDF</a></div>
+    <div class="why-here">The survey that systematized cache design — placement, replacement, line size, write policy — and the single best foundation for the whole hierarchy behind every fast core. → memory-systems-and-storage/</div>
+  </li>
+</ol>
+
+<h2>From one core to many</h2>
+<p class="grouphdr">When a single core could no longer get faster for free, keeping many cores' views of memory correct became everyone's problem.</p>
+<ol class="papers" start="6" style="counter-reset:item 5;">
+  <li>
+    <span class="title">How to Make a Multiprocessor Computer That Correctly Executes Multiprocess Programs</span> &mdash; Leslie Lamport
+    <div class="meta"><span class="badge b-pdf">PDF&middot;2pp</span>IEEE TC 1979 &middot; <a href="https://doi.org/10.1109/TC.1979.1675439">DOI</a> &middot; <a href="https://lamport.azurewebsites.net/pubs/multi.pdf">PDF</a></div>
+    <div class="why-here">Two pages that define sequential consistency — the gold-standard shared-memory contract against which every coherence protocol and relaxed model is measured. → multicore-and-memory-consistency/</div>
+  </li>
+</ol>
+
+<h2>When general-purpose scaling ended — specialize, and scale out</h2>
+<p class="grouphdr">Post-Dennard, performance comes from silicon specialized to a workload, and from treating the whole datacenter as one machine.</p>
+<ol class="papers" start="7" style="counter-reset:item 6;">
+  <li>
+    <span class="title">In-Datacenter Performance Analysis of a Tensor Processing Unit (TPU)</span> &mdash; Jouppi et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;17pp</span>ISCA 2017 &middot; <a href="https://doi.org/10.1145/3079856.3080246">DOI</a> &middot; <a href="https://arxiv.org/pdf/1704.04760">PDF</a></div>
+    <div class="why-here">A systolic matrix unit in production — the landmark domain-specific-accelerator case study, complete with the roofline analysis of why it wins. → domain-specific-accelerators/</div>
+  </li>
+  <li>
+    <span class="title">Web Search for a Planet: The Google Cluster Architecture</span> &mdash; Barroso, Dean, Hölzle
+    <div class="meta"><span class="badge b-pdf">PDF&middot;7pp</span>IEEE Micro 2003 &middot; <a href="https://doi.org/10.1109/MM.2003.1196112">DOI</a> &middot; <a href="https://static.googleusercontent.com/media/research.google.com/en//archive/googlecluster-ieee.pdf">PDF</a></div>
+    <div class="why-here">Reliable planet-scale search built from unreliable commodity parts — the paper that reframed the datacenter itself as the unit of design. → warehouse-scale-computing/</div>
+  </li>
+</ol>
+
+<h2>Studying the machine — and where it bites back</h2>
+<p class="grouphdr">How architects evaluate a design before there is silicon, and the security cost of the speculation that made cores fast.</p>
+<ol class="papers" start="9" style="counter-reset:item 8;">
+  <li>
+    <span class="title">The gem5 Simulator</span> &mdash; Binkert et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;7pp</span>SIGARCH CAN 2011 &middot; <a href="https://doi.org/10.1145/2024716.2024718">DOI</a> &middot; <a href="https://research.cs.wisc.edu/multifacet/papers/can11_gem5.pdf">PDF</a></div>
+    <div class="why-here">Architecture advances by simulation before silicon; the M5+GEMS merger became the field's de facto full-system, cycle-level simulator and the tool most studies here were run on. → simulation-and-modeling-tools/</div>
+  </li>
+  <li>
+    <span class="title">Spectre Attacks: Exploiting Speculative Execution</span> &mdash; Kocher, Horn, Fogh, et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;16pp</span>IEEE S&amp;P 2019 &middot; <a href="https://doi.org/10.1109/SP.2019.00002">DOI</a> &middot; <a href="https://arxiv.org/pdf/1801.01203">PDF</a></div>
+    <div class="why-here">The speculation that makes cores fast also leaks secrets: training the branch predictor to speculate past a security check opened a whole class of transient-execution attacks. → hardware-security/</div>
+  </li>
+</ol>
+
+<h2>The roads not taken, and the machines that set the vocabulary</h2>
+<p class="grouphdr">Close with an unconventional design that pushed the boundary, and the landmark machine whose ISA endured long after its hardware.</p>
+<ol class="papers" start="11" style="counter-reset:item 10;">
+  <li>
+    <span class="title">Very Long Instruction Word Architectures and the ELI-512</span> &mdash; Joseph A. Fisher
+    <div class="meta"><span class="badge b-pdf">PDF&middot;11pp</span>ISCA 1983 &middot; <a href="https://doi.org/10.1145/800046.801649">DOI</a> &middot; <a href="https://people.eecs.berkeley.edu/~kubitron/courses/cs252-S09/handouts/papers/p263-fisher.pdf">PDF</a></div>
+    <div class="why-here">The founding VLIW paper: expose all the parallelism statically and let the compiler pack very wide instructions — the road-not-taken whose ideas resurface in DSPs, GPUs, and Itanium. → weird-architectures/</div>
+  </li>
+  <li>
+    <span class="title">Architecture of the IBM System/360</span> &mdash; Amdahl, Blaauw, Brooks
+    <div class="meta"><span class="badge b-pdf">PDF&middot;15pp</span>IBM J. R&amp;D 1964 &middot; <a href="https://doi.org/10.1147/rd.82.0087">DOI</a> &middot; <a href="https://people.eecs.berkeley.edu/~culler/courses/cs252-s05/papers/amdahl.pdf">PDF</a></div>
+    <div class="why-here">The founding statement that an instruction set is a durable contract spanning many implementations — the architecture-vs-microarchitecture distinction that organizes the whole field. → important-machines/</div>
+  </li>
+</ol>
 
 <h2>Reference shelf &mdash; books</h2>
 <p class="grouphdr">The standard texts for the area; free copies linked where a legal one exists.</p>
 <ul class="refs">
-  <li><span class="badge b-buy">BUY</span><b>Computer Architecture: A Quantitative Approach</b> &mdash; Hennessy, Patterson (6th ed., 2017) &middot; the definitive graduate reference on quantitative design. <a href="https://shop.elsevier.com/books/computer-architecture/hennessy/978-0-12-811905-1">page</a></li>
-  <li><span class="badge b-buy">BUY</span><b>Computer Organization and Design (RISC-V)</b> &mdash; Patterson, Hennessy (2nd ed., 2020) &middot; the standard undergraduate introduction. <a href="https://shop.elsevier.com/books/computer-organization-and-design-risc-v-edition/patterson/978-0-12-820331-6">page</a></li>
-  <li><span class="badge b-buy">BUY</span><b>Modern Processor Design: Fundamentals of Superscalar Processors</b> &mdash; Shen, Lipasti (2005) &middot; the canonical deep dive on superscalar microarchitecture. <a href="https://www.waveland.com/browse.php?t=624">page</a></li>
-  <li><span class="badge b-buy">BUY</span><b>Parallel Computer Architecture: A Hardware/Software Approach</b> &mdash; Culler, Singh, Gupta (1998) &middot; the foundational multiprocessor text (coherence, interconnects). <a href="https://shop.elsevier.com/books/parallel-computer-architecture/culler/978-1-55860-343-1">page</a></li>
-  <li><span class="badge b-buy">BUY</span><b>Memory Systems: Cache, DRAM, Disk</b> &mdash; Jacob, Ng, Wang (2007) &middot; the most comprehensive memory-hierarchy volume. <a href="https://shop.elsevier.com/books/memory-systems/jacob/978-0-12-379751-3">page</a></li>
-  <li><span class="badge b-buy">BUY</span><b>Digital Design and Computer Architecture (RISC-V)</b> &mdash; Harris, Harris (2021) &middot; bridges digital logic and architecture, gates up. <a href="https://shop.elsevier.com/books/digital-design-and-computer-architecture-risc-v-edition/harris/978-0-12-820064-3">page</a></li>
-  <li><span class="badge b-buy">BUY</span><b>Programming Massively Parallel Processors</b> &mdash; Hwu, Kirk, El Hajj (4th ed., 2022) &middot; the standard GPU-architecture and CUDA reference. <a href="https://shop.elsevier.com/books/programming-massively-parallel-processors/hwu/978-0-323-91231-0">page</a></li>
+  <li><span class="badge b-buy">BUY&middot;936pp</span><b>Computer Architecture: A Quantitative Approach</b> &mdash; Hennessy, Patterson (6th ed. 2017) &middot; The definitive graduate reference and the source of the quantitative method used throughout this survey. <a href="https://shop.elsevier.com/books/computer-architecture/hennessy/978-0-12-811905-1">page</a></li>
+  <li><span class="badge b-buy">BUY&middot;712pp</span><b>Computer Organization and Design (RISC-V)</b> &mdash; Patterson, Hennessy (2nd ed. 2020) &middot; The standard undergraduate introduction, and the gentlest on-ramp to the whole area. <a href="https://shop.elsevier.com/books/computer-organization-and-design-risc-v-edition/patterson/978-0-12-820331-6">page</a></li>
+  <li><span class="badge b-buy">BUY&middot;642pp</span><b>Modern Processor Design: Fundamentals of Superscalar Processors</b> &mdash; Shen, Lipasti (2005) &middot; The canonical deep dive on superscalar microarchitecture — the home base for the Tomasulo and branch-prediction entries. <a href="https://www.waveland.com/browse.php?t=624">page</a></li>
+  <li><span class="badge b-buy">BUY&middot;1025pp</span><b>Parallel Computer Architecture: A Hardware/Software Approach</b> &mdash; Culler, Singh, Gupta (1998) &middot; The foundational multiprocessor text on coherence, consistency, and interconnects — the book behind the Lamport entry. <a href="https://shop.elsevier.com/books/parallel-computer-architecture/culler/978-1-55860-343-1">page</a></li>
+  <li><span class="badge b-buy">BUY&middot;1017pp</span><b>Memory Systems: Cache, DRAM, Disk</b> &mdash; Jacob, Ng, Wang (2007) &middot; The most comprehensive single volume on the memory-and-storage hierarchy, from SRAM cells to disk mechanics. <a href="https://shop.elsevier.com/books/memory-systems/jacob/978-0-12-379751-3">page</a></li>
+  <li><span class="badge b-buy">BUY&middot;584pp</span><b>Digital Design and Computer Architecture (RISC-V)</b> &mdash; Harris, Harris (2021) &middot; Bridges digital logic and architecture from the gates up, for readers who want the substrate under the ISA. <a href="https://shop.elsevier.com/books/digital-design-and-computer-architecture-risc-v-edition/harris/978-0-12-820064-3">page</a></li>
+  <li><span class="badge b-buy">BUY&middot;580pp</span><b>Programming Massively Parallel Processors</b> &mdash; Hwu, Kirk, El Hajj (4th ed. 2022) &middot; The standard GPU-architecture and CUDA reference — the companion to the accelerator entry. <a href="https://shop.elsevier.com/books/programming-massively-parallel-processors/hwu/978-0-323-91231-0">page</a></li>
 </ul>
+
+<h2>Going deeper</h2>
+<ul class="comp">
+  <li><span class="badge b-web">DIR</span><b>quantitative-principles/</b> &mdash; the iron law, Amdahl and Gustafson, Moore and Dennard scaling, the memory and power walls, roofline, and the "new golden age."</li>
+  <li><span class="badge b-web">DIR</span><b>superscalar-and-out-of-order/</b> &mdash; dynamic scheduling, register renaming, precise state, the ILP limit studies, and speculation on memory and data values.</li>
+  <li><span class="badge b-web">DIR</span><b>branch-prediction-and-speculation/</b> &mdash; saturating counters through two-level, gshare, perceptron, and TAGE, plus target, confidence, and value prediction.</li>
+  <li><span class="badge b-web">DIR</span><b>memory-systems-and-storage/</b> &mdash; the hierarchy from caches and NUCA through DRAM scheduling and translation to RAID, flash, and persistent memory.</li>
+  <li><span class="badge b-web">DIR</span><b>multicore-and-memory-consistency/</b> &mdash; sequential consistency, coherence protocols, relaxed models, synchronization, transactional memory, and the multicore wall.</li>
+  <li><span class="badge b-web">DIR</span><b>domain-specific-accelerators/</b> &mdash; systolic arrays, GPUs, the DNN-accelerator lineage, sparsity, and datacenter silicon (TPU, Catapult, wafer-scale).</li>
+  <li><span class="badge b-web">DIR</span><b>warehouse-scale-computing/</b> &mdash; the datacenter as one machine: storage, MapReduce and Spark, cluster scheduling, networks, and disaggregation.</li>
+  <li><span class="badge b-web">DIR</span><b>simulation-and-modeling-tools/</b> &mdash; cycle-level and full-system simulators, dynamic instrumentation, sampling methodology, and power/area/thermal/DRAM models.</li>
+  <li><span class="badge b-web">DIR</span><b>hardware-security/</b> &mdash; timing and power side channels, cache primitives, Rowhammer, transient execution (Meltdown/Spectre/MDS), and trusted-execution enclaves.</li>
+  <li><span class="badge b-web">DIR</span><b>weird-architectures/</b> &mdash; dataflow, VLIW/EPIC, decoupled and systolic pipelines, SIMD and multithreaded machines, and tiled/reconfigurable fabrics.</li>
+  <li><span class="badge b-web">DIR</span><b>important-machines/</b> &mdash; the landmark machines and ISAs, from System/360 and the CDC 6600 through the Cray-1, VAX, RISC/MIPS, Alpha, and x86.</li>
+</ul>
+
+<h2>Key terms</h2>
+<p class="grouphdr">Vocabulary used across this list.</p>
+<div class="notekey"><b>the iron law</b> &mdash; execution time = instructions × cycles-per-instruction × cycle time; every speedup acts on one of the three factors &nbsp; <b>Amdahl's Law</b> &mdash; the serial fraction of a workload caps its parallel speedup, however many processors you add &nbsp; <b>operational intensity</b> &mdash; operations performed per byte of memory traffic; the roofline's x-axis, and the number that decides compute- vs bandwidth-bound &nbsp; <b>out-of-order execution</b> &mdash; issuing instructions as their operands become ready rather than in program order, to hide latency &nbsp; <b>speculation</b> &mdash; executing past an unresolved branch or dependence on a prediction and rolling back when wrong; the source of both performance and Spectre &nbsp; <b>memory hierarchy</b> &mdash; a small fast store backed by a large slow one, managed so the fast store almost always holds what is needed &nbsp; <b>sequential consistency</b> &mdash; the shared-memory contract in which the result is as if all operations ran in one interleaving respecting each thread's program order &nbsp; <b>cache coherence</b> &mdash; the mechanism keeping many private caches agreeing on the value of each shared location; distinct from the consistency model above &nbsp; <b>domain-specific architecture (DSA)</b> &mdash; hardware specialized to one problem class, trading generality for efficiency once general-purpose scaling ended &nbsp; <b>systolic array</b> &mdash; a grid of simple cells that rhythmically pass data to their neighbors, reusing each operand many times before it leaves the array &nbsp; <b>ISA vs. microarchitecture</b> &mdash; the programmer-visible instruction-set contract, versus how one particular chip implements it</div>
 
 </body>
 </html>

@@ -8,66 +8,175 @@
 <body>
 
 <h1>Computer architecture · Warehouse-scale computing</h1>
-<p class="sub">The datacenter as the unit of computing: cluster architecture, storage, networks, power, and the systems that schedule it all.</p>
-<p class="tally">In-depth landmark list for this subtopic. <span class="badge b-pdf">PDF</span>open copy available &middot; <span class="badge b-web">DOI</span>publisher link only.</p>
+<p class="sub">The datacenter is the computer: a warehouse of commodity parts, wired together and programmed as one machine. This guide follows that idea from the ground up — first the abstraction and its cost model, then the storage that holds the data, the frameworks that compute over it, the software that schedules the fleet, the network that carries the bytes, the power and latency limits that bound the whole thing, and finally where the machine is being decomposed again into disaggregated and serverless resources.</p>
+<p class="tally">24 papers &middot; &asymp; <b>344 pp</b> of primary reading. &nbsp; Legend: <span class="badge b-pdf">PDF</span>open copy (see <span class="file">fetch.sh</span>) &middot; <span class="badge b-web">DOI</span>publisher link only</p>
+<div class="why"><b>How to read this list.</b> Read the two framing papers first — they give you the WSC abstraction and the energy argument that motivates everything after. Then the storage and compute layers (GFS through Spark) show how a pile of unreliable machines becomes a reliable data platform. The scheduling and network sections are the "operating system" and "bus" of the warehouse. Close with the power/tail-latency limits and the disaggregation papers, which are the frontier. The book in the reference shelf is the single best companion to the whole path.</div>
 
-<ol class="papers">
+<h2>The warehouse as the machine</h2>
+<p class="grouphdr">Start here: the vocabulary, the reliability stance, and the cost model that every later paper assumes.</p>
+<ol class="papers" start="1">
   <li>
-    <span class="title">The Datacenter as a Computer</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.2200/S00193ED1V01Y200905CAC006">DOI</a></div>
-    <div class="why-here">Barroso, Hölzle, 2009, Synthesis Lectures. Framed the datacenter itself as the unit of computing (the WSC abstraction).</div>
+    <span class="title">Web Search for a Planet: The Google Cluster Architecture</span> &mdash; Barroso, Dean, Hölzle
+    <div class="meta"><span class="badge b-pdf">PDF&middot;7pp</span>IEEE Micro 2003 &middot; <a href="https://doi.org/10.1109/MM.2003.1196112">DOI</a> &middot; <a href="https://static.googleusercontent.com/media/research.google.com/en//archive/googlecluster-ieee.pdf">PDF</a></div>
+    <div class="why-here">Reliable planet-scale search built on unreliable commodity hardware — the paper that reframed the datacenter as the unit of design.</div>
   </li>
   <li>
-    <span class="title">Web Search for a Planet: The Google Cluster Architecture</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1109/MM.2003.1196112">DOI</a></div>
-    <div class="why-here">Barroso, Dean, Hölzle, 2003, IEEE Micro. Reliable planet-scale search on unreliable commodity hardware.</div>
-  </li>
-  <li>
-    <span class="title">The Google File System</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/945445.945450">DOI</a></div>
-    <div class="why-here">Ghemawat, Gobioff, Leung, 2003, SOSP. A scalable fault-tolerant DFS for commodity clusters.</div>
-  </li>
-  <li>
-    <span class="title">MapReduce: Simplified Data Processing on Large Clusters</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/1327452.1327492">DOI</a></div>
-    <div class="why-here">Dean, Ghemawat, 2008 (orig. OSDI 2004), CACM. Fault-tolerant large-scale data processing made routine.</div>
-  </li>
-  <li>
-    <span class="title">Power Provisioning for a Warehouse-sized Computer</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/1273440.1250665">DOI</a></div>
-    <div class="why-here">Fan, Weber, Barroso, 2007, ISCA. Measured power revealing headroom for power oversubscription.</div>
-  </li>
-  <li>
-    <span class="title">A Scalable, Commodity Data Center Network Architecture</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/1402958.1402967">DOI</a></div>
-    <div class="why-here">Al-Fares, Loukissas, Vahdat, 2008, SIGCOMM. The fat-tree/Clos design for full-bisection bandwidth on commodity switches.</div>
-  </li>
-  <li>
-    <span class="title">The Case for RAMCloud</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/1965724.1965751">DOI</a></div>
-    <div class="why-here">Ousterhout et al., 2011, CACM. All data in DRAM across a datacenter for low latency.</div>
-  </li>
-  <li>
-    <span class="title">The Tail at Scale</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/2408776.2408794">DOI</a></div>
-    <div class="why-here">Dean, Barroso, 2013, CACM. Named and tamed tail-latency variability in large fan-out services.</div>
-  </li>
-  <li>
-    <span class="title">Jupiter Rising: A Decade of Clos Topologies and Centralized Control in Google's Datacenter Network</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/2785956.2787508">DOI</a></div>
-    <div class="why-here">Singh et al., 2015, SIGCOMM. Five generations of Clos fabrics with SDN control.</div>
-  </li>
-  <li>
-    <span class="title">Large-scale Cluster Management at Google with Borg</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/2741948.2741964">DOI</a></div>
-    <div class="why-here">Verma et al., 2015, EuroSys. The cluster manager that inspired Kubernetes.</div>
-  </li>
-  <li>
-    <span class="title">Network Requirements for Resource Disaggregation</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://www.usenix.org/conference/osdi16/technical-sessions/presentation/gao">page</a></div>
-    <div class="why-here">Gao et al., 2016, OSDI. The network latency/bandwidth needed to make disaggregation viable.</div>
+    <span class="title">The Case for Energy-Proportional Computing</span> &mdash; Barroso, Hölzle
+    <div class="meta"><span class="badge b-pdf">PDF&middot;5pp</span>IEEE Computer 2007 &middot; <a href="https://doi.org/10.1109/MC.2007.443">DOI</a> &middot; <a href="https://www.barroso.org/publications/ieee_computer07.pdf">PDF</a></div>
+    <div class="why-here">Servers are most efficient at full load but spend life half-idle; the case that energy use should track utilization. Shapes a decade of WSC hardware and scheduling.</div>
   </li>
 </ol>
+
+<h2>Storing the data</h2>
+<p class="grouphdr">A warehouse is first a place to keep data durably on parts that fail constantly; these are the storage substrates.</p>
+<ol class="papers" start="3" style="counter-reset:item 2;">
+  <li>
+    <span class="title">The Google File System</span> &mdash; Ghemawat, Gobioff, Leung
+    <div class="meta"><span class="badge b-pdf">PDF&middot;15pp</span>SOSP 2003 &middot; <a href="https://doi.org/10.1145/945445.945450">DOI</a> &middot; <a href="https://static.googleusercontent.com/media/research.google.com/en//archive/gfs-sosp2003.pdf">PDF</a></div>
+    <div class="why-here">A scalable, fault-tolerant distributed file system whose design assumes failure is the common case — the storage floor the rest of the stack stands on.</div>
+  </li>
+  <li>
+    <span class="title">Bigtable: A Distributed Storage System for Structured Data</span> &mdash; Chang et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;14pp</span>OSDI 2006 &middot; <a href="https://doi.org/10.1145/1365815.1365816">DOI</a> &middot; <a href="https://static.googleusercontent.com/media/research.google.com/en//archive/bigtable-osdi06.pdf">PDF</a></div>
+    <div class="why-here">The sparse, sorted, distributed map over GFS that made petabyte-scale structured storage routine.</div>
+  </li>
+  <li>
+    <span class="title">Dynamo: Amazon's Highly Available Key-value Store</span> &mdash; DeCandia et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;16pp</span>SOSP 2007 &middot; <a href="https://doi.org/10.1145/1294261.1294281">DOI</a> &middot; <a href="https://www.allthingsdistributed.com/files/amazon-dynamo-sosp2007.pdf">PDF</a></div>
+    <div class="why-here">Chooses availability over strong consistency for the shopping cart — the eventual-consistency design that seeded a generation of NoSQL stores.</div>
+  </li>
+  <li>
+    <span class="title">Spanner: Google's Globally-Distributed Database</span> &mdash; Corbett et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;14pp</span>OSDI 2012 &middot; <a href="https://doi.org/10.1145/2491245">DOI</a> &middot; <a href="https://static.googleusercontent.com/media/research.google.com/en//archive/spanner-osdi2012.pdf">PDF</a></div>
+    <div class="why-here">Swings back the other way: externally-consistent transactions across continents, using TrueTime and synchronized clocks to bound uncertainty.</div>
+  </li>
+  <li>
+    <span class="title">The Case for RAMCloud</span> &mdash; Ousterhout et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;14pp</span>CACM 2011 &middot; <a href="https://doi.org/10.1145/1965724.1965751">DOI</a> &middot; <a href="https://web.stanford.edu/~ouster/cgi-bin/papers/ramcloud.pdf">PDF</a></div>
+    <div class="why-here">Keep all data in DRAM across the whole datacenter for microsecond access — the argument that memory, not disk, should be the warehouse's storage tier.</div>
+  </li>
+</ol>
+
+<h2>Programming the warehouse</h2>
+<p class="grouphdr">Once the data is stored, the question is how thousands of machines compute over it without the programmer thinking about any one of them.</p>
+<ol class="papers" start="8" style="counter-reset:item 7;">
+  <li>
+    <span class="title">MapReduce: Simplified Data Processing on Large Clusters</span> &mdash; Dean, Ghemawat
+    <div class="meta"><span class="badge b-pdf">PDF&middot;13pp</span>OSDI 2004 (CACM 2008) &middot; <a href="https://doi.org/10.1145/1327452.1327492">DOI</a> &middot; <a href="https://static.googleusercontent.com/media/research.google.com/en//archive/mapreduce-osdi04.pdf">PDF</a></div>
+    <div class="why-here">Two functions and a runtime that hides fault tolerance, data movement, and parallelism — the programming model that made large-scale batch processing ordinary.</div>
+  </li>
+  <li>
+    <span class="title">Resilient Distributed Datasets (Spark)</span> &mdash; Zaharia et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;14pp</span>NSDI 2012 &middot; <a href="https://www.usenix.org/system/files/conference/nsdi12/nsdi12-final138.pdf">PDF</a></div>
+    <div class="why-here">In-memory, lineage-based fault tolerance that made iterative and interactive cluster computing fast — MapReduce's successor for the analytics workload.</div>
+  </li>
+</ol>
+
+<h2>Coordinating and scheduling the fleet</h2>
+<p class="grouphdr">Turning a pile of machines into one managed system: agreement, resource sharing, and placement.</p>
+<ol class="papers" start="10" style="counter-reset:item 9;">
+  <li>
+    <span class="title">The Chubby Lock Service for Loosely-coupled Distributed Systems</span> &mdash; Burrows
+    <div class="meta"><span class="badge b-pdf">PDF&middot;16pp</span>OSDI 2006 &middot; <a href="https://static.googleusercontent.com/media/research.google.com/en//archive/chubby-osdi06.pdf">PDF</a></div>
+    <div class="why-here">Coarse-grained locking and small-file storage backed by Paxos — the coordination primitive under GFS, Bigtable, and cluster election.</div>
+  </li>
+  <li>
+    <span class="title">Mesos: A Platform for Fine-Grained Resource Sharing in the Data Center</span> &mdash; Hindman et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;14pp</span>NSDI 2011 &middot; <a href="https://www.usenix.org/legacy/event/nsdi11/tech/full_papers/Hindman.pdf">PDF</a></div>
+    <div class="why-here">Resource offers that let many frameworks share one cluster — the two-level scheduling model behind much of the open-source stack.</div>
+  </li>
+  <li>
+    <span class="title">Omega: Flexible, Scalable Schedulers for Large Compute Clusters</span> &mdash; Schwarzkopf et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;14pp</span>EuroSys 2013 &middot; <a href="https://doi.org/10.1145/2465351.2465386">DOI</a> &middot; <a href="https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/41684.pdf">PDF</a></div>
+    <div class="why-here">Shared-state, optimistic-concurrency scheduling — the argument that monolithic and two-level schedulers both hit a wall at scale.</div>
+  </li>
+  <li>
+    <span class="title">Large-scale Cluster Management at Google with Borg</span> &mdash; Verma et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;18pp</span>EuroSys 2015 &middot; <a href="https://doi.org/10.1145/2741948.2741964">DOI</a> &middot; <a href="https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/43438.pdf">PDF</a></div>
+    <div class="why-here">The production cluster manager that runs Google, and the direct ancestor of Kubernetes.</div>
+  </li>
+  <li>
+    <span class="title">Borg, Omega, and Kubernetes</span> &mdash; Burns, Grant, Oppenheimer, Brewer, Wilkes
+    <div class="meta"><span class="badge b-pdf">PDF&middot;24pp</span>ACM Queue 2016 &middot; <a href="https://doi.org/10.1145/2898442.2898444">DOI</a> &middot; <a href="https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/44843.pdf">PDF</a></div>
+    <div class="why-here">A decade of lessons across three schedulers — the retrospective that explains why Kubernetes looks the way it does.</div>
+  </li>
+</ol>
+
+<h2>The datacenter network</h2>
+<p class="grouphdr">Bandwidth between servers is the scarce resource; these papers build the fabric and then run it like software.</p>
+<ol class="papers" start="15" style="counter-reset:item 14;">
+  <li>
+    <span class="title">A Scalable, Commodity Data Center Network Architecture</span> &mdash; Al-Fares, Loukissas, Vahdat
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>SIGCOMM 2008 &middot; <a href="https://doi.org/10.1145/1402958.1402967">DOI</a> &middot; <a href="https://cseweb.ucsd.edu/~vahdat/papers/sigcomm08.pdf">PDF</a></div>
+    <div class="why-here">The fat-tree/Clos design that delivers full-bisection bandwidth from cheap commodity switches — the topology the rest of the section builds on.</div>
+  </li>
+  <li>
+    <span class="title">VL2: A Scalable and Flexible Data Center Network</span> &mdash; Greenberg et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>SIGCOMM 2009 &middot; <a href="https://doi.org/10.1145/1592568.1592576">DOI</a> &middot; <a href="https://people.eecs.berkeley.edu/~sylvia/cs268-2019/papers/vl2.pdf">PDF</a></div>
+    <div class="why-here">Valiant load balancing and a flat address space that give any server full rate to any other — the agility case for WSC networks.</div>
+  </li>
+  <li>
+    <span class="title">B4: Experience with a Globally-Deployed Software Defined WAN</span> &mdash; Jain et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>SIGCOMM 2013 &middot; <a href="https://doi.org/10.1145/2486001.2486019">DOI</a> &middot; <a href="https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/41761.pdf">PDF</a></div>
+    <div class="why-here">SDN and centralized traffic engineering driving Google's inter-datacenter WAN to near-100% link utilization.</div>
+  </li>
+  <li>
+    <span class="title">Jupiter Rising: A Decade of Clos Topologies and Centralized Control in Google's Datacenter Network</span> &mdash; Singh et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;15pp</span>SIGCOMM 2015 &middot; <a href="https://doi.org/10.1145/2785956.2787508">DOI</a> &middot; <a href="https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/43837.pdf">PDF</a></div>
+    <div class="why-here">Five generations of intra-datacenter Clos fabrics with SDN control — how the fat-tree idea was industrialized.</div>
+  </li>
+</ol>
+
+<h2>Power, latency, and the physical limits</h2>
+<p class="grouphdr">The fabric and the scheduler can only do so much; power delivery and tail latency are the hard physical bounds on a warehouse.</p>
+<ol class="papers" start="19" style="counter-reset:item 18;">
+  <li>
+    <span class="title">Power Provisioning for a Warehouse-sized Computer</span> &mdash; Fan, Weber, Barroso
+    <div class="meta"><span class="badge b-pdf">PDF&middot;11pp</span>ISCA 2007 &middot; <a href="https://doi.org/10.1145/1273440.1250665">DOI</a> &middot; <a href="https://www.barroso.org/publications/power_provisioning.pdf">PDF</a></div>
+    <div class="why-here">Measured power across thousands of servers reveals headroom to safely oversubscribe the power budget — money that would otherwise be stranded.</div>
+  </li>
+  <li>
+    <span class="title">The Tail at Scale</span> &mdash; Dean, Barroso
+    <div class="meta"><span class="badge b-pdf">PDF&middot;7pp</span>CACM 2013 &middot; <a href="https://doi.org/10.1145/2408776.2408794">DOI</a> &middot; <a href="https://www.barroso.org/publications/TheTailAtScale.pdf">PDF</a></div>
+    <div class="why-here">Names and tames latency variability in large fan-out services, where the slowest component dictates the user-visible response time.</div>
+  </li>
+  <li>
+    <span class="title">Attack of the Killer Microseconds</span> &mdash; Barroso, Marty, Patterson, Ranganathan
+    <div class="meta"><span class="badge b-pdf">PDF&middot;7pp</span>CACM 2017 &middot; <a href="https://doi.org/10.1145/3015146">DOI</a> &middot; <a href="https://www.barroso.org/publications/AttackoftheKillerMicroseconds.pdf">PDF</a></div>
+    <div class="why-here">New I/O devices land in an awkward microsecond regime that neither interrupts nor polling handle well — a call to rethink the systems stack for it.</div>
+  </li>
+</ol>
+
+<h2>Beyond the server: disaggregation and serverless</h2>
+<p class="grouphdr">The frontier: decomposing the machine itself, and hiding the warehouse entirely behind functions.</p>
+<ol class="papers" start="22" style="counter-reset:item 21;">
+  <li>
+    <span class="title">Network Requirements for Resource Disaggregation</span> &mdash; Gao et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;17pp</span>OSDI 2016 &middot; <a href="https://www.usenix.org/system/files/conference/osdi16/osdi16-gao.pdf">PDF</a></div>
+    <div class="why-here">Quantifies the network latency and bandwidth needed before you can break the server into pooled CPU, memory, and storage — the feasibility study for disaggregation.</div>
+  </li>
+  <li>
+    <span class="title">LegoOS: A Disseminated, Distributed OS for Hardware Resource Disaggregation</span> &mdash; Shan, Huang, Chen, Zhang
+    <div class="meta"><span class="badge b-pdf">PDF&middot;20pp</span>OSDI 2018 &middot; <a href="https://www.usenix.org/system/files/osdi18-shan.pdf">PDF</a></div>
+    <div class="why-here">An operating system built for disaggregated hardware, splitting the kernel across independent compute, memory, and storage components.</div>
+  </li>
+  <li>
+    <span class="title">Cloud Programming Simplified: A Berkeley View on Serverless Computing</span> &mdash; Jonas et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;33pp</span>UC Berkeley 2019 &middot; <a href="https://arxiv.org/pdf/1902.03383">PDF</a></div>
+    <div class="why-here">The synthesis of where the WSC abstraction is going for developers: functions, not servers — plus a clear-eyed account of what serverless still can't do.</div>
+  </li>
+</ol>
+
+<h2>Reference shelf &mdash; books</h2>
+<p class="grouphdr">The standard texts for the area; free copies linked where a legal one exists.</p>
+<ul class="refs">
+  <li><span class="badge b-book">BOOK&middot;209pp</span><b>The Datacenter as a Computer: Designing Warehouse-Scale Machines (3rd ed.)</b> &mdash; Barroso, Hölzle, Ranganathan (2018) &middot; The canonical text that named the field; read chapters 1–2 before anything else here, and use the rest as the reference for every topic above. <a href="https://pages.cs.wisc.edu/~shivaram/cs744-readings/dc-computer-v3.pdf">PDF</a></li>
+  <li><span class="badge b-buy">BUY&middot;616pp</span><b>Designing Data-Intensive Applications</b> &mdash; Martin Kleppmann (2017) &middot; Ties the storage, replication, consistency, and batch/stream-processing papers together for the practitioner building on top of a WSC. <a href="https://dataintensive.net/">page</a></li>
+</ul>
+
+<h2>Key terms</h2>
+<p class="grouphdr">Vocabulary used across this list.</p>
+<div class="notekey"><b>warehouse-scale computer (WSC)</b> &mdash; a datacenter designed and programmed as a single large machine, not a room of independent servers &nbsp; <b>energy-proportional</b> &mdash; hardware whose power draw scales down with utilization, so a half-idle machine costs roughly half the energy &nbsp; <b>tail latency</b> &mdash; the high-percentile (p99, p999) response time; in a fan-out service the slowest of many parallel calls sets the user-visible latency &nbsp; <b>bisection bandwidth</b> &mdash; the bandwidth across the worst-case cut of the network; full bisection means any server can talk to any other at full rate &nbsp; <b>Clos / fat-tree</b> &mdash; a multi-stage switching topology that builds high-bandwidth fabrics from many small commodity switches &nbsp; <b>external consistency</b> &mdash; transactions appear to commit in an order consistent with real (wall-clock) time; Spanner's guarantee, backed by TrueTime &nbsp; <b>eventual consistency</b> &mdash; replicas may diverge briefly but converge if writes stop; Dynamo's trade for high availability &nbsp; <b>disaggregation</b> &mdash; pooling CPU, memory, and storage as independent network-attached resources rather than fixing their ratio inside one server &nbsp; <b>serverless / FaaS</b> &mdash; an execution model where the provider runs short-lived stateless functions and hides all server and capacity management &nbsp; <b>two-level scheduling</b> &mdash; a resource manager (e.g. Mesos) offers resources to independent framework schedulers that decide what to run</div>
 
 </body>
 </html>
