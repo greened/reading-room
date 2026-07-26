@@ -9,7 +9,7 @@
 
 <h1>Computer architecture · Hardware security</h1>
 <p class="sub">How secrets leak out of the microarchitecture, and how hardware tries to hold them in. The path runs from the original crypto side channels (timing, power) through the reusable cache primitives that made those attacks routine, to Rowhammer's bit flips, the transient-execution earthquake of Meltdown and Spectre and the MDS aftershocks, the hardware defenses that answer them, and finally the positive side of the ledger — trusted-execution enclaves, roots of trust, and constant-time code. Read it in that order: each attack class assumes the primitives of the one before, and the defenses only make sense once you have seen what they must stop.</p>
-<p class="tally">30 papers &middot; &asymp; <b>500 pp</b> of primary reading. &nbsp; Legend: <span class="badge b-pdf">PDF</span>open copy (see <span class="file">fetch.sh</span>) &middot; <span class="badge b-web">DOI</span>publisher link only</p>
+<p class="tally">26 papers &middot; &asymp; <b>441 pp</b> of primary reading. &nbsp; Legend: <span class="badge b-pdf">PDF</span>open copy (see <span class="file">fetch.sh</span>) &middot; <span class="badge b-web">DOI</span>publisher link only</p>
 <div class="why"><b>How to read this list.</b> Three attacker moves recur. A <em>side channel</em> only <em>observes</em> — it times a cache line or measures power to infer a secret. A <em>fault attack</em> (Rowhammer) <em>disturbs</em> — it corrupts memory the CPU never let it write. A <em>transient-execution attack</em> (Meltdown, Spectre, MDS) makes the CPU <em>compute on a secret it will roll back</em>, then reads the trace left behind. Keep asking which move a paper uses; the defenses are organized the same way.</div>
 
 <h2>Foundations: timing and power leak secrets</h2>
@@ -55,25 +55,18 @@
     <div class="meta"><span class="badge b-pdf">PDF&middot;18pp</span>IEEE S&amp;P 2015 &middot; <a href="https://doi.org/10.1109/SP.2015.43">DOI</a> &middot; <a href="https://web.archive.org/web/2019id_/https://palms.ee.princeton.edu/system/files/SP_vfinal.pdf">PDF</a></div>
     <div class="why-here">Lifts Prime+Probe to the shared last-level cache, so it works cross-core and cross-VM without shared memory — the cloud threat model.</div>
   </li>
-  <li>
-    <span class="title">Cache Template Attacks: Automating Attacks on Inclusive Last-Level Caches</span> &mdash; Gruss, Spreitzer, Mangard
-    <div class="meta"><span class="badge b-pdf">PDF&middot;17pp</span>USENIX Security 2015 &middot; <a href="https://www.usenix.org/conference/usenixsecurity15/technical-sessions/presentation/gruss">page</a> &middot; <a href="https://www.usenix.org/system/files/conference/usenixsecurity15/sec15-paper-gruss.pdf">PDF</a></div>
-    <div class="why-here">Profiles which addresses leak what, automating Flush+Reload against arbitrary binaries — keystroke timing, crypto, and more.</div>
-  </li>
-  <li>
-    <span class="title">Flush+Flush: A Fast and Stealthy Cache Attack</span> &mdash; Gruss, Maurice, Wagner, Mangard
-    <div class="meta"><span class="badge b-pdf">PDF&middot;21pp</span>DIMVA 2016 &middot; <a href="https://doi.org/10.1007/978-3-319-40667-1_14">DOI</a> &middot; <a href="https://arxiv.org/pdf/1511.04594">PDF</a></div>
-    <div class="why-here">Attacks (and builds covert channels) using only the timing of the flush instruction itself, causing no cache misses — a direct answer to miss-counting detectors.</div>
-  </li>
 </ol>
 
 <h2>Rowhammer: when reading memory rewrites it</h2>
 <p class="grouphdr">A different move entirely — not observing state but corrupting it. Placed after the cache section because the exploits reuse cache-eviction tricks to hammer fast.</p>
-<ol class="papers" start="10" style="counter-reset:item 9;">
+<ol class="papers" start="8" style="counter-reset:item 7;">
   <li>
     <span class="title">Flipping Bits in Memory Without Accessing Them: RowHammer</span> &mdash; Kim, Daly, Kim, Mutlu, et al.
     <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>ISCA 2014 &middot; <a href="https://doi.org/10.1145/2678373.2665726">DOI</a> &middot; <a href="https://users.ece.cmu.edu/~yoonguk/papers/kim-isca14.pdf">PDF</a></div>
     <div class="why-here">Hammering one DRAM row flips bits in its neighbors — a reliability defect that is really a security hole.</div>
+    <ul class="comp">
+      <li><span class="badge b-web">WEB</span><b>Exploiting the DRAM rowhammer bug to gain kernel privileges</b> Seaborn and Dullien turned the defect into a working privilege-escalation exploit — the moment Rowhammer became a weapon. <a href="https://googleprojectzero.blogspot.com/2015/03/exploiting-dram-rowhammer-bug-to-gain.html">Project Zero</a></li>
+    </ul>
   </li>
   <li>
     <span class="title">Flip Feng Shui: Hammering a Needle in the Software Stack</span> &mdash; Razavi, Gras, Bosman, Preneel, Giuffrida, Bos
@@ -89,22 +82,28 @@
 
 <h2>Transient execution: Meltdown and Spectre</h2>
 <p class="grouphdr">The earthquake: speculation and out-of-order execution compute on data they later discard, and the cache primitives above read the residue. Meltdown first — it is the simpler, exception-driven case.</p>
-<ol class="papers" start="13" style="counter-reset:item 12;">
+<ol class="papers" start="11" style="counter-reset:item 10;">
   <li>
     <span class="title">Meltdown: Reading Kernel Memory from User Space</span> &mdash; Lipp, Schwarz, Gruss, et al.
     <div class="meta"><span class="badge b-pdf">PDF&middot;16pp</span>USENIX Security 2018 &middot; <a href="https://www.usenix.org/conference/usenixsecurity18/presentation/lipp">page</a> &middot; <a href="https://arxiv.org/pdf/1801.01207">PDF</a></div>
     <div class="why-here">Out-of-order execution transiently reads kernel memory before the fault retires, then leaks it through the cache — the flaw behind kernel-page-table isolation.</div>
+    <ul class="comp">
+      <li><span class="badge b-web">WEB</span><b>Meltdown project site</b> Plain-language explainer, FAQ, and proof-of-concept code from the authors. <a href="https://meltdownattack.com/">meltdownattack.com</a></li>
+    </ul>
   </li>
   <li>
     <span class="title">Spectre Attacks: Exploiting Speculative Execution</span> &mdash; Kocher, Horn, Fogh, et al.
     <div class="meta"><span class="badge b-pdf">PDF&middot;16pp</span>IEEE S&amp;P 2019 &middot; <a href="https://doi.org/10.1109/SP.2019.00002">DOI</a> &middot; <a href="https://arxiv.org/pdf/1801.01203">PDF</a></div>
     <div class="why-here">Trains the branch predictor to speculate past a bounds check (or into a chosen gadget) and leak across a security boundary — a whole new attack class, and much harder to fix than Meltdown.</div>
+    <ul class="comp">
+      <li><span class="badge b-web">WEB</span><b>Spectre project site</b> The companion explainer and variant taxonomy from the disclosing team. <a href="https://spectreattack.com/">spectreattack.com</a></li>
+    </ul>
   </li>
 </ol>
 
 <h2>Microarchitectural data sampling and enclave attacks</h2>
 <p class="grouphdr">The aftershocks: instead of a chosen address, sample whatever data happens to be in transit through CPU buffers — and use it to break Intel SGX.</p>
-<ol class="papers" start="15" style="counter-reset:item 14;">
+<ol class="papers" start="13" style="counter-reset:item 12;">
   <li>
     <span class="title">Foreshadow: Extracting the Keys to the Intel SGX Kingdom</span> &mdash; Van Bulck, Minkin, Weisse, et al.
     <div class="meta"><span class="badge b-pdf">PDF&middot;18pp</span>USENIX Security 2018 &middot; <a href="https://www.usenix.org/conference/usenixsecurity18/presentation/van-bulck">page</a> &middot; <a href="https://foreshadowattack.eu/foreshadow.pdf">PDF</a></div>
@@ -114,11 +113,9 @@
     <span class="title">RIDL: Rogue In-Flight Data Load</span> &mdash; van Schaik, Milburn, Österlund, et al.
     <div class="meta"><span class="badge b-pdf">PDF&middot;20pp</span>IEEE S&amp;P 2019 &middot; <a href="https://doi.org/10.1109/SP.2019.00087">DOI</a> &middot; <a href="https://mdsattacks.com/files/ridl.pdf">PDF</a></div>
     <div class="why-here">Leaks data straight from internal line-fill and load buffers with no address at all — the MDS family, independent of the address-space defenses that stopped Meltdown.</div>
-  </li>
-  <li>
-    <span class="title">ZombieLoad: Cross-Privilege-Boundary Data Sampling</span> &mdash; Schwarz, Lipp, Moghimi, et al.
-    <div class="meta"><span class="badge b-pdf">PDF&middot;16pp</span>CCS 2019 &middot; <a href="https://doi.org/10.1145/3319535.3354252">DOI</a> &middot; <a href="https://zombieloadattack.com/zombieload.pdf">PDF</a></div>
-    <div class="why-here">Samples data from stale fill-buffer entries across threads, processes, and enclaves — the sibling of RIDL, with a different microarchitectural source.</div>
+    <ul class="comp">
+      <li><span class="badge b-web">WEB</span><b>MDS attacks site</b> The unified RIDL / Fallout / ZombieLoad hub, with demos and CPU-vulnerability tables. <a href="https://mdsattacks.com/">mdsattacks.com</a></li>
+    </ul>
   </li>
   <li>
     <span class="title">A Systematic Evaluation of Transient Execution Attacks and Defenses</span> &mdash; Canella, Van Bulck, Schwarz, et al.
@@ -129,7 +126,7 @@
 
 <h2>Defending speculation in hardware</h2>
 <p class="grouphdr">Now the responses: if the danger is secret-dependent state left by transient instructions, hide that state or forbid it from forming.</p>
-<ol class="papers" start="19" style="counter-reset:item 18;">
+<ol class="papers" start="16" style="counter-reset:item 15;">
   <li>
     <span class="title">InvisiSpec: Making Speculative Execution Invisible in the Cache Hierarchy</span> &mdash; Yan, Choi, Skarlatos, Morrison, Fletcher, Torrellas
     <div class="meta"><span class="badge b-pdf">PDF&middot;14pp</span>MICRO 2018 &middot; <a href="https://doi.org/10.1109/MICRO.2018.00042">DOI</a> &middot; <a href="http://iacoma.cs.uiuc.edu/iacoma-papers/micro18.pdf">PDF</a></div>
@@ -149,7 +146,7 @@
 
 <h2>Trusted execution: secure processors and enclaves</h2>
 <p class="grouphdr">The positive program: build hardware that isolates code and data even from privileged software. Read chronologically here — SGX and TrustZone are the industrial descendants of XOM and AEGIS.</p>
-<ol class="papers" start="22" style="counter-reset:item 21;">
+<ol class="papers" start="19" style="counter-reset:item 18;">
   <li>
     <span class="title">Architectural Support for Copy and Tamper Resistant Software (XOM)</span> &mdash; Lie, Thekkath, Mitchell, et al.
     <div class="meta"><span class="badge b-pdf">PDF&middot;10pp</span>ASPLOS 2000 &middot; <a href="https://doi.org/10.1145/378993.379237">DOI</a> &middot; <a href="https://security.csl.toronto.edu/wp-content/uploads/2018/06/lie-asplos2000.pdf">PDF</a></div>
@@ -164,6 +161,9 @@
     <span class="title">Innovative Instructions and Software Model for Isolated Execution (Intel SGX)</span> &mdash; McKeen, Alexandrovich, Berenzon, et al.
     <div class="meta"><span class="badge b-pdf">PDF&middot;8pp</span>HASP 2013 &middot; <a href="https://doi.org/10.1145/2487726.2488368">DOI</a> &middot; <a href="https://web.archive.org/web/2019id_/http://css.csail.mit.edu/6.858/2015/readings/intel-sgx.pdf">PDF</a></div>
     <div class="why-here">The design note that shipped enclaves to billions of CPUs — and the target of Foreshadow above.</div>
+    <ul class="comp">
+      <li><span class="badge b-pdf">PDF</span><b>Intel SGX Explained</b> &mdash; Costan, Devadas A book-length (118pp) reverse-engineered reference on SGX internals; the deep dive when the 8-page note is not enough. <a href="https://web.archive.org/web/2019id_/https://eprint.iacr.org/2016/086.pdf">PDF</a></li>
+    </ul>
   </li>
   <li>
     <span class="title">Demystifying Arm TrustZone: A Comprehensive Survey</span> &mdash; Pinto, Santos
@@ -174,16 +174,11 @@
 
 <h2>Roots of trust: PUFs, attestation, and secure boot</h2>
 <p class="grouphdr">Every scheme above assumes a secret the hardware can keep and a way to prove its own state. This section is where that assumption is actually cashed out.</p>
-<ol class="papers" start="26" style="counter-reset:item 25;">
-  <li>
-    <span class="title">Physical One-Way Functions</span> &mdash; Pappu, Recht, Taylor, Gershenfeld
-    <div class="meta"><span class="badge b-pdf">PDF&middot;5pp</span>Science 2002 &middot; <a href="https://doi.org/10.1126/science.1074376">DOI</a> &middot; <a href="https://people.eecs.berkeley.edu/~brecht/papers/02.PapEA.powf.pdf">PDF</a></div>
-    <div class="why-here">The origin of the PUF idea: manufacturing randomness in a physical medium gives a unique, unclonable, tamper-evident identity.</div>
-  </li>
+<ol class="papers" start="23" style="counter-reset:item 22;">
   <li>
     <span class="title">Silicon Physical Random Functions</span> &mdash; Gassend, Clarke, van Dijk, Devadas
     <div class="meta"><span class="badge b-pdf">PDF&middot;13pp</span>CCS 2002 &middot; <a href="https://doi.org/10.1145/586110.586132">DOI</a> &middot; <a href="https://people.csail.mit.edu/devadas/pubs/spuf.pdf">PDF</a></div>
-    <div class="why-here">Realizes the PUF in ordinary CMOS using gate-delay variation — the practical root of trust behind AEGIS-style key generation.</div>
+    <div class="why-here">Realizes the PUF in ordinary CMOS using gate-delay variation — the practical root of trust behind AEGIS-style key generation, exploiting manufacturing randomness for a unique, unclonable identity.</div>
   </li>
   <li>
     <span class="title">Bootstrapping Trust in Commodity Computers</span> &mdash; Parno, McCune, Perrig
@@ -194,7 +189,7 @@
 
 <h2>Writing code that doesn't leak: constant-time</h2>
 <p class="grouphdr">Hardware can hide state, but software still has to stop generating secret-dependent behavior. This closes the loop back to Bernstein's AES.</p>
-<ol class="papers" start="29" style="counter-reset:item 28;">
+<ol class="papers" start="25" style="counter-reset:item 24;">
   <li>
     <span class="title">Verifying Constant-Time Implementations</span> &mdash; Almeida, Barbosa, Barthe, Dupressoir, Emmi
     <div class="meta"><span class="badge b-pdf">PDF&middot;19pp</span>USENIX Security 2016 &middot; <a href="https://www.usenix.org/conference/usenixsecurity16/technical-sessions/presentation/almeida">page</a> &middot; <a href="https://www.usenix.org/system/files/conference/usenixsecurity16/sec16_paper_almeida.pdf">PDF</a></div>

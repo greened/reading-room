@@ -19,6 +19,9 @@
     <span class="title">Pointer Analysis: Haven't We Solved This Problem Yet?</span> &mdash; Michael Hind
     <div class="meta"><span class="badge b-pdf">PDF&middot;8pp</span>PASTE 2001 &middot; <a href="https://doi.org/10.1145/379605.379665">DOI</a> &middot; <a href="https://www.cs.cornell.edu/courses/cs711/2005fa/papers/hind-paste01.pdf">PDF</a></div>
     <div class="why-here">The canonical survey: frames flow-, context-, field-sensitivity and the precision/scalability tradeoffs, and remains the best map of the territory.</div>
+    <ul class="comp">
+      <li><span class="badge b-pdf">PDF</span><b>Companion</b> Smaragdakis &amp; Balatsouras's monograph is the modern, worked-out version of the same map (also in the reference shelf). <a href="https://yanniss.github.io/points-to-tutorial15.pdf">Pointer Analysis</a></li>
+    </ul>
   </li>
 </ol>
 
@@ -129,11 +132,17 @@
     <span class="title">Cloning-Based Context-Sensitive Pointer Alias Analysis Using BDDs</span> &mdash; John Whaley, Monica Lam
     <div class="meta"><span class="badge b-pdf">PDF&middot;14pp</span>PLDI 2004 &middot; <a href="https://doi.org/10.1145/996841.996859">DOI</a> &middot; <a href="https://web.archive.org/web/20260501175527id_/https://suif.stanford.edu/papers/pldi04.pdf">PDF</a></div>
     <div class="why-here">Fully context-sensitive inclusion analysis via call-path cloning, expressed in Datalog and solved with BDDs (bddbddb).</div>
+    <ul class="comp">
+      <li><span class="badge b-web">WEB</span><b>Companion</b> The Datalog-to-BDD solver behind the paper. <a href="https://sourceforge.net/projects/bddbddb/">bddbddb</a></li>
+    </ul>
   </li>
   <li>
     <span class="title">Strictly Declarative Specification of Sophisticated Points-to Analyses</span> &mdash; Martin Bravenboer, Yannis Smaragdakis
     <div class="meta"><span class="badge b-web">DOI&middot;18pp</span>OOPSLA 2009 &middot; <a href="https://doi.org/10.1145/1640089.1640108">DOI</a></div>
     <div class="why-here">Doop: whole analyses (including on-the-fly call graphs and exceptions) written as Datalog rules — declarative, and often faster than hand-coded engines.</div>
+    <ul class="comp">
+      <li><span class="badge b-web">WEB</span><b>Companion</b> The still-maintained Datalog analysis framework the paper introduced. <a href="https://github.com/plast-lab/doop-mirror">Doop framework</a></li>
+    </ul>
   </li>
 </ol>
 
@@ -177,6 +186,9 @@
     <span class="title">SVF: Interprocedural Static Value-Flow Analysis in LLVM</span> &mdash; Yulei Sui, Jingling Xue
     <div class="meta"><span class="badge b-pdf">PDF&middot;5pp</span>CC 2016 &middot; <a href="https://doi.org/10.1145/2892208.2892235">DOI</a> &middot; <a href="https://yuleisui.github.io/publications/cc16.pdf">PDF</a></div>
     <div class="why-here">The open, sparse value-flow framework that brought scalable pointer/alias analysis to the LLVM IR most compiler work targets.</div>
+    <ul class="comp">
+      <li><span class="badge b-web">WEB</span><b>Companion</b> The actively developed tool; the fastest way to run these algorithms on real IR. <a href="https://github.com/SVF-tools/SVF">SVF</a></li>
+    </ul>
   </li>
   <li>
     <span class="title">Structure-Sensitive Points-to Analysis for C and C++</span> &mdash; George Balatsouras, Yannis Smaragdakis

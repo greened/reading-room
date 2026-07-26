@@ -16,7 +16,6 @@ dl "https://c9x.me/compile/bib/constpropssa.pdf" "Constant-Propagation-with-Cond
 dl "https://c9x.me/compile/bib/click-gvn.pdf" "Global-Code-Motion-Global-Value-Numbering.pdf"
 dl "https://web.eecs.umich.edu/~mahlke/courses/583f23/reading/ferrante_toplas_87.pdf" "The-Program-Dependence-Graph-and-Its-Use-in-Opti.pdf"
 dl "https://www.oracle.com/technetwork/java/javase/tech/c2-ir95-150110.pdf" "A-Simple-Graph-Based-Intermediate-Representation.pdf"
-dl "https://www.usenix.org/legacy/events/jvm01/full_papers/paleczny/paleczny.pdf" "The-Java-HotSpot-Server-Compiler.pdf"
 dl "https://llvm.org/pubs/2004-01-30-CGO-LLVM.pdf" "LLVM-A-Compilation-Framework-for-Lifelong-Progra.pdf"
 dl "https://rosstate.org/publications/eqsat/eqsat_tate_popl09.pdf" "Equality-Saturation-A-New-Approach-to-Optimizati.pdf"
 dl "https://arxiv.org/pdf/2002.11054" "MLIR-Scaling-Compiler-Infrastructure-for-Domain.pdf"

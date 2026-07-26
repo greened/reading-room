@@ -10,7 +10,6 @@
 <h1>Programming languages · Monads &amp; algebraic effects</h1>
 <p class="sub">How do you do input, state, and exceptions in a language that forbids side effects? Two answers dominate. <em>Monads</em> thread the effect through the types, one layer at a time; <em>algebraic effects and handlers</em> name the operations and let a surrounding handler decide what they mean. The papers below walk that arc: start with Wadler's gentle case for monads, drop down to Moggi's semantics that justifies them, watch monads reach real languages and learn to compose, meet the weaker and stronger relatives (applicative functors, arrows), then follow the algebraic-effects line from Plotkin and Power's theory to the handlers, languages, and libraries in use today.</p>
 <p class="tally">14 papers &middot; &asymp; <b>291 pp</b> of primary reading. &nbsp; Legend: <span class="badge b-pdf">PDF</span>open copy (see <span class="file">fetch.sh</span>) &middot; <span class="badge b-web">DOI</span>publisher link only</p>
-<div class="why"><b>How to read this list.</b> If you only want the intuition, read Wadler (<em>Comprehending Monads</em>, then <em>Monads for functional programming</em>) and stop. For the semantics behind it, read Moggi. The second half is the modern story: monads compose awkwardly (transformers), so effects were re-based on algebra (Plotkin–Power) and given handlers (Plotkin–Pretnar) that now drive Eff, Koka, and the extensible-effects libraries. Theory-first readers can flip the two halves.</div>
 
 <h2>Why monads — structuring effects in a pure language</h2>
 <p class="grouphdr">Start with the programming problem monads solve, in Wadler's own unhurried exposition.</p>
@@ -29,6 +28,9 @@
     <span class="title">Monads for functional programming</span> &mdash; Philip Wadler
     <div class="meta"><span class="badge b-pdf">PDF&middot;31pp</span>Advanced Functional Programming (LNCS 925) 1995 &middot; <a href="https://doi.org/10.1007/3-540-59451-5_2">DOI</a> &middot; <a href="https://homepages.inf.ed.ac.uk/wadler/papers/marktoberdorf/baastad.pdf">PDF</a></div>
     <div class="why-here">The definitive tutorial; if any single paper makes monads click, it is this one.</div>
+    <ul class="comp">
+      <li><span class="badge b-web">WEB</span><b>You Could Have Invented Monads!</b> Dan Piponi derives the monad interface from the need to compose "debuggable" functions — the best short companion to Wadler. <a href="http://blog.sigfpe.com/2006/08/you-could-have-invented-monads-and.html">blog</a></li>
+    </ul>
   </li>
 </ol>
 
@@ -49,6 +51,9 @@
     <span class="title">Imperative Functional Programming</span> &mdash; Simon Peyton Jones, Philip Wadler
     <div class="meta"><span class="badge b-pdf">PDF&middot;15pp</span>POPL 1993 &middot; <a href="https://doi.org/10.1145/158511.158524">DOI</a> &middot; <a href="https://www.microsoft.com/en-us/research/wp-content/uploads/1993/01/imperative.pdf">PDF</a></div>
     <div class="why-here">Monadic I/O: how a pure language does genuine imperative computation without cheating. This is the design that shipped in Haskell.</div>
+    <ul class="comp">
+      <li><span class="badge b-pdf">PDF</span><b>Tackling the Awkward Squad</b> Peyton Jones' 46pp lecture notes on I/O, concurrency, exceptions, and FFI in a pure language — the practitioner's follow-through. <a href="https://www.microsoft.com/en-us/research/wp-content/uploads/2016/07/mark.pdf">PDF</a></li>
+    </ul>
   </li>
   <li>
     <span class="title">Monad Transformers and Modular Interpreters</span> &mdash; Sheng Liang, Paul Hudak, Mark Jones
@@ -79,6 +84,9 @@
     <span class="title">Algebraic Operations and Generic Effects</span> &mdash; Gordon Plotkin, John Power
     <div class="meta"><span class="badge b-pdf">PDF&middot;26pp</span>Applied Categorical Structures 2003 &middot; <a href="https://doi.org/10.1023/A:1023064908962">DOI</a> &middot; <a href="https://homepages.inf.ed.ac.uk/gdp/publications/alg_ops_gen_effects.pdf">PDF</a></div>
     <div class="why-here">The theory: rather than take monads as given, present effects as operations satisfying equations. This is the foundation the whole algebraic-effects line rests on.</div>
+    <ul class="comp">
+      <li><span class="badge b-pdf">PDF</span><b>What's Algebraic About Algebraic Effects and Handlers?</b> &mdash; Andrej Bauer (OPLSS 2018) explains the algebra with almost no category theory; watch before wading into the paper. Companion notes: <a href="https://www.youtube.com/watch?v=atYp386EGo8">VIDEO</a> &middot; <a href="https://arxiv.org/abs/1807.05923">arXiv 1807.05923</a></li>
+    </ul>
   </li>
   <li>
     <span class="title">Handlers of Algebraic Effects</span> &mdash; Gordon Plotkin, Matija Pretnar

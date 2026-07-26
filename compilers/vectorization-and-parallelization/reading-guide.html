@@ -79,6 +79,9 @@
     <span class="title">Exploiting Superword Level Parallelism with Multimedia Instruction Sets (SLP)</span> &mdash; Larsen, Amarasinghe
     <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>PLDI 2000 &middot; <a href="https://doi.org/10.1145/349299.349320">DOI</a> &middot; <a href="https://groups.csail.mit.edu/cag/slp/SLP-PLDI-2000.pdf">PDF</a></div>
     <div class="why-here">The other route to SIMD: pack isomorphic scalar operations <em>within a basic block</em>. The basis of the LLVM and GCC SLP vectorizers.</div>
+    <ul class="comp">
+      <li><span class="badge b-web">WEB</span><b>Auto-Vectorization in LLVM</b> How the loop- and SLP-vectorizers are wired into a production compiler today. <a href="https://llvm.org/docs/Vectorizers.html">LLVM docs</a></li>
+    </ul>
   </li>
   <li>
     <span class="title">Auto-Vectorization of Interleaved Data for SIMD</span> &mdash; Nuzman, Rosen, Zaks
@@ -104,6 +107,9 @@
     <span class="title">A Practical Automatic Polyhedral Parallelizer and Locality Optimizer (Pluto)</span> &mdash; Bondhugula, Hartono, Ramanujam, Sadayappan
     <div class="meta"><span class="badge b-pdf">PDF&middot;13pp</span>PLDI 2008 &middot; <a href="https://doi.org/10.1145/1375581.1375595">DOI</a> &middot; <a href="https://www.ece.lsu.edu/jxr/Publications-pdf/pldi08.pdf">PDF</a></div>
     <div class="why-here">The cost model that made the model usable: one affine formulation that tiles for parallelism <em>and</em> locality at once.</div>
+    <ul class="comp">
+      <li><span class="badge b-web">WEB</span><b>PLUTO</b> The open-source polyhedral tiler this paper describes. <a href="http://pluto-compiler.sourceforge.net/">project page</a></li>
+    </ul>
   </li>
   <li>
     <span class="title">The Polyhedral Model Is More Widely Applicable Than You Think</span> &mdash; Benabderrahmane, Pouchet, Cohen, Bastoul
@@ -114,6 +120,9 @@
     <span class="title">Polly — Polyhedral Optimization in LLVM</span> &mdash; Grosser, Zheng, Aloor, Simbürger, Größlinger, Pouchet
     <div class="meta"><span class="badge b-pdf">PDF&middot;6pp</span>IMPACT 2011 &middot; <a href="https://perso.ens-lyon.fr/christophe.alias/impact2011/impact-07.pdf">PDF</a></div>
     <div class="why-here">The model inside a production compiler: extract polyhedral regions from LLVM IR, optimize, regenerate.</div>
+    <ul class="comp">
+      <li><span class="badge b-web">WEB</span><b>Polly</b> The living LLVM subproject. <a href="https://polly.llvm.org/">project page</a></li>
+    </ul>
   </li>
 </ol>
 
@@ -149,6 +158,9 @@
     <span class="title">The Implementation of the Cilk-5 Multithreaded Language</span> &mdash; Frigo, Leiserson, Randall
     <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>PLDI 1998 &middot; <a href="https://doi.org/10.1145/277650.277725">DOI</a> &middot; <a href="https://pages.cs.wisc.edu/~markhill/restricted/pldi98_cilk.pdf">PDF</a></div>
     <div class="why-here">The theory made cheap: the work-first principle and the THE protocol make spawning a task cost barely more than a function call.</div>
+    <ul class="comp">
+      <li><span class="badge b-pdf">PDF</span><b>A Minicourse on Multithreaded Programming</b> &mdash; Leiserson, Prokop Lecture notes deriving the work/span model and the work-stealing bound from scratch — the gentlest on-ramp to the two papers above. <a href="https://ocw.mit.edu/courses/6-895-theory-of-parallel-systems-sma-5509-fall-2003/9cf3ee7891b56e3e966928ba8dced3f3_minicourse.pdf">PDF</a></li>
+    </ul>
   </li>
   <li>
     <span class="title">Multiscalar Processors</span> &mdash; Sohi, Breach, Vijaykumar

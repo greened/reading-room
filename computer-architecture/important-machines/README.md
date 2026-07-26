@@ -64,43 +64,37 @@ depth in the mechanism subtopics; here the focus is the machine as a whole.
 
 13. **MIPS: A Microprocessor Architecture** — Hennessy, Jouppi, Przybylski, Rowen, Gross, Baskett, Gill · MICRO-15 1982 · 6pp · [DOI](https://doi.org/10.1145/1014194.800930) · [PDF](http://people.duke.edu/~bcl15/teachdir/ece252_fall11/Hennessy.pdf). A deeply pipelined RISC that pushed hazard handling out of the hardware and into the compiler — the "interlocks" MIPS deliberately lacked.
 
-14. **The MIPS R4000 Processor** — Mirapuri, Woodacre, Vasseghi · IEEE Micro 1992 · 13pp · [DOI](https://doi.org/10.1109/40.127580) · [PDF](https://people.eecs.berkeley.edu/~kubitron/courses/cs252-S07/handouts/papers/R4000.pdf). The RISC idea in volume production: a 64-bit, deeply super-pipelined MIPS with on-chip caches — the machine that carried the ISA into workstations and, later, game consoles.
-
-15. **The Scalable Processor Architecture (SPARC)** — Garner, Agrawal, Briggs, Brown, Hough, Joy, Kleiman, Muchnick, Namjoo, Patterson, Pendleton, Tuck · COMPCON 1988 · 6pp · [DOI](https://doi.org/10.1109/CMPCON.1988.4874). Sun's open RISC ISA — register windows taken commercial, and designed as a licensable standard rather than one company's chip.
+14. **The Scalable Processor Architecture (SPARC)** — Garner, Agrawal, Briggs, Brown, Hough, Joy, Kleiman, Muchnick, Namjoo, Patterson, Pendleton, Tuck · COMPCON 1988 · 6pp · [DOI](https://doi.org/10.1109/CMPCON.1988.4874). Sun's open RISC ISA — register windows taken commercial, and designed as a licensable standard rather than one company's chip.
     - **The SPARC Architecture Manual, Version 8** — SPARC International · [PDF](https://courses.grainger.illinois.edu/cs423/sp2011/lectures/sim_public/sparcv8.pdf). 295pp. The canonical, freely published ISA reference — a model of what "architecture as contract" looks like on paper.
 
-16. **Precision Architecture (PA-RISC)** — Ruby B. Lee · IEEE Computer 1989 · 14pp · [DOI](https://doi.org/10.1109/2.19825). HP's commercial RISC, built to span an entire product line from minicomputers to mainframe-class systems — RISC as a durable corporate contract in the System/360 mold.
+15. **Precision Architecture (PA-RISC)** — Ruby B. Lee · IEEE Computer 1989 · 14pp · [DOI](https://doi.org/10.1109/2.19825). HP's commercial RISC, built to span an entire product line from minicomputers to mainframe-class systems — RISC as a durable corporate contract in the System/360 mold.
     - **PA-RISC Computer Architecture** — OpenPA · [WEB](https://www.openpa.net/pa-risc_architecture.html). A clear, modern overview of the ISA and its implementations for readers without the paywalled paper.
 
-17. **IBM RISC System/6000 Processor Architecture** — R. R. Oehler, R. D. Groves · IBM J. R&D 1990 · 14pp · [DOI](https://doi.org/10.1147/rd.341.0023) · [PDF](http://bitsavers.org/pdf/ibm/IBM_Journal_of_Research_and_Development/341/ibmrd3401E.pdf). POWER: the 801 idea grown into a multiple-issue commercial workstation CPU, and the direct ancestor of the PowerPC and today's POWER line.
+16. **IBM RISC System/6000 Processor Architecture** — R. R. Oehler, R. D. Groves · IBM J. R&D 1990 · 14pp · [DOI](https://doi.org/10.1147/rd.341.0023) · [PDF](http://bitsavers.org/pdf/ibm/IBM_Journal_of_Research_and_Development/341/ibmrd3401E.pdf). POWER: the 801 idea grown into a multiple-issue commercial workstation CPU, and the direct ancestor of the PowerPC and today's POWER line.
     - **The Evolution of RISC Technology at IBM** — Cocke, Markstein · IBM J. R&D 1990 · [PDF](http://bitsavers.org/pdf/ibm/IBM_Journal_of_Research_and_Development/341/ibmrd3401C.pdf). 8pp. John Cocke's own account of the line from the 801 research machine to RS/6000.
 
-18. **The Acorn RISC Machine — An Architectural View** — S. B. Furber, A. R. Wilson · Electronics & Power 1987 · 4pp · [DOI](https://doi.org/10.1049/ep.1987.0249). The original ARM: a tiny British RISC built for a low-cost PC, whose descendants now ship in the tens of billions.
+17. **The Acorn RISC Machine — An Architectural View** — S. B. Furber, A. R. Wilson · Electronics & Power 1987 · 4pp · [DOI](https://doi.org/10.1049/ep.1987.0249). The original ARM: a tiny British RISC built for a low-cost PC, whose descendants now ship in the tens of billions.
     - **ARM Inventor: Sophie Wilson** — [VIDEO](https://www.youtube.com/watch?v=jhwwrSaHdh8). The co-designer on how the first ARM was specified and brought up on shoestring resources.
 
-19. **Instruction Sets Should Be Free: The Case for RISC-V** — Asanović, Patterson · UC Berkeley EECS TR 2014 · 7pp · [PDF](https://www2.eecs.berkeley.edu/Pubs/TechRpts/2014/EECS-2014-146.pdf). The RISC argument taken to its conclusion: an open, royalty-free, modular ISA that anyone can implement — the "architecture as contract" idea, made a public good.
+18. **Instruction Sets Should Be Free: The Case for RISC-V** — Asanović, Patterson · UC Berkeley EECS TR 2014 · 7pp · [PDF](https://www2.eecs.berkeley.edu/Pubs/TechRpts/2014/EECS-2014-146.pdf). The RISC argument taken to its conclusion: an open, royalty-free, modular ISA that anyone can implement — the "architecture as contract" idea, made a public good.
 
 ### 7 · Microprocessors take over — x86 and the RISC high-water mark
 *From the first single-chip CPU to the ISAs that won the desktop and server, plus the clean-slate 64-bit bet that lost — and where single-thread performance peaked.*
 
-20. **The History of the 4004** — Faggin, Hoff, Mazor, Shima · IEEE Micro 1996 · 11pp · [DOI](https://doi.org/10.1109/40.546561) · [PDF](https://baltazarstudios.com/webshare/A-Z80/Library/The%20History%20of%204004.pdf). The designers' own account of the Intel 4004 — the first commercial single-chip microprocessor, and the seed of everything in this section.
+19. **The History of the 4004** — Faggin, Hoff, Mazor, Shima · IEEE Micro 1996 · 11pp · [DOI](https://doi.org/10.1109/40.546561) · [PDF](https://baltazarstudios.com/webshare/A-Z80/Library/The%20History%20of%204004.pdf). The designers' own account of the Intel 4004 — the first commercial single-chip microprocessor, and the seed of everything in this section.
 
-21. **The Intel 8086: A 16-bit Evolution of the 8080** — Morse, Pohlman, Ravenel · IEEE Computer 1978 · 10pp · [DOI](https://doi.org/10.1109/C-M.1978.218219). The origin of the x86 instruction set — still, decades later, the dominant desktop and server ISA.
+20. **The Intel 8086: A 16-bit Evolution of the 8080** — Morse, Pohlman, Ravenel · IEEE Computer 1978 · 10pp · [DOI](https://doi.org/10.1109/C-M.1978.218219). The origin of the x86 instruction set — still, decades later, the dominant desktop and server ISA.
     - **Intel Microprocessors: 8008 to 8086** — Stephen Morse et al · [PDF](https://stevemorse.org/8086history/8086history.pdf). 47pp. The lead designer's own detailed history of how the 8086 came to be.
 
-22. **Tuning the Pentium Pro Microarchitecture (P6)** — David B. Papworth · IEEE Micro 1996 · 8pp · [DOI](https://doi.org/10.1109/40.491458). The x86 turning point: a CISC ISA run as a high-performance out-of-order core by decoding instructions into RISC-like μops.
+21. **Tuning the Pentium Pro Microarchitecture (P6)** — David B. Papworth · IEEE Micro 1996 · 8pp · [DOI](https://doi.org/10.1109/40.491458). The x86 turning point: a CISC ISA run as a high-performance out-of-order core by decoding instructions into RISC-like μops.
     - **Inside the P6** — Mark Smotherman (course notes) · [WEB](https://people.computing.clemson.edu/~mark/330/colwell/case_p6.html). A concise walkthrough of the P6 pipeline and the μop idea.
 
-23. **The AMD Opteron Processor for Multiprocessor Servers** — Keltcher, McGrath, Ahmed, Conway · IEEE Micro 2003 · 11pp · [DOI](https://doi.org/10.1109/MM.2003.1196116) · [PDF](https://cse.ucdenver.edu/~gita/csprojects/CSC5593/Organization/Papers/keltcher-opteron.pdf). AMD64: the 64-bit extension that x86 actually kept, plus an on-chip memory controller and HyperTransport.
+22. **The AMD Opteron Processor for Multiprocessor Servers** — Keltcher, McGrath, Ahmed, Conway · IEEE Micro 2003 · 11pp · [DOI](https://doi.org/10.1109/MM.2003.1196116) · [PDF](https://cse.ucdenver.edu/~gita/csprojects/CSC5593/Organization/Papers/keltcher-opteron.pdf). AMD64: the 64-bit extension that x86 actually kept, plus an on-chip memory controller and HyperTransport.
 
-24. **Introducing the IA-64 Architecture** — Huck, Morris, Ross, Knies, Mulder, Zahir · IEEE Micro 2000 · 12pp · [DOI](https://doi.org/10.1109/40.877947) · [PDF](https://pages.cs.wisc.edu/~markhill/restricted/ieeemicro2000_ia64isa.pdf). The other 64-bit answer — a clean-slate HP/Intel ISA (Itanium) that bet on the compiler to expose parallelism explicitly (EPIC), predication, and speculation. The great counterexample: technically bold, commercially eclipsed by evolutionary AMD64.
+23. **Introducing the IA-64 Architecture** — Huck, Morris, Ross, Knies, Mulder, Zahir · IEEE Micro 2000 · 12pp · [DOI](https://doi.org/10.1109/40.877947) · [PDF](https://pages.cs.wisc.edu/~markhill/restricted/ieeemicro2000_ia64isa.pdf). The other 64-bit answer — a clean-slate HP/Intel ISA (Itanium) that bet on the compiler to expose parallelism explicitly (EPIC), predication, and speculation. The great counterexample: technically bold, commercially eclipsed by evolutionary AMD64.
     - **Understanding EPIC Architectures and Implementations** — Mark Smotherman · [PDF](https://people.computing.clemson.edu/~mark/464/acmse_epic.pdf). 8pp. A clear survey of what EPIC/VLIW promised and why in-order, compiler-scheduled parallelism struggled against out-of-order hardware.
 
-25. **A 200-MHz 64-b Dual-Issue CMOS Microprocessor (Alpha 21064)** — Dobberpuhl, Witek, et al · IEEE JSSC 1992 · 13pp · [DOI](https://doi.org/10.1109/4.165353) · [PDF](https://www.cs.tufts.edu/~soha/paperArchive/1992%20A%20200-MHz%2064-b%20dual-issue%20CMOS%20microprocessor.pdf). The first Alpha: a clean 64-bit RISC clocked far past its contemporaries — the machine that reset the clock-speed race.
-
-26. **The Alpha 21264 Microprocessor** — R. E. Kessler · IEEE Micro 1999 · 13pp · [DOI](https://doi.org/10.1109/40.755465) · [PDF](https://people.eecs.berkeley.edu/~kubitron/courses/cs252-S10/handouts/papers/alpha-ieee.pdf). An aggressive out-of-order superscalar RISC — a high-water mark for single-thread performance and a canonical microarchitecture case study.
-
-27. **A 160-MHz, 32-b, 0.5-W CMOS RISC Microprocessor (StrongARM SA-110)** — Montanaro, Witek, et al · IEEE JSSC 1996 · 12pp · [DOI](https://doi.org/10.1109/JSSC.1996.542315) · [PDF](https://bioee.ee.columbia.edu/courses/ee6321/papers/00542315.pdf). The implementation that made ARM viable for high performance at very low power — the bridge from the RISC papers to the mobile world.
+24. **The Alpha 21264 Microprocessor** — R. E. Kessler · IEEE Micro 1999 · 13pp · [DOI](https://doi.org/10.1109/40.755465) · [PDF](https://people.eecs.berkeley.edu/~kubitron/courses/cs252-S10/handouts/papers/alpha-ieee.pdf). An aggressive out-of-order superscalar RISC — a high-water mark for single-thread performance and a canonical microarchitecture case study.
 
 <!--html-->
 <div class="why">
@@ -124,24 +118,3 @@ implementation.
 - **FREE** **Computer Engineering: A DEC View of Hardware Systems Design** — Bell, Mudge, McNamara · 1978 · 609pp · [PDF](https://bitsavers.org/pdf/dec/_Books/Bell-ComputerEngineering.pdf). The DEC minicomputers end-to-end, including the PDP-8 (the machine that made the minicomputer a category) alongside the PDP-11 and VAX.
 - **BUY** **Computer Architecture: A Quantitative Approach** — Hennessy & Patterson · 6th ed. 2017 · 936pp · [page](https://shop.elsevier.com/books/computer-architecture/hennessy/978-0-12-811905-1). The modern reference these machines seeded; the running examples trace straight back to the 6600, VAX, MIPS, and Alpha.
 - **BUY** **Computer Architecture: Concepts and Evolution** — Blaauw & Brooks · 1997 · 1213pp · [page](https://www.pearson.com/en-us/subject-catalog/p/computer-architecture-concepts-and-evolution/P200000003491). A taxonomy of ISA design by two of the System/360 architects — the theory of the contract, from the people who invented it.
-
-## Key terms
-
-- **instruction set architecture (ISA)** — the programmer-visible interface (registers, instructions, memory model) a machine promises to implement.
-- **microarchitecture** — how a particular chip realizes an ISA (pipeline depth, caches, execution units); invisible to correct software.
-- **load/store architecture** — an ISA where only explicit load and store instructions touch memory; all arithmetic works on registers.
-- **virtual memory / paging** — presenting programs a large address space backed automatically by a smaller physical store, introduced by Atlas.
-- **cache** — a small fast memory holding recently used data, making a large slow main store look fast; first shipped in the System/360 Model 85.
-- **pipelining** — overlapping the stages of successive instructions so several are in flight at once.
-- **superscalar** — issuing more than one instruction per cycle from a single instruction stream (RS/6000, P6, Alpha 21264).
-- **out-of-order execution** — issuing instructions as their operands become ready rather than in program order, to hide latency.
-- **scoreboard** — the CDC 6600's hardware bookkeeping that tracks operand availability and hazards to schedule instructions.
-- **register renaming / reservation stations** — Tomasulo's mechanism (Model 91) that removes false dependences by mapping architectural registers onto more physical ones.
-- **RISC vs. CISC** — reduced vs. complex instruction sets: few simple fixed-length instructions the compiler schedules, versus rich variable-length instructions done in hardware/microcode.
-- **micro-operations (μops)** — the internal RISC-like steps a CISC instruction is decoded into, as in the Pentium Pro.
-- **register windows** — the RISC-I/SPARC scheme that gives each procedure call a fresh overlapping bank of registers to speed argument passing.
-- **vector processor** — a machine (CRAY-1) with instructions that operate on whole arrays of data at once.
-- **VLIW / EPIC** — encoding independent operations into wide instructions the compiler packs, shifting scheduling from hardware to the compiler; IA-64's central bet.
-- **predication** — turning a branch into conditionally-executed instructions guarded by a boolean, to avoid mispredicting it; a defining IA-64 feature.
-- **open ISA** — an instruction set anyone may implement without a license fee, from SPARC's published standard to the fully free RISC-V.
-</content>

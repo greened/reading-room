@@ -9,7 +9,7 @@
 
 <h1>Machine learning · Agentic AI — the LLM-agent line</h1>
 <p class="sub">An <em>agent</em> is a language model put in a loop: it reasons about a goal, takes an action in some environment, observes the result, and repeats until it is done. The papers below trace how that loop was built up, one capability at a time — first teaching a model to <em>reason</em> in steps, then to <em>act</em> through tools, then to <em>ground</em> itself in retrieved knowledge, then to <em>reflect</em> and <em>remember</em>, and finally to <em>coordinate</em> with other agents — closing with the benchmarks that measure whether any of it works. Read them in that order: each capability assumes the ones before it.</p>
-<p class="tally">28 papers &middot; &asymp; <b>790 pp</b> of primary reading. &nbsp; Legend: <span class="badge b-pdf">PDF</span>open copy (see <span class="file">fetch.sh</span>) &middot; <span class="badge b-web">DOI</span>publisher link only</p>
+<p class="tally">25 papers &middot; &asymp; <b>702 pp</b> of primary reading. &nbsp; Legend: <span class="badge b-pdf">PDF</span>open copy (see <span class="file">fetch.sh</span>) &middot; <span class="badge b-web">DOI</span>publisher link only</p>
 <div class="why"><b>How to read this list.</b> The path is capability-first, not chronological. Start with reasoning (Chain-of-Thought → Tree of Thoughts): everything else is a loop wrapped around a model that can reason. Then read ReAct, which is the hinge of the whole field — it fuses reasoning with acting, and the rest of the tool-use, memory, and multi-agent work elaborates on it. If you read only three, read Chain-of-Thought, ReAct, and Reflexion. For a bird's-eye view first, Lilian Weng's essay below is the single best map of the territory.</div>
 
 <ol class="papers" start="1">
@@ -29,11 +29,6 @@
 <p class="grouphdr">Everything else is a loop around a model that can reason in steps, so start here.</p>
 <ol class="papers" start="3" style="counter-reset:item 2;">
   <li>
-    <span class="title">Show Your Work: Scratchpads for Intermediate Computation</span> &mdash; Nye, Andreassen, Gur-Ari, Michalewski, Austin, Bosma, Dohan, Jiang, Cai, Terry, Le, Sutton
-    <div class="meta"><span class="badge b-pdf">PDF&middot;16pp</span>2021 &middot; <a href="https://arxiv.org/pdf/2112.00114">PDF</a></div>
-    <div class="why-here">The seed idea: let the model write its intermediate steps into a "scratchpad" and its multi-step accuracy jumps. Chain-of-Thought is this idea, generalized.</div>
-  </li>
-  <li>
     <span class="title">Chain-of-Thought Prompting Elicits Reasoning in Large Language Models</span> &mdash; Wei, Wang, Schuurmans, Bosma, Ichter, Xia, Chi, Le, Zhou
     <div class="meta"><span class="badge b-pdf">PDF&middot;43pp</span>NeurIPS 2022 &middot; <a href="https://arxiv.org/pdf/2201.11903">PDF</a></div>
     <div class="why-here">The founding result: prompting a model to "think step by step" unlocks reasoning that only emerges at scale. The bedrock every later method builds on.</div>
@@ -52,11 +47,14 @@
 
 <h2>Acting — reasoning that reaches into the world</h2>
 <p class="grouphdr">A reasoner that can only talk is not an agent; here it starts calling tools and observing results. ReAct is the hinge of the whole field.</p>
-<ol class="papers" start="7" style="counter-reset:item 6;">
+<ol class="papers" start="6" style="counter-reset:item 5;">
   <li>
     <span class="title">ReAct: Synergizing Reasoning and Acting in Language Models</span> &mdash; Yao, Zhao, Yu, Du, Shafran, Narasimhan, Cao
     <div class="meta"><span class="badge b-pdf">PDF&middot;33pp</span>ICLR 2023 &middot; <a href="https://arxiv.org/pdf/2210.03629">PDF</a></div>
     <div class="why-here">The pivotal paper: interleave <em>reasoning</em> traces with <em>actions</em> (tool calls) and observations. This thought→act→observe loop is the template nearly every later agent uses.</div>
+    <ul class="comp">
+      <li><span class="badge b-web">WEB</span><b>Companion</b> &mdash; Lilian Weng's diagrams the ReAct loop against the planning/memory/tools pillars. <a href="https://lilianweng.github.io/posts/2023-06-23-agent/">agent essay</a></li>
+    </ul>
   </li>
   <li>
     <span class="title">MRKL Systems</span> &mdash; Karpas, Abend, Belinkov, Lenz, Lieber, Ratner, Shoham, Bata, Levine, Leyton-Brown, Muhlgay, Rozen, Schwartz, Shachaf, Shalev-Shwartz, Shashua, Tenenholtz
@@ -72,22 +70,21 @@
     <span class="title">Toolformer: Language Models Can Teach Themselves to Use Tools</span> &mdash; Schick, Dwivedi-Yu, Dessì, Raileanu, Lomeli, Zettlemoyer, Cancedda, Scialom
     <div class="meta"><span class="badge b-pdf">PDF&middot;17pp</span>NeurIPS 2023 &middot; <a href="https://arxiv.org/pdf/2302.04761">PDF</a></div>
     <div class="why-here">The model learns <em>when and how</em> to call APIs (calculator, search, translation) by self-annotating its own training data — tool use baked into the weights rather than the prompt.</div>
+    <ul class="comp">
+      <li><span class="badge b-web">WEB</span><b>Companion</b> &mdash; OpenAI, How this became a first-class API primitive: the model emits a structured call the runtime executes. <a href="https://platform.openai.com/docs/guides/function-calling">Function calling guide</a></li>
+      <li><span class="badge b-web">WEB</span><b>Companion</b> &mdash; Anthropic,  (, ). The open standard that turns ad-hoc tool integrations into a common client/server protocol for tools, resources, and prompts. <a href="https://modelcontextprotocol.io/">Model Context Protocol</a> &middot; <a href="https://www.anthropic.com/news/model-context-protocol">announcement</a> &middot; <a href="https://modelcontextprotocol.io/specification/2025-06-18">spec</a></li>
+    </ul>
   </li>
   <li>
     <span class="title">WebGPT: Browser-assisted Question-answering with Human Feedback</span> &mdash; Nakano, Hilton, Balaji, Wu, Ouyang, Kim, Hesse, Jain, Kosaraju, Saunders, Jiang, Cobbe, Eloundou, Krueger, Button, Knight, Chess, Schulman
     <div class="meta"><span class="badge b-pdf">PDF&middot;32pp</span>2021 &middot; <a href="https://arxiv.org/pdf/2112.09332">PDF</a></div>
     <div class="why-here">An early, influential demonstration of an LLM <em>acting</em> in a live tool — a web browser — with citations, trained from human feedback.</div>
   </li>
-  <li>
-    <span class="title">Gorilla: LLMs Connected with Massive APIs</span> &mdash; Patil, Zhang, Wang, Gonzalez
-    <div class="meta"><span class="badge b-pdf">PDF&middot;18pp</span>2023 &middot; <a href="https://arxiv.org/pdf/2305.15334">PDF</a></div>
-    <div class="why-here">Teaches a model to emit correct calls across thousands of real APIs and cut hallucinated calls — tool use at the scale of a whole API ecosystem.</div>
-  </li>
 </ol>
 
 <h2>Retrieval augmentation — grounding the reasoner in facts</h2>
 <p class="grouphdr">An agent that reasons and acts still confabulates; retrieval grounds it in an external corpus. Read this before memory — memory is retrieval over the agent's own history.</p>
-<ol class="papers" start="13" style="counter-reset:item 12;">
+<ol class="papers" start="11" style="counter-reset:item 10;">
   <li>
     <span class="title">REALM: Retrieval-Augmented Language Model Pre-Training</span> &mdash; Guu, Lee, Tung, Pasupat, Chang
     <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>ICML 2020 &middot; <a href="https://arxiv.org/pdf/2002.08909">PDF</a></div>
@@ -112,12 +109,7 @@
 
 <h2>Reflection &amp; memory — learning within and across episodes</h2>
 <p class="grouphdr">Now the loop learns from its own mistakes and carries state forward. Reflection needs a reasoner (§1) and grounding (§3); memory is retrieval turned inward.</p>
-<ol class="papers" start="17" style="counter-reset:item 16;">
-  <li>
-    <span class="title">Self-Refine: Iterative Refinement with Self-Feedback</span> &mdash; Madaan, Tandon, Gupta, Hallinan, Gao, Wiegreffe, Alon, Dziri, Prabhumoye, Yang, Gupta, Majumder, Hermann, Welleck, Yazdanbakhsh, Clark
-    <div class="meta"><span class="badge b-pdf">PDF&middot;54pp</span>NeurIPS 2023 &middot; <a href="https://arxiv.org/pdf/2303.17651">PDF</a></div>
-    <div class="why-here">One model generates, critiques, and revises its own output in a loop — the simplest form of reflection, no extra training.</div>
-  </li>
+<ol class="papers" start="15" style="counter-reset:item 14;">
   <li>
     <span class="title">Reflexion: Language Agents with Verbal Reinforcement Learning</span> &mdash; Shinn, Cassano, Berman, Gopinath, Narasimhan, Yao
     <div class="meta"><span class="badge b-pdf">PDF&middot;19pp</span>NeurIPS 2023 &middot; <a href="https://arxiv.org/pdf/2303.11366">PDF</a></div>
@@ -142,7 +134,7 @@
 
 <h2>Planning &amp; multi-agent — many agents, coordinated</h2>
 <p class="grouphdr">A single agent hits limits; here agents plan, argue, and divide labor. This assumes the whole single-agent stack above.</p>
-<ol class="papers" start="22" style="counter-reset:item 21;">
+<ol class="papers" start="19" style="counter-reset:item 18;">
   <li>
     <span class="title">Improving Factuality and Reasoning via Multiagent Debate</span> &mdash; Du, Li, Torralba, Tenenbaum, Mordatch
     <div class="meta"><span class="badge b-pdf">PDF&middot;27pp</span>2023 &middot; <a href="https://arxiv.org/pdf/2305.14325">PDF</a></div>
@@ -157,12 +149,15 @@
     <span class="title">AutoGen: Multi-Agent Conversation Framework</span> &mdash; Wu, Bansal, Zhang, Wu, Li, Zhu, Jiang, Zhang, Zhang, Liu, Awadallah, White, Burger, Wang
     <div class="meta"><span class="badge b-pdf">PDF&middot;43pp</span>2023 &middot; <a href="https://arxiv.org/pdf/2308.08155">PDF</a></div>
     <div class="why-here">A general framework for building applications as conversations among configurable agents (including tool-using and human-in-the-loop ones) — the engineering substrate under many agent systems.</div>
+    <ul class="comp">
+      <li><span class="badge b-web">WEB</span><b>Companion</b> &mdash; and The 2023 open-source projects that popularized the autonomous "goal → plan → execute → repeat" loop and put "agent" in everyone's vocabulary. <a href="https://github.com/Significant-Gravitas/AutoGPT">AutoGPT</a> &middot; <a href="https://github.com/yoheinakajima/babyagi">BabyAGI</a></li>
+    </ul>
   </li>
 </ol>
 
 <h2>Evaluation &amp; surveys — does any of it actually work?</h2>
 <p class="grouphdr">Capabilities are worth only what they measure; end here to calibrate the claims above and see the field whole.</p>
-<ol class="papers" start="25" style="counter-reset:item 24;">
+<ol class="papers" start="22" style="counter-reset:item 21;">
   <li>
     <span class="title">AgentBench: Evaluating LLMs as Agents</span> &mdash; Liu, Yu, Zhang, Xu, Lei, Lai, Gu, Ding, Men, Yang, Zhang, Deng, Zeng, Du, Zhang, Wang, Shan, Jiang, Tang, Dong
     <div class="meta"><span class="badge b-pdf">PDF&middot;58pp</span>ICLR 2024 &middot; <a href="https://arxiv.org/pdf/2308.03688">PDF</a></div>
@@ -182,6 +177,9 @@
     <span class="title">A Survey on Large Language Model based Autonomous Agents</span> &mdash; Wang, Ma, Feng, Zhang, Yang, Zhang, Chen, Tang, Chen, Lin, Zhao, Wei, Wen
     <div class="meta"><span class="badge b-pdf">PDF&middot;42pp</span>2023 &middot; <a href="https://arxiv.org/pdf/2308.11432">PDF</a></div>
     <div class="why-here">Organizes the field into construction, application, and evaluation — the map to read once the papers above have given you the terrain.</div>
+    <ul class="comp">
+      <li><span class="badge b-pdf">PDF</span><b>Companion</b> &mdash; Xi et al., (86pp). A second, complementary survey built around the brain / perception / action decomposition. <a href="https://arxiv.org/pdf/2309.07864">The Rise and Potential of LLM Based Agents: A Survey</a></li>
+    </ul>
   </li>
 </ol>
 

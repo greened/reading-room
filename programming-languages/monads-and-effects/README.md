@@ -9,13 +9,6 @@ monads reach real languages and learn to compose, meet the weaker and stronger
 relatives (applicative functors, arrows), then follow the algebraic-effects line from
 Plotkin and Power's theory to the handlers, languages, and libraries in use today.
 
-> **How to read this list.** If you only want the intuition, read Wadler
-> (*Comprehending Monads*, then *Monads for functional programming*) and stop. For the
-> semantics behind it, read Moggi. The second half is the modern story: monads compose
-> awkwardly (transformers), so effects were re-based on algebra (Plotkin–Power) and
-> given handlers (Plotkin–Pretnar) that now drive Eff, Koka, and the extensible-effects
-> libraries. Theory-first readers can flip the two halves.
-
 ## Reading order
 
 ### Why monads — structuring effects in a pure language
@@ -55,20 +48,17 @@ Plotkin and Power's theory to the handlers, languages, and libraries in use toda
    - **What's Algebraic About Algebraic Effects and Handlers?** — [VIDEO](https://www.youtube.com/watch?v=atYp386EGo8). Andrej Bauer (OPLSS 2018) explains the algebra with almost no category theory; watch before wading into the paper. Companion notes: [arXiv 1807.05923](https://arxiv.org/abs/1807.05923).
 
 10. **Handlers of Algebraic Effects** — Gordon Plotkin, Matija Pretnar · ESOP 2009 · 15pp · [DOI](https://doi.org/10.1007/978-3-642-00590-9_7) · [PDF](https://homepages.inf.ed.ac.uk/gdp/publications/Effect_Handlers.pdf). Handlers: a control construct that interprets the operations of #9, generalising exception handling to *any* effect. The pivot from theory to a usable programming feature.
-    - **An Introduction to Algebraic Effects and Handlers** — [PDF](https://www.eff-lang.org/handlers-tutorial.pdf). Matija Pretnar's 16pp tutorial builds an effect-and-handler language from scratch; the gentlest on-ramp to #10 and #11.
 
 ### Effects in practice — languages and libraries
 *How handlers became something you can program with: dedicated languages, row-typed effect systems, and library encodings.*
 
 11. **Programming with Algebraic Effects and Handlers (Eff)** — Andrej Bauer, Matija Pretnar · JLAMP 2015 · 25pp · [DOI](https://doi.org/10.1016/j.jlamp.2014.02.001) · [PDF](https://arxiv.org/pdf/1203.1539). The Eff language: what it feels like to write real programs with algebraic effects and handlers.
-    - **Programming with Algebraic Effects and Handlers** — [VIDEO](https://www.youtube.com/watch?v=e23WTKhUlo8). Bauer's OPLSS 2018 hands-on session, working directly in Eff.
 
 12. **Koka: Programming with Row Polymorphic Effect Types** — Daan Leijen · MSFP 2014 · 27pp · [DOI](https://doi.org/10.4204/EPTCS.153.8) · [PDF](https://arxiv.org/pdf/1406.2061). Puts effects in the type system with row polymorphism, so a function's type states exactly which effects it may perform. The type-and-effect answer to the same problem.
 
 13. **Data Types à la Carte** — Wouter Swierstra · JFP 2008 · 14pp · [DOI](https://doi.org/10.1017/S0956796808006758) · [PDF](https://webspace.science.uu.nl/~swier004/publications/2008-jfp.pdf). Free monads over composable signature functors — the technique behind combining effects as data, and the conceptual bridge to library-level effect systems.
 
 14. **Extensible Effects: An Alternative to Monad Transformers** — Oleg Kiselyov, Amr Sabry, Cameron Swords · Haskell Symposium 2013 · 12pp · [DOI](https://doi.org/10.1145/2503778.2503791) · [PDF](https://okmij.org/ftp/Haskell/extensible/exteff.pdf). Effects as an open union interpreted by handlers, in a plain Haskell library — algebraic effects meeting monad transformers on the transformers' home turf.
-    - **Freer Monads, More Extensible Effects** — [PDF](https://okmij.org/ftp/Haskell/extensible/more.pdf). Kiselyov and Ishii's 12pp sequel that drops the functor requirement and speeds the encoding up; the basis for today's `freer`-style libraries.
 
 ## Reference shelf — books
 
