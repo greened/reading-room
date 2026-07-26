@@ -1,22 +1,42 @@
 #!/usr/bin/env bash
 # Render an HTML reading guide to PDF using headless Chrome/Chromium.
-# Works on macOS (Google Chrome) and Linux (google-chrome / chromium).
 #
-# Any <link rel="stylesheet" href="....css"> is INLINED before rendering, so
-# guides can share lib/guide.css without relying on file:// subresource loads.
+# Detects the OS (macOS / Linux / WSL) and picks a browser + temp dir
+# accordingly. Any <link rel="stylesheet" href="....css"> is INLINED before
+# rendering, so guides can share lib/guide.css without file:// subresource loads.
 #
-# Usage: lib/render.sh <input.html> [output.pdf]
+# Usage: bin/render.sh <input.html> [output.pdf]
 set -euo pipefail
 
 in="${1:?usage: render.sh <input.html> [output.pdf]}"
 out="${2:-${in%.html}.pdf}"
 
+# --- browser candidates by OS ------------------------------------------------
+os="$(uname -s)"
+case "$os" in
+  Darwin)
+    candidates=(
+      "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+      "/Applications/Chromium.app/Contents/MacOS/Chromium"
+      "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge"
+      google-chrome chromium chrome
+    ) ;;
+  Linux)
+    candidates=( google-chrome google-chrome-stable chromium chromium-browser chrome )
+    # Under WSL, fall back to a Windows-side Chrome if no Linux browser is present.
+    if grep -qiE 'microsoft|wsl' /proc/version 2>/dev/null; then
+      candidates+=(
+        "/mnt/c/Program Files/Google/Chrome/Application/chrome.exe"
+        "/mnt/c/Program Files (x86)/Google/Chrome/Application/chrome.exe"
+      )
+    fi ;;
+  *)  # other Unixes (BSD, etc.)
+    candidates=( google-chrome chromium chromium-browser chrome ) ;;
+esac
+
 find_chrome() {
   local c
-  for c in \
-    "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
-    "/Applications/Chromium.app/Contents/MacOS/Chromium" \
-    google-chrome google-chrome-stable chromium chromium-browser chrome; do
+  for c in "${candidates[@]}"; do
     if [[ "$c" == */* ]]; then
       [[ -x "$c" ]] && { printf '%s' "$c"; return 0; }
     else
@@ -27,7 +47,7 @@ find_chrome() {
 }
 
 chrome="$(find_chrome)" || {
-  echo "render.sh: no Chrome/Chromium found (install one, or Print-to-PDF by hand)." >&2
+  echo "render.sh: no Chrome/Chromium found for $os (install one, or Print-to-PDF by hand)." >&2
   exit 1
 }
 command -v python3 >/dev/null 2>&1 || {
@@ -35,8 +55,11 @@ command -v python3 >/dev/null 2>&1 || {
   exit 1
 }
 
-tmp="$(mktemp -t guide).html"
-trap 'rm -f "$tmp"' EXIT
+# --- inline the stylesheet into a portable temp file -------------------------
+# (GNU and BSD `mktemp -t` differ; make a temp dir and name the file ourselves.)
+tmpdir="$(mktemp -d "${TMPDIR:-/tmp}/guide.XXXXXX")"
+trap 'rm -rf "$tmpdir"' EXIT
+tmp="$tmpdir/guide.html"
 python3 - "$in" "$tmp" <<'PY'
 import os, re, sys
 inp, out = sys.argv[1], sys.argv[2]
@@ -50,6 +73,8 @@ html = re.sub(r'<link\s+rel="stylesheet"\s+href="([^"]+\.css)"\s*/?>', inline, h
 open(out, "w", encoding="utf-8").write(html)
 PY
 
-"$chrome" --headless --disable-gpu --no-pdf-header-footer \
-  --print-to-pdf="$out" "file://$tmp" >/dev/null 2>&1
+# --- render (new headless mode, with a fallback for older Chrome) ------------
+render() { "$chrome" --headless="$1" --disable-gpu --no-pdf-header-footer \
+  --print-to-pdf="$out" "file://$tmp" >/dev/null 2>&1; }
+render new || render old || { echo "render.sh: Chrome failed to render $in" >&2; exit 1; }
 echo "wrote $out"
