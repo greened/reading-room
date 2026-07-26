@@ -8,66 +8,195 @@
 <body>
 
 <h1>Compilers · Classical (scalar) optimization</h1>
-<p class="sub">The scalar optimizations that define the vocabulary of the field: constant propagation, value numbering, redundancy elimination, strength reduction, inlining, and partial evaluation.</p>
-<p class="tally">In-depth landmark list for this subtopic. <span class="badge b-pdf">PDF</span>open copy available &middot; <span class="badge b-web">DOI</span>publisher link only.</p>
+<p class="sub">The scalar optimizations that define the vocabulary of the field: constant propagation and folding, value numbering, redundancy elimination, strength reduction, dead-code elimination, inlining, and partial evaluation. Read it as a path from the machinery to the transformations: first the <em>analysis framework</em> (the catalogue, dataflow lattices, their convergence theory, and the SSA representation that makes them sparse), then the <em>value-based</em> optimizations (constant propagation, value numbering, GVN), then <em>redundancy elimination and code motion</em> (PRE, lazy code motion, global code motion), then <em>strength reduction</em> and <em>dead-code elimination</em>, then the <em>interprocedural</em> transformations (inlining, tail calls), and finally <em>specialization</em> — partial evaluation and the Futamura projections, the idea that subsumes many of the earlier ones.</p>
+<p class="tally">25 papers &middot; &asymp; <b>801 pp</b> of primary reading. &nbsp; Legend: <span class="badge b-pdf">PDF</span>open copy (see <span class="file">fetch.sh</span>) &middot; <span class="badge b-web">DOI</span>publisher link only</p>
+<div class="why"><b>How to read this list.</b> Almost everything here is a dataflow analysis feeding a rewrite, so start with Kildall's framework and Kam–Ullman's convergence theory — every later paper is written against them. The value-numbering and PRE lines then split into two idioms for "don't compute the same thing twice": <em>congruence</em> (are these two expressions equal?) and <em>availability</em> (has this expression already been computed on the way here?). Watch how SSA, once it arrives, makes both sparse.</div>
 
-<ol class="papers">
+<h2>Foundations: the catalogue, the dataflow framework, and SSA</h2>
+<p class="grouphdr">Start here: the vocabulary of transformations, the analysis framework they all run on, when that analysis is guaranteed to converge, and the SSA representation that later makes every value-based optimization sparse.</p>
+<ol class="papers" start="1">
   <li>
-    <span class="title">A Catalogue of Optimizing Transformations</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://www.clear.rice.edu/comp512/Lectures/Papers/1971-allen-catalog.pdf">PDF</a></div>
-    <div class="why-here">Allen, Cocke, 1972, in *Design and Optimization of Compilers*. The first systematic catalogue (CSE, DCE, code motion, strength reduction, inlining).</div>
+    <span class="title">A Catalogue of Optimizing Transformations</span> &mdash; Frances Allen, John Cocke
+    <div class="meta"><span class="badge b-web">WEB&middot;30pp</span>in *Design and Optimization of Compilers* (Rustin, ed.) 1972 &middot; <a href="https://archive.org/details/designoptimizati0000vari">WEB</a></div>
+    <div class="why-here">The first systematic catalogue — CSE, dead-code elimination, code motion, strength reduction, inlining — and still the naming scheme the field uses.</div>
   </li>
   <li>
-    <span class="title">A Unified Approach to Global Program Optimization</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/512927.512945">DOI</a> &middot; <a href="https://calhoun.nps.edu/server/api/core/bitstreams/54e90734-ceb5-4f4f-94f6-83e51cd2da73/content">PDF</a></div>
-    <div class="why-here">Gary A. Kildall, 1973, POPL. The dataflow foundation underlying constant propagation, CSE, and liveness.</div>
+    <span class="title">A Unified Approach to Global Program Optimization</span> &mdash; Gary Kildall
+    <div class="meta"><span class="badge b-pdf">PDF&middot;13pp</span>POPL 1973 &middot; <a href="https://doi.org/10.1145/512927.512945">DOI</a> &middot; <a href="https://calhoun.nps.edu/server/api/core/bitstreams/54e90734-ceb5-4f4f-94f6-83e51cd2da73/content">PDF</a></div>
+    <div class="why-here">The dataflow lattice framework underlying constant propagation, CSE, and liveness — the single most reused idea in the topic.</div>
   </li>
   <li>
-    <span class="title">An Algorithm for Reduction of Operator Strength</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/359863.359888">DOI</a></div>
-    <div class="why-here">Cocke, Kennedy, 1977, CACM. Replacing loop induction-variable multiplies with additions.</div>
+    <span class="title">Monotone Data Flow Analysis Frameworks</span> &mdash; John Kam, Jeffrey Ullman
+    <div class="meta"><span class="badge b-web">DOI&middot;13pp</span>Acta Informatica 1977 &middot; <a href="https://doi.org/10.1007/BF00290339">DOI</a></div>
+    <div class="why-here">Pins down when iterative dataflow converges and how the iterative solution relates to the meet-over-all-paths ideal — the theory beneath Kildall.</div>
   </li>
   <li>
-    <span class="title">An Analysis of Inline Substitution for a Structured Programming Language</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/359810.359830">DOI</a></div>
-    <div class="why-here">Robert W. Scheifler, 1977, CACM. Inlining as a cost-constrained optimization.</div>
+    <span class="title">Efficiently Computing Static Single Assignment Form and the Control Dependence Graph</span> &mdash; Ron Cytron, Jeanne Ferrante, Barry Rosen, Mark Wegman, Kenneth Zadeck
+    <div class="meta"><span class="badge b-pdf">PDF&middot;40pp</span>ACM TOPLAS 1991 &middot; <a href="https://doi.org/10.1145/115372.115320">DOI</a> &middot; <a href="https://www.cs.utexas.edu/~pingali/CS380C/2010/papers/ssaCytron.pdf">PDF</a></div>
+    <div class="why-here">The dominance-frontier algorithm that made SSA construction practical — the representation nearly every optimization below is now written against.</div>
   </li>
   <li>
-    <span class="title">Global Optimization by Suppression of Partial Redundancies</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/359060.359069">DOI</a></div>
-    <div class="why-here">Morel, Renvoise, 1979, CACM. The seminal partial-redundancy elimination (PRE), unifying CSE and LICM.</div>
-  </li>
-  <li>
-    <span class="title">Detecting Equality of Variables in Programs</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/73560.73561">DOI</a></div>
-    <div class="why-here">Alpern, Wegman, Zadeck, 1988, POPL. Congruence over SSA value graphs; the basis of global value numbering.</div>
-  </li>
-  <li>
-    <span class="title">Global Value Numbers and Redundant Computations</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/73560.73562">DOI</a></div>
-    <div class="why-here">Rosen, Wegman, Zadeck, 1988, POPL. GVN detecting equivalent expressions and second-order redundancy.</div>
-  </li>
-  <li>
-    <span class="title">Constant Propagation with Conditional Branches (SCCP)</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/103135.103136">DOI</a> &middot; <a href="https://www.cs.utexas.edu/~pingali/CS380C/2010/papers/p291-wegman.pdf">PDF</a></div>
-    <div class="why-here">Wegman, Zadeck, 1991, ACM TOPLAS. Sparse conditional constant propagation with unreachable-branch pruning.</div>
-  </li>
-  <li>
-    <span class="title">Lazy Code Motion</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/143095.143136">DOI</a> &middot; <a href="http://rsim.cs.uiuc.edu/arch/qual_papers/compilers/knoop92.pdf">PDF</a></div>
-    <div class="why-here">Knoop, Rüthing, Steffen, 1992, PLDI. PRE recast as unidirectional analyses with computationally optimal placement.</div>
-  </li>
-  <li>
-    <span class="title">Partial Evaluation and Automatic Program Generation</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://www.itu.dk/people/sestoft/pebook/">book</a></div>
-    <div class="why-here">Jones, Gomard, Sestoft, 1993, Prentice Hall. The definitive text; specialization and the Futamura projections.</div>
-  </li>
-  <li>
-    <span class="title">Global Code Motion / Global Value Numbering</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/207110.207154">DOI</a></div>
-    <div class="why-here">Cliff Click, 1995, PLDI. Separating value optimization from scheduling; standard in SSA compilers.</div>
+    <span class="title">Automatic Construction of Sparse Data Flow Evaluation Graphs</span> &mdash; Jong-Deok Choi, Ron Cytron, Jeanne Ferrante
+    <div class="meta"><span class="badge b-web">DOI&middot;12pp</span>POPL 1991 &middot; <a href="https://doi.org/10.1145/99583.99594">DOI</a></div>
+    <div class="why-here">Generalizes SSA's sparseness to any monotone dataflow problem — skip the nodes that only pass facts through, so the analyses above run on a graph the size of the interesting events, not the program.</div>
   </li>
 </ol>
+
+<h2>Constant propagation and folding</h2>
+<p class="grouphdr">The simplest value optimization, and the one that shows why analysis and rewriting belong together — then how to fuse it with its neighbours and stretch it from constants to ranges.</p>
+<ol class="papers" start="6" style="counter-reset:item 5;">
+  <li>
+    <span class="title">Constant Propagation with Conditional Branches (SCCP)</span> &mdash; Mark Wegman, Kenneth Zadeck
+    <div class="meta"><span class="badge b-pdf">PDF&middot;30pp</span>ACM TOPLAS 1991 &middot; <a href="https://doi.org/10.1145/103135.103136">DOI</a> &middot; <a href="https://www.cs.utexas.edu/~pingali/CS380C/2010/papers/p291-wegman.pdf">PDF</a></div>
+    <div class="why-here">Sparse conditional constant propagation: fold constants and prune unreachable branches in one pass, each enabling the other. Still the algorithm in production compilers.</div>
+  </li>
+  <li>
+    <span class="title">Combining Analyses, Combining Optimizations</span> &mdash; Cliff Click, Keith Cooper
+    <div class="meta"><span class="badge b-web">DOI&middot;16pp</span>ACM TOPLAS 1995 &middot; <a href="https://doi.org/10.1145/201059.201061">DOI</a></div>
+    <div class="why-here">Runs conditional constant propagation, global value numbering, and unreachable-code elimination as one combined analysis that beats any sequential ordering of them — the intuition behind HotSpot's server compiler.</div>
+  </li>
+  <li>
+    <span class="title">Accurate Static Branch Prediction by Value Range Propagation</span> &mdash; Jason Patterson
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>PLDI 1995 &middot; <a href="https://doi.org/10.1145/207110.207117">DOI</a> &middot; <a href="https://www.lighterra.com/papers/valuerangeprop/Patterson1995-ValueRangeProp.pdf">PDF</a></div>
+    <div class="why-here">Generalizes constant propagation from single values to <em>ranges</em>, propagated with edge weights — the ancestor of the range/known-bits analyses in every modern compiler.</div>
+  </li>
+</ol>
+
+<h2>Value numbering and redundant computation</h2>
+<p class="grouphdr">"Are these two computations the same value?" — from congruence over the value graph to a practical algorithm.</p>
+<ol class="papers" start="9" style="counter-reset:item 8;">
+  <li>
+    <span class="title">Detecting Equality of Variables in Programs</span> &mdash; Bowen Alpern, Mark Wegman, Kenneth Zadeck
+    <div class="meta"><span class="badge b-web">DOI&middot;11pp</span>POPL 1988 &middot; <a href="https://doi.org/10.1145/73560.73561">DOI</a></div>
+    <div class="why-here">Congruence partitioning over the SSA value graph — the formal basis of global value numbering.</div>
+  </li>
+  <li>
+    <span class="title">Global Value Numbers and Redundant Computations</span> &mdash; Barry Rosen, Mark Wegman, Kenneth Zadeck
+    <div class="meta"><span class="badge b-web">DOI&middot;16pp</span>POPL 1988 &middot; <a href="https://doi.org/10.1145/73560.73562">DOI</a></div>
+    <div class="why-here">GVN detecting equivalent expressions and the second-order redundancy that simpler CSE misses.</div>
+  </li>
+  <li>
+    <span class="title">Value Numbering</span> &mdash; Preston Briggs, Keith Cooper, Taylor Simpson
+    <div class="meta"><span class="badge b-pdf">PDF&middot;24pp</span>Software—Practice &amp; Experience 1997 &middot; <a href="https://www.cs.tufts.edu/~nr/cs257/archive/keith-cooper/value-numbering.pdf">PDF</a></div>
+    <div class="why-here">The practical account: hash-based local, dominator-based, and SCC-based value numbering, and how they trade cost against what they catch.</div>
+  </li>
+</ol>
+
+<h2>Partial redundancy elimination and code motion</h2>
+<p class="grouphdr">Availability, not congruence: don't recompute what a path already computed — and move computations to where they pay off.</p>
+<ol class="papers" start="12" style="counter-reset:item 11;">
+  <li>
+    <span class="title">Global Optimization by Suppression of Partial Redundancies (PRE)</span> &mdash; Étienne Morel, Claude Renvoise
+    <div class="meta"><span class="badge b-web">DOI&middot;8pp</span>CACM 1979 &middot; <a href="https://doi.org/10.1145/359060.359069">DOI</a></div>
+    <div class="why-here">The seminal PRE, unifying CSE and loop-invariant code motion through a bidirectional dataflow formulation.</div>
+  </li>
+  <li>
+    <span class="title">Lazy Code Motion</span> &mdash; Jens Knoop, Oliver Rüthing, Bernhard Steffen
+    <div class="meta"><span class="badge b-pdf">PDF&middot;11pp</span>PLDI 1992 &middot; <a href="https://doi.org/10.1145/143095.143136">DOI</a> &middot; <a href="http://rsim.cs.uiuc.edu/arch/qual_papers/compilers/knoop92.pdf">PDF</a></div>
+    <div class="why-here">Recasts PRE as clean unidirectional analyses with computationally- and lifetime-optimal placement — the version compilers actually implement.</div>
+  </li>
+  <li>
+    <span class="title">Effective Partial Redundancy Elimination</span> &mdash; Preston Briggs, Keith Cooper
+    <div class="meta"><span class="badge b-web">DOI&middot;12pp</span>PLDI 1994 &middot; <a href="https://doi.org/10.1145/178243.178257">DOI</a></div>
+    <div class="why-here">Global reassociation and value numbering <em>before</em> PRE reshape expressions so more redundancies become visible — the preprocessing that makes lazy code motion pay off in practice.</div>
+  </li>
+  <li>
+    <span class="title">Global Code Motion / Global Value Numbering</span> &mdash; Cliff Click
+    <div class="meta"><span class="badge b-web">DOI&middot;12pp</span>PLDI 1995 &middot; <a href="https://doi.org/10.1145/207110.207154">DOI</a></div>
+    <div class="why-here">Separates <em>what value to compute</em> from <em>where to schedule it</em>; the SSA-era standard for hoisting and sinking.</div>
+  </li>
+  <li>
+    <span class="title">Value-Based Partial Redundancy Elimination</span> &mdash; Thomas VanDrunen, Antony Hosking
+    <div class="meta"><span class="badge b-pdf">PDF&middot;18pp</span>CC 2004 &middot; <a href="https://doi.org/10.1007/978-3-540-24723-4_12">DOI</a> &middot; <a href="https://link.springer.com/content/pdf/10.1007/978-3-540-24723-4_12.pdf">PDF</a></div>
+    <div class="why-here">GVN-PRE: fuses the two idioms above, eliminating a redundancy whenever <em>some equal value</em> is already available, not just a syntactically identical expression — the form of PRE in LLVM's lineage.</div>
+  </li>
+</ol>
+
+<h2>Strength reduction</h2>
+<p class="grouphdr">Trade an expensive operation for a cheap one along an induction variable — first classically, then in SSA, then as a special case of PRE.</p>
+<ol class="papers" start="17" style="counter-reset:item 16;">
+  <li>
+    <span class="title">An Algorithm for Reduction of Operator Strength</span> &mdash; John Cocke, Ken Kennedy
+    <div class="meta"><span class="badge b-web">DOI&middot;7pp</span>CACM 1977 &middot; <a href="https://doi.org/10.1145/359863.359888">DOI</a></div>
+    <div class="why-here">Replaces loop induction-variable multiplies with additions — the classic strength reduction.</div>
+  </li>
+  <li>
+    <span class="title">Operator Strength Reduction</span> &mdash; Keith Cooper, Taylor Simpson, Christopher Vick
+    <div class="meta"><span class="badge b-pdf">PDF&middot;23pp</span>ACM TOPLAS 2001 &middot; <a href="https://doi.org/10.1145/504709.504710">DOI</a> &middot; <a href="https://www.cs.rice.edu/~keith/Publications/OSR.pdf">PDF</a></div>
+    <div class="why-here">The modern SSA-based reformulation, driven by the value graph and far simpler to implement.</div>
+  </li>
+  <li>
+    <span class="title">Strength Reduction via SSAPRE</span> &mdash; Robert Kennedy, Fred Chow, Peter Dahl, Shin-Ming Liu, Raymond Lo, Mark Streich
+    <div class="meta"><span class="badge b-pdf">PDF&middot;15pp</span>CC 1998 &middot; <a href="https://doi.org/10.1007/BFb0026428">DOI</a> &middot; <a href="https://link.springer.com/content/pdf/10.1007/BFb0026428.pdf">PDF</a></div>
+    <div class="why-here">Recasts strength reduction as an instance of SSA-based partial redundancy elimination — one framework subsuming both code motion and strength reduction.</div>
+  </li>
+</ol>
+
+<h2>Dead-code elimination</h2>
+<p class="grouphdr">The mirror image of PRE: remove — or sink — computations whose results a path never uses.</p>
+<ol class="papers" start="20" style="counter-reset:item 19;">
+  <li>
+    <span class="title">Partial Dead Code Elimination</span> &mdash; Jens Knoop, Oliver Rüthing, Bernhard Steffen
+    <div class="meta"><span class="badge b-web">DOI&middot;12pp</span>PLDI 1994 &middot; <a href="https://doi.org/10.1145/178243.178256">DOI</a></div>
+    <div class="why-here">Sinks assignments that are dead on some paths but live on others — the code-motion dual of PRE.</div>
+  </li>
+</ol>
+
+<h2>Interprocedural: inlining and calls</h2>
+<p class="grouphdr">Cross the procedure boundary — first by substitution, then by making the call itself disappear.</p>
+<ol class="papers" start="21" style="counter-reset:item 20;">
+  <li>
+    <span class="title">An Analysis of Inline Substitution for a Structured Programming Language</span> &mdash; Robert Scheifler
+    <div class="meta"><span class="badge b-web">DOI&middot;8pp</span>CACM 1977 &middot; <a href="https://doi.org/10.1145/359810.359830">DOI</a></div>
+    <div class="why-here">Frames inlining as a cost-constrained optimization rather than a heuristic hack — the enabler for most interprocedural work.</div>
+  </li>
+  <li>
+    <span class="title">Debunking the "Expensive Procedure Call" Myth</span> &mdash; Guy Steele
+    <div class="meta"><span class="badge b-pdf">PDF&middot;23pp</span>MIT AI Memo 443, 1977 &middot; <a href="https://dspace.mit.edu/bitstream/handle/1721.1/5753/AIM-443.pdf">PDF</a></div>
+    <div class="why-here">Proper tail calls make a call as cheap as a GOTO — the origin of tail-call optimization, argued in the "LAMBDA: The Ultimate GOTO" style.</div>
+  </li>
+</ol>
+
+<h2>Specialization: partial evaluation</h2>
+<p class="grouphdr">The unifying view — many optimizations above are special cases of precomputing what depends only on known inputs.</p>
+<ol class="papers" start="23" style="counter-reset:item 22;">
+  <li>
+    <span class="title">Partial Evaluation of Computation Process—An Approach to a Compiler-Compiler</span> &mdash; Yoshihiko Futamura
+    <div class="meta"><span class="badge b-web">DOI&middot;11pp</span>Higher-Order and Symbolic Computation 1999 (orig. 1971) &middot; <a href="https://doi.org/10.1023/A:1010095604496">DOI</a></div>
+    <div class="why-here">The Futamura projections: specialize an interpreter to a program and you get a compiled program; specialize the specializer and you get a compiler.</div>
+  </li>
+  <li>
+    <span class="title">Tutorial Notes on Partial Evaluation</span> &mdash; Charles Consel, Olivier Danvy
+    <div class="meta"><span class="badge b-web">DOI&middot;9pp</span>POPL 1993 &middot; <a href="https://doi.org/10.1145/158511.158707">DOI</a></div>
+    <div class="why-here">The clearest short entry point: binding-time analysis, the online/offline distinction, and how specialization mechanizes the folding and propagation seen earlier in this list.</div>
+  </li>
+  <li>
+    <span class="title">Partial Evaluation and Automatic Program Generation</span> &mdash; Neil Jones, Carsten Gomard, Peter Sestoft
+    <div class="meta"><span class="badge b-pdf">PDF&middot;415pp</span>Prentice Hall 1993 &middot; <a href="https://www.itu.dk/people/sestoft/pebook/">book</a></div>
+    <div class="why-here">The definitive treatment of specialization, binding-time analysis, and the Futamura projections; full text free online.</div>
+  </li>
+</ol>
+
+<div class="why">
+<b>Two idioms for "don't compute it twice."</b> <em>Value numbering / GVN</em> asks whether
+two expressions are provably the <em>same value</em> (congruence over the value graph);
+<em>availability-based</em> PRE and lazy code motion ask whether an expression has
+<em>already been computed</em> on the way to this point (a dataflow property). They overlap
+but neither subsumes the other — production compilers run both, which is why this list
+gives each its own line back to the source. GVN-PRE (Van Drunen &amp; Hosking) finally fuses them.
+</div>
+
+<h2>Reference shelf &mdash; books</h2>
+<p class="grouphdr">The standard texts for the area; free copies linked where a legal one exists.</p>
+<ul class="refs">
+  <li><span class="badge b-buy">BUY&middot;856pp</span><b>Advanced Compiler Design and Implementation</b> &mdash; Steven Muchnick (1997) &middot; The encyclopedic reference — a chapter-length treatment of essentially every optimization on this list. <a href="https://books.google.com/books?id=Pq7pHwG1_OkC">page</a></li>
+  <li><span class="badge b-buy">BUY&middot;848pp</span><b>Engineering a Compiler</b> &mdash; Keith Cooper, Linda Torczon (3rd ed. 2022) &middot; Cooper's own textbook; the clearest modern treatment of value numbering, PRE, and operator strength reduction. <a href="https://shop.elsevier.com/books/engineering-a-compiler/cooper/978-0-12-815412-0">page</a></li>
+  <li><span class="badge b-buy">BUY&middot;1009pp</span><b>Compilers: Principles, Techniques, and Tools</b> &mdash; (the "Dragon Book") — Aho, Lam, Sethi, Ullman (2nd ed. 2006) &middot; The standard reference for the dataflow foundations and the classic transformations. <a href="https://www.pearson.com/en-us/subject-catalog/p/compilers-principles-techniques-and-tools/P200000003472">page</a></li>
+</ul>
+
+<h2>Key terms</h2>
+<p class="grouphdr">Vocabulary used across this list.</p>
+<div class="notekey"><b>available expression</b> &mdash; one already computed on every path to a point, with no operand redefined since; the property CSE exploits &nbsp; <b>partial redundancy</b> &mdash; a computation redundant on some but not all paths; PRE inserts copies to make it fully redundant, then removes it &nbsp; <b>code motion</b> &mdash; relocating a computation to a better point (e.g. out of a loop) without changing the program's results &nbsp; <b>value numbering</b> &mdash; giving equal "numbers" to expressions that provably compute the same value, so duplicates can be reused &nbsp; <b>congruence</b> &mdash; the equivalence relation on SSA values that global value numbering computes to decide when two expressions are equal &nbsp; <b>induction variable</b> &mdash; a variable that changes by a constant amount each loop iteration; the handle strength reduction grabs &nbsp; <b>strength reduction</b> &mdash; replacing an expensive operation (a multiply) with a cheaper one (an add) along an induction variable &nbsp; <b>monotone framework</b> &mdash; a dataflow analysis whose transfer functions are monotone over a lattice, which guarantees a least fixed point &nbsp; <b>meet-over-all-paths (MOP)</b> &mdash; the ideal dataflow solution combining facts over every path; iterative analysis reaches it for distributive frameworks &nbsp; <b>SSA</b> &mdash; static single assignment; each variable is assigned once, which makes the value-based optimizations here sparse and cheap &nbsp; <b>dominance frontier</b> &mdash; the set of blocks where a definition's influence ends; where SSA construction places φ-functions &nbsp; <b>sparse evaluation graph</b> &mdash; a reduced graph carrying a dataflow problem only through the nodes that generate or use its facts, skipping pass-through blocks &nbsp; <b>value range</b> &mdash; an interval (or set of intervals) a variable is known to lie in; range propagation generalizes constant propagation to these &nbsp; <b>reassociation</b> &mdash; rewriting an expression's operand grouping (using associativity/commutativity) to expose more redundancy or loop invariance &nbsp; <b>specialization / partial evaluation</b> &mdash; precomputing the parts of a program that depend only on its known (static) inputs &nbsp; <b>binding-time analysis</b> &mdash; the partial-evaluation phase that labels each computation static (known now) or dynamic (deferred to run time) &nbsp; <b>Futamura projection</b> &mdash; specializing an interpreter to a program yields a compiled program; specializing the specializer yields a compiler &nbsp; <b>dead code</b> &mdash; computations whose results are never used; dead-code elimination removes them (partial DCE sinks the ones dead only on some paths)</div>
 
 </body>
 </html>

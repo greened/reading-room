@@ -8,61 +8,185 @@
 <body>
 
 <h1>Compilers · Abstract interpretation</h1>
-<p class="sub">The theory of sound static analysis by approximation — Galois connections, numeric domains (intervals, octagons, polyhedra), widening/narrowing, IFDS, and shape analysis — through to the industrial Astrée analyzer.</p>
-<p class="tally">In-depth landmark list for this subtopic. <span class="badge b-pdf">PDF</span>open copy available &middot; <span class="badge b-web">DOI</span>publisher link only.</p>
+<p class="sub">The theory of sound static analysis by approximation. A program's exact behavior is uncomputable, so we compute a decidable over-approximation instead — and abstract interpretation is the framework that says exactly when such an approximation is <em>sound</em>. The path below starts with that framework (Galois connections, fixpoints), then treats each design choice in turn: which numeric domain to use, how to make the fixpoint converge with widening, how to cross procedure boundaries (IFDS/IDE), how to abstract the heap (shape analysis), how to carry the idea to functional and logic programs, and how to refine an abstraction that is too coarse (CEGAR). It ends where the theory pays off: the Astrée analyzer proving avionics code free of run-time errors, and Verasco proving the analyzer itself correct.</p>
+<p class="tally">23 papers &middot; &asymp; <b>570 pp</b> of primary reading. &nbsp; Legend: <span class="badge b-pdf">PDF</span>open copy (see <span class="file">fetch.sh</span>) &middot; <span class="badge b-web">DOI</span>publisher link only</p>
+<div class="why"><b>How to read this list.</b> Begin with the founding framework — Cousot &amp; Cousot 1977/79 define what "sound approximation" means and how to <em>derive</em> an analysis from a semantics rather than invent one and hope. Everything after is a choice of abstraction. Read the foundations in order; then the later sections are largely independent, so jump to the numeric domains, the heap, or the industrial analyzers as your interest dictates. The two big TOPLAS shape-analysis papers are references to dip into, not front-to-back reads.</div>
 
-<ol class="papers">
+<h2>The founding framework</h2>
+<p class="grouphdr">Start here: the theory that defines the field — sound approximation of a program's semantics as fixpoints in a lattice.</p>
+<ol class="papers" start="1">
   <li>
-    <span class="title">Abstract Interpretation: A Unified Lattice Model for Static Analysis…</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/512950.512973">DOI</a> &middot; <a href="https://www.di.ens.fr/~cousot/publications.www/CousotCousot-POPL-77-ACM-p238--252-1977.pdf">PDF</a></div>
-    <div class="why-here">Patrick &amp; Radhia Cousot, 1977, POPL. The founding framework: sound analysis by fixpoint approximation.</div>
+    <span class="title">Abstract Interpretation: A Unified Lattice Model for Static Analysis of Programs by Construction or Approximation of Fixpoints</span> &mdash; Patrick Cousot, Radhia Cousot
+    <div class="meta"><span class="badge b-pdf">PDF&middot;15pp</span>POPL 1977 &middot; <a href="https://doi.org/10.1145/512950.512973">DOI</a> &middot; <a href="https://www.di.ens.fr/~cousot/publications.www/CousotCousot-POPL-77-ACM-p238--252-1977.pdf">PDF</a></div>
+    <div class="why-here">The founding paper: sound analysis as fixpoint approximation in a lattice. Read it first even though the notation is dense — every later paper is a special case.</div>
   </li>
   <li>
-    <span class="title">Automatic Discovery of Linear Restraints Among Variables of a Program</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/512760.512770">DOI</a> &middot; <a href="https://www.di.ens.fr/~cousot/publications.www/CousotHalbwachs-POPL-78-ACM-p84--97-1978.pdf">PDF</a></div>
-    <div class="why-here">Cousot, Halbwachs, 1978, POPL. The polyhedra domain: the first relational numeric domain.</div>
+    <span class="title">Systematic Design of Program Analysis Frameworks</span> &mdash; Patrick Cousot, Radhia Cousot
+    <div class="meta"><span class="badge b-pdf">PDF&middot;14pp</span>POPL 1979 &middot; <a href="https://doi.org/10.1145/567752.567778">DOI</a> &middot; <a href="https://pcousot.github.io/publications/CousotCousot-POPL-79-ACM-p269--282-1979.pdf">PDF</a></div>
+    <div class="why-here">Galois connections and the recipe for deriving a correct-by-construction analysis from a formal semantics. This is the paper that makes soundness a matter of definition, not proof-after-the-fact.</div>
   </li>
   <li>
-    <span class="title">Systematic Design of Program Analysis Frameworks</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/567752.567778">DOI</a> &middot; <a href="https://pcousot.github.io/publications/CousotCousot-POPL-79-ACM-p269--282-1979.pdf">PDF</a></div>
-    <div class="why-here">Cousot &amp; Cousot, 1979, POPL. Galois connections and deriving analyses from a formal semantics.</div>
-  </li>
-  <li>
-    <span class="title">Affine Relationships Among Variables of a Program</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1007/BF00268497">DOI</a></div>
-    <div class="why-here">Michael Karr, 1976, Acta Informatica. Pioneering inference of affine equalities among variables.</div>
-  </li>
-  <li>
-    <span class="title">Comparing the Galois Connection and Widening/Narrowing Approaches</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1007/3-540-55844-6_142">DOI</a> &middot; <a href="https://pcousot.github.io/publications/CousotCousot-PLILP-92-LNCS-n631-p269--295-1992.pdf">PDF</a></div>
-    <div class="why-here">Cousot &amp; Cousot, 1992, PLILP. Reconciles the two abstraction styles for infinite-height domains.</div>
-  </li>
-  <li>
-    <span class="title">Precise Interprocedural Dataflow Analysis via Graph Reachability (IFDS)</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/199448.199462">DOI</a> &middot; <a href="https://research.cs.wisc.edu/wpis/papers/popl95.pdf">PDF</a></div>
-    <div class="why-here">Reps, Horwitz, Sagiv, 1995, POPL. Reduces a large class of interprocedural problems to polynomial-time reachability.</div>
-  </li>
-  <li>
-    <span class="title">Solving Shape-Analysis Problems in Languages with Destructive Updating</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/271510.271517">DOI</a> &middot; <a href="https://research.cs.wisc.edu/wpis/papers/toplas98a.pdf">PDF</a></div>
-    <div class="why-here">Sagiv, Reps, Wilhelm, 1998, ACM TOPLAS. Shape graphs for sound reasoning about the heap.</div>
-  </li>
-  <li>
-    <span class="title">Parametric Shape Analysis via 3-Valued Logic (TVLA)</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/514188.514190">DOI</a> &middot; <a href="https://research.cs.wisc.edu/wpis/papers/toplas02.pdf">PDF</a></div>
-    <div class="why-here">Sagiv, Reps, Wilhelm, 2002, ACM TOPLAS. The parametric, instantiable heap-abstraction methodology.</div>
-  </li>
-  <li>
-    <span class="title">A Static Analyzer for Large Safety-Critical Software (Astrée)</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/781131.781153">DOI</a> &middot; <a href="https://pcousot.github.io/publications/BlanchetCousotEtAl-PLDI03-USletter.pdf">PDF</a></div>
-    <div class="why-here">Blanchet, Cousot, Cousot, Feret, Mauborgne, Miné, Monniaux, Rival, 2003, PLDI. The landmark industrial abstract interpreter (avionics).</div>
-  </li>
-  <li>
-    <span class="title">The Octagon Abstract Domain</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1007/s10990-006-8609-1">DOI</a></div>
-    <div class="why-here">Antoine Miné, 2006, HOSC. The widely used weakly-relational domain between intervals and polyhedra.</div>
+    <span class="title">Comparing the Galois Connection and Widening/Narrowing Approaches to Abstract Interpretation</span> &mdash; Patrick Cousot, Radhia Cousot
+    <div class="meta"><span class="badge b-pdf">PDF&middot;27pp</span>PLILP 1992 &middot; <a href="https://doi.org/10.1007/3-540-55844-6_142">DOI</a> &middot; <a href="https://pcousot.github.io/publications/CousotCousot-PLILP-92-LNCS-n631-p269--295-1992.pdf">PDF</a></div>
+    <div class="why-here">Reconciles the two abstraction styles and formalizes widening/narrowing for domains that have no best abstraction — essential before the numeric-domain papers.</div>
   </li>
 </ol>
+
+<h2>Numeric abstract domains</h2>
+<p class="grouphdr">The analysis is only as sharp as its domain; these climb from non-relational intervals to fully relational polyhedra, then trade precision back for speed.</p>
+<ol class="papers" start="4" style="counter-reset:item 3;">
+  <li>
+    <span class="title">Static Determination of Dynamic Properties of Programs</span> &mdash; Patrick Cousot, Radhia Cousot
+    <div class="meta"><span class="badge b-pdf">PDF&middot;25pp</span>ISOP 1976 &middot; <a href="https://www.di.ens.fr/~cousot/COUSOTpapers/publications.www/CousotCousot-ISOP-76-Dunod-p106--130-1976.pdf">PDF</a></div>
+    <div class="why-here">The paper that predates the 1977 framework and introduces the interval domain — the simplest useful abstraction, and the concrete example the theory generalizes.</div>
+  </li>
+  <li>
+    <span class="title">Affine Relationships Among Variables of a Program</span> &mdash; Michael Karr
+    <div class="meta"><span class="badge b-web">DOI&middot;19pp</span>Acta Informatica 1976 &middot; <a href="https://doi.org/10.1007/BF00268497">DOI</a></div>
+    <div class="why-here">The first inference of affine <em>equalities</em> among variables — the relational idea, before the lattice framework existed to name it.</div>
+  </li>
+  <li>
+    <span class="title">Automatic Discovery of Linear Restraints Among Variables of a Program</span> &mdash; Patrick Cousot, Nicolas Halbwachs
+    <div class="meta"><span class="badge b-pdf">PDF&middot;14pp</span>POPL 1978 &middot; <a href="https://doi.org/10.1145/512760.512770">DOI</a> &middot; <a href="https://www.di.ens.fr/~cousot/publications.www/CousotHalbwachs-POPL-78-ACM-p84--97-1978.pdf">PDF</a></div>
+    <div class="why-here">The convex-polyhedra domain: linear <em>inequalities</em> among variables, the most precise (and most expensive) classical relational domain.</div>
+  </li>
+  <li>
+    <span class="title">Scalable Analysis of Linear Systems Using Mathematical Programming</span> &mdash; Sriram Sankaranarayanan, Henny Sipma, Zohar Manna
+    <div class="meta"><span class="badge b-web">DOI&middot;17pp</span>VMCAI 2005 &middot; <a href="https://doi.org/10.1007/978-3-540-30579-8_2">DOI</a></div>
+    <div class="why-here">Template polyhedra: fix the constraint shapes in advance and recover most of polyhedra's precision at a fraction of the cost.</div>
+  </li>
+  <li>
+    <span class="title">A New Numerical Abstract Domain Based on Difference-Bound Matrices</span> &mdash; Antoine Miné
+    <div class="meta"><span class="badge b-web">DOI&middot;18pp</span>PADO 2001 &middot; <a href="https://doi.org/10.1007/3-540-44978-7_10">DOI</a></div>
+    <div class="why-here">The "zones" domain — constraints of the form x − y ≤ c — a cheap weakly-relational middle ground between intervals and polyhedra.</div>
+  </li>
+  <li>
+    <span class="title">The Octagon Abstract Domain</span> &mdash; Antoine Miné
+    <div class="meta"><span class="badge b-web">DOI&middot;70pp</span>HOSC 2006 &middot; <a href="https://doi.org/10.1007/s10990-006-8609-1">DOI</a></div>
+    <div class="why-here">The widely deployed ±x ± y ≤ c domain; the journal version is the definitive reference on weakly-relational domains and their transfer functions.</div>
+  </li>
+</ol>
+
+<h2>Making fixpoints converge — widening and iteration</h2>
+<p class="grouphdr">Infinite-height domains do not terminate on their own; widening/narrowing and iteration order are what make analysis finish — and stay precise.</p>
+<ol class="papers" start="10" style="counter-reset:item 9;">
+  <li>
+    <span class="title">Efficient Chaotic Iteration Strategies with Widenings</span> &mdash; François Bourdoncle
+    <div class="meta"><span class="badge b-web">DOI&middot;14pp</span>FMPTA 1993 &middot; <a href="https://doi.org/10.1007/BFb0039704">DOI</a></div>
+    <div class="why-here">Where to apply widening in the control-flow graph, and in what order to iterate, so that the analysis converges quickly without needless precision loss.</div>
+  </li>
+  <li>
+    <span class="title">Lookahead Widening</span> &mdash; Denis Gopan, Thomas Reps
+    <div class="meta"><span class="badge b-web">DOI&middot;15pp</span>CAV 2006 &middot; <a href="https://doi.org/10.1007/11817963_41">DOI</a></div>
+    <div class="why-here">A refinement that regains much of the precision naïve widening throws away, by exploring a loop's behavior before extrapolating.</div>
+  </li>
+</ol>
+
+<h2>Interprocedural analysis</h2>
+<p class="grouphdr">Real programs have procedures; these reduce context-sensitive analysis to efficient graph problems.</p>
+<ol class="papers" start="12" style="counter-reset:item 11;">
+  <li>
+    <span class="title">Precise Interprocedural Dataflow Analysis via Graph Reachability (IFDS)</span> &mdash; Thomas Reps, Susan Horwitz, Mooly Sagiv
+    <div class="meta"><span class="badge b-pdf">PDF&middot;14pp</span>POPL 1995 &middot; <a href="https://doi.org/10.1145/199448.199462">DOI</a> &middot; <a href="https://research.cs.wisc.edu/wpis/papers/popl95.pdf">PDF</a></div>
+    <div class="why-here">Reduces a large class of context-sensitive interprocedural problems to polynomial-time graph reachability — the workhorse behind many production analyses.</div>
+  </li>
+  <li>
+    <span class="title">Precise Interprocedural Dataflow Analysis with Applications to Constant Propagation (IDE)</span> &mdash; Mooly Sagiv, Thomas Reps, Susan Horwitz
+    <div class="meta"><span class="badge b-web">DOI&middot;40pp</span>TCS 1996 &middot; <a href="https://doi.org/10.1016/0304-3975(96)00072-2">DOI</a></div>
+    <div class="why-here">Generalizes IFDS from set problems to <em>environment transformers</em>, extending the graph-reachability idea to constant propagation and beyond.</div>
+  </li>
+</ol>
+
+<h2>Heap and shape analysis</h2>
+<p class="grouphdr">Pointers and the heap are where abstraction is hardest; shape analysis abstracts unbounded, dynamically allocated structures soundly.</p>
+<ol class="papers" start="14" style="counter-reset:item 13;">
+  <li>
+    <span class="title">Solving Shape-Analysis Problems in Languages with Destructive Updating</span> &mdash; Mooly Sagiv, Thomas Reps, Reinhard Wilhelm
+    <div class="meta"><span class="badge b-pdf">PDF&middot;59pp</span>TOPLAS 1998 &middot; <a href="https://doi.org/10.1145/271510.271517">DOI</a> &middot; <a href="https://research.cs.wisc.edu/wpis/papers/toplas98a.pdf">PDF</a></div>
+    <div class="why-here">Shape graphs for sound reasoning about the heap under destructive pointer updates — the foundation of the field.</div>
+  </li>
+  <li>
+    <span class="title">Parametric Shape Analysis via 3-Valued Logic (TVLA)</span> &mdash; Mooly Sagiv, Thomas Reps, Reinhard Wilhelm
+    <div class="meta"><span class="badge b-pdf">PDF&middot;78pp</span>TOPLAS 2002 &middot; <a href="https://doi.org/10.1145/514188.514190">DOI</a> &middot; <a href="https://research.cs.wisc.edu/wpis/papers/toplas02.pdf">PDF</a></div>
+    <div class="why-here">The parametric, instantiable heap-abstraction methodology: choose predicates, get an analysis. A reference to dip into, not read cover to cover.</div>
+  </li>
+  <li>
+    <span class="title">A Local Shape Analysis Based on Separation Logic</span> &mdash; Dino Distefano, Peter O'Hearn, Hongseok Yang
+    <div class="meta"><span class="badge b-web">DOI&middot;16pp</span>TACAS 2006 &middot; <a href="https://doi.org/10.1007/11691372_19">DOI</a></div>
+    <div class="why-here">Recasts shape analysis in separation logic, whose <em>local reasoning</em> is what later made heap analysis scale (and led to Facebook's Infer).</div>
+  </li>
+</ol>
+
+<h2>Beyond imperative code — functional and logic programs</h2>
+<p class="grouphdr">Abstract interpretation is a semantics-level idea, not a C-only trick; here it is applied to other paradigms.</p>
+<ol class="papers" start="17" style="counter-reset:item 16;">
+  <li>
+    <span class="title">Higher-Order Abstract Interpretation (and Application to Comportment Analysis Generalizing Strictness, Termination, Projection and PER Analysis)</span> &mdash; Patrick Cousot, Radhia Cousot
+    <div class="meta"><span class="badge b-web">DOI&middot;18pp</span>ICCL 1994 &middot; <a href="https://doi.org/10.1109/ICCL.1994.288389">DOI</a></div>
+    <div class="why-here">Lifts the framework to higher-order functional languages, unifying strictness, termination, and projection analyses as one construction.</div>
+  </li>
+  <li>
+    <span class="title">A Practical Framework for the Abstract Interpretation of Logic Programs</span> &mdash; Maurice Bruynooghe
+    <div class="meta"><span class="badge b-web">DOI&middot;34pp</span>Journal of Logic Programming 1991 &middot; <a href="https://doi.org/10.1016/0743-1066(91)90004-9">DOI</a></div>
+    <div class="why-here">The standard framework for analyzing Prolog-style programs — abstract substitutions and the and/or trees that later powered mode and sharing analyses.</div>
+  </li>
+</ol>
+
+<h2>Refinement and the model-checking connection</h2>
+<p class="grouphdr">Abstraction that is too coarse can be sharpened automatically; this line links abstract interpretation to model checking.</p>
+<ol class="papers" start="19" style="counter-reset:item 18;">
+  <li>
+    <span class="title">Construction of Abstract State Graphs with PVS</span> &mdash; Susanne Graf, Hassen Saïdi
+    <div class="meta"><span class="badge b-web">DOI&middot;12pp</span>CAV 1997 &middot; <a href="https://doi.org/10.1007/3-540-63166-6_10">DOI</a></div>
+    <div class="why-here">Predicate abstraction: abstract states by the truth of a finite set of predicates, discharging the transfer functions with a theorem prover.</div>
+  </li>
+  <li>
+    <span class="title">Counterexample-Guided Abstraction Refinement (CEGAR)</span> &mdash; Edmund Clarke, Orna Grumberg, Somesh Jha, Yuan Lu, Helmut Veith
+    <div class="meta"><span class="badge b-web">DOI&middot;16pp</span>CAV 2000 &middot; <a href="https://doi.org/10.1007/10722167_15">DOI</a></div>
+    <div class="why-here">Start coarse; when a spurious counterexample appears, refine the abstraction just enough to rule it out. The loop behind SLAM, BLAST, and modern software model checkers.</div>
+  </li>
+</ol>
+
+<h2>Industrial scale and verified analyzers</h2>
+<p class="grouphdr">The payoff — abstract interpretation proving real safety-critical software correct, and analyzers proved correct themselves.</p>
+<ol class="papers" start="21" style="counter-reset:item 20;">
+  <li>
+    <span class="title">A Static Analyzer for Large Safety-Critical Software (Astrée)</span> &mdash; Bruno Blanchet, Patrick Cousot, Radhia Cousot, Jérôme Feret, Laurent Mauborgne, Antoine Miné, David Monniaux, Xavier Rival
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>PLDI 2003 &middot; <a href="https://doi.org/10.1145/781131.781153">DOI</a> &middot; <a href="https://pcousot.github.io/publications/BlanchetCousotEtAl-PLDI03-USletter.pdf">PDF</a></div>
+    <div class="why-here">The landmark industrial abstract interpreter: zero false alarms on Airbus flight-control code by specializing the domains to the program class.</div>
+  </li>
+  <li>
+    <span class="title">The ASTRÉE Analyzer</span> &mdash; Patrick Cousot, Radhia Cousot, Jérôme Feret, Laurent Mauborgne, Antoine Miné, David Monniaux, Xavier Rival
+    <div class="meta"><span class="badge b-pdf">PDF&middot;10pp</span>ESOP 2005 &middot; <a href="https://doi.org/10.1007/978-3-540-31987-0_3">DOI</a> &middot; <a href="https://pcousot.github.io/publications/CousotEtAl-ESOP05.pdf">PDF</a></div>
+    <div class="why-here">The design retrospective: which domains, which widenings, and which engineering choices made the zero-alarm result possible.</div>
+  </li>
+  <li>
+    <span class="title">Verasco: A Formally Verified C Static Analyzer</span> &mdash; Jacques-Henri Jourdan, Vincent Laporte, Sandrine Blazy, Xavier Leroy, David Pichardie
+    <div class="meta"><span class="badge b-pdf">PDF&middot;13pp</span>POPL 2015 &middot; <a href="https://doi.org/10.1145/2676726.2676966">DOI</a> &middot; <a href="https://xavierleroy.org/publi/verasco-popl2015.pdf">PDF</a></div>
+    <div class="why-here">A sound abstract-interpretation analyzer proved correct in Coq and plugged into CompCert — the framework turned back on itself.</div>
+  </li>
+</ol>
+
+<div class="why">
+<b>Why soundness is the whole point.</b> Every domain and operator above is chosen so the
+result <em>over-approximates</em> all real executions: the abstract answer describes a
+superset of what can actually happen. That is what lets an analyzer say "this program has
+no run-time error" and mean it — the guarantee Astrée gives avionics code and Verasco
+gives its own proofs. The cost is false alarms, and much of this literature is the fight
+to keep abstraction cheap and precise enough that the alarms stay rare.
+</div>
+
+<h2>Reference shelf &mdash; books</h2>
+<p class="grouphdr">The standard texts for the area; free copies linked where a legal one exists.</p>
+<ul class="refs">
+  <li><span class="badge b-buy">BUY&middot;833pp</span><b>Principles of Abstract Interpretation</b> &mdash; Patrick Cousot (2021) &middot; The definitive modern treatment, straight from the founder — the book to own once the papers hook you. <a href="https://mitpress.mit.edu/9780262044905/principles-of-abstract-interpretation/">page</a></li>
+  <li><span class="badge b-buy">BUY&middot;452pp</span><b>Principles of Program Analysis</b> &mdash; Flemming Nielson, Hanne Riis Nielson, Chris Hankin (1999) &middot; The standard textbook, placing abstract interpretation alongside dataflow, control-flow, and type/effect analysis. <a href="https://link.springer.com/book/10.1007/978-3-662-03811-6">page</a></li>
+  <li><span class="badge b-buy">BUY&middot;308pp</span><b>Introduction to Static Analysis: An Abstract Interpretation Perspective</b> &mdash; Xavier Rival, Kwangkeun Yi (2020) &middot; The gentlest on-ramp; you build a small analyzer as you read. <a href="https://mitpress.mit.edu/9780262043410/introduction-to-static-analysis/">page</a></li>
+</ul>
+
+<h2>Key terms</h2>
+<p class="grouphdr">Vocabulary used across this list.</p>
+<div class="notekey"><b>abstract domain</b> &mdash; the lattice of approximate program properties an analysis computes over (intervals, octagons, polyhedra, shape graphs) &nbsp; <b>Galois connection</b> &mdash; the paired abstraction (α) and concretization (γ) maps that make an abstraction sound by construction &nbsp; <b>fixpoint</b> &mdash; the solution of the recursive equations describing a program's semantics; an analysis computes a sound abstract one &nbsp; <b>widening (∇)</b> &mdash; an extrapolation operator that forces a fixpoint iteration to terminate on an infinite-height domain &nbsp; <b>narrowing (∆)</b> &mdash; the companion operator that recovers precision lost to an over-eager widening &nbsp; <b>relational domain</b> &mdash; one that tracks relationships <em>among</em> variables (octagons, polyhedra), unlike a non-relational domain that bounds each variable alone (intervals) &nbsp; <b>IFDS / IDE</b> &mdash; frameworks reducing interprocedural dataflow to graph reachability (IFDS) or to environment transformers (IDE) &nbsp; <b>shape analysis</b> &mdash; heap abstraction that soundly summarizes unbounded, dynamically allocated data structures &nbsp; <b>predicate abstraction</b> &mdash; abstracting states by the truth values of a finite set of predicates &nbsp; <b>CEGAR</b> &mdash; counterexample-guided abstraction refinement: refine the abstraction until spurious counterexamples disappear &nbsp; <b>soundness</b> &mdash; the analysis over-approximates every real behavior, so a clean report is a genuine guarantee, at the price of possible false alarms</div>
 
 </body>
 </html>

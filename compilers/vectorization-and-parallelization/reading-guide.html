@@ -8,71 +8,180 @@
 <body>
 
 <h1>Compilers · Vectorization &amp; parallelization</h1>
-<p class="sub">Dependence-based auto-vectorization and auto-parallelization: dependence testing, loop transforms, the polyhedral model, SIMD/SLP, work-stealing task parallelism, and thread-level speculation.</p>
-<p class="tally">In-depth landmark list for this subtopic. <span class="badge b-pdf">PDF</span>open copy available &middot; <span class="badge b-web">DOI</span>publisher link only.</p>
+<p class="sub">How a compiler takes an ordinary sequential loop and makes it run on SIMD lanes, many cores, or both — without changing what it computes. Everything here rests on one analysis: <em>dependence</em>. The path below starts there (which iterations must run before which), builds the algebra of loop transforms that dependence makes legal, cashes it in first for SIMD vectorization and then for the polyhedral model that unifies the transforms, and finally scales out to multiprocessors — from static auto-parallelization to work-stealing task runtimes and speculative execution.</p>
+<p class="tally">24 papers &middot; &asymp; <b>443 pp</b> of primary reading. &nbsp; Legend: <span class="badge b-pdf">PDF</span>open copy (see <span class="file">fetch.sh</span>) &middot; <span class="badge b-web">DOI</span>publisher link only</p>
+<div class="why"><b>How to read this list.</b> Read the first two sections in order — dependence analysis is the ground floor, and nothing later is safe without it. After that the four application sections (vectorization, the polyhedral model, auto-parallelization, task &amp; speculative parallelism) are largely independent; pick the one you need. The polyhedral section is the deep end: read the transform section first so you can see what the affine machinery is generalizing.</div>
 
-<ol class="papers">
+<h2>Dependence analysis — the ground floor</h2>
+<p class="grouphdr">You cannot legally reorder or parallelize a loop until you know which iterations depend on which; start here.</p>
+<ol class="papers" start="1">
   <li>
-    <span class="title">Automatic Translation of FORTRAN Programs to Vector Form</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/29873.29875">DOI</a> &middot; <a href="http://rsim.cs.uiuc.edu/arch/qual_papers/compilers/allen87.pdf">PDF</a></div>
-    <div class="why-here">Allen, Kennedy, 1987, ACM TOPLAS. The foundational dependence-based loop vectorization framework.</div>
+    <span class="title">Practical Dependence Testing</span> &mdash; Goff, Kennedy, Tseng
+    <div class="meta"><span class="badge b-pdf">PDF&middot;16pp</span>PLDI 1991 &middot; <a href="https://doi.org/10.1145/113445.113448">DOI</a> &middot; <a href="https://people.cs.rutgers.edu/~uli/cs516/spring2020/readings/PracticalDependenceTesting-PLDI1991.pdf">PDF</a></div>
+    <div class="why-here">Classifies subscripts as ZIV/SIV/MIV and applies the cheapest sufficient test to each — the design most production compilers still follow.</div>
   </li>
   <li>
-    <span class="title">Practical Dependence Testing</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/113445.113448">DOI</a> &middot; <a href="https://people.cs.rutgers.edu/~uli/cs516/spring2020/readings/PracticalDependenceTesting-PLDI1991.pdf">PDF</a></div>
-    <div class="why-here">Goff, Kennedy, Tseng, 1991, PLDI. ZIV/SIV/MIV subscript tests that made dependence testing practical.</div>
-  </li>
-  <li>
-    <span class="title">A Data Locality Optimizing Algorithm</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/113445.113449">DOI</a></div>
-    <div class="why-here">Wolf, Lam, 1991, PLDI. Unimodular loop transforms + tiling for reuse and locality.</div>
-  </li>
-  <li>
-    <span class="title">Maximizing Multiprocessor Performance with the SUIF Compiler</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1109/2.546613">DOI</a></div>
-    <div class="why-here">Hall, Anderson, Amarasinghe, Murphy, Liao, Bugnion, Lam, 1996, IEEE Computer. End-to-end automatic parallelization for shared-memory multiprocessors.</div>
-  </li>
-  <li>
-    <span class="title">Maximizing Parallelism and Minimizing Synchronization with Affine Partitions</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1016/S0167-8191(98">DOI</a> &middot; <a href="https://suif.stanford.edu/papers/lim98.pdf">PDF</a></div>
-    <div class="why-here">Lim, Lam, 1998, Parallel Computing. Loop parallelization as affine partitioning. 00021-0)</div>
-  </li>
-  <li>
-    <span class="title">The Implementation of the Cilk-5 Multithreaded Language</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/277650.277725">DOI</a> &middot; <a href="https://pages.cs.wisc.edu/~markhill/restricted/pldi98_cilk.pdf">PDF</a></div>
-    <div class="why-here">Frigo, Leiserson, Randall, 1998, PLDI. The work-first principle + THE protocol; cheap work-stealing tasks.</div>
-  </li>
-  <li>
-    <span class="title">Scheduling Multithreaded Computations by Work Stealing</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/324133.324234">DOI</a> &middot; <a href="https://www.csd.uwo.ca/~mmorenom/CS433-CS9624/Resources/Scheduling_multithreaded_computations_by_work_stealing.pdf">PDF</a></div>
-    <div class="why-here">Blumofe, Leiserson, 1999, JACM. Provably efficient randomized work-stealing; the backbone of task runtimes.</div>
-  </li>
-  <li>
-    <span class="title">Exploiting Superword Level Parallelism with Multimedia Instruction Sets (SLP)</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/349299.349320">DOI</a> &middot; <a href="https://groups.csail.mit.edu/cag/slp/SLP-PLDI-2000.pdf">PDF</a></div>
-    <div class="why-here">Larsen, Amarasinghe, 2000, PLDI. Basic-block SIMD packing; the LLVM/GCC SLP basis.</div>
-  </li>
-  <li>
-    <span class="title">A Scalable Approach to Thread-Level Speculation</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/342001.339650">DOI</a> &middot; <a href="https://www.cs.cmu.edu/~zhaia/publications/tlds_isca00.pdf">PDF</a></div>
-    <div class="why-here">Steffan, Colohan, Zhai, Mowry, 2000, ISCA. Coherence-based TLS to speculatively parallelize sequential code.</div>
-  </li>
-  <li>
-    <span class="title">Some Efficient Solutions to the Affine Scheduling Problem, Part I</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1007/BF01407835">DOI</a></div>
-    <div class="why-here">Paul Feautrier, 1992, IJPP. Loop scheduling as parametric linear programming (polyhedral foundation).</div>
-  </li>
-  <li>
-    <span class="title">Auto-Vectorization of Interleaved Data for SIMD</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/1133255.1133997">DOI</a></div>
-    <div class="why-here">Nuzman, Rosen, Zaks, 2006, PLDI. Vectorizing strided/interleaved accesses via pack/unpack.</div>
-  </li>
-  <li>
-    <span class="title">A Practical Automatic Polyhedral Parallelizer and Locality Optimizer (Pluto)</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/1375581.1375595">DOI</a> &middot; <a href="https://www.ece.lsu.edu/jxr/Publications-pdf/pldi08.pdf">PDF</a></div>
-    <div class="why-here">Bondhugula, Hartono, Ramanujam, Sadayappan, 2008, PLDI. Cost-model affine scheduling that tiles for parallelism + locality.</div>
+    <span class="title">The Omega Test: a Fast and Practical Integer Programming Algorithm for Dependence Analysis</span> &mdash; William Pugh
+    <div class="meta"><span class="badge b-pdf">PDF&middot;19pp</span>Supercomputing 1991 &middot; <a href="https://doi.org/10.1145/125826.125848">DOI</a> &middot; <a href="http://www.cs.umd.edu/~pugh/papers/omega.pdf">PDF</a></div>
+    <div class="why-here">The <em>exact</em> test: integer programming over the iteration space when the cheap tests are inconclusive.</div>
   </li>
 </ol>
+
+<h2>From dependences to transformations</h2>
+<p class="grouphdr">Dependences say what is legal; a small algebra of loop transforms turns that freedom into faster code.</p>
+<ol class="papers" start="3" style="counter-reset:item 2;">
+  <li>
+    <span class="title">Advanced Compiler Optimizations for Supercomputers</span> &mdash; Padua, Wolfe
+    <div class="meta"><span class="badge b-web">DOI&middot;18pp</span>CACM 1986 &middot; <a href="https://doi.org/10.1145/7902.7904">DOI</a></div>
+    <div class="why-here">The catalog — interchange, fusion, distribution, skewing, scalar expansion — and the vocabulary the rest of this list assumes. Read it first for the names.</div>
+  </li>
+  <li>
+    <span class="title">A Loop Transformation Theory and an Algorithm to Maximize Parallelism</span> &mdash; Wolf, Lam
+    <div class="meta"><span class="badge b-pdf">PDF&middot;20pp</span>IEEE TPDS 1991 &middot; <a href="https://doi.org/10.1109/71.97902">DOI</a> &middot; <a href="https://suif.stanford.edu/papers/wolf91b.pdf">PDF</a></div>
+    <div class="why-here">The unimodular framework: interchange, skewing, and reversal become integer matrices, and legality is a test on the transformed dependence vectors.</div>
+  </li>
+  <li>
+    <span class="title">A Data Locality Optimizing Algorithm</span> &mdash; Wolf, Lam
+    <div class="meta"><span class="badge b-pdf">PDF&middot;15pp</span>PLDI 1991 &middot; <a href="https://doi.org/10.1145/113445.113449">DOI</a> &middot; <a href="https://suif.stanford.edu/papers/wolf91a.pdf">PDF</a></div>
+    <div class="why-here">Applies the unimodular theory plus tiling to maximize reuse — the paper that tied loop transforms to the memory hierarchy.</div>
+  </li>
+  <li>
+    <span class="title">Compiler Optimizations for Improving Data Locality</span> &mdash; Carr, McKinley, Tseng
+    <div class="meta"><span class="badge b-pdf">PDF&middot;11pp</span>ASPLOS 1994 &middot; <a href="https://doi.org/10.1145/195473.195557">DOI</a> &middot; <a href="https://www.cs.utexas.edu/~mckinley/papers/asplos-1994.pdf">PDF</a></div>
+    <div class="why-here">A cost model that drives loop permutation by estimated cache cost — the pragmatic counterpart to the theory above.</div>
+  </li>
+  <li>
+    <span class="title">Maximizing Loop Parallelism and Improving Data Locality via Loop Fusion and Distribution</span> &mdash; Kennedy, McKinley
+    <div class="meta"><span class="badge b-pdf">PDF&middot;20pp</span>LCPC 1993 &middot; <a href="https://doi.org/10.1007/3-540-57659-2_18">DOI</a> &middot; <a href="https://www.cs.utexas.edu/~mckinley/papers/lcpc-1993.pdf">PDF</a></div>
+    <div class="why-here">The complementary pair: fuse to share data and cut synchronization, distribute to expose parallelism (and why fusing for locality is NP-hard).</div>
+  </li>
+  <li>
+    <span class="title">The Cache Performance and Optimizations of Blocked Algorithms</span> &mdash; Lam, Rothberg, Wolf
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>ASPLOS 1991 &middot; <a href="https://doi.org/10.1145/106972.106981">DOI</a> &middot; <a href="https://suif.stanford.edu/papers/lam-asplos91.pdf">PDF</a></div>
+    <div class="why-here">The definitive study of tiling: why blocking works, and why the best block size depends on cache interference, not just cache size.</div>
+  </li>
+</ol>
+
+<h2>Vectorization</h2>
+<p class="grouphdr">The first big payoff of the dependence + transform machinery: turning loops — and straight-line code — into SIMD.</p>
+<ol class="papers" start="9" style="counter-reset:item 8;">
+  <li>
+    <span class="title">Conversion of Control Dependence to Data Dependence</span> &mdash; Allen, Kennedy, Porterfield, Warren
+    <div class="meta"><span class="badge b-web">DOI&middot;13pp</span>POPL 1983 &middot; <a href="https://doi.org/10.1145/567067.567085">DOI</a></div>
+    <div class="why-here">If-conversion: rewrite control flow as predicated data flow so a vectorizer can see through branches. Read it before the next paper.</div>
+  </li>
+  <li>
+    <span class="title">Automatic Translation of FORTRAN Programs to Vector Form</span> &mdash; Allen, Kennedy
+    <div class="meta"><span class="badge b-pdf">PDF&middot;52pp</span>ACM TOPLAS 1987 &middot; <a href="https://doi.org/10.1145/29873.29875">DOI</a> &middot; <a href="http://rsim.cs.uiuc.edu/arch/qual_papers/compilers/allen87.pdf">PDF</a></div>
+    <div class="why-here">The foundational dependence-based loop vectorization algorithm — distribution over the dependence graph, cycle by cycle.</div>
+  </li>
+  <li>
+    <span class="title">Exploiting Superword Level Parallelism with Multimedia Instruction Sets (SLP)</span> &mdash; Larsen, Amarasinghe
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>PLDI 2000 &middot; <a href="https://doi.org/10.1145/349299.349320">DOI</a> &middot; <a href="https://groups.csail.mit.edu/cag/slp/SLP-PLDI-2000.pdf">PDF</a></div>
+    <div class="why-here">The other route to SIMD: pack isomorphic scalar operations <em>within a basic block</em>. The basis of the LLVM and GCC SLP vectorizers.</div>
+  </li>
+  <li>
+    <span class="title">Auto-Vectorization of Interleaved Data for SIMD</span> &mdash; Nuzman, Rosen, Zaks
+    <div class="meta"><span class="badge b-web">DOI&middot;12pp</span>PLDI 2006 &middot; <a href="https://doi.org/10.1145/1133255.1133997">DOI</a></div>
+    <div class="why-here">Vectorizing strided / interleaved accesses via generated pack-and-unpack code — the work behind GCC's loop vectorizer.</div>
+  </li>
+</ol>
+
+<h2>The polyhedral model</h2>
+<p class="grouphdr">One algebraic framework — iteration spaces as polyhedra, transforms as affine maps — that subsumes the ad-hoc transforms above.</p>
+<ol class="papers" start="13" style="counter-reset:item 12;">
+  <li>
+    <span class="title">Dataflow Analysis of Array and Scalar References</span> &mdash; Paul Feautrier
+    <div class="meta"><span class="badge b-web">DOI&middot;31pp</span>IJPP 1991 &middot; <a href="https://doi.org/10.1007/BF01407931">DOI</a></div>
+    <div class="why-here">Exact array dataflow: for each array read, <em>which</em> write produced the value. The analysis the whole model is built on.</div>
+  </li>
+  <li>
+    <span class="title">Some Efficient Solutions to the Affine Scheduling Problem, Part I</span> &mdash; Paul Feautrier
+    <div class="meta"><span class="badge b-web">DOI&middot;35pp</span>IJPP 1992 &middot; <a href="https://doi.org/10.1007/BF01407835">DOI</a></div>
+    <div class="why-here">Recasts scheduling as parametric linear programming — the mathematical core of polyhedral optimization.</div>
+  </li>
+  <li>
+    <span class="title">A Practical Automatic Polyhedral Parallelizer and Locality Optimizer (Pluto)</span> &mdash; Bondhugula, Hartono, Ramanujam, Sadayappan
+    <div class="meta"><span class="badge b-pdf">PDF&middot;13pp</span>PLDI 2008 &middot; <a href="https://doi.org/10.1145/1375581.1375595">DOI</a> &middot; <a href="https://www.ece.lsu.edu/jxr/Publications-pdf/pldi08.pdf">PDF</a></div>
+    <div class="why-here">The cost model that made the model usable: one affine formulation that tiles for parallelism <em>and</em> locality at once.</div>
+  </li>
+  <li>
+    <span class="title">The Polyhedral Model Is More Widely Applicable Than You Think</span> &mdash; Benabderrahmane, Pouchet, Cohen, Bastoul
+    <div class="meta"><span class="badge b-pdf">PDF&middot;21pp</span>CC 2010 &middot; <a href="https://doi.org/10.1007/978-3-642-11970-5_16">DOI</a> &middot; <a href="https://inria.hal.science/inria-00551087/file/BPCB10-CC.pdf">PDF</a></div>
+    <div class="why-here">Extends the model past static-control loops to data-dependent control flow — the step toward applying it to real code.</div>
+  </li>
+  <li>
+    <span class="title">Polly — Polyhedral Optimization in LLVM</span> &mdash; Grosser, Zheng, Aloor, Simbürger, Größlinger, Pouchet
+    <div class="meta"><span class="badge b-pdf">PDF&middot;6pp</span>IMPACT 2011 &middot; <a href="https://perso.ens-lyon.fr/christophe.alias/impact2011/impact-07.pdf">PDF</a></div>
+    <div class="why-here">The model inside a production compiler: extract polyhedral regions from LLVM IR, optimize, regenerate.</div>
+  </li>
+</ol>
+
+<h2>Auto-parallelization for multiprocessors</h2>
+<p class="grouphdr">Scale from one SIMD unit to many cores: find independent iterations, then whole loop nests, then fall back to run-time checks.</p>
+<ol class="papers" start="18" style="counter-reset:item 17;">
+  <li>
+    <span class="title">Maximizing Multiprocessor Performance with the SUIF Compiler</span> &mdash; Hall, Anderson, Amarasinghe, Murphy, Liao, Bugnion, Lam
+    <div class="meta"><span class="badge b-web">DOI&middot;6pp</span>IEEE Computer 1996 &middot; <a href="https://doi.org/10.1109/2.546613">DOI</a></div>
+    <div class="why-here">The end-to-end system view: how dependence, transforms, and interprocedural analysis combine to auto-parallelize real programs.</div>
+  </li>
+  <li>
+    <span class="title">Maximizing Parallelism and Minimizing Synchronization with Affine Partitions</span> &mdash; Lim, Lam
+    <div class="meta"><span class="badge b-pdf">PDF&middot;31pp</span>Parallel Computing 1998 &middot; <a href="https://doi.org/10.1016/S0167-8191(98)00021-0">DOI</a> &middot; <a href="https://suif.stanford.edu/papers/lim98.pdf">PDF</a></div>
+    <div class="why-here">Loop parallelization as affine partitioning — the generalization of unimodular transforms to whole loop nests across processors.</div>
+  </li>
+  <li>
+    <span class="title">The LRPD Test: Speculative Run-Time Parallelization of Loops with Privatization and Reduction Parallelization</span> &mdash; Rauchwerger, Padua
+    <div class="meta"><span class="badge b-web">DOI&middot;15pp</span>PLDI 1995 &middot; <a href="https://doi.org/10.1145/207110.207148">DOI</a></div>
+    <div class="why-here">When static dependence analysis can't decide, run the loop as a DOALL and check for cross-iteration conflicts at run time, rolling back if it was wrong.</div>
+  </li>
+</ol>
+
+<h2>Task parallelism &amp; speculative execution</h2>
+<p class="grouphdr">When parallelism is irregular or can't be proven static, don't partition loops — spawn tasks and balance them, or speculate and roll back.</p>
+<ol class="papers" start="21" style="counter-reset:item 20;">
+  <li>
+    <span class="title">Scheduling Multithreaded Computations by Work Stealing</span> &mdash; Blumofe, Leiserson
+    <div class="meta"><span class="badge b-pdf">PDF&middot;29pp</span>JACM 1999 &middot; <a href="https://doi.org/10.1145/324133.324234">DOI</a> &middot; <a href="https://www.csd.uwo.ca/~mmorenom/CS433-CS9624/Resources/Scheduling_multithreaded_computations_by_work_stealing.pdf">PDF</a></div>
+    <div class="why-here">The theory first: a randomized work-stealing scheduler with provable time and space bounds. The backbone of every modern task runtime.</div>
+  </li>
+  <li>
+    <span class="title">The Implementation of the Cilk-5 Multithreaded Language</span> &mdash; Frigo, Leiserson, Randall
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>PLDI 1998 &middot; <a href="https://doi.org/10.1145/277650.277725">DOI</a> &middot; <a href="https://pages.cs.wisc.edu/~markhill/restricted/pldi98_cilk.pdf">PDF</a></div>
+    <div class="why-here">The theory made cheap: the work-first principle and the THE protocol make spawning a task cost barely more than a function call.</div>
+  </li>
+  <li>
+    <span class="title">Multiscalar Processors</span> &mdash; Sohi, Breach, Vijaykumar
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>ISCA 1995 &middot; <a href="https://doi.org/10.1145/223982.224451">DOI</a> &middot; <a href="https://ftp.cs.wisc.edu/sohi/papers/1995/isca.multiscalar.pdf">PDF</a></div>
+    <div class="why-here">Speculation in hardware: split a sequential program into tasks and run them in parallel, squashing on a misspeculated dependence. The architectural root of thread-level speculation.</div>
+  </li>
+  <li>
+    <span class="title">A Scalable Approach to Thread-Level Speculation</span> &mdash; Steffan, Colohan, Zhai, Mowry
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>ISCA 2000 &middot; <a href="https://doi.org/10.1145/342001.339650">DOI</a> &middot; <a href="https://www.cs.cmu.edu/~zhaia/publications/tlds_isca00.pdf">PDF</a></div>
+    <div class="why-here">Extends speculative parallelization across a cache-coherent multiprocessor, so software can parallelize loops the compiler can't prove safe.</div>
+  </li>
+</ol>
+
+<div class="why">
+<b>One analysis, four payoffs.</b> Dependence analysis (sections 1–2) is the single
+foundation. The transform algebra (3–8) turns legal reorderings into locality and
+parallelism; vectorization (9–12) spends it on SIMD lanes; the polyhedral model (13–17)
+replaces the ad-hoc transforms with one affine formulation; and multiprocessor
+parallelization (18–24) scales it out — statically when dependence can prove
+independence, and via run-time tests, work-stealing, or speculation when it cannot.
+</div>
+
+<h2>Reference shelf &mdash; books</h2>
+<p class="grouphdr">The standard texts for the area; free copies linked where a legal one exists.</p>
+<ul class="refs">
+  <li><span class="badge b-buy">BUY&middot;790pp</span><b>Optimizing Compilers for Modern Architectures: A Dependence-Based Approach</b> &mdash; Randy Allen, Ken Kennedy (2001) &middot; The definitive text on dependence, loop transforms, vectorization, and parallelization — the book behind most of this list. <a href="https://www.amazon.com/Optimizing-Compilers-Modern-Architectures-Dependence-based/dp/1558602860">page</a></li>
+  <li><span class="badge b-buy">BUY&middot;570pp</span><b>High Performance Compilers for Parallel Computing</b> &mdash; Michael Wolfe (1996) &middot; Dependence testing, restructuring transforms, and parallelization from a compiler lead who built them. <a href="https://www.amazon.com/High-Performance-Compilers-Parallel-Computing/dp/0805327304">page</a></li>
+  <li><span class="badge b-buy">BUY&middot;216pp</span><b>Dependence Analysis</b> &mdash; Utpal Banerjee (1997) &middot; The Banerjee inequalities and the GCD test, formalized (the "Loop Transformations for Restructuring Compilers" series). <a href="https://link.springer.com/book/10.1007/978-1-4757-2589-3">page</a></li>
+</ul>
+
+<h2>Key terms</h2>
+<p class="grouphdr">Vocabulary used across this list.</p>
+<div class="notekey"><b>data dependence</b> &mdash; an ordering constraint between two iterations that touch the same location: flow (write→read), anti (read→write), or output (write→write) &nbsp; <b>distance / direction vector</b> &mdash; how a dependence relates iterations of a loop nest; the signs (`&lt;`, `=`, `&gt;`) tell a transform what it may reorder &nbsp; <b>ZIV / SIV / MIV</b> &mdash; subscripts with zero, single, or multiple index variables; the classification that picks which (cheap-to-exact) dependence test to run &nbsp; <b>GCD test</b> &mdash; a fast necessary condition: a linear subscript equation has an integer solution only if the GCD of its coefficients divides the constant term &nbsp; <b>Banerjee test</b> &mdash; a bounds-based sufficient test for independence, checking whether the dependence equation has a real solution inside the loop limits &nbsp; <b>unimodular transformation</b> &mdash; a loop reordering (interchange, skew, reversal) expressed as an integer matrix with determinant ±1, so it is invertible and iteration-count preserving &nbsp; <b>loop skewing</b> &mdash; adding an outer index to an inner bound to expose wavefront parallelism in a dependent nest &nbsp; <b>tiling / blocking</b> &mdash; splitting a loop into blocks sized to the cache so reused data stays resident &nbsp; <b>DOALL / DOACROSS</b> &mdash; a fully parallel loop (no cross-iteration dependence) versus one that runs in parallel with explicit synchronization on the dependences it does have &nbsp; <b>superword-level parallelism (SLP)</b> &mdash; SIMD found by packing isomorphic scalar operations in straight-line code, rather than across loop iterations &nbsp; <b>polyhedral model</b> &mdash; representing an iteration space as a parametric polyhedron and each transform as an affine map, so scheduling and tiling become linear programming &nbsp; <b>affine schedule</b> &mdash; an affine function assigning a logical time to each statement instance; the object polyhedral optimizers search for &nbsp; <b>privatization / reduction</b> &mdash; giving each iteration its own copy of a variable, or recognizing an associative accumulation, to remove a dependence that would otherwise serialize a loop &nbsp; <b>if-conversion</b> &mdash; replacing control dependence with predicated (data-dependent) execution so branchy code can be vectorized &nbsp; <b>work stealing</b> &mdash; a scheduler in which idle workers steal tasks from busy ones' queues; provably efficient and the basis of Cilk-style runtimes &nbsp; <b>thread-level speculation (TLS)</b> &mdash; executing sequential regions in parallel optimistically and rolling back when a run-time dependence violation is detected</div>
 
 </body>
 </html>

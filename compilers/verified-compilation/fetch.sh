@@ -7,6 +7,12 @@ UA='Mozilla/5.0'
 dl(){ local u="$1" f="$OUT/$2"; if curl -fsSL -A "$UA" -o "$f" "$u" && [ "$(head -c4 "$f")" = "%PDF" ]; then echo "ok   $2"; else echo "FAIL $2"; rm -f "$f"; fi; }
 dl "https://xavierleroy.org/publi/compcert-CACM.pdf" "Formal-Verification-of-a-Realistic-Compiler-Comp.pdf"
 dl "https://cakeml.org/popl14.pdf" "CakeML-A-Verified-Implementation-of-ML.pdf"
+dl "https://xavierleroy.org/publi/verasco-popl2015.pdf" "Verasco-A-Formally-Verified-C-Static-Analyzer.pdf"
 dl "https://users.cs.utah.edu/~regehr/papers/pldi15.pdf" "Provably-Correct-Peephole-Optimizations-with-Ali.pdf"
+dl "https://arxiv.org/pdf/2004.03082" "egg-Fast-and-Extensible-Equality-Saturation.pdf"
+dl "https://web.stanford.edu/class/cs343/resources/superoptimizer.pdf" "Superoptimizer-A-Look-at-the-Smallest-Program.pdf"
+dl "https://theory.stanford.edu/~aiken/publications/papers/asplos06.pdf" "Automatic-Generation-of-Peephole-Superoptimizers.pdf"
 dl "https://theory.stanford.edu/~aiken/publications/papers/asplos13.pdf" "Stochastic-Superoptimization-STOKE.pdf"
+dl "https://arxiv.org/abs/1711.04422" "Souper-A-Synthesizing-Superoptimizer.pdf"
+dl "https://arxiv.org/pdf/1711.04422" "Souper-A-Synthesizing-Superoptimizer.pdf"
 echo "done -> $OUT/"

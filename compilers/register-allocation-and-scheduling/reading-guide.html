@@ -8,86 +8,207 @@
 <body>
 
 <h1>Compilers · Register allocation &amp; instruction scheduling</h1>
-<p class="sub">Graph-coloring, coalescing, linear scan, and the SSA-era allocators; plus global instruction scheduling and software pipelining.</p>
-<p class="tally">In-depth landmark list for this subtopic. <span class="badge b-pdf">PDF</span>open copy available &middot; <span class="badge b-web">DOI</span>publisher link only.</p>
+<p class="sub">The back end's job is to map an unbounded intermediate program onto finite hardware: assign a small set of physical registers to arbitrarily many values, and order the instructions so the pipeline stays busy. These two problems interfere, and this list walks both. The path starts with register allocation as graph coloring, follows the fixes that made coloring practical (coalescing, optimistic spilling), turns to the SSA insight that made the interference graph chordal, detours through PBQP and the fast linear-scan allocators that JITs use, then crosses over to instruction scheduling — local, global, and loop (software) pipelining — and ends on the phase-ordering problem of doing allocation and scheduling together.</p>
+<p class="tally">28 papers &middot; &asymp; <b>384 pp</b> of primary reading. &nbsp; Legend: <span class="badge b-pdf">PDF</span>open copy (see <span class="file">fetch.sh</span>) &middot; <span class="badge b-web">DOI</span>publisher link only</p>
+<div class="why"><b>How to read this list.</b> Read the register-allocation track (sections 1–6) and the scheduling track (sections 7–8) as two mostly independent strands, then close with section 9, which is about their interaction. Within each strand the order is pedagogical: the foundational model first, then the refinements and the theory that explains why they work. If you only read three papers, read Chaitin 1982 (the model), Hack 2006 (the SSA turn), and Fisher 1981 (global scheduling).</div>
 
-<ol class="papers">
+<h2>The graph-coloring foundation</h2>
+<p class="grouphdr">Register allocation began as graph coloring — start with the model everything else refines.</p>
+<ol class="papers" start="1">
   <li>
-    <span class="title">Register Allocation via Coloring</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1016/0096-0551(81">DOI</a></div>
-    <div class="why-here">Chaitin, Auslander, Chandra, Cocke, Hopkins, Markstein, 1981, Computer Languages. Cast register assignment as coloring the interference graph. 90048-5)</div>
+    <span class="title">Register Allocation via Coloring</span> &mdash; Chaitin, Auslander, Chandra, Cocke, Hopkins, Markstein
+    <div class="meta"><span class="badge b-web">DOI&middot;11pp</span>Computer Languages 1981 &middot; <a href="https://doi.org/10.1016/0096-0551(81)90048-5">DOI</a></div>
+    <div class="why-here">Cast register assignment as coloring the interference graph — the idea the whole field is built on.</div>
   </li>
   <li>
-    <span class="title">Register Allocation &amp; Spilling via Graph Coloring</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/800230.806984">DOI</a> &middot; <a href="https://web.eecs.umich.edu/~mahlke/courses/583f12/reading/chaitin82.pdf">PDF</a></div>
-    <div class="why-here">Gregory J. Chaitin, 1982, SIGPLAN Compiler Construction. The canonical Chaitin allocator: spill-cost model + simplify/spill.</div>
+    <span class="title">Register Allocation &amp; Spilling via Graph Coloring</span> &mdash; Gregory J. Chaitin
+    <div class="meta"><span class="badge b-pdf">PDF&middot;8pp</span>SIGPLAN Compiler Construction 1982 &middot; <a href="https://doi.org/10.1145/800230.806984">DOI</a> &middot; <a href="https://web.eecs.umich.edu/~mahlke/courses/583f12/reading/chaitin82.pdf">PDF</a></div>
+    <div class="why-here">The canonical Chaitin allocator: a spill-cost model plus the simplify/spill loop. Read this one closely; it is the reference every later paper argues with.</div>
   </li>
   <li>
-    <span class="title">Improvements to Graph Coloring Register Allocation</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/177492.177575">DOI</a></div>
-    <div class="why-here">Briggs, Cooper, Torczon, 1994, ACM TOPLAS. Optimistic coloring + rematerialization (Chaitin-Briggs).</div>
-  </li>
-  <li>
-    <span class="title">Iterated Register Coalescing</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/229542.229546">DOI</a> &middot; <a href="https://www.cse.iitm.ac.in/~krishna/cs6013/george.pdf">PDF</a></div>
-    <div class="why-here">George, Appel, 1996, ACM TOPLAS. Conservative coalescing interleaved with simplification.</div>
-  </li>
-  <li>
-    <span class="title">Linear Scan Register Allocation</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/330249.330250">DOI</a> &middot; <a href="http://web.cs.ucla.edu/~palsberg/course/cs132/linearscan.pdf">PDF</a></div>
-    <div class="why-here">Poletto, Sarkar, 1999, ACM TOPLAS. The fast non-coloring allocator over live intervals; ideal for JITs.</div>
-  </li>
-  <li>
-    <span class="title">Trace Scheduling</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1109/TC.1981.1675827">DOI</a> &middot; <a href="https://people.eecs.berkeley.edu/~kubitron/courses/cs252-S12/handouts/papers/TraceScheduling.pdf">PDF</a></div>
-    <div class="why-here">Joseph A. Fisher, 1981, IEEE TC. The founding paper of global instruction scheduling across basic blocks.</div>
-  </li>
-  <li>
-    <span class="title">Some Scheduling Techniques and an Easily Schedulable Horizontal Architecture</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/1014192.802449">DOI</a></div>
-    <div class="why-here">Rau, Glaeser, 1981, MICRO-14. Origin of modulo scheduling and rotating registers.</div>
-  </li>
-  <li>
-    <span class="title">Software Pipelining: An Effective Scheduling Technique for VLIW Machines</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/53990.54022">DOI</a> &middot; <a href="https://suif.stanford.edu/papers/lam-sp.pdf">PDF</a></div>
-    <div class="why-here">Monica Lam, 1988, PLDI. Modulo scheduling with hierarchical reduction.</div>
-  </li>
-  <li>
-    <span class="title">Optimal Spilling for CISC Machines with Few Registers</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/381694.378854">DOI</a></div>
-    <div class="why-here">Appel, George, 2001, PLDI. ILP-optimal live-range splitting + spill placement.</div>
-  </li>
-  <li>
-    <span class="title">Register Allocation via Coloring of Chordal Graphs</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1007/11575467_21">DOI</a> &middot; <a href="http://www.cs.ucla.edu/~palsberg/paper/aplas05.pdf">PDF</a></div>
-    <div class="why-here">Pereira, Palsberg, 2005, APLAS. SSA interference graphs are chordal → optimal polynomial coloring.</div>
-  </li>
-  <li>
-    <span class="title">Register Allocation for Programs in SSA Form</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1007/11688839_20">DOI</a> &middot; <a href="https://compilers.cs.uni-saarland.de/papers/ssara.pdf">PDF</a></div>
-    <div class="why-here">Hack, Grund, Goos, 2006, CC. Chordality → separate spilling, optimal coloring, coalescing phases.</div>
-  </li>
-  <li>
-    <span class="title">Register Allocation by Puzzle Solving</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/1375581.1375609">DOI</a> &middot; <a href="http://www.cs.ucla.edu/~palsberg/paper/PereiraPalsberg08.pdf">PDF</a></div>
-    <div class="why-here">Pereira, Palsberg, 2008, PLDI. Handles register aliasing (e.g. x86) as tractable puzzle-solving.</div>
-  </li>
-  <li>
-    <span class="title">Revisiting Out-of-SSA Translation for Correctness, Code Quality and Efficiency</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1109/CGO.2009.19">DOI</a></div>
-    <div class="why-here">Boissinot, Darte, Rastello, Dupont de Dinechin, Guillon, 2009, CGO. Correct/efficient phi-elimination + coalescing for SSA-based allocation.</div>
-  </li>
-  <li>
-    <span class="title">Linear Scan Register Allocation on SSA Form</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/1772954.1772979">DOI</a></div>
-    <div class="why-here">Wimmer, Franz, 2010, CGO. Linear scan + SSA (HotSpot client allocator).</div>
-  </li>
-  <li>
-    <span class="title">Trace-based Register Allocation in a JIT Compiler</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/2972206.2972211">DOI</a></div>
-    <div class="why-here">Eisl, Grimmer, Simon, Würthinger, Mössenböck, 2016, PPPJ. Per-trace strategies trading compile time vs code quality.</div>
+    <span class="title">Register Allocation via Hierarchical Graph Coloring</span> &mdash; Callahan, Koblenz
+    <div class="meta"><span class="badge b-web">DOI&middot;12pp</span>PLDI 1991 &middot; <a href="https://doi.org/10.1145/113445.113462">DOI</a></div>
+    <div class="why-here">Colors a tree of tiles following program structure, so spill decisions land where the value is actually cold — an early move toward live-range splitting.</div>
   </li>
 </ol>
+
+<h2>Coloring, refined: coalescing and optimistic spilling</h2>
+<p class="grouphdr">A decade of fixes turned Chaitin's model into a production-quality allocator.</p>
+<ol class="papers" start="4" style="counter-reset:item 3;">
+  <li>
+    <span class="title">Improvements to Graph Coloring Register Allocation</span> &mdash; Briggs, Cooper, Torczon
+    <div class="meta"><span class="badge b-web">DOI&middot;28pp</span>ACM TOPLAS 1994 &middot; <a href="https://doi.org/10.1145/177492.177575">DOI</a></div>
+    <div class="why-here">Optimistic coloring (push a spill candidate and try to color it anyway) plus rematerialization — the "Chaitin-Briggs" allocator that became the standard.</div>
+  </li>
+  <li>
+    <span class="title">Iterated Register Coalescing</span> &mdash; George, Appel
+    <div class="meta"><span class="badge b-pdf">PDF&middot;25pp</span>ACM TOPLAS 1996 &middot; <a href="https://doi.org/10.1145/229542.229546">DOI</a> &middot; <a href="https://www.cse.iitm.ac.in/~krishna/cs6013/george.pdf">PDF</a></div>
+    <div class="why-here">Interleaves conservative coalescing with simplification so copies are removed without introducing spills — the coalescing method most compilers still describe.</div>
+  </li>
+  <li>
+    <span class="title">Optimistic Register Coalescing</span> &mdash; Park, Moon
+    <div class="meta"><span class="badge b-web">DOI&middot;9pp</span>PACT 1998 &middot; <a href="https://doi.org/10.1109/PACT.1998.727246">DOI</a></div>
+    <div class="why-here">Coalesce aggressively, then give back the moves that cause spills — recovering most of aggressive coalescing's wins while keeping iterated coalescing's safety.</div>
+  </li>
+</ol>
+
+<h2>Spilling as its own problem</h2>
+<p class="grouphdr">Once coloring worked, where and how to spill became the real quality bottleneck.</p>
+<ol class="papers" start="7" style="counter-reset:item 6;">
+  <li>
+    <span class="title">Spill Code Minimization via Interference Region Spilling</span> &mdash; Bergner, Dahl, Engebretsen, O'Keefe
+    <div class="meta"><span class="badge b-web">DOI&middot;9pp</span>PLDI 1997 &middot; <a href="https://doi.org/10.1145/258915.258941">DOI</a></div>
+    <div class="why-here">Spills only over the region where a live range actually interferes, rather than everywhere — much less spill code for the same coloring.</div>
+  </li>
+  <li>
+    <span class="title">Optimal Spilling for CISC Machines with Few Registers</span> &mdash; Appel, George
+    <div class="meta"><span class="badge b-pdf">PDF&middot;26pp</span>PLDI 2001 &middot; <a href="https://doi.org/10.1145/381694.378854">DOI</a> &middot; <a href="https://www.cs.princeton.edu/~appel/papers/spill.pdf">PDF</a></div>
+    <div class="why-here">Splits the problem in two — an ILP finds optimal spill/live-range-split placement, then coloring handles the rest — and shows how much Chaitin-style spilling leaves on the table.</div>
+  </li>
+</ol>
+
+<h2>The SSA turn: split allocation from coloring</h2>
+<p class="grouphdr">Under SSA the interference graph is chordal, so spilling, coloring, and coalescing decouple into separately-solvable phases.</p>
+<ol class="papers" start="9" style="counter-reset:item 8;">
+  <li>
+    <span class="title">Register Allocation via Coloring of Chordal Graphs</span> &mdash; Pereira, Palsberg
+    <div class="meta"><span class="badge b-pdf">PDF&middot;15pp</span>APLAS 2005 &middot; <a href="https://doi.org/10.1007/11575467_21">DOI</a> &middot; <a href="http://www.cs.ucla.edu/~palsberg/paper/aplas05.pdf">PDF</a></div>
+    <div class="why-here">The accessible statement of the key fact: SSA interference graphs are chordal and therefore colorable in polynomial time.</div>
+  </li>
+  <li>
+    <span class="title">Register Allocation for Programs in SSA Form</span> &mdash; Hack, Grund, Goos
+    <div class="meta"><span class="badge b-pdf">PDF&middot;16pp</span>CC 2006 &middot; <a href="https://doi.org/10.1007/11688839_20">DOI</a> &middot; <a href="https://compilers.cs.uni-saarland.de/papers/ssara.pdf">PDF</a></div>
+    <div class="why-here">Turns chordality into a full allocator: because the register pressure equals the max clique, spilling can be decided first, then coloring never fails. The blueprint for modern SSA-based allocation.</div>
+  </li>
+  <li>
+    <span class="title">On the Complexity of Register Coalescing</span> &mdash; Bouchez, Darte, Rastello
+    <div class="meta"><span class="badge b-web">DOI&middot;13pp</span>CGO 2007 &middot; <a href="https://doi.org/10.1109/CGO.2007.26">DOI</a></div>
+    <div class="why-here">The theory behind the SSA turn: coloring is easy under SSA, but coalescing (removing the copies out-of-SSA introduces) is the part that stays NP-complete. Read it to know which phase is actually hard.</div>
+  </li>
+  <li>
+    <span class="title">Register Allocation by Puzzle Solving</span> &mdash; Pereira, Palsberg
+    <div class="meta"><span class="badge b-pdf">PDF&middot;18pp</span>PLDI 2008 &middot; <a href="https://doi.org/10.1145/1375581.1375609">DOI</a> &middot; <a href="http://www.cs.ucla.edu/~palsberg/paper/PereiraPalsberg08.pdf">PDF</a></div>
+    <div class="why-here">Extends the SSA approach to real register files with aliasing (x86 sub-registers) by recasting assignment as a family of tractable puzzles.</div>
+  </li>
+  <li>
+    <span class="title">Register Spilling and Live-Range Splitting for SSA-Form Programs</span> &mdash; Braun, Hack
+    <div class="meta"><span class="badge b-pdf">PDF&middot;15pp</span>CC 2009 &middot; <a href="https://doi.org/10.1007/978-3-642-00722-4_13">DOI</a> &middot; <a href="https://pp.ipd.kit.edu/uploads/publikationen/braun09cc.pdf">PDF</a></div>
+    <div class="why-here">The spilling phase the SSA allocator needs: a fast, Belady-style heuristic that decides what to keep in registers before coloring runs.</div>
+  </li>
+  <li>
+    <span class="title">Revisiting Out-of-SSA Translation for Correctness, Code Quality and Efficiency</span> &mdash; Boissinot, Darte, Rastello, Dupont de Dinechin, Guillon
+    <div class="meta"><span class="badge b-web">DOI&middot;12pp</span>CGO 2009 &middot; <a href="https://doi.org/10.1109/CGO.2009.19">DOI</a></div>
+    <div class="why-here">How to leave SSA form correctly and cheaply — phi-elimination plus coalescing — the step that makes SSA-based allocation deployable.</div>
+  </li>
+</ol>
+
+<h2>Allocation as numerical optimization: PBQP</h2>
+<p class="grouphdr">For irregular, aliased register files, recast the whole assignment as one combinatorial optimization.</p>
+<ol class="papers" start="15" style="counter-reset:item 14;">
+  <li>
+    <span class="title">Register Allocation for Irregular Architectures</span> &mdash; Scholz, Eckstein
+    <div class="meta"><span class="badge b-web">DOI&middot;10pp</span>LCTES 2002 &middot; <a href="https://doi.org/10.1145/513829.513854">DOI</a></div>
+    <div class="why-here">Models allocation, coalescing, and awkward register constraints together as a Partitioned Boolean Quadratic Problem (PBQP) — a good fit for embedded and DSP targets.</div>
+  </li>
+  <li>
+    <span class="title">Nearly Optimal Register Allocation with PBQP</span> &mdash; Hames, Scholz
+    <div class="meta"><span class="badge b-web">DOI&middot;16pp</span>JMLC 2006 &middot; <a href="https://doi.org/10.1007/11860990_21">DOI</a></div>
+    <div class="why-here">A practical PBQP solver that gets close to optimal in reasonable time — the version that later shipped as an LLVM allocator.</div>
+  </li>
+</ol>
+
+<h2>Fast allocation for JITs</h2>
+<p class="grouphdr">When compile time is the budget, drop coloring for a single linear pass over live ranges.</p>
+<ol class="papers" start="17" style="counter-reset:item 16;">
+  <li>
+    <span class="title">Linear Scan Register Allocation</span> &mdash; Poletto, Sarkar
+    <div class="meta"><span class="badge b-pdf">PDF&middot;19pp</span>ACM TOPLAS 1999 &middot; <a href="https://doi.org/10.1145/330249.330250">DOI</a> &middot; <a href="http://web.cs.ucla.edu/~palsberg/course/cs132/linearscan.pdf">PDF</a></div>
+    <div class="why-here">The fast, non-coloring allocator over live intervals — near-linear time, the default for JITs.</div>
+  </li>
+  <li>
+    <span class="title">Linear Scan Register Allocation on SSA Form</span> &mdash; Wimmer, Franz
+    <div class="meta"><span class="badge b-pdf">PDF&middot;10pp</span>CGO 2010 &middot; <a href="https://doi.org/10.1145/1772954.1772979">DOI</a> &middot; <a href="http://www.christianwimmer.at/Publications/Wimmer10a/Wimmer10a.pdf">PDF</a></div>
+    <div class="why-here">Linear scan rebuilt on SSA, with lifetime holes and second-chance splitting — the HotSpot client and Graal allocator.</div>
+  </li>
+  <li>
+    <span class="title">Trace-based Register Allocation in a JIT Compiler</span> &mdash; Eisl, Grimmer, Simon, Würthinger, Mössenböck
+    <div class="meta"><span class="badge b-pdf">PDF&middot;11pp</span>PPPJ 2016 &middot; <a href="https://doi.org/10.1145/2972206.2972211">DOI</a> &middot; <a href="http://ssw.jku.at/General/Staff/Eisl/papers/2016_PPPJ_TraceRA-preprint.pdf">PDF</a></div>
+    <div class="why-here">Allocates one trace at a time, choosing a cheap or a careful strategy per trace — a tunable compile-time-vs-code-quality knob.</div>
+  </li>
+</ol>
+
+<h2>Instruction scheduling</h2>
+<p class="grouphdr">The other half of the back end: order instructions to hide latency. Local first, then across blocks.</p>
+<ol class="papers" start="20" style="counter-reset:item 19;">
+  <li>
+    <span class="title">Efficient Instruction Scheduling for a Pipelined Architecture</span> &mdash; Gibbons, Muchnick
+    <div class="meta"><span class="badge b-web">DOI&middot;6pp</span>PLDI 1986 &middot; <a href="https://doi.org/10.1145/12276.13312">DOI</a></div>
+    <div class="why-here">The classic list-scheduling heuristic for a single basic block — the baseline every scheduler starts from.</div>
+  </li>
+  <li>
+    <span class="title">Trace Scheduling: A Technique for Global Microcode Compaction</span> &mdash; Joseph A. Fisher
+    <div class="meta"><span class="badge b-pdf">PDF&middot;13pp</span>IEEE TC 1981 &middot; <a href="https://doi.org/10.1109/TC.1981.1675827">DOI</a> &middot; <a href="https://people.eecs.berkeley.edu/~kubitron/courses/cs252-S12/handouts/papers/TraceScheduling.pdf">PDF</a></div>
+    <div class="why-here">The founding paper of global scheduling: pick a likely path, schedule it as one big block, and fix up the off-path edges with compensation code.</div>
+  </li>
+  <li>
+    <span class="title">Global Instruction Scheduling for Superscalar Machines</span> &mdash; Bernstein, Rodeh
+    <div class="meta"><span class="badge b-web">DOI&middot;15pp</span>PLDI 1991 &middot; <a href="https://doi.org/10.1145/113445.113466">DOI</a></div>
+    <div class="why-here">Moves instructions across basic-block boundaries guided by the control/data dependence structure — global scheduling made practical for superscalars.</div>
+  </li>
+</ol>
+
+<h2>Software pipelining &amp; modulo scheduling</h2>
+<p class="grouphdr">Schedule loops so successive iterations overlap — the highest-value scheduling problem.</p>
+<ol class="papers" start="23" style="counter-reset:item 22;">
+  <li>
+    <span class="title">Some Scheduling Techniques and an Easily Schedulable Horizontal Architecture</span> &mdash; Rau, Glaeser
+    <div class="meta"><span class="badge b-web">DOI&middot;16pp</span>MICRO-14 1981 &middot; <a href="https://doi.org/10.1145/1014192.802449">DOI</a></div>
+    <div class="why-here">The origin of modulo scheduling and rotating registers — overlap iterations at a fixed initiation interval.</div>
+  </li>
+  <li>
+    <span class="title">Software Pipelining: An Effective Scheduling Technique for VLIW Machines</span> &mdash; Monica Lam
+    <div class="meta"><span class="badge b-pdf">PDF&middot;11pp</span>PLDI 1988 &middot; <a href="https://doi.org/10.1145/53990.54022">DOI</a> &middot; <a href="https://suif.stanford.edu/papers/lam-sp.pdf">PDF</a></div>
+    <div class="why-here">Modulo scheduling with hierarchical reduction for loops with control flow — the paper that made software pipelining a compiler technique.</div>
+  </li>
+  <li>
+    <span class="title">Iterative Modulo Scheduling</span> &mdash; B. Ramakrishna Rau
+    <div class="meta"><span class="badge b-web">DOI&middot;12pp</span>MICRO-27 1994 &middot; <a href="https://doi.org/10.1145/192724.192731">DOI</a></div>
+    <div class="why-here">The robust, widely-implemented algorithm: search for the smallest feasible initiation interval, backtracking when a schedule can't be found.</div>
+  </li>
+  <li>
+    <span class="title">Swing Modulo Scheduling: A Lifetime-Sensitive Approach</span> &mdash; Llosa, González, Ayguadé, Valero
+    <div class="meta"><span class="badge b-web">DOI&middot;7pp</span>PACT 1996 &middot; <a href="https://doi.org/10.1109/PACT.1996.554030">DOI</a></div>
+    <div class="why-here">A modulo scheduler that also minimizes register pressure — the variant later adopted in GCC.</div>
+  </li>
+</ol>
+
+<h2>The phase-ordering problem: allocation vs scheduling</h2>
+<p class="grouphdr">Allocation and scheduling fight over the same resource; who goes first, or can they be done together?</p>
+<ol class="papers" start="27" style="counter-reset:item 26;">
+  <li>
+    <span class="title">Code Scheduling and Register Allocation in Large Basic Blocks</span> &mdash; Goodman, Hsu
+    <div class="meta"><span class="badge b-web">DOI&middot;11pp</span>ICS 1988 &middot; <a href="https://doi.org/10.1145/55364.55407">DOI</a></div>
+    <div class="why-here">Names the tension — scheduling for latency raises register pressure — and switches strategy based on how many registers are free.</div>
+  </li>
+  <li>
+    <span class="title">Register Allocation with Instruction Scheduling: A New Approach</span> &mdash; Shlomit S. Pinter
+    <div class="meta"><span class="badge b-web">DOI&middot;10pp</span>PLDI 1993 &middot; <a href="https://doi.org/10.1145/155090.155114">DOI</a></div>
+    <div class="why-here">Builds a combined "parallelizable interference graph" so allocation preserves scheduling freedom — a principled attempt to solve both at once.</div>
+  </li>
+</ol>
+
+<h2>Reference shelf &mdash; books</h2>
+<p class="grouphdr">The standard texts for the area; free copies linked where a legal one exists.</p>
+<ul class="refs">
+  <li><span class="badge b-book">BOOK&middot;412pp</span><b>SSA-based Compiler Design</b> &mdash; Rastello, Bouchez Tichadou (eds.) (2022) &middot; The unified modern treatment of SSA — including the chapters on SSA-based register allocation, spilling, and out-of-SSA that sections 9–14 draw on. <a href="https://pfalcon.github.io/ssabook/latest/book-full.pdf">PDF</a></li>
+  <li><span class="badge b-buy">BUY&middot;824pp</span><b>Engineering a Compiler</b> &mdash; Cooper, Torczon (2nd ed. 2011) &middot; The clearest textbook treatment of graph-coloring allocation and list scheduling, from two of the Chaitin-Briggs authors. <a href="https://www.elsevier.com/books/engineering-a-compiler/cooper/978-0-12-088478-0">page</a></li>
+  <li><span class="badge b-buy">BUY&middot;544pp</span><b>Modern Compiler Implementation in ML</b> &mdash; Andrew W. Appel (1998) &middot; Builds an iterated-register-coalescing allocator step by step; the best hands-on path into George-Appel. <a href="https://www.cs.princeton.edu/~appel/modern/ml/">page</a></li>
+  <li><span class="badge b-buy">BUY&middot;856pp</span><b>Advanced Compiler Design and Implementation</b> &mdash; Steven S. Muchnick (1997) &middot; Encyclopedic reference on both instruction scheduling and register allocation, with the algorithms spelled out. <a href="https://www.elsevier.com/books/advanced-compiler-design-and-implementation/muchnick/978-1-55860-320-2">page</a></li>
+</ul>
+
+<h2>Key terms</h2>
+<p class="grouphdr">Vocabulary used across this list.</p>
+<div class="notekey"><b>interference graph</b> &mdash; a graph whose nodes are values and whose edges join values live at the same time; register assignment is a coloring of it &nbsp; <b>coalescing</b> &mdash; merging the two ends of a copy into one value so the copy can be deleted, at the cost of a harder-to-color graph &nbsp; <b>spilling</b> &mdash; when values outnumber registers, storing some to memory and reloading them at their uses &nbsp; <b>rematerialization</b> &mdash; recomputing a cheap value at its use instead of spilling and reloading it &nbsp; <b>live range / live interval</b> &mdash; the span of a program over which a value must be kept available; a <em>live interval</em> is its linearized approximation used by linear scan &nbsp; <b>live-range splitting</b> &mdash; breaking one live range into pieces so only the hot part occupies a register &nbsp; <b>chordal graph</b> &mdash; a graph in which every cycle of four or more nodes has a chord; SSA interference graphs are chordal, hence optimally colorable in polynomial time &nbsp; <b>SSA / phi / out-of-SSA</b> &mdash; static single assignment gives each value one definition; phi-functions merge values at joins; out-of-SSA translation removes them before code generation &nbsp; <b>register aliasing</b> &mdash; one physical register overlapping another (e.g. x86 AL/AX/EAX), which breaks plain graph coloring &nbsp; <b>PBQP</b> &mdash; Partitioned Boolean Quadratic Problem; a cost-minimization formulation that captures allocation, coalescing, and aliasing together &nbsp; <b>linear scan</b> &mdash; a near-linear-time allocator that walks live intervals in order instead of coloring a graph &nbsp; <b>list scheduling</b> &mdash; the standard local scheduler: repeatedly issue a ready instruction chosen by a priority heuristic &nbsp; <b>trace / global scheduling</b> &mdash; scheduling instructions across basic-block boundaries along a likely path, with compensation code on the off-path edges &nbsp; <b>modulo scheduling</b> &mdash; software pipelining that overlaps loop iterations at a fixed <em>initiation interval</em> (II), the number of cycles between successive iteration starts &nbsp; <b>phase ordering</b> &mdash; the problem that allocation and scheduling constrain each other, so the order (or integration) in which they run affects the result</div>
 
 </body>
 </html>

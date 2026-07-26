@@ -8,71 +8,207 @@
 <body>
 
 <h1>Compilers · Intermediate representations &amp; dataflow</h1>
-<p class="sub">IR design and the dataflow-analysis frameworks every optimizer rests on — from flow-graph reducibility and interval/structural analysis through SSA and the sea-of-nodes graph. (Muchnick's *Advanced Compiler Design* is the companion text.)</p>
-<p class="tally">In-depth landmark list for this subtopic. <span class="badge b-pdf">PDF</span>open copy available &middot; <span class="badge b-web">DOI</span>publisher link only.</p>
+<p class="sub">The IR you choose decides which analyses are easy and which are impossible; the dataflow framework decides what those analyses can prove. This list reads the two together, as a single arc: start with the <em>theory</em> of dataflow (a monotone function on a lattice, solved to a fixed point), then the <em>shape</em> of control flow that makes solving cheap (reducibility, intervals, dominance), then the <em>representation</em> that made sparse analysis routine (SSA — building it, analyzing over it, and leaving it), and finally the <em>graph IRs</em> — dependence graphs, sea-of-nodes, gated and value-dependence forms, and today's reusable infrastructure — that fold control and data into one structure. Muchnick's <em>Advanced Compiler Design</em> is the companion text throughout.</p>
+<p class="tally">28 papers &middot; &asymp; <b>481 pp</b> of primary reading. &nbsp; Legend: <span class="badge b-pdf">PDF</span>open copy (see <span class="file">fetch.sh</span>) &middot; <span class="badge b-web">DOI</span>publisher link only</p>
+<div class="why"><b>How to read this list.</b> Representation and analysis are two sides of one coin. Read the foundations (Kildall → Kam–Ullman → Cousot) to see what "dataflow" <em>is</em>, then treat everything after as a search for representations that make those fixed-point computations cheaper and sharper — dominance for placing φ, SSA for sparsity, graph IRs for making dependences explicit. If you only read four: Kildall, Cytron et al., Ferrante–Ottenstein–Warren, and Click–Paleczny.</div>
 
-<ol class="papers">
+<h2>Dataflow foundations — the fixed-point framework</h2>
+<p class="grouphdr">Start here: what a dataflow analysis IS — a monotone transfer function on a lattice, iterated to a fixed point — and how to solve it.</p>
+<ol class="papers" start="1">
   <li>
-    <span class="title">A Unified Approach to Global Program Optimization</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/512927.512945">DOI</a> &middot; <a href="https://calhoun.nps.edu/server/api/core/bitstreams/54e90734-ceb5-4f4f-94f6-83e51cd2da73/content">PDF</a></div>
-    <div class="why-here">Gary A. Kildall, 1973, POPL. Founded lattice-theoretic dataflow: the first unified fixed-point framework.</div>
+    <span class="title">A Unified Approach to Global Program Optimization</span> &mdash; Gary Kildall
+    <div class="meta"><span class="badge b-pdf">PDF&middot;14pp</span>POPL 1973 &middot; <a href="https://doi.org/10.1145/512927.512945">DOI</a> &middot; <a href="https://calhoun.nps.edu/server/api/core/bitstreams/54e90734-ceb5-4f4f-94f6-83e51cd2da73/content">PDF</a></div>
+    <div class="why-here">Founded lattice-theoretic dataflow: the first unified fixed-point framework, of which constant folding, CSE, and liveness are all instances.</div>
   </li>
   <li>
-    <span class="title">Characterizations of Reducible Flow Graphs</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/321832.321835">DOI</a></div>
-    <div class="why-here">Hecht, Ullman, 1974, JACM. Equivalent characterizations of reducibility (T1/T2, dominator back edges).</div>
+    <span class="title">Global Data Flow Analysis and Iterative Algorithms</span> &mdash; Kam, Ullman
+    <div class="meta"><span class="badge b-web">DOI&middot;14pp</span>JACM 1976 &middot; <a href="https://doi.org/10.1145/321921.321938">DOI</a></div>
+    <div class="why-here">The iterative (worklist) solver analyzed: when round-robin iteration converges, and how fast, in terms of the graph's loop-connectedness.</div>
   </li>
   <li>
-    <span class="title">Testing Flow Graph Reducibility</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1016/S0022-0000(74">DOI</a></div>
-    <div class="why-here">Robert E. Tarjan, 1974, JCSS. Efficient DFS + union-find reducibility test. 80049-8)</div>
+    <span class="title">Abstract Interpretation: A Unified Lattice Model</span> &mdash; Cousot, Cousot
+    <div class="meta"><span class="badge b-pdf">PDF&middot;15pp</span>POPL 1977 &middot; <a href="https://doi.org/10.1145/512950.512973">DOI</a> &middot; <a href="https://www.di.ens.fr/~cousot/COUSOTpapers/publications.www/CousotCousot-POPL-77-ACM-p238--252-1977.pdf">PDF</a></div>
+    <div class="why-here">The theory underneath dataflow: analyses are sound abstractions of a concrete semantics, with widening for termination. Explains <em>why</em> the lattice framework is correct.</div>
   </li>
   <li>
-    <span class="title">A Program Data Flow Analysis Procedure</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/360018.360025">DOI</a> &middot; <a href="https://amturing.acm.org/p137-allen.pdf">PDF</a></div>
-    <div class="why-here">Allen, Cocke, 1976, CACM. Introduced interval analysis (the classic elimination approach).</div>
-  </li>
-  <li>
-    <span class="title">A Fast and Usually Linear Algorithm for Global Flow Analysis</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/321921.321939">DOI</a></div>
-    <div class="why-here">Graham, Wegman, 1976, JACM. Near-linear elimination for reducible graphs.</div>
-  </li>
-  <li>
-    <span class="title">Monotone Data Flow Analysis Frameworks</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1007/BF00290339">DOI</a></div>
-    <div class="why-here">Kam, Ullman, 1977, Acta Informatica. Generalized Kildall to monotone functions; MFP vs MOP.</div>
-  </li>
-  <li>
-    <span class="title">Structural Analysis: A New Approach to Flow Analysis</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1016/0096-0551(80">DOI</a></div>
-    <div class="why-here">Micha Sharir, 1980, Computer Languages. Syntax-directed elimination over control-flow constructs. 90007-7)</div>
-  </li>
-  <li>
-    <span class="title">The Program Dependence Graph and Its Use in Optimization</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/24039.24041">DOI</a> &middot; <a href="https://web.eecs.umich.edu/~mahlke/courses/583f23/reading/ferrante_toplas_87.pdf">PDF</a></div>
-    <div class="why-here">Ferrante, Ottenstein, Warren, 1987, ACM TOPLAS. Made data and control dependences explicit; basis for slicing/vectorization.</div>
-  </li>
-  <li>
-    <span class="title">Global Value Numbers and Redundant Computations</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/73560.73562">DOI</a></div>
-    <div class="why-here">Rosen, Wegman, Zadeck, 1988, POPL. SSA + value numbering for value-equivalent redundancy.</div>
-  </li>
-  <li>
-    <span class="title">The Program Dependence Web</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/93542.93578">DOI</a></div>
-    <div class="why-here">Ballance, Maccabe, Ottenstein, 1990, PLDI. Gated SSA + a control/data/demand-driven IR.</div>
-  </li>
-  <li>
-    <span class="title">Efficiently Computing SSA Form and the Control Dependence Graph</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/115372.115320">DOI</a></div>
-    <div class="why-here">Cytron, Ferrante, Rosen, Wegman, Zadeck, 1991, ACM TOPLAS. The dominance-frontier SSA construction; made SSA the standard IR.</div>
-  </li>
-  <li>
-    <span class="title">A Simple Graph-Based Intermediate Representation</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/202529.202534">DOI</a></div>
-    <div class="why-here">Click, Paleczny, 1995, IR'95. The sea-of-nodes IR behind HotSpot C2, V8 TurboFan, and other JITs.</div>
+    <span class="title">Precise Interprocedural Dataflow Analysis via Graph Reachability (IFDS)</span> &mdash; Horwitz, Reps, Sagiv
+    <div class="meta"><span class="badge b-pdf">PDF&middot;14pp</span>POPL 1995 &middot; <a href="https://doi.org/10.1145/199448.199462">DOI</a> &middot; <a href="https://research.cs.wisc.edu/wpis/papers/popl95.pdf">PDF</a></div>
+    <div class="why-here">Recasts a large class of dataflow problems as graph reachability, solved precisely across procedure boundaries — the modern solver behind much static analysis.</div>
   </li>
 </ol>
+
+<h2>Control-flow structure — reducibility, intervals, elimination</h2>
+<p class="grouphdr">Before you solve, understand the graph's shape: reducible flow graphs admit fast elimination methods and clean loop structure.</p>
+<ol class="papers" start="5" style="counter-reset:item 4;">
+  <li>
+    <span class="title">A Program Data Flow Analysis Procedure</span> &mdash; Allen, Cocke
+    <div class="meta"><span class="badge b-pdf">PDF&middot;11pp</span>CACM 1976 &middot; <a href="https://doi.org/10.1145/360018.360025">DOI</a> &middot; <a href="https://amturing.acm.org/p137-allen.pdf">PDF</a></div>
+    <div class="why-here">Introduced interval analysis — the classic elimination approach that exploits nested loop structure instead of blindly iterating.</div>
+  </li>
+  <li>
+    <span class="title">Characterizations of Reducible Flow Graphs</span> &mdash; Hecht, Ullman
+    <div class="meta"><span class="badge b-web">DOI&middot;9pp</span>JACM 1974 &middot; <a href="https://doi.org/10.1145/321832.321835">DOI</a></div>
+    <div class="why-here">The equivalent definitions of reducibility (the T1/T2 transformations, dominator back edges) that tell you when the fast methods apply.</div>
+  </li>
+  <li>
+    <span class="title">A Fast and Usually Linear Algorithm for Global Flow Analysis</span> &mdash; Graham, Wegman
+    <div class="meta"><span class="badge b-web">DOI&middot;31pp</span>JACM 1976 &middot; <a href="https://doi.org/10.1145/321921.321939">DOI</a></div>
+    <div class="why-here">Near-linear elimination on reducible graphs — the high-water mark of the pre-SSA elimination tradition.</div>
+  </li>
+  <li>
+    <span class="title">Structural Analysis: A New Approach to Flow Analysis</span> &mdash; Micha Sharir
+    <div class="meta"><span class="badge b-web">DOI&middot;13pp</span>Computer Languages 1980 &middot; <a href="https://doi.org/10.1016/0096-0551(80)90007-7">DOI</a></div>
+    <div class="why-here">Syntax-directed elimination that recovers high-level control constructs (if/while/…) from the CFG — the ancestor of region-based analysis and Muchnick's control-tree methods.</div>
+  </li>
+</ol>
+
+<h2>Dominance</h2>
+<p class="grouphdr">SSA construction, loop detection, and structural analysis all rest on dominance; here is how to compute it — first optimally, then simply.</p>
+<ol class="papers" start="9" style="counter-reset:item 8;">
+  <li>
+    <span class="title">A Fast Algorithm for Finding Dominators in a Flowgraph</span> &mdash; Lengauer, Tarjan
+    <div class="meta"><span class="badge b-web">DOI&middot;21pp</span>ACM TOPLAS 1979 &middot; <a href="https://doi.org/10.1145/357062.357071">DOI</a></div>
+    <div class="why-here">The near-linear dominator algorithm; the theoretical reference every later method is measured against.</div>
+  </li>
+  <li>
+    <span class="title">A Simple, Fast Dominance Algorithm</span> &mdash; Cooper, Harvey, Kennedy
+    <div class="meta"><span class="badge b-pdf">PDF&middot;15pp</span>Rice CS Tech Report 2001 &middot; <a href="https://c9x.me/compile/bib/quickdom.pdf">PDF</a></div>
+    <div class="why-here">An iterative dominance algorithm that is asymptotically worse but faster in practice and trivial to implement — what most production compilers actually use.</div>
+  </li>
+</ol>
+
+<h2>SSA form — construction</h2>
+<p class="grouphdr">The representation that made sparse analysis routine: one definition per name, joined at merges by φ. First the idea, then how to place φ efficiently, then how to build it in practice.</p>
+<ol class="papers" start="11" style="counter-reset:item 10;">
+  <li>
+    <span class="title">Global Value Numbers and Redundant Computations</span> &mdash; Rosen, Wegman, Zadeck
+    <div class="meta"><span class="badge b-web">DOI&middot;16pp</span>POPL 1988 &middot; <a href="https://doi.org/10.1145/73560.73562">DOI</a></div>
+    <div class="why-here">Introduced static single assignment form and used it to find value-equivalent redundancy — SSA's debut.</div>
+  </li>
+  <li>
+    <span class="title">Efficiently Computing SSA Form and the Control Dependence Graph</span> &mdash; Cytron, Ferrante, Rosen, Wegman, Zadeck
+    <div class="meta"><span class="badge b-pdf">PDF&middot;40pp</span>ACM TOPLAS 1991 &middot; <a href="https://doi.org/10.1145/115372.115320">DOI</a> &middot; <a href="https://web.eecs.umich.edu/~mahlke/courses/583f23/reading/cytron_toplas_91.pdf">PDF</a></div>
+    <div class="why-here">The dominance-frontier construction that made SSA cheap to build; the paper that made SSA the standard IR.</div>
+  </li>
+  <li>
+    <span class="title">Automatic Construction of Sparse Data Flow Evaluation Graphs</span> &mdash; Choi, Cytron, Ferrante
+    <div class="meta"><span class="badge b-web">DOI&middot;12pp</span>POPL 1991 &middot; <a href="https://doi.org/10.1145/99583.99594">DOI</a></div>
+    <div class="why-here">Generalizes the SSA idea to any dataflow problem: build a sparse graph so facts flow only where they can change, not through every program point.</div>
+  </li>
+  <li>
+    <span class="title">Simple and Efficient Construction of Static Single Assignment Form</span> &mdash; Braun, Buchwald, Hack, Leißa, Mallon, Zwinkau
+    <div class="meta"><span class="badge b-pdf">PDF&middot;20pp</span>CC 2013 &middot; <a href="https://doi.org/10.1007/978-3-642-37051-9_6">DOI</a> &middot; <a href="https://c9x.me/compile/bib/braun13cc.pdf">PDF</a></div>
+    <div class="why-here">On-the-fly SSA construction straight from an AST without a separate dominance pass — the method many modern compilers (and JITs) now use.</div>
+  </li>
+</ol>
+
+<h2>SSA-based &amp; sparse analysis</h2>
+<p class="grouphdr">SSA's payoff: analyses become sparse — propagate along def-use edges, prune with control, and combine passes that were separate over the CFG.</p>
+<ol class="papers" start="15" style="counter-reset:item 14;">
+  <li>
+    <span class="title">Constant Propagation with Conditional Branches (SCCP)</span> &mdash; Wegman, Zadeck
+    <div class="meta"><span class="badge b-pdf">PDF&middot;30pp</span>ACM TOPLAS 1991 &middot; <a href="https://doi.org/10.1145/103135.103136">DOI</a> &middot; <a href="https://c9x.me/compile/bib/constpropssa.pdf">PDF</a></div>
+    <div class="why-here">Sparse conditional constant propagation over SSA — folds constants and prunes dead branches in one pass, more precisely than either alone. A canonical SSA optimization.</div>
+  </li>
+  <li>
+    <span class="title">Global Code Motion / Global Value Numbering</span> &mdash; Cliff Click
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>PLDI 1995 &middot; <a href="https://doi.org/10.1145/207110.207154">DOI</a> &middot; <a href="https://c9x.me/compile/bib/click-gvn.pdf">PDF</a></div>
+    <div class="why-here">Schedules instructions late/early from data dependence alone and eliminates redundancy by value — the analyses that make a graph IR practical, and the bridge to sea-of-nodes.</div>
+  </li>
+</ol>
+
+<h2>Out of SSA</h2>
+<p class="grouphdr">Real machines have no φ. Leaving SSA correctly — without introducing copies you can't color or schedule — is its own problem.</p>
+<ol class="papers" start="17" style="counter-reset:item 16;">
+  <li>
+    <span class="title">Translating Out of Static Single Assignment Form</span> &mdash; Sreedhar, Ju, Gillies, Santhanam
+    <div class="meta"><span class="badge b-web">DOI&middot;17pp</span>SAS 1999 &middot; <a href="https://doi.org/10.1007/3-540-48294-6_13">DOI</a></div>
+    <div class="why-here">The canonical destruction algorithm: handle the "lost copy" and "swap" problems by reasoning about interference among φ-related names.</div>
+  </li>
+  <li>
+    <span class="title">Revisiting Out-of-SSA Translation for Correctness, Code Quality, and Efficiency</span> &mdash; Boissinot, Hack, Grund, Dupont de Dinechin, Rastello
+    <div class="meta"><span class="badge b-web">DOI&middot;12pp</span>CGO 2009 &middot; <a href="https://doi.org/10.1109/CGO.2009.19">DOI</a></div>
+    <div class="why-here">Corrects subtle bugs in earlier methods and gives a fast, coalescing-aware destruction pass — the version to implement.</div>
+  </li>
+</ol>
+
+<h2>Dependence graphs &amp; graph IRs</h2>
+<p class="grouphdr">From linear IR to graphs that make dependences explicit — the basis for slicing, vectorization, and the graph IRs inside modern JITs.</p>
+<ol class="papers" start="19" style="counter-reset:item 18;">
+  <li>
+    <span class="title">Program Slicing</span> &mdash; Mark Weiser
+    <div class="meta"><span class="badge b-web">DOI&middot;6pp</span>IEEE TSE 1984 &middot; <a href="https://doi.org/10.1109/TSE.1984.5010248">DOI</a></div>
+    <div class="why-here">The motivating use of dependence: extract the sub-program affecting a given value. Slicing is why we want dependences reified in the IR.</div>
+  </li>
+  <li>
+    <span class="title">The Program Dependence Graph and Its Use in Optimization</span> &mdash; Ferrante, Ottenstein, Warren
+    <div class="meta"><span class="badge b-pdf">PDF&middot;31pp</span>ACM TOPLAS 1987 &middot; <a href="https://doi.org/10.1145/24039.24041">DOI</a> &middot; <a href="https://web.eecs.umich.edu/~mahlke/courses/583f23/reading/ferrante_toplas_87.pdf">PDF</a></div>
+    <div class="why-here">Made data <em>and</em> control dependences explicit in one graph — the foundation for slicing, vectorization, and every later graph IR.</div>
+  </li>
+  <li>
+    <span class="title">A Simple Graph-Based Intermediate Representation (sea of nodes)</span> &mdash; Click, Paleczny
+    <div class="meta"><span class="badge b-pdf">PDF&middot;15pp</span>IR'95 &middot; <a href="https://doi.org/10.1145/202529.202534">DOI</a> &middot; <a href="https://www.oracle.com/technetwork/java/javase/tech/c2-ir95-150110.pdf">PDF</a></div>
+    <div class="why-here">Fuses control and data into one graph where nodes float until scheduled — the IR behind HotSpot C2, V8 TurboFan, and Graal.</div>
+  </li>
+  <li>
+    <span class="title">The Java HotSpot Server Compiler</span> &mdash; Paleczny, Vick, Click
+    <div class="meta"><span class="badge b-pdf">PDF&middot;13pp</span>JVM Symposium 2001 &middot; <a href="https://www.usenix.org/legacy/events/jvm01/full_papers/paleczny/paleczny.pdf">PDF</a></div>
+    <div class="why-here">Sea-of-nodes in production: how the graph IR, GCM/GVN, and SSA come together in a real optimizing JIT.</div>
+  </li>
+</ol>
+
+<h2>Gated SSA &amp; value-dependence IRs</h2>
+<p class="grouphdr">Make control a first-class value so data and control live in one graph — enabling demand-driven and functional-style optimization.</p>
+<ol class="papers" start="23" style="counter-reset:item 22;">
+  <li>
+    <span class="title">The Program Dependence Web</span> &mdash; Ballance, Maccabe, Ottenstein
+    <div class="meta"><span class="badge b-web">DOI&middot;15pp</span>PLDI 1990 &middot; <a href="https://doi.org/10.1145/93542.93578">DOI</a></div>
+    <div class="why-here">Gated SSA (γ/μ/η functions that <em>select</em> rather than merge) plus a combined control/data/demand-driven IR — the first executable dependence graph.</div>
+  </li>
+  <li>
+    <span class="title">Construction of Thinned Gated Single-Assignment Form</span> &mdash; Paul Havlak
+    <div class="meta"><span class="badge b-web">DOI&middot;23pp</span>LCPC 1993 &middot; <a href="https://doi.org/10.1007/3-540-57659-2_28">DOI</a></div>
+    <div class="why-here">A practical, space-efficient algorithm for building gated SSA, making the PDW's γ-functions usable in a real compiler.</div>
+  </li>
+  <li>
+    <span class="title">Combined Code Motion and Register Allocation using the Value State Dependence Graph</span> &mdash; Johnson, Mycroft
+    <div class="meta"><span class="badge b-web">DOI&middot;16pp</span>CC 2003 &middot; <a href="https://doi.org/10.1007/3-540-36579-6_1">DOI</a></div>
+    <div class="why-here">The VSDG: a normalizing IR where equal computations are structurally identical, letting code motion and allocation be solved together — the value-dependence line that dispenses with explicit control flow.</div>
+  </li>
+</ol>
+
+<h2>Modern IR infrastructure &amp; rewriting</h2>
+<p class="grouphdr">Where IR design is now: reusable, retargetable infrastructure, and optimization by equivalence rather than by fixed rewrite order.</p>
+<ol class="papers" start="26" style="counter-reset:item 25;">
+  <li>
+    <span class="title">LLVM: A Compilation Framework for Lifelong Program Analysis &amp; Transformation</span> &mdash; Lattner, Adve
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>CGO 2004 &middot; <a href="https://doi.org/10.1109/CGO.2004.1281665">DOI</a> &middot; <a href="https://llvm.org/pubs/2004-01-30-CGO-LLVM.pdf">PDF</a></div>
+    <div class="why-here">The typed SSA IR and pass infrastructure that became the industry's common substrate.</div>
+  </li>
+  <li>
+    <span class="title">Equality Saturation: A New Approach to Optimization</span> &mdash; Tate, Stepp, Tatlock, Lerner
+    <div class="meta"><span class="badge b-pdf">PDF&middot;13pp</span>POPL 2009 &middot; <a href="https://doi.org/10.1145/1480881.1480915">DOI</a> &middot; <a href="https://rosstate.org/publications/eqsat/eqsat_tate_popl09.pdf">PDF</a></div>
+    <div class="why-here">The Program Expression Graph: represent <em>all</em> equivalent programs at once in an e-graph and extract the best, dodging phase-ordering. E-graphs as an IR.</div>
+  </li>
+  <li>
+    <span class="title">MLIR: Scaling Compiler Infrastructure for Domain Specific Computation</span> &mdash; Lattner, Amini, Bondhugula, Cohen, Davis, Pienaar, Riddle, Shpeisman, Vasilache, Zinenko
+    <div class="meta"><span class="badge b-pdf">PDF&middot;21pp</span>CGO 2021 &middot; <a href="https://doi.org/10.1109/CGO51591.2021.9370308">DOI</a> &middot; <a href="https://arxiv.org/pdf/2002.11054">PDF</a></div>
+    <div class="why-here">Multi-level, dialect-based IR: one framework in which domain-specific and low-level representations coexist and lower into one another. The current direction of IR design.</div>
+  </li>
+</ol>
+
+<h2>Reference shelf &mdash; books</h2>
+<p class="grouphdr">The standard texts for the area; free copies linked where a legal one exists.</p>
+<ul class="refs">
+  <li><span class="badge b-book">BOOK&middot;412pp</span><b>SSA-based Compiler Design (the "SSA book")</b> &mdash; Rastello, Bouchez Tichadou (eds.) (2022) &middot; The definitive modern treatment of SSA — construction, destruction, φ, and SSA-based analyses and allocation — collecting most of this list's SSA thread in one place. <a href="https://pfalcon.github.io/ssabook/latest/book-full.pdf">PDF</a></li>
+  <li><span class="badge b-book">BOOK&middot;210pp</span><b>Static Program Analysis</b> &mdash; Anders Møller, Michael Schwartzbach (2024) &middot; A modern, readable course text on lattices, monotone frameworks, fixed points, and abstract interpretation — the theory of the foundations section, worked in detail. <a href="https://cs.au.dk/~amoeller/spa/spa.pdf">PDF</a></li>
+  <li><span class="badge b-buy">BUY&middot;856pp</span><b>Advanced Compiler Design and Implementation</b> &mdash; Steven Muchnick (1997) &middot; The companion text: HIR/MIR/LIR representations, interval and structural analysis, and the dataflow machinery, all in implementable detail. <a href="https://shop.elsevier.com/books/advanced-compiler-design-and-implementation/muchnick/978-0-08-050577-0">page</a></li>
+  <li><span class="badge b-buy">BUY&middot;1009pp</span><b>Compilers: Principles, Techniques, and Tools (the Dragon Book)</b> &mdash; Aho, Lam, Sethi, Ullman (2nd ed. 2006) &middot; The standard reference for the dataflow-analysis foundations, with careful proofs of the lattice and iterative-solver results. <a href="https://www.pearson.com/en-us/subject-catalog/p/compilers-principles-techniques-and-tools/P200000003472">page</a></li>
+</ul>
+
+<h2>Key terms</h2>
+<p class="grouphdr">Vocabulary used across this list.</p>
+<div class="notekey"><b>lattice</b> &mdash; the partially ordered set of dataflow facts, with a meet (⊓) that combines facts at merges &nbsp; <b>monotone framework</b> &mdash; a dataflow problem whose transfer functions never lose precision as inputs grow; guarantees a fixed point exists &nbsp; <b>MFP vs MOP</b> &mdash; the maximal-fixed-point solution the iterative solver computes, versus the ideal meet-over-all-paths answer; equal when the framework is distributive &nbsp; <b>transfer function</b> &mdash; the per-node map from facts-in to facts-out that a dataflow analysis iterates &nbsp; <b>abstract interpretation</b> &mdash; the theory framing an analysis as a sound over-approximation of the concrete semantics, with widening for termination &nbsp; <b>reducible flow graph</b> &mdash; a CFG whose loops are well-nested (collapsible by the T1/T2 transformations); admits fast elimination methods &nbsp; <b>interval / structural analysis</b> &mdash; elimination-based analysis that exploits nested loop or syntactic control structure instead of blind iteration &nbsp; <b>dominator / dominance frontier</b> &mdash; a node that lies on every path to another; the frontier is where a value's influence ends and φ-nodes are placed &nbsp; <b>SSA form</b> &mdash; static single assignment: every name is defined once, with φ-functions merging definitions at control-flow joins &nbsp; <b>φ-function</b> &mdash; a pseudo-instruction at a merge that selects the incoming definition according to the edge taken &nbsp; <b>sparse dataflow</b> &mdash; propagating facts along def-use edges (not every program point), which SSA makes natural &nbsp; <b>program dependence graph</b> &mdash; an IR making data and control dependences explicit edges; the basis for slicing and vectorization &nbsp; <b>program slice</b> &mdash; the sub-program that can affect the value at a chosen point &nbsp; <b>gated SSA</b> &mdash; SSA whose φ-like functions (γ/μ/η) encode the branch condition, making them executable and demand-driven &nbsp; <b>sea of nodes</b> &mdash; a graph IR fusing control and data, where nodes float freely until a scheduling pass fixes their order &nbsp; <b>value (state) dependence graph</b> &mdash; a normalizing, largely control-free IR in which equivalent computations are structurally identical &nbsp; <b>e-graph</b> &mdash; a data structure representing many equivalent expressions compactly; the substrate for equality saturation</div>
 
 </body>
 </html>

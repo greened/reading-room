@@ -8,71 +8,210 @@
 <body>
 
 <h1>Compilers · Pointer / alias analysis</h1>
-<p class="sub">One of the hardest static-analysis problems: deciding what pointers may refer to. Andersen (inclusion) and Steensgaard (unification) anchor the field; the rest add context-, flow-, field-, and object-sensitivity and scale it to millions of lines.</p>
-<p class="tally">In-depth landmark list for this subtopic. <span class="badge b-pdf">PDF</span>open copy available &middot; <span class="badge b-web">DOI</span>publisher link only.</p>
+<p class="sub">One of the hardest static-analysis problems: deciding what each pointer may refer to. Almost every other analysis — constant propagation, dead-code elimination, escape and side-effect analysis, call-graph construction, bug finding — is only as precise as the points-to sets it is handed. The reading path here starts with Hind's survey to fix the design dimensions (flow-, context-, field-, object-sensitivity), then the two foundational algorithms and the precision spectrum between them (Andersen's inclusion vs. Steensgaard's unification), the flow- and context-sensitive tradition for C, the tricks that scale inclusion-based analysis to real programs, the CFL-reachability and demand-driven reframing, the BDD and declarative engines that made whole-program context sensitivity practical, the object- and type-sensitivity that hit the sweet spot for object-oriented code, and finally the frameworks that carry these ideas into LLVM, C/C++, and modern Java.</p>
+<p class="tally">27 papers &middot; &asymp; <b>412 pp</b> of primary reading. &nbsp; Legend: <span class="badge b-pdf">PDF</span>open copy (see <span class="file">fetch.sh</span>) &middot; <span class="badge b-web">DOI</span>publisher link only</p>
+<div class="why"><b>How to read this list.</b> Read Hind first for the vocabulary — every later paper is a point in the design space he lays out. Then read Andersen and Steensgaard back to back: they are the two poles (precise-but-costly vs. fast-but-coarse) that the rest of the field interpolates between and scales up. After that the sections are roughly independent; pick the axis (scaling, demand-driven, object-sensitivity) you care about.</div>
 
-<ol class="papers">
+<h2>Framing the problem</h2>
+<p class="grouphdr">Read this first: it names the design dimensions every later paper is a point within.</p>
+<ol class="papers" start="1">
   <li>
-    <span class="title">Context-Sensitive Interprocedural Points-to Analysis in the Presence of Function Pointers</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/178243.178264">DOI</a></div>
-    <div class="why-here">Emami, Ghiya, Hendren, 1994, PLDI. Context-sensitive interprocedural points-to for C with an invocation-graph treatment of function pointers.</div>
-  </li>
-  <li>
-    <span class="title">Program Analysis and Specialization for the C Programming Language</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://citeseerx.ist.psu.edu/document?repid=rep1&type=pdf&doi=b7efe971a34a0f2482e0b2520ffb31062dcdde62">PDF</a></div>
-    <div class="why-here">Lars Ole Andersen, 1994, PhD thesis (DIKU). Origin of "Andersen-style" inclusion (subset-constraint) analysis.</div>
-  </li>
-  <li>
-    <span class="title">Points-to Analysis in Almost Linear Time</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/237721.237727">DOI</a> &middot; <a href="https://www.cs.cornell.edu/courses/cs711/2005fa/papers/steensgaard-popl96.pdf">PDF</a></div>
-    <div class="why-here">Bjarne Steensgaard, 1996, POPL. "Steensgaard-style" unification analysis: precision traded for near-linear scale.</div>
-  </li>
-  <li>
-    <span class="title">Unification-Based Pointer Analysis with Directional Assignments</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/349299.349309">DOI</a> &middot; <a href="http://web.cs.ucla.edu/~palsberg/course/purdue/cs661/F01/papers/das-pldi00.pdf">PDF</a></div>
-    <div class="why-here">Manuvir Das, 2000, PLDI. "One-level flow" interpolates between Steensgaard and Andersen.</div>
-  </li>
-  <li>
-    <span class="title">Ultra-fast Aliasing Analysis using CLA (a million lines of C in a second)</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/378795.378855">DOI</a> &middot; <a href="http://web.cs.ucla.edu/~palsberg/course/purdue/cs661/F01/papers/heintze-tardieu-pldi01.pdf">PDF</a></div>
-    <div class="why-here">Heintze, Tardieu, 2001, PLDI. Field-based Andersen-style analysis at enormous scale.</div>
-  </li>
-  <li>
-    <span class="title">Pointer Analysis: Haven't We Solved This Problem Yet?</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/379605.379665">DOI</a> &middot; <a href="https://www.cs.cornell.edu/courses/cs711/2005fa/papers/hind-paste01.pdf">PDF</a></div>
-    <div class="why-here">Michael Hind, 2001, PASTE. The canonical survey framing the design dimensions and open problems.</div>
-  </li>
-  <li>
-    <span class="title">Cloning-Based Context-Sensitive Pointer Alias Analysis Using BDDs</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/996841.996859">DOI</a> &middot; <a href="https://suif.stanford.edu/papers/pldi04.pdf">PDF</a></div>
-    <div class="why-here">Whaley, Lam, 2004, PLDI. Fully context-sensitive inclusion analysis made to scale via BDDs/Datalog (bddbddb).</div>
-  </li>
-  <li>
-    <span class="title">Parameterized Object Sensitivity for Points-to Analysis for Java</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/1044834.1044835">DOI</a></div>
-    <div class="why-here">Milanova, Rountev, Ryder, 2005, ACM TOSEM. Object-sensitivity: the dominant precision/scalability sweet spot for OO.</div>
-  </li>
-  <li>
-    <span class="title">Refinement-Based Context-Sensitive Points-to Analysis for Java</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/1133981.1134027">DOI</a> &middot; <a href="https://www2.eecs.berkeley.edu/Pubs/TechRpts/2006/EECS-2006-31.pdf">PDF</a></div>
-    <div class="why-here">Sridharan, Bodík, 2006, PLDI. Points-to as CFL-reachability with demand-driven refinement.</div>
-  </li>
-  <li>
-    <span class="title">The Ant and the Grasshopper: Fast and Accurate Pointer Analysis for Millions of Lines of Code</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/1250734.1250767">DOI</a> &middot; <a href="https://www.cs.utexas.edu/~lin/papers/pldi07.pdf">PDF</a></div>
-    <div class="why-here">Hardekopf, Lin, 2007, PLDI. Lazy/Hybrid Cycle Detection: dramatic speedups without precision loss.</div>
-  </li>
-  <li>
-    <span class="title">Pick Your Contexts Well: Understanding Object-Sensitivity</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/1926385.1926390">DOI</a></div>
-    <div class="why-here">Smaragdakis, Bravenboer, Lhoták, 2011, POPL. The definitive account of context choice (and type-sensitivity).</div>
-  </li>
-  <li>
-    <span class="title">Flow-Sensitive Pointer Analysis for Millions of Lines of Code</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1109/CGO.2011.5764696">DOI</a></div>
-    <div class="why-here">Hardekopf, Lin, 2011, CGO. Sparse, staged flow-sensitive analysis with strong updates at scale.</div>
+    <span class="title">Pointer Analysis: Haven't We Solved This Problem Yet?</span> &mdash; Michael Hind
+    <div class="meta"><span class="badge b-pdf">PDF&middot;8pp</span>PASTE 2001 &middot; <a href="https://doi.org/10.1145/379605.379665">DOI</a> &middot; <a href="https://www.cs.cornell.edu/courses/cs711/2005fa/papers/hind-paste01.pdf">PDF</a></div>
+    <div class="why-here">The canonical survey: frames flow-, context-, field-sensitivity and the precision/scalability tradeoffs, and remains the best map of the territory.</div>
   </li>
 </ol>
+
+<h2>The two foundational algorithms</h2>
+<p class="grouphdr">Andersen (subset) vs. Steensgaard (unification) are the two poles; everything else interpolates or scales one of them.</p>
+<ol class="papers" start="2" style="counter-reset:item 1;">
+  <li>
+    <span class="title">Program Analysis and Specialization for the C Programming Language</span> &mdash; Lars Ole Andersen
+    <div class="meta"><span class="badge b-pdf">PDF&middot;43pp</span>PhD thesis (DIKU) 1994 &middot; <a href="https://www.cs.cornell.edu/courses/cs711/2005fa/papers/andersen-thesis94.pdf">PDF</a></div>
+    <div class="why-here">Origin of "Andersen-style" inclusion (subset-constraint) analysis: the precise-but-cubic baseline.</div>
+  </li>
+  <li>
+    <span class="title">Points-to Analysis in Almost Linear Time</span> &mdash; Bjarne Steensgaard
+    <div class="meta"><span class="badge b-pdf">PDF&middot;10pp</span>POPL 1996 &middot; <a href="https://doi.org/10.1145/237721.237727">DOI</a> &middot; <a href="https://www.cs.cornell.edu/courses/cs711/2005fa/papers/steensgaard-popl96.pdf">PDF</a></div>
+    <div class="why-here">"Steensgaard-style" unification analysis: precision traded for near-linear scale, the other pole.</div>
+  </li>
+  <li>
+    <span class="title">Fast and Accurate Flow-Insensitive Points-to Analysis</span> &mdash; Marc Shapiro, Susan Horwitz
+    <div class="meta"><span class="badge b-web">DOI&middot;12pp</span>POPL 1997 &middot; <a href="https://doi.org/10.1145/263699.263703">DOI</a></div>
+    <div class="why-here">A tunable family sitting <em>between</em> Andersen and Steensgaard, making the precision/cost dial explicit.</div>
+  </li>
+  <li>
+    <span class="title">Unification-Based Pointer Analysis with Directional Assignments</span> &mdash; Manuvir Das
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>PLDI 2000 &middot; <a href="https://doi.org/10.1145/349299.349309">DOI</a> &middot; <a href="http://web.cs.ucla.edu/~palsberg/course/purdue/cs661/F01/papers/das-pldi00.pdf">PDF</a></div>
+    <div class="why-here">"One-level flow": nearly Steensgaard's speed with much of Andersen's precision — the practical middle ground.</div>
+  </li>
+</ol>
+
+<h2>Flow- and context-sensitivity for C</h2>
+<p class="grouphdr">The interprocedural aliasing tradition that first pinned down what "sensitivity" buys you.</p>
+<ol class="papers" start="6" style="counter-reset:item 5;">
+  <li>
+    <span class="title">A Safe Approximate Algorithm for Interprocedural Pointer Aliasing</span> &mdash; William Landi, Barbara Ryder
+    <div class="meta"><span class="badge b-web">DOI&middot;12pp</span>PLDI 1992 &middot; <a href="https://doi.org/10.1145/143095.143137">DOI</a></div>
+    <div class="why-here">The first practical interprocedural may-alias algorithm for C; it set the problem statement the field worked from.</div>
+  </li>
+  <li>
+    <span class="title">Efficient Flow-Sensitive Interprocedural Computation of Pointer-Induced Aliases and Side Effects</span> &mdash; Jong-Deok Choi, Michael Burke, Paul Carini
+    <div class="meta"><span class="badge b-web">DOI&middot;13pp</span>POPL 1993 &middot; <a href="https://doi.org/10.1145/158511.158639">DOI</a></div>
+    <div class="why-here">The foundational flow-sensitive interprocedural formulation, with the strong/weak-update machinery later work builds on.</div>
+  </li>
+  <li>
+    <span class="title">Context-Sensitive Interprocedural Points-to Analysis in the Presence of Function Pointers</span> &mdash; Maryam Emami, Rakesh Ghiya, Laurie Hendren
+    <div class="meta"><span class="badge b-web">DOI&middot;12pp</span>PLDI 1994 &middot; <a href="https://doi.org/10.1145/178243.178264">DOI</a></div>
+    <div class="why-here">Full context sensitivity for C with an invocation-graph treatment of function pointers — the classic account of on-the-fly call-graph construction.</div>
+  </li>
+</ol>
+
+<h2>Scaling inclusion-based analysis</h2>
+<p class="grouphdr">How Andersen-style analysis was made fast enough for millions of lines.</p>
+<ol class="papers" start="9" style="counter-reset:item 8;">
+  <li>
+    <span class="title">Partial Online Cycle Elimination in Inclusion Constraint Graphs</span> &mdash; Manuel Fähndrich, Jeffrey Foster, Zhendong Su, Alexander Aiken
+    <div class="meta"><span class="badge b-pdf">PDF&middot;11pp</span>PLDI 1998 &middot; <a href="https://doi.org/10.1145/277650.277667">DOI</a> &middot; <a href="https://theory.stanford.edu/~aiken/publications/papers/pldi98a.pdf">PDF</a></div>
+    <div class="why-here">Collapsing cycles in the constraint graph — the key idea behind every fast inclusion solver since.</div>
+  </li>
+  <li>
+    <span class="title">Ultra-fast Aliasing Analysis using CLA (a million lines of C in a second)</span> &mdash; Nevin Heintze, Olivier Tardieu
+    <div class="meta"><span class="badge b-pdf">PDF&middot;10pp</span>PLDI 2001 &middot; <a href="https://doi.org/10.1145/378795.378855">DOI</a> &middot; <a href="http://web.cs.ucla.edu/~palsberg/course/purdue/cs661/F01/papers/heintze-tardieu-pldi01.pdf">PDF</a></div>
+    <div class="why-here">Field-based Andersen-style analysis engineered to enormous scale.</div>
+  </li>
+  <li>
+    <span class="title">The Ant and the Grasshopper: Fast and Accurate Pointer Analysis for Millions of Lines of Code</span> &mdash; Ben Hardekopf, Calvin Lin
+    <div class="meta"><span class="badge b-pdf">PDF&middot;10pp</span>PLDI 2007 &middot; <a href="https://doi.org/10.1145/1250734.1250767">DOI</a> &middot; <a href="https://www.cs.utexas.edu/~lin/papers/pldi07.pdf">PDF</a></div>
+    <div class="why-here">Lazy and hybrid cycle detection: large speedups over Fähndrich et al. with no precision loss.</div>
+  </li>
+  <li>
+    <span class="title">Flow-Sensitive Pointer Analysis for Millions of Lines of Code</span> &mdash; Ben Hardekopf, Calvin Lin
+    <div class="meta"><span class="badge b-pdf">PDF&middot;10pp</span>CGO 2011 &middot; <a href="https://doi.org/10.1109/CGO.2011.5764696">DOI</a> &middot; <a href="https://www.cs.utexas.edu/~lin/papers/cgo11.pdf">PDF</a></div>
+    <div class="why-here">Sparse, staged flow-sensitive analysis with strong updates — flow sensitivity finally made to scale.</div>
+  </li>
+</ol>
+
+<h2>CFL-reachability and demand-driven analysis</h2>
+<p class="grouphdr">Reframe points-to as a graph-reachability problem, then compute only the queries you ask.</p>
+<ol class="papers" start="13" style="counter-reset:item 12;">
+  <li>
+    <span class="title">Precise Interprocedural Dataflow Analysis via Graph Reachability</span> &mdash; Thomas Reps, Susan Horwitz, Mooly Sagiv
+    <div class="meta"><span class="badge b-pdf">PDF&middot;14pp</span>POPL 1995 &middot; <a href="https://doi.org/10.1145/199448.199462">DOI</a> &middot; <a href="https://research.cs.wisc.edu/wpis/papers/popl95.pdf">PDF</a></div>
+    <div class="why-here">The IFDS/CFL-reachability framework that reframes context-sensitive interprocedural analysis (and, later, points-to) as language-reachability.</div>
+  </li>
+  <li>
+    <span class="title">Demand-Driven Points-to Analysis for Java</span> &mdash; Manu Sridharan, Denis Gopan, Lexin Shan, Rastislav Bodík
+    <div class="meta"><span class="badge b-pdf">PDF&middot;18pp</span>OOPSLA 2005 &middot; <a href="https://doi.org/10.1145/1094811.1094817">DOI</a> &middot; <a href="https://manu.sridharan.net/files/oopsla05.pdf">PDF</a></div>
+    <div class="why-here">Points-to as CFL-reachability over a program-expression graph, answering single-variable queries on demand.</div>
+  </li>
+  <li>
+    <span class="title">Refinement-Based Context-Sensitive Points-to Analysis for Java</span> &mdash; Manu Sridharan, Rastislav Bodík
+    <div class="meta"><span class="badge b-pdf">PDF&middot;17pp</span>PLDI 2006 &middot; <a href="https://doi.org/10.1145/1133981.1134027">DOI</a> &middot; <a href="https://www2.eecs.berkeley.edu/Pubs/TechRpts/2006/EECS-2006-31.pdf">PDF</a></div>
+    <div class="why-here">Adds client-driven refinement, spending precision (field and call-site matching) only where a query needs it.</div>
+  </li>
+  <li>
+    <span class="title">Demand-Driven Alias Analysis for C</span> &mdash; Xin Zheng, Radu Rugina
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>POPL 2008 &middot; <a href="https://doi.org/10.1145/1328438.1328464">DOI</a> &middot; <a href="https://web.archive.org/web/20170323174953id_/http://www.cs.cornell.edu/~rugina/papers/popl08.pdf">PDF</a></div>
+    <div class="why-here">Carries the CFL-reachability, demand-driven idea back to C, where indirection through the heap makes the language harder.</div>
+  </li>
+</ol>
+
+<h2>BDD and declarative engines</h2>
+<p class="grouphdr">Symbolic and relational back-ends that made whole-program context sensitivity tractable.</p>
+<ol class="papers" start="17" style="counter-reset:item 16;">
+  <li>
+    <span class="title">Points-to Analysis using BDDs</span> &mdash; Marc Berndl, Ondřej Lhoták, Feng Qian, Laurie Hendren, Navindra Umanee
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>PLDI 2003 &middot; <a href="https://doi.org/10.1145/781131.781144">DOI</a> &middot; <a href="https://plg.uwaterloo.ca/~olhotak/pubs/pldi03.pdf">PDF</a></div>
+    <div class="why-here">Represents the enormous points-to relation symbolically with binary decision diagrams — the enabling trick for what follows.</div>
+  </li>
+  <li>
+    <span class="title">Cloning-Based Context-Sensitive Pointer Alias Analysis Using BDDs</span> &mdash; John Whaley, Monica Lam
+    <div class="meta"><span class="badge b-pdf">PDF&middot;14pp</span>PLDI 2004 &middot; <a href="https://doi.org/10.1145/996841.996859">DOI</a> &middot; <a href="https://web.archive.org/web/20260501175527id_/https://suif.stanford.edu/papers/pldi04.pdf">PDF</a></div>
+    <div class="why-here">Fully context-sensitive inclusion analysis via call-path cloning, expressed in Datalog and solved with BDDs (bddbddb).</div>
+  </li>
+  <li>
+    <span class="title">Strictly Declarative Specification of Sophisticated Points-to Analyses</span> &mdash; Martin Bravenboer, Yannis Smaragdakis
+    <div class="meta"><span class="badge b-web">DOI&middot;18pp</span>OOPSLA 2009 &middot; <a href="https://doi.org/10.1145/1640089.1640108">DOI</a></div>
+    <div class="why-here">Doop: whole analyses (including on-the-fly call graphs and exceptions) written as Datalog rules — declarative, and often faster than hand-coded engines.</div>
+  </li>
+</ol>
+
+<h2>Context choice for object-oriented programs</h2>
+<p class="grouphdr">For OO code the right kind of context — objects, not call sites — is what makes analysis both precise and affordable.</p>
+<ol class="papers" start="20" style="counter-reset:item 19;">
+  <li>
+    <span class="title">Scaling Java Points-to Analysis using Spark</span> &mdash; Ondřej Lhoták, Laurie Hendren
+    <div class="meta"><span class="badge b-pdf">PDF&middot;16pp</span>CC 2003 &middot; <a href="https://doi.org/10.1007/3-540-36579-6_12">DOI</a> &middot; <a href="https://plg.uwaterloo.ca/~olhotak/pubs/cc03.pdf">PDF</a></div>
+    <div class="why-here">The open, modular Java points-to framework (in Soot) that made the later OO comparisons reproducible.</div>
+  </li>
+  <li>
+    <span class="title">Parameterized Object Sensitivity for Points-to Analysis for Java</span> &mdash; Ana Milanova, Atanas Rountev, Barbara Ryder
+    <div class="meta"><span class="badge b-pdf">PDF&middot;41pp</span>ACM TOSEM 2005 &middot; <a href="https://doi.org/10.1145/1044834.1044835">DOI</a> &middot; <a href="https://www.cs.rpi.edu/~milanova/docs/tosem05.pdf">PDF</a></div>
+    <div class="why-here">Object sensitivity: use receiver objects as context — the dominant precision/scalability sweet spot for OO programs.</div>
+  </li>
+  <li>
+    <span class="title">Resolving and Exploiting the k-CFA Paradox</span> &mdash; Matthew Might, Yannis Smaragdakis, David Van Horn
+    <div class="meta"><span class="badge b-pdf">PDF&middot;11pp</span>PLDI 2010 &middot; <a href="https://doi.org/10.1145/1806596.1806631">DOI</a> &middot; <a href="https://matt.might.net/papers/might2010mcfa.pdf">PDF</a></div>
+    <div class="why-here">Explains <em>why</em> call-site (k-CFA) context is cheap for functional languages yet ruinous for OO, connecting the functional and pointer-analysis traditions.</div>
+  </li>
+  <li>
+    <span class="title">Pick Your Contexts Well: Understanding Object-Sensitivity</span> &mdash; Yannis Smaragdakis, Martin Bravenboer, Ondřej Lhoták
+    <div class="meta"><span class="badge b-pdf">PDF&middot;13pp</span>POPL 2011 &middot; <a href="https://doi.org/10.1145/1926385.1926390">DOI</a> &middot; <a href="https://yanniss.github.io/typesens-popl11.pdf">PDF</a></div>
+    <div class="why-here">The definitive account of context choice; introduces type sensitivity as a cheaper approximation of object sensitivity.</div>
+  </li>
+  <li>
+    <span class="title">Hybrid Context-Sensitivity for Points-to Analysis</span> &mdash; George Kastrinis, Yannis Smaragdakis
+    <div class="meta"><span class="badge b-pdf">PDF&middot;11pp</span>PLDI 2013 &middot; <a href="https://doi.org/10.1145/2491956.2462191">DOI</a> &middot; <a href="https://yanniss.github.io/hybrid-context-pldi13.pdf">PDF</a></div>
+    <div class="why-here">Combines call-site and object sensitivity selectively, capturing most of the precision of each at a fraction of the cost.</div>
+  </li>
+</ol>
+
+<h2>Reaching modern languages and tools</h2>
+<p class="grouphdr">Where these ideas live now: production frameworks, C/C++, and demand-driven Java.</p>
+<ul class="comp">
+  <li><span class="badge b-pdf">PDF</span><b>In Defense of Soundiness: A Manifesto</b> Read alongside this section: why real-world analyses are deliberately unsound in specific, understood ways ("soundy"), and why that is the honest state of practice. <a href="https://yanniss.github.io/Soundiness-CACM.pdf">PDF</a></li>
+</ul>
+<ol class="papers" start="25" style="counter-reset:item 24;">
+  <li>
+    <span class="title">SVF: Interprocedural Static Value-Flow Analysis in LLVM</span> &mdash; Yulei Sui, Jingling Xue
+    <div class="meta"><span class="badge b-pdf">PDF&middot;5pp</span>CC 2016 &middot; <a href="https://doi.org/10.1145/2892208.2892235">DOI</a> &middot; <a href="https://yuleisui.github.io/publications/cc16.pdf">PDF</a></div>
+    <div class="why-here">The open, sparse value-flow framework that brought scalable pointer/alias analysis to the LLVM IR most compiler work targets.</div>
+  </li>
+  <li>
+    <span class="title">Structure-Sensitive Points-to Analysis for C and C++</span> &mdash; George Balatsouras, Yannis Smaragdakis
+    <div class="meta"><span class="badge b-pdf">PDF&middot;21pp</span>SAS 2016 &middot; <a href="https://doi.org/10.1007/978-3-662-53413-7_5">DOI</a> &middot; <a href="https://yanniss.github.io/cclyzer-sas16.pdf">PDF</a></div>
+    <div class="why-here">Handling the low-level reality of C/C++ — struct layout, casts, pointer arithmetic — that the OO and Java work could abstract away.</div>
+  </li>
+  <li>
+    <span class="title">Boomerang: Demand-Driven Flow- and Context-Sensitive Pointer Analysis for Java</span> &mdash; Johannes Späth, Lisa Nguyen Quang Do, Karim Ali, Eric Bodden
+    <div class="meta"><span class="badge b-pdf">PDF&middot;26pp</span>ECOOP 2016 &middot; <a href="https://doi.org/10.4230/LIPIcs.ECOOP.2016.22">DOI</a> &middot; <a href="https://drops.dagstuhl.de/opus/volltexte/2016/6116/pdf/LIPIcs-ECOOP-2016-22.pdf">PDF</a></div>
+    <div class="why-here">A modern, precise demand-driven engine (flow- and context-sensitive at once) that clients like taint analysis query directly.</div>
+  </li>
+</ol>
+
+<div class="why">
+<b>Inclusion vs. unification, in one sentence.</b> Andersen treats each assignment
+<code>a = b</code> as a <em>subset</em> constraint (points-to(b) &sube; points-to(a)) and
+solves the resulting graph &mdash; precise, but the closure is cubic. Steensgaard treats
+the same assignment as an <em>equality</em> and merges the two objects into one
+equivalence class &mdash; near-linear via union-find, but coarse, because merges are
+never undone. Every later dimension (flow-, context-, field-, object-sensitivity) is an
+axis of precision layered on top of that one choice, and most of this list is about
+buying back precision or scale that the base algorithm gave away.
+</div>
+
+<h2>Reference shelf &mdash; books</h2>
+<p class="grouphdr">The standard texts for the area; free copies linked where a legal one exists.</p>
+<ul class="refs">
+  <li><span class="badge b-book">BOOK&middot;72pp</span><b>Pointer Analysis</b> &mdash; Yannis Smaragdakis, George Balatsouras (2015) &middot; The Foundations and Trends monograph: the single best modern synthesis of the whole area, built around the declarative (Doop) formulation. <a href="https://yanniss.github.io/points-to-tutorial15.pdf">PDF</a></li>
+  <li><span class="badge b-buy">BUY&middot;452pp</span><b>Principles of Program Analysis</b> &mdash; Flemming Nielson, Hanne Riis Nielson, Chris Hankin (1999) &middot; Situates pointer analysis inside the broader dataflow / constraint / abstract-interpretation framework the field draws on. <a href="https://link.springer.com/book/10.1007/978-3-662-03811-6">page</a></li>
+  <li><span class="badge b-buy">BUY&middot;400pp</span><b>Data Flow Analysis: Theory and Practice</b> &mdash; Uday Khedker, Amitabha Sanyal, Bageshri Karkare (2009) &middot; A rigorous, example-driven treatment with a strong chapter on pointer and alias analysis. <a href="https://www.routledge.com/Data-Flow-Analysis-Theory-and-Practice/Khedker-Sanyal-Karkare/p/book/9780849328800">page</a></li>
+</ul>
+
+<h2>Key terms</h2>
+<p class="grouphdr">Vocabulary used across this list.</p>
+<div class="notekey"><b>points-to set</b> &mdash; the set of abstract objects a pointer may refer to at some program point &nbsp; <b>may-alias / must-alias</b> &mdash; two pointers <em>may</em> alias if some execution makes them point to the same object; they <em>must</em> alias if every execution does &nbsp; <b>inclusion- (subset-) based</b> &mdash; Andersen's model: assignments impose subset constraints between points-to sets; precise but cubic &nbsp; <b>unification-based</b> &mdash; Steensgaard's model: assignments merge objects into one equivalence class via union-find; near-linear but coarse &nbsp; <b>flow-sensitivity</b> &mdash; respecting statement order (a per-program-point solution) instead of one summary for the whole procedure &nbsp; <b>context-sensitivity</b> &mdash; distinguishing a procedure's behavior per caller/context (call-site k-CFA, object sensitivity, or type sensitivity) &nbsp; <b>field-sensitivity</b> &mdash; modeling distinct object fields separately rather than collapsing them &nbsp; <b>object-sensitivity</b> &mdash; using receiver (allocation) objects, not call sites, as the context abstraction — the OO sweet spot &nbsp; <b>heap abstraction</b> &mdash; the finite model of the unbounded heap, usually one abstract object per allocation site &nbsp; <b>strong vs. weak update</b> &mdash; overwriting a points-to set (sound only when the target is a single concrete object) vs. merging into it &nbsp; <b>CFL-reachability</b> &mdash; phrasing an analysis as reachability in a graph under a context-free language of legal paths (the basis of demand-driven analyses) &nbsp; <b>on-the-fly call graph</b> &mdash; building the call graph during the points-to analysis, since resolving indirect calls needs points-to facts and vice versa &nbsp; <b>soundy</b> &mdash; sound except for a few well-understood, deliberately unsound features (reflection, native code) — the honest standard for real analyses</div>
 
 </body>
 </html>
