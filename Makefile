@@ -7,7 +7,7 @@
 #
 # A single guide:  make machine-learning/transformers/reading-guide.pdf
 
-RENDER := lib/render.sh
+RENDER := bin/render.sh
 GUIDES := $(shell find . -name reading-guide.html)
 PDFS   := $(GUIDES:.html=.pdf)
 FETCHERS := $(shell find . -name fetch.sh)
