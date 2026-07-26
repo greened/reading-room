@@ -208,7 +208,7 @@ while i < n:
             buf.append(re.sub(r"^\s*>\s?", "", lines[i])); i += 1
         callouts.append(" ".join(x.strip() for x in buf if x.strip())); continue
 
-    bm = re.match(r"-\s+(.*)$", line)
+    bm = re.match(r"\s*-\s+(.*)$", line)   # allow leading indent (nested companions)
     pm = re.match(r"(\d+)\.\s+(.*)$", line)
 
     if mode == "books" and bm:
