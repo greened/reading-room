@@ -2,138 +2,119 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Foundational Transformer Papers — Reading Guide</title>
+<title>Transformers — foundational reading list</title>
 <link rel="stylesheet" href="../../lib/guide.css">
 </head>
 <body>
 
-<h1>Foundational Transformer Papers &mdash; Reading Guide</h1>
-<p class="sub">Folder: <span class="file">~/Desktop/transformer-papers/</span> &nbsp;&middot;&nbsp; 13 papers + 2 companion PDFs + 4 reference books, in suggested reading order.</p>
-<p class="tally"><b>Page tally:</b> 13 papers &asymp; <b>263 pp</b> of primary reading &middot; 2 companions (Annotated Transformer 58 + d2l chapter 59 = 117 pp, read <i>alongside</i> the core paper) &middot; 4 books = 1,773 pp (browse, don&rsquo;t read cover-to-cover). &nbsp; Legend:
-  <span class="badge b-pdf">PDF</span>in folder
-  <span class="badge b-book">BOOK</span>in folder
-  <span class="badge b-vid">VIDEO</span>
-  <span class="badge b-web">WEB</span>
-  <span class="badge b-buy">BUY</span></p>
+<h1>Transformers — foundational reading list</h1>
+<p class="sub">A pedagogical path through the papers that define the Transformer, with intuition companions (video / web / textbook chapters) slotted in where they help. Read Stage 1 first for the idea and the core architecture, then fill in the details it references (Stage 2), the refinements (Stage 3), and the three model families (Stage 4).</p>
+<p class="tally">13 papers &middot; &asymp; <b>263 pp</b> of primary reading. &nbsp; Legend: <span class="badge b-pdf">PDF</span>open copy (see <span class="file">fetch.sh</span>)</p>
+<div class="why"><b>Why "Transformer"?</b> The papers never spell it out. It's from <em>sequence transduction</em>: the model <em>transforms</em> an input sequence into an output sequence, and, layer by layer, <em>transforms every token's representation</em> by mixing in context from the others via attention — instead of <em>recurring</em> (RNNs) or <em>convolving</em> (CNNs). Paper 2 (§3) and the 3Blue1Brown video show exactly that "transform the representation" picture.</div>
 
-<p class="lead">Files are numbered <span class="file">01</span>&ndash;<span class="file">13</span> by topic, but the order below is <strong>pedagogical</strong>: build intuition first, read the core architecture, fill in the details it only references, then the refinements, then the three model families. Companion explainers (video / web / PDF) are slotted in <em>where they help most</em>.</p>
-
-<div class="why">
-  <b>Why is it called a &ldquo;Transformer&rdquo;?</b> Honestly, none of the papers spell this out &mdash; &ldquo;Attention Is All You Need&rdquo; just names the model in its abstract. The name comes from <b>sequence transduction</b>: the model <em>transforms</em> an input sequence into an output sequence, and, layer by layer, <em>transforms every token&rsquo;s representation</em> by mixing in context from the others (via attention) &mdash; rather than <i>recurring</i> over the sequence (RNNs) or <i>convolving</i> a local window (CNNs). So the reading list doesn&rsquo;t define the name, but paper 01 (&sect;3, the encoder/decoder stacks) and the 3Blue1Brown video show exactly the &ldquo;transform the representation&rdquo; picture the name refers to.
-</div>
-
-<h2>Watch / read first &mdash; intuition before the papers</h2>
+<h2>Watch / read first — intuition before the papers</h2>
 <p class="grouphdr">Ground the notation visually before opening a paper; these turn the equations into geometry.</p>
 <ul class="comp">
-  <li><span class="badge b-vid">VIDEO</span><b>3Blue1Brown &mdash; &ldquo;But what is a GPT?&rdquo;</b> then <b>&ldquo;Attention in transformers, visually explained.&rdquo;</b> Embeddings as directions, dot-product as alignment, softmax as soft selection. <span class="u">youtube.com/watch?v=wjZofJX0v4M</span> &middot; <span class="u">youtube.com/watch?v=eMlx5fFNoYc</span></li>
-  <li><span class="badge b-web">WEB</span><b>Jay Alammar &mdash; &ldquo;The Illustrated Transformer.&rdquo;</b> The canonical diagram-driven walkthrough of Q/K/V and multi-head attention. <span class="u">jalammar.github.io/illustrated-transformer/</span></li>
+  <li><span class="badge b-vid">VIDEO</span><b>3Blue1Brown — "But what is a GPT?" and "Attention, visually explained"</b> Embeddings as directions, dot-product as alignment, softmax as soft selection. <a href="https://www.youtube.com/watch?v=wjZofJX0v4M">video</a> &middot; <a href="https://www.youtube.com/watch?v=eMlx5fFNoYc">video</a></li>
+  <li><span class="badge b-web">WEB</span><b>Jay Alammar — "The Illustrated Transformer"</b> The canonical diagram-driven walkthrough of Q/K/V and multi-head attention. <a href="https://jalammar.github.io/illustrated-transformer/">web</a></li>
 </ul>
 
-<h2>Stage 1 &mdash; the idea, then the architecture</h2>
+<h2>Stage 1 — the idea, then the architecture</h2>
 <p class="grouphdr">Motivation before mechanism; then the core paper, read alongside its equation-by-equation companions.</p>
-<ol class="papers">
+<ol class="papers" start="1">
   <li>
     <span class="title">Neural Machine Translation by Jointly Learning to Align and Translate</span> &mdash; Bahdanau, Cho, Bengio
-    <div class="meta"><span class="badge b-pdf">PDF&middot;15pp</span>arXiv 1409.0473 &middot; Sep 2014 (ICLR 2015) &middot; <span class="file">02_Bahdanau-Attention_1409.0473.pdf</span></div>
-    <div class="why-here">Attention in its original RNN setting &mdash; see <em>why</em> attention exists before it becomes the whole model.</div>
+    <div class="meta"><span class="badge b-pdf">PDF&middot;15pp</span>ICLR 2015 &middot; <a href="https://arxiv.org/abs/1409.0473">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1409.0473">PDF</a></div>
+    <div class="why-here">Attention in its original RNN setting — see <em>why</em> attention exists before it becomes the whole model.</div>
   </li>
   <li>
     <span class="title">Attention Is All You Need</span> &mdash; Vaswani et al.
-    <div class="meta"><span class="badge b-pdf">PDF&middot;15pp</span>arXiv 1706.03762 &middot; Jun 2017 (NeurIPS 2017) &middot; <span class="file">01_Attention-Is-All-You-Need_1706.03762.pdf</span></div>
-    <div class="why-here">The core paper: full encoder&ndash;decoder transformer, multi-head self-attention, positional encoding, tied embeddings. Read most carefully &mdash; and alongside these:</div>
-    <ul class="comp">
-      <li><span class="badge b-pdf">PDF&middot;58pp</span><b>The Annotated Transformer</b> (Harvard NLP) &mdash; each equation next to the PyTorch that computes it. <span class="file">Companion_Annotated-Transformer_HarvardNLP.pdf</span></li>
-      <li><span class="badge b-pdf">PDF&middot;59pp</span><b>Dive into Deep Learning &mdash; Attention &amp; Transformers chapter</b> &mdash; equations + runnable code + exercises. <span class="file">Companion_d2l_Attention-and-Transformers-chapter.pdf</span></li>
-      <li><span class="badge b-web">WEB</span><b>Peter Bloem &mdash; &ldquo;Transformers from scratch.&rdquo;</b> The plain-language <em>why</em>: why a dot product, why divide by &radic;d<sub>k</sub>. <span class="u">peterbloem.nl/blog/transformers</span></li>
-    </ul>
+    <div class="meta"><span class="badge b-pdf">PDF&middot;15pp</span>NeurIPS 2017 &middot; <a href="https://arxiv.org/abs/1706.03762">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1706.03762">PDF</a></div>
+    <div class="why-here">The core paper: full encoder–decoder transformer, multi-head self-attention, positional encoding, tied embeddings. Read most carefully — and alongside these:</div>
   </li>
 </ol>
 
-<h2>Stage 2 &mdash; details the core paper only references</h2>
-<p class="grouphdr">Short papers filling in two things paper 01 uses but doesn&rsquo;t derive: tied embeddings, and where tokens come from.</p>
+<h2>Stage 2 — details the core paper only references</h2>
+<p class="grouphdr">Short papers filling in two things paper 2 uses but doesn't derive: tied embeddings, and where tokens come from.</p>
 <ol class="papers" start="3" style="counter-reset:item 2;">
   <li>
-    <span class="title">Using the Output Embedding to Tie Word Embeddings</span> &mdash; Press &amp; Wolf
-    <div class="meta"><span class="badge b-pdf">PDF&middot;7pp</span>arXiv 1608.05859 &middot; Aug 2016 (EACL 2017) &middot; <span class="file">10_Weight-Tying_Press-Wolf_1608.05859.pdf</span></div>
-    <div class="why-here">Why the input embedding and the pre-softmax de-embedding can be the same matrix (&sect;3.4 of paper 01 cites this).</div>
+    <span class="title">Using the Output Embedding to Tie Word Embeddings</span> &mdash; Press, Wolf
+    <div class="meta"><span class="badge b-pdf">PDF&middot;7pp</span>EACL 2017 &middot; <a href="https://arxiv.org/abs/1608.05859">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1608.05859">PDF</a></div>
+    <div class="why-here">Why the input embedding and the pre-softmax de-embedding can be the same matrix.</div>
   </li>
   <li>
-    <span class="title">Neural MT of Rare Words with Subword Units (BPE)</span> &mdash; Sennrich, Haddow, Birch
-    <div class="meta"><span class="badge b-pdf">PDF&middot;11pp</span>arXiv 1508.07909 &middot; Aug 2015 (ACL 2016) &middot; <span class="file">11_BPE_Subword-Units_1508.07909.pdf</span></div>
-    <div class="why-here">Byte-pair encoding &mdash; how the token vocabulary is built.</div>
-    <ul class="comp">
-      <li><span class="badge b-vid">VIDEO</span><b>Karpathy &mdash; &ldquo;Let&rsquo;s build the GPT Tokenizer.&rdquo;</b> Tokenization built in code, start to finish. <span class="u">youtube.com/watch?v=zduSFxRajkE</span></li>
-    </ul>
+    <span class="title">Neural Machine Translation of Rare Words with Subword Units (BPE)</span> &mdash; Sennrich, Haddow, Birch
+    <div class="meta"><span class="badge b-pdf">PDF&middot;11pp</span>ACL 2016 &middot; <a href="https://arxiv.org/abs/1508.07909">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1508.07909">PDF</a></div>
+    <div class="why-here">Byte-pair encoding — how the token vocabulary is built.</div>
   </li>
   <li>
-    <span class="title">Google&rsquo;s Neural Machine Translation System (WordPiece)</span> &mdash; Wu et al.
-    <div class="meta"><span class="badge b-pdf">PDF&middot;23pp</span>arXiv 1609.08144 &middot; Sep 2016 &middot; <span class="file">13_WordPiece_GNMT_1609.08144.pdf</span></div>
-    <div class="why-here">Source of WordPiece (BERT&rsquo;s tokenizer) and a large seq2seq system from just before the transformer.</div>
+    <span class="title">Google's Neural Machine Translation System (WordPiece)</span> &mdash; Wu et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;23pp</span>2016 &middot; <a href="https://arxiv.org/abs/1609.08144">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1609.08144">PDF</a></div>
+    <div class="why-here">Source of WordPiece (BERT's tokenizer) and a large seq2seq system from just before the transformer.</div>
   </li>
   <li>
-    <span class="title">SentencePiece</span> &mdash; Kudo &amp; Richardson
-    <div class="meta"><span class="badge b-pdf">PDF&middot;6pp</span>arXiv 1808.06226 &middot; Aug 2018 (EMNLP 2018) &middot; <span class="file">12_SentencePiece_1808.06226.pdf</span></div>
-    <div class="why-here">Language-agnostic tokenization on raw text &mdash; the tooling most modern vocabularies are trained with.</div>
+    <span class="title">SentencePiece</span> &mdash; Kudo, Richardson
+    <div class="meta"><span class="badge b-pdf">PDF&middot;6pp</span>EMNLP 2018 &middot; <a href="https://arxiv.org/abs/1808.06226">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1808.06226">PDF</a></div>
+    <div class="why-here">Language-agnostic tokenization on raw text — the tooling most modern vocabularies are trained with.</div>
   </li>
 </ol>
 
-<h2>Stage 3 &mdash; architecture refinements</h2>
+<h2>Stage 3 — architecture refinements</h2>
 <p class="grouphdr">Only meaningful once you know the base block: where it normalizes, and how far it can attend.</p>
 <ol class="papers" start="7" style="counter-reset:item 6;">
   <li>
     <span class="title">On Layer Normalization in the Transformer Architecture (Pre-LN)</span> &mdash; Xiong et al.
-    <div class="meta"><span class="badge b-pdf">PDF&middot;17pp</span>arXiv 2002.04745 &middot; Feb 2020 (ICML 2020) &middot; <span class="file">09_Pre-LN_On-Layer-Normalization_2002.04745.pdf</span></div>
+    <div class="meta"><span class="badge b-pdf">PDF&middot;17pp</span>ICML 2020 &middot; <a href="https://arxiv.org/abs/2002.04745">arXiv</a> &middot; <a href="https://arxiv.org/pdf/2002.04745">PDF</a></div>
     <div class="why-here">Post-LN vs Pre-LN: why moving the layer norm inside the residual branch lets deep transformers train without warmup.</div>
   </li>
   <li>
     <span class="title">Transformer-XL</span> &mdash; Dai et al.
-    <div class="meta"><span class="badge b-pdf">PDF&middot;20pp</span>arXiv 1901.02860 &middot; Jan 2019 (ACL 2019) &middot; <span class="file">08_Transformer-XL_1901.02860.pdf</span></div>
-    <div class="why-here">Segment-level recurrence + relative positions to attend beyond a fixed window &mdash; the first serious answer to fixed context length.</div>
+    <div class="meta"><span class="badge b-pdf">PDF&middot;20pp</span>ACL 2019 &middot; <a href="https://arxiv.org/abs/1901.02860">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1901.02860">PDF</a></div>
+    <div class="why-here">Segment-level recurrence + relative positions to attend beyond a fixed window — the first serious answer to fixed context length.</div>
   </li>
 </ol>
 
-<h2>Stage 4 &mdash; the three model families</h2>
-<p class="grouphdr">Each is one specialization of the core architecture &mdash; encoder-only, decoder-only, vision &mdash; and reads fast once Stages 1&ndash;3 are in hand.</p>
+<h2>Stage 4 — the three model families</h2>
+<p class="grouphdr">Each is one specialization of the core architecture — encoder-only, decoder-only, vision — and reads fast once Stages 1–3 are in hand.</p>
 <ol class="papers" start="9" style="counter-reset:item 8;">
   <li>
     <span class="title">BERT: Pre-training of Deep Bidirectional Transformers</span> &mdash; Devlin et al.
-    <div class="meta"><span class="badge b-pdf">PDF&middot;16pp</span>arXiv 1810.04805 &middot; Oct 2018 (NAACL 2019) &middot; <span class="file">03_BERT_1810.04805.pdf</span></div>
+    <div class="meta"><span class="badge b-pdf">PDF&middot;16pp</span>NAACL 2019 &middot; <a href="https://arxiv.org/abs/1810.04805">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1810.04805">PDF</a></div>
     <div class="why-here"><em>Encoder-only.</em> Bidirectional masked-LM pretraining of the encoder stack.</div>
-    <ul class="comp"><li><span class="badge b-web">WEB</span><b>Jay Alammar &mdash; &ldquo;The Illustrated BERT.&rdquo;</b> <span class="u">jalammar.github.io/illustrated-bert/</span></li></ul>
   </li>
   <li>
     <span class="title">Improving Language Understanding by Generative Pre-Training (GPT-1)</span> &mdash; Radford et al.
-    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>OpenAI technical report &middot; Jun 2018 &middot; <span class="file">04_GPT-1_Improving-Language-Understanding.pdf</span></div>
-    <div class="why-here"><em>Decoder-only.</em> Generative pretraining of a masked-self-attention decoder stack &mdash; the start of the GPT line.</div>
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>2018 &middot; <a href="https://cdn.openai.com/research-covers/language-unsupervised/language_understanding_paper.pdf">PDF</a></div>
+    <div class="why-here"><em>Decoder-only.</em> Generative pretraining of a masked-self-attention decoder stack — the start of the GPT line.</div>
   </li>
   <li>
     <span class="title">Language Models are Unsupervised Multitask Learners (GPT-2)</span> &mdash; Radford et al.
-    <div class="meta"><span class="badge b-pdf">PDF&middot;24pp</span>OpenAI technical report &middot; Feb 2019 &middot; <span class="file">05_GPT-2_LMs-Unsupervised-Multitask-Learners.pdf</span></div>
+    <div class="meta"><span class="badge b-pdf">PDF&middot;24pp</span>2019 &middot; <a href="https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf">PDF</a></div>
     <div class="why-here">Scaling the decoder-only model; zero-shot task transfer from a bigger LM.</div>
-    <ul class="comp"><li><span class="badge b-web">WEB</span><b>Jay Alammar &mdash; &ldquo;The Illustrated GPT-2.&rdquo;</b> <span class="u">jalammar.github.io/illustrated-gpt2/</span></li></ul>
   </li>
   <li>
     <span class="title">Language Models are Few-Shot Learners (GPT-3)</span> &mdash; Brown et al.
-    <div class="meta"><span class="badge b-pdf">PDF&middot;75pp</span>arXiv 2005.14165 &middot; May 2020 (NeurIPS 2020) &middot; <span class="file">06_GPT-3_Few-Shot-Learners_2005.14165.pdf</span></div>
-    <div class="why-here">Scaling further; in-context / few-shot learning emerges without gradient updates. (Longest in the set &mdash; skim the appendices.)</div>
-    <ul class="comp"><li><span class="badge b-vid">VIDEO</span><b>Karpathy &mdash; &ldquo;Let&rsquo;s build GPT: from scratch, in code&rdquo;</b> (+ nanoGPT). The capstone: build a decoder-only model yourself. <span class="u">youtube.com/watch?v=kCc8FmEb1nY</span> &middot; series: <span class="u">karpathy.ai/zero-to-hero.html</span></li></ul>
+    <div class="meta"><span class="badge b-pdf">PDF&middot;75pp</span>NeurIPS 2020 &middot; <a href="https://arxiv.org/abs/2005.14165">arXiv</a> &middot; <a href="https://arxiv.org/pdf/2005.14165">PDF</a></div>
+    <div class="why-here">Scaling further; in-context / few-shot learning emerges without gradient updates. (Longest in the set — skim the appendices.)</div>
   </li>
   <li>
-    <span class="title">An Image is Worth 16&times;16 Words (ViT)</span> &mdash; Dosovitskiy et al.
-    <div class="meta"><span class="badge b-pdf">PDF&middot;22pp</span>arXiv 2010.11929 &middot; Oct 2020 (ICLR 2021) &middot; <span class="file">07_ViT_16x16-Words_2010.11929.pdf</span></div>
-    <div class="why-here"><em>Vision.</em> Feed image patches to a plain transformer encoder &mdash; the architecture isn&rsquo;t language-specific.</div>
+    <span class="title">An Image is Worth 16×16 Words (ViT)</span> &mdash; Dosovitskiy et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;22pp</span>ICLR 2021 &middot; <a href="https://arxiv.org/abs/2010.11929">arXiv</a> &middot; <a href="https://arxiv.org/pdf/2010.11929">PDF</a></div>
+    <div class="why-here"><em>Vision.</em> Feed image patches to a plain transformer encoder — the architecture isn't language-specific.</div>
   </li>
 </ol>
 
-<h2>Reference shelf &mdash; books &amp; deep-dives</h2>
-<p class="grouphdr">Dip in for background and the math behind the notation; don&rsquo;t read cover-to-cover.</p>
+<h2>Reference shelf &mdash; books</h2>
+<p class="grouphdr">The standard texts for the area; free copies linked where a legal one exists.</p>
 <ul class="refs">
-  <li><span class="badge b-book">BOOK&middot;541pp</span><b>Understanding Deep Learning</b> &mdash; Prince (MIT Press 2023). Best figures; strong attention/transformer chapters. <span class="file">Book_UnderstandingDeepLearning_Prince.pdf</span></li>
-  <li><span class="badge b-book">BOOK&middot;417pp</span><b>Mathematics for Machine Learning</b> &mdash; Deisenroth, Faisal &amp; Ong (Cambridge 2020). The linear algebra / calculus / probability behind the notation. <span class="file">Book_MathForML_Deisenroth.pdf</span></li>
-  <li><span class="badge b-book">BOOK&middot;189pp</span><b>The Little Book of Deep Learning</b> &mdash; Fleuret. Compact; covers attention/transformers. <span class="file">Book_LittleBookDeepLearning_Fleuret.pdf</span></li>
-  <li><span class="badge b-book">BOOK&middot;626pp</span><b>Speech &amp; Language Processing (3rd ed. draft)</b> &mdash; Jurafsky &amp; Martin. Readable NLP text; gentle transformer/LLM chapters. <span class="file">Book_SpeechAndLanguageProcessing_JurafskyMartin_ed3.pdf</span></li>
-  <li><span class="badge b-web">WEB</span><b>Dive into Deep Learning</b> (Zhang et&nbsp;al.) <span class="u">d2l.ai</span> &mdash; free online, also in print (Cambridge UP 2023); <em>the d2l companion PDF above is this book&rsquo;s Ch.&nbsp;11</em>. &nbsp;&middot;&nbsp; <b>Deep Learning</b> (Goodfellow et&nbsp;al. 2016) &mdash; math foundations <span class="u">deeplearningbook.org</span> &nbsp;&middot;&nbsp; <b>Lilian Weng, &ldquo;Attention? Attention!&rdquo;</b> <span class="u">lilianweng.github.io/posts/2018-06-24-attention/</span></li>
-  <li><span class="badge b-buy">BUY</span><b>Build a LLM (From Scratch)</b> &mdash; Raschka (Manning 2024), hands-on &nbsp;&middot;&nbsp; <b>Hands-On Large Language Models</b> &mdash; Alammar &amp; Grootendorst (O&rsquo;Reilly 2024), visual &nbsp;&middot;&nbsp; <b>NLP with Transformers</b> &mdash; Tunstall et&nbsp;al. (O&rsquo;Reilly 2022), the Hugging&nbsp;Face book</li>
+  <li><span class="badge b-book">BOOK&middot;541pp</span><b>Understanding Deep Learning</b> &mdash; Prince (MIT Press 2023) &middot; Best figures; strong attention/transformer chapters. <a href="https://github.com/udlbook/udlbook/releases/download/v5.0.3/UnderstandingDeepLearning_02_09_26_C.pdf">PDF</a></li>
+  <li><span class="badge b-book">BOOK&middot;417pp</span><b>Mathematics for Machine Learning</b> &mdash; Deisenroth, Faisal, Ong (2020) &middot; The linear algebra / calculus / probability behind the notation. <a href="https://mml-book.github.io/book/mml-book.pdf">PDF</a></li>
+  <li><span class="badge b-book">BOOK&middot;189pp</span><b>The Little Book of Deep Learning</b> &mdash; Fleuret (2023) &middot; Compact; covers attention/transformers. <a href="https://fleuret.org/public/lbdl.pdf">PDF</a></li>
+  <li><span class="badge b-book">BOOK&middot;626pp</span><b>Speech and Language Processing (3rd ed. draft)</b> &mdash; Jurafsky, Martin (2024) &middot; Readable NLP text; gentle transformer/LLM chapters. <a href="https://web.stanford.edu/~jurafsky/slp3/">page</a></li>
+  <li><span class="badge b-book">BOOK</span><b>Dive into Deep Learning</b> &mdash; Zhang, Lipton, Li, Smola (Cambridge 2023) &middot; Free online and in print; ch. 11 is the attention/transformers companion. <a href="https://d2l.ai/">page</a></li>
+  <li><span class="badge b-book">BOOK</span><b>Deep Learning</b> &mdash; Goodfellow, Bengio, Courville (2016) &middot; The math foundations. <a href="https://www.deeplearningbook.org/">page</a></li>
+  <li><span class="badge b-buy">BUY</span><b>Build a Large Language Model (From Scratch)</b> &mdash; Raschka (Manning 2024) &middot; Hands-on, build-it-yourself. <a href="https://www.manning.com/books/build-a-large-language-model-from-scratch">page</a></li>
+  <li><span class="badge b-buy">BUY</span><b>Hands-On Large Language Models</b> &mdash; Alammar, Grootendorst (O'Reilly 2024) &middot; Visual and practical. <a href="https://www.oreilly.com/library/view/hands-on-large-language/9781098150952/">page</a></li>
 </ul>
 
 <h2>Key equations, in plain English</h2>

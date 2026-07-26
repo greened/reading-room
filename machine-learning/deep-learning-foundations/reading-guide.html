@@ -8,75 +8,202 @@
 <body>
 
 <h1>Machine learning · Deep-learning foundations</h1>
-<p class="tally">In-depth landmark list for this subtopic. <span class="badge b-pdf">PDF</span>open copy available &middot; <span class="badge b-web">DOI</span>publisher link only.</p>
+<p class="sub">The ideas that make a deep neural network <em>work</em>: what it can represent, how it is trained, the tricks that let gradients reach many layers, and the theory of why such over-parameterized models generalize at all. The path below runs from representational power (what a net <em>can</em> compute) → the learning algorithm (backprop) → making depth trainable (initialization, optimizers, activations, normalization, skip connections) → and finally the modern theory of generalization (rethinking generalization, double descent, lottery tickets, the neural tangent kernel, flat minima, and grokking). Read it in order and each section removes an obstacle the previous one exposed.</p>
+<p class="tally">30 papers &middot; &asymp; <b>494 pp</b> of primary reading. &nbsp; Legend: <span class="badge b-pdf">PDF</span>open copy (see <span class="file">fetch.sh</span>) &middot; <span class="badge b-web">DOI</span>publisher link only</p>
+<div class="why"><b>How to read this list.</b> Start with the two 1989 universal-approximation results so you know a network <em>can</em> fit any function — then everything after is about making that fit <em>learnable at depth</em>. Backprop is the engine; initialization, optimizers, activations, and normalization are what keep the engine from stalling as nets get deep; the last section explains why the result still generalizes.</div>
 
-<ol class="papers">
+<h2>Orientation &amp; representational power</h2>
+<p class="grouphdr">Begin with what a neural net can represent, plus one modern overview, before touching how to train it.</p>
+<ol class="papers" start="1">
   <li>
-    <span class="title">Learning representations by back-propagating errors</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1038/323533a0">DOI</a></div>
-    <div class="why-here">Rumelhart, Hinton, Williams, 1986, Nature. Established backpropagation as the practical way to train multi-layer nets.</div>
+    <span class="title">Deep Learning</span> &mdash; LeCun, Bengio, Hinton
+    <div class="meta"><span class="badge b-pdf">PDF&middot;9pp</span>Nature 2015 &middot; <a href="https://doi.org/10.1038/nature14539">DOI</a> &middot; <a href="https://www.cs.toronto.edu/~hinton/absps/NatureDeepReview.pdf">PDF</a></div>
+    <div class="why-here">A compact survey of the whole field by three of its architects; the map for everything that follows.</div>
   </li>
   <li>
-    <span class="title">Gradient-Based Learning Applied to Document Recognition</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1109/5.726791">DOI</a></div>
-    <div class="why-here">LeCun, Bottou, Bengio, Haffner, 1998, Proc. IEEE. LeNet-5 and end-to-end gradient-trained CNNs.</div>
+    <span class="title">Approximation by Superpositions of a Sigmoidal Function</span> &mdash; Cybenko
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>Math. of Control, Signals and Systems 1989 &middot; <a href="https://doi.org/10.1007/BF02551274">DOI</a> &middot; <a href="https://hal.science/hal-03753170v1/file/Cybenko1989.pdf">PDF</a></div>
+    <div class="why-here">The first proof that a single hidden layer of sigmoidal units is a universal approximator.</div>
   </li>
   <li>
-    <span class="title">Reducing the Dimensionality of Data with Neural Networks</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1126/science.1127647">DOI</a> &middot; <a href="https://www.cs.toronto.edu/~hinton/absps/science.pdf">PDF</a></div>
-    <div class="why-here">Hinton, Salakhutdinov, 2006, Science. Greedy layer-wise pretraining reignited deep learning.</div>
-  </li>
-  <li>
-    <span class="title">Understanding the difficulty of training deep feedforward neural networks</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://proceedings.mlr.press/v9/glorot10a.html">page</a> &middot; <a href="https://proceedings.mlr.press/v9/glorot10a/glorot10a.pdf">PDF</a></div>
-    <div class="why-here">Glorot, Bengio, 2010, AISTATS. Xavier/Glorot initialization.</div>
-  </li>
-  <li>
-    <span class="title">Dropout: A Simple Way to Prevent Neural Networks from Overfitting</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://jmlr.org/papers/v15/srivastava14a.html">page</a> &middot; <a href="https://jmlr.org/papers/volume15/srivastava14a/srivastava14a.pdf">PDF</a></div>
-    <div class="why-here">Srivastava, Hinton, Krizhevsky, Sutskever, Salakhutdinov, 2014, JMLR. Dropout regularization.</div>
-  </li>
-  <li>
-    <span class="title">Batch Normalization</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/1502.03167">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1502.03167">PDF</a></div>
-    <div class="why-here">Ioffe, Szegedy, 2015, ICML. Normalizing activations to train deep nets faster and more stably.</div>
-  </li>
-  <li>
-    <span class="title">Adam: A Method for Stochastic Optimization</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/1412.6980">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1412.6980">PDF</a></div>
-    <div class="why-here">Kingma, Ba, 2015, ICLR. The default adaptive-gradient optimizer.</div>
-  </li>
-  <li>
-    <span class="title">Deep Residual Learning for Image Recognition</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/1512.03385">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1512.03385">PDF</a></div>
-    <div class="why-here">He, Zhang, Ren, Sun, 2016, CVPR. Residual/skip connections; scales to 100+ layers (and into transformers).</div>
-  </li>
-  <li>
-    <span class="title">Delving Deep into Rectifiers (PReLU / Kaiming init)</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/1502.01852">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1502.01852">PDF</a></div>
-    <div class="why-here">He, Zhang, Ren, Sun, 2015, ICCV. PReLU + He initialization for stably training very deep rectifier nets.</div>
-  </li>
-  <li>
-    <span class="title">Layer Normalization</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/1607.06450">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1607.06450">PDF</a></div>
-    <div class="why-here">Ba, Kiros, Hinton, 2016, arXiv. Batch-size-independent normalization, foundational to RNNs and Transformers.</div>
-  </li>
-  <li>
-    <span class="title">On the Importance of Initialization and Momentum in Deep Learning</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://proceedings.mlr.press/v28/sutskever13.html">page</a> &middot; <a href="https://proceedings.mlr.press/v28/sutskever13.pdf">PDF</a></div>
-    <div class="why-here">Sutskever, Martens, Dahl, Hinton, 2013, ICML. Careful init + Nesterov momentum lets plain SGD train deep nets.</div>
-  </li>
-  <li>
-    <span class="title">Approximation by Superpositions of a Sigmoidal Function</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1007/BF02551274">DOI</a></div>
-    <div class="why-here">Cybenko, 1989, Math. of Control, Signals and Systems. First proof that one-hidden-layer sigmoidal nets are universal approximators.</div>
-  </li>
-  <li>
-    <span class="title">Gaussian Error Linear Units (GELUs)</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/1606.08415">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1606.08415">PDF</a></div>
-    <div class="why-here">Hendrycks, Gimpel, 2016, arXiv. The GELU activation, now the default nonlinearity in Transformers.</div>
+    <span class="title">Multilayer Feedforward Networks are Universal Approximators</span> &mdash; Hornik, Stinchcombe, White
+    <div class="meta"><span class="badge b-pdf">PDF&middot;8pp</span>Neural Networks 1989 &middot; <a href="https://doi.org/10.1016/0893-6080%2889%2990020-8">DOI</a> &middot; <a href="https://cognitivemedium.com/magic_paper/assets/Hornik.pdf">PDF</a></div>
+    <div class="why-here">The independent, more general statement: it is the multilayer architecture, not any particular squashing function, that gives universality.</div>
   </li>
 </ol>
+
+<h2>Learning by gradient descent</h2>
+<p class="grouphdr">The algorithm that makes fitting possible — and its first real success on images.</p>
+<ol class="papers" start="4" style="counter-reset:item 3;">
+  <li>
+    <span class="title">Learning representations by back-propagating errors</span> &mdash; Rumelhart, Hinton, Williams
+    <div class="meta"><span class="badge b-pdf">PDF&middot;4pp</span>Nature 1986 &middot; <a href="https://doi.org/10.1038/323533a0">DOI</a> &middot; <a href="https://www.cs.toronto.edu/~hinton/absps/naturebp.pdf">PDF</a></div>
+    <div class="why-here">Established backpropagation as the practical way to train multi-layer nets.</div>
+  </li>
+  <li>
+    <span class="title">Gradient-Based Learning Applied to Document Recognition</span> &mdash; LeCun, Bottou, Bengio, Haffner
+    <div class="meta"><span class="badge b-pdf">PDF&middot;46pp</span>Proc. IEEE 1998 &middot; <a href="https://doi.org/10.1109/5.726791">DOI</a> &middot; <a href="http://yann.lecun.com/exdb/publis/pdf/lecun-98.pdf">PDF</a></div>
+    <div class="why-here">LeNet-5 and end-to-end gradient-trained CNNs — backprop applied to a real, structured architecture.</div>
+  </li>
+</ol>
+
+<h2>Making deep nets trainable: initialization &amp; optimization</h2>
+<p class="grouphdr">Deep nets stalled for years until careful initialization, momentum, and adaptive optimizers tamed the gradients.</p>
+<ol class="papers" start="6" style="counter-reset:item 5;">
+  <li>
+    <span class="title">On the Importance of Initialization and Momentum in Deep Learning</span> &mdash; Sutskever, Martens, Dahl, Hinton
+    <div class="meta"><span class="badge b-pdf">PDF&middot;9pp</span>ICML 2013 &middot; <a href="https://proceedings.mlr.press/v28/sutskever13.html">page</a> &middot; <a href="https://proceedings.mlr.press/v28/sutskever13.pdf">PDF</a></div>
+    <div class="why-here">Careful init plus Nesterov momentum lets plain SGD train deep nets — the empirical case that <em>how</em> you start and step matters.</div>
+  </li>
+  <li>
+    <span class="title">Understanding the difficulty of training deep feedforward neural networks</span> &mdash; Glorot, Bengio
+    <div class="meta"><span class="badge b-pdf">PDF&middot;8pp</span>AISTATS 2010 &middot; <a href="https://proceedings.mlr.press/v9/glorot10a.html">page</a> &middot; <a href="https://proceedings.mlr.press/v9/glorot10a/glorot10a.pdf">PDF</a></div>
+    <div class="why-here">Xavier/Glorot initialization: scale the weights so variance is preserved across layers.</div>
+  </li>
+  <li>
+    <span class="title">Delving Deep into Rectifiers (PReLU / He init)</span> &mdash; He, Zhang, Ren, Sun
+    <div class="meta"><span class="badge b-pdf">PDF&middot;11pp</span>ICCV 2015 &middot; <a href="https://arxiv.org/abs/1502.01852">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1502.01852">PDF</a></div>
+    <div class="why-here">PReLU plus the He initialization that fixes Xavier's variance for rectifier nets — the standard init for ReLU networks.</div>
+  </li>
+  <li>
+    <span class="title">Adaptive Subgradient Methods for Online Learning and Stochastic Optimization (AdaGrad)</span> &mdash; Duchi, Hazan, Singer
+    <div class="meta"><span class="badge b-pdf">PDF&middot;39pp</span>JMLR 2011 &middot; <a href="https://jmlr.org/papers/v12/duchi11a.html">page</a> &middot; <a href="https://jmlr.org/papers/volume12/duchi11a/duchi11a.pdf">PDF</a></div>
+    <div class="why-here">Per-parameter learning rates that shrink with accumulated gradient — the ancestor of every adaptive optimizer, Adam included.</div>
+  </li>
+  <li>
+    <span class="title">Adam: A Method for Stochastic Optimization</span> &mdash; Kingma, Ba
+    <div class="meta"><span class="badge b-pdf">PDF&middot;15pp</span>ICLR 2015 &middot; <a href="https://arxiv.org/abs/1412.6980">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1412.6980">PDF</a></div>
+    <div class="why-here">The default adaptive-gradient optimizer; per-parameter learning rates from running moment estimates.</div>
+  </li>
+  <li>
+    <span class="title">On the Convergence of Adam and Beyond (AMSGrad)</span> &mdash; Reddi, Kale, Kumar
+    <div class="meta"><span class="badge b-pdf">PDF&middot;23pp</span>ICLR 2018 &middot; <a href="https://arxiv.org/abs/1904.09237">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1904.09237">PDF</a></div>
+    <div class="why-here">Shows Adam can fail to converge on simple problems and proposes the AMSGrad fix — the paper that made "does your optimizer actually converge?" a first-class question.</div>
+  </li>
+  <li>
+    <span class="title">Decoupled Weight Decay Regularization (AdamW)</span> &mdash; Loshchilov, Hutter
+    <div class="meta"><span class="badge b-pdf">PDF&middot;19pp</span>ICLR 2019 &middot; <a href="https://arxiv.org/abs/1711.05101">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1711.05101">PDF</a></div>
+    <div class="why-here">Separates weight decay from the L2 gradient term so it behaves correctly under adaptive optimizers — now the default recipe for training Transformers.</div>
+  </li>
+  <li>
+    <span class="title">SGDR: Stochastic Gradient Descent with Warm Restarts</span> &mdash; Loshchilov, Hutter
+    <div class="meta"><span class="badge b-pdf">PDF&middot;16pp</span>ICLR 2017 &middot; <a href="https://arxiv.org/abs/1608.03983">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1608.03983">PDF</a></div>
+    <div class="why-here">Cosine-annealed learning rates with periodic warm restarts — the schedule behind most modern training runs.</div>
+  </li>
+</ol>
+
+<h2>Activations, normalization &amp; regularization</h2>
+<p class="grouphdr">The per-layer tricks that keep gradients flowing and curb overfitting once nets get deep.</p>
+<ol class="papers" start="14" style="counter-reset:item 13;">
+  <li>
+    <span class="title">Deep Sparse Rectifier Neural Networks (ReLU)</span> &mdash; Glorot, Bordes, Bengio
+    <div class="meta"><span class="badge b-pdf">PDF&middot;9pp</span>AISTATS 2011 &middot; <a href="https://proceedings.mlr.press/v15/glorot11a.html">page</a> &middot; <a href="https://proceedings.mlr.press/v15/glorot11a/glorot11a.pdf">PDF</a></div>
+    <div class="why-here">The case for the rectified linear unit: sparse activations and non-vanishing gradients that made deep supervised training practical.</div>
+  </li>
+  <li>
+    <span class="title">Gaussian Error Linear Units (GELUs)</span> &mdash; Hendrycks, Gimpel
+    <div class="meta"><span class="badge b-pdf">PDF&middot;10pp</span>2016 &middot; <a href="https://arxiv.org/abs/1606.08415">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1606.08415">PDF</a></div>
+    <div class="why-here">The smooth activation that is now the default nonlinearity in Transformers.</div>
+  </li>
+  <li>
+    <span class="title">Dropout: A Simple Way to Prevent Neural Networks from Overfitting</span> &mdash; Srivastava, Hinton, Krizhevsky, Sutskever, Salakhutdinov
+    <div class="meta"><span class="badge b-pdf">PDF&middot;30pp</span>JMLR 2014 &middot; <a href="https://jmlr.org/papers/v15/srivastava14a.html">page</a> &middot; <a href="https://jmlr.org/papers/volume15/srivastava14a/srivastava14a.pdf">PDF</a></div>
+    <div class="why-here">Randomly dropping units as an ensemble-like regularizer — the workhorse against overfitting.</div>
+  </li>
+  <li>
+    <span class="title">Batch Normalization</span> &mdash; Ioffe, Szegedy
+    <div class="meta"><span class="badge b-pdf">PDF&middot;11pp</span>ICML 2015 &middot; <a href="https://arxiv.org/abs/1502.03167">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1502.03167">PDF</a></div>
+    <div class="why-here">Normalizing activations per mini-batch to train deep nets faster and far more stably.</div>
+  </li>
+  <li>
+    <span class="title">Layer Normalization</span> &mdash; Ba, Kiros, Hinton
+    <div class="meta"><span class="badge b-pdf">PDF&middot;14pp</span>2016 &middot; <a href="https://arxiv.org/abs/1607.06450">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1607.06450">PDF</a></div>
+    <div class="why-here">Batch-size-independent normalization; the form that carries over into RNNs and Transformers.</div>
+  </li>
+  <li>
+    <span class="title">Group Normalization</span> &mdash; Wu, He
+    <div class="meta"><span class="badge b-pdf">PDF&middot;10pp</span>ECCV 2018 &middot; <a href="https://arxiv.org/abs/1803.08494">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1803.08494">PDF</a></div>
+    <div class="why-here">Normalizes over channel groups instead of the batch, so accuracy no longer collapses at the small batch sizes where BatchNorm breaks down.</div>
+  </li>
+  <li>
+    <span class="title">When Does Label Smoothing Help?</span> &mdash; Müller, Kornblith, Hinton
+    <div class="meta"><span class="badge b-pdf">PDF&middot;13pp</span>NeurIPS 2019 &middot; <a href="https://arxiv.org/abs/1906.02629">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1906.02629">PDF</a></div>
+    <div class="why-here">A careful study of softening one-hot targets: why it regularizes and calibrates a classifier, and when it quietly hurts distillation.</div>
+  </li>
+</ol>
+
+<h2>Depth at scale</h2>
+<p class="grouphdr">Unsupervised pretraining and skip connections — the two routes that first unlocked very deep networks.</p>
+<ol class="papers" start="21" style="counter-reset:item 20;">
+  <li>
+    <span class="title">Reducing the Dimensionality of Data with Neural Networks</span> &mdash; Hinton, Salakhutdinov
+    <div class="meta"><span class="badge b-pdf">PDF&middot;4pp</span>Science 2006 &middot; <a href="https://doi.org/10.1126/science.1127647">DOI</a> &middot; <a href="https://www.cs.toronto.edu/~hinton/absps/science.pdf">PDF</a></div>
+    <div class="why-here">Greedy layer-wise pretraining that reignited deep learning and showed depth could be trained at all.</div>
+  </li>
+  <li>
+    <span class="title">Deep Residual Learning for Image Recognition (ResNet)</span> &mdash; He, Zhang, Ren, Sun
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>CVPR 2016 &middot; <a href="https://arxiv.org/abs/1512.03385">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1512.03385">PDF</a></div>
+    <div class="why-here">Residual/skip connections that scale cleanly past 100 layers — and became a fixture inside Transformers.</div>
+  </li>
+  <li>
+    <span class="title">Residual Networks Behave Like Ensembles of Relatively Shallow Networks</span> &mdash; Veit, Wilber, Belongie
+    <div class="meta"><span class="badge b-pdf">PDF&middot;9pp</span>NeurIPS 2016 &middot; <a href="https://arxiv.org/abs/1605.06431">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1605.06431">PDF</a></div>
+    <div class="why-here">Reinterprets a ResNet as an implicit ensemble of many short paths — an explanation for why skip connections train so easily and degrade gracefully.</div>
+  </li>
+</ol>
+
+<h2>Why do they generalize?</h2>
+<p class="grouphdr">Over-parameterized nets fit random labels yet still generalize; this section is the modern theory of why.</p>
+<ol class="papers" start="24" style="counter-reset:item 23;">
+  <li>
+    <span class="title">Understanding deep learning requires rethinking generalization</span> &mdash; Zhang, Bengio, Hardt, Recht, Vinyals
+    <div class="meta"><span class="badge b-pdf">PDF&middot;15pp</span>ICLR 2017 &middot; <a href="https://arxiv.org/abs/1611.03530">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1611.03530">PDF</a></div>
+    <div class="why-here">The provocation: big nets memorize pure noise, so classical capacity bounds cannot explain their success.</div>
+  </li>
+  <li>
+    <span class="title">Reconciling modern machine-learning practice and the bias–variance trade-off</span> &mdash; Belkin, Hsu, Ma, Mandal
+    <div class="meta"><span class="badge b-pdf">PDF&middot;23pp</span>PNAS 2019 &middot; <a href="https://doi.org/10.1073/pnas.1903070116">DOI</a> &middot; <a href="https://arxiv.org/pdf/1812.11118">PDF</a></div>
+    <div class="why-here">Names the <em>double-descent</em> curve: test error falls, rises at the interpolation threshold, then falls again as models grow.</div>
+  </li>
+  <li>
+    <span class="title">Deep Double Descent</span> &mdash; Nakkiran, Kaplan, Bansal, Yang, Barak, Sutskever
+    <div class="meta"><span class="badge b-pdf">PDF&middot;24pp</span>ICLR 2020 &middot; <a href="https://arxiv.org/abs/1912.02292">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1912.02292">PDF</a></div>
+    <div class="why-here">Shows double descent empirically across model size, data size, and training time in real deep nets.</div>
+  </li>
+  <li>
+    <span class="title">The Lottery Ticket Hypothesis</span> &mdash; Frankle, Carbin
+    <div class="meta"><span class="badge b-pdf">PDF&middot;42pp</span>ICLR 2019 &middot; <a href="https://arxiv.org/abs/1803.03635">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1803.03635">PDF</a></div>
+    <div class="why-here">Dense nets contain small subnetworks that, trained from the same initialization, match the full model — reframing over-parameterization as a search for good sparse "tickets".</div>
+  </li>
+  <li>
+    <span class="title">Neural Tangent Kernel: Convergence and Generalization in Neural Networks</span> &mdash; Jacot, Gabriel, Hongler
+    <div class="meta"><span class="badge b-pdf">PDF&middot;19pp</span>NeurIPS 2018 &middot; <a href="https://arxiv.org/abs/1806.07572">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1806.07572">PDF</a></div>
+    <div class="why-here">In the infinite-width limit training behaves like a fixed kernel method — the theoretical lens that turns "why does it generalize?" into analyzable math.</div>
+  </li>
+  <li>
+    <span class="title">Sharpness-Aware Minimization for Efficiently Improving Generalization (SAM)</span> &mdash; Foret, Kleiner, Mobahi, Neyshabur
+    <div class="meta"><span class="badge b-pdf">PDF&middot;20pp</span>ICLR 2021 &middot; <a href="https://arxiv.org/abs/2010.01412">arXiv</a> &middot; <a href="https://arxiv.org/pdf/2010.01412">PDF</a></div>
+    <div class="why-here">Optimizes for parameters sitting in flat loss regions, turning the flat-minima intuition for generalization into a concrete, widely used algorithm.</div>
+  </li>
+  <li>
+    <span class="title">Grokking: Generalization Beyond Overfitting on Small Algorithmic Datasets</span> &mdash; Power, Burda, Edwards, Babuschkin, Misra
+    <div class="meta"><span class="badge b-pdf">PDF&middot;10pp</span>ICLR 2022 workshop &middot; <a href="https://arxiv.org/abs/2201.02177">arXiv</a> &middot; <a href="https://arxiv.org/pdf/2201.02177">PDF</a></div>
+    <div class="why-here">Networks that first memorize and only much later — long after zero training loss — suddenly generalize; a sharp puzzle for any theory of <em>when</em> generalization happens.</div>
+  </li>
+</ol>
+
+<h2>Reference shelf &mdash; books</h2>
+<p class="grouphdr">The standard texts for the area; free copies linked where a legal one exists.</p>
+<ul class="refs">
+  <li><span class="badge b-book">BOOK&middot;800pp</span><b>Deep Learning</b> &mdash; Goodfellow, Bengio, Courville (2016) &middot; The canonical text; Part II (ch. 6 feedforward nets, 7 regularization, 8 optimization) is the textbook version of this entire list. <a href="https://www.deeplearningbook.org/">page</a></li>
+  <li><span class="badge b-book">BOOK</span><b>Neural Networks and Deep Learning</b> &mdash; Michael Nielsen (2015) &middot; The gentlest visual derivation of backprop and universal approximation — the two companions above are its chapters 2 and 4. <a href="http://neuralnetworksanddeeplearning.com/">page</a></li>
+  <li><span class="badge b-book">BOOK&middot;544pp</span><b>Understanding Deep Learning</b> &mdash; Simon Prince (2023) &middot; A modern, richly illustrated graduate text covering initialization, normalization, and generalization in depth. <a href="https://udlbook.github.io/udlbook/">page</a></li>
+  <li><span class="badge b-book">BOOK</span><b>Dive into Deep Learning</b> &mdash; Zhang, Lipton, Li, Smola (2023) &middot; Equations, runnable code, and exercises for every foundation on this list. <a href="https://d2l.ai/">page</a></li>
+</ul>
+
+<h2>Key terms</h2>
+<p class="grouphdr">Vocabulary used across this list.</p>
+<div class="notekey"><b>backpropagation</b> &mdash; reverse-mode differentiation of the loss through the network to get every weight's gradient in one backward pass &nbsp; <b>universal approximation</b> &mdash; the result that a sufficiently wide one-hidden-layer net can approximate any continuous function arbitrarily well &nbsp; <b>vanishing / exploding gradients</b> &mdash; gradients shrinking or blowing up as they propagate through many layers, the core obstacle to training depth &nbsp; <b>initialization (Xavier / He)</b> &mdash; choosing initial weight scales so activation and gradient variance are preserved across layers &nbsp; <b>activation function</b> &mdash; the per-unit nonlinearity (sigmoid, ReLU, GELU) that lets a network represent non-linear maps &nbsp; <b>adaptive gradient (AdaGrad / Adam)</b> &mdash; per-parameter learning rates derived from a running summary of past gradients &nbsp; <b>weight decay</b> &mdash; shrinking weights toward zero each step; equivalent to L2 only for non-adaptive optimizers, which is why AdamW decouples it &nbsp; <b>learning-rate schedule / warm restart</b> &mdash; varying the step size over training, e.g. cosine annealing with periodic restarts (SGDR) &nbsp; <b>normalization (batch / layer / group)</b> &mdash; rescaling activations during training to stabilize and speed up optimization &nbsp; <b>dropout</b> &mdash; randomly zeroing units at training time as an ensemble-like regularizer &nbsp; <b>label smoothing</b> &mdash; replacing one-hot targets with slightly softened ones to regularize and calibrate a classifier &nbsp; <b>residual / skip connection</b> &mdash; adding a layer's input to its output so gradients have a short path, enabling very deep nets &nbsp; <b>over-parameterization</b> &mdash; having far more parameters than training examples, the regime modern deep nets operate in &nbsp; <b>double descent</b> &mdash; test error that descends, peaks at the interpolation threshold, then descends again as capacity grows &nbsp; <b>lottery ticket</b> &mdash; a sparse subnetwork whose original initialization lets it train to full-model accuracy on its own &nbsp; <b>flat minimum / sharpness</b> &mdash; a loss basin whose neighborhood also has low loss; flatter minima are associated with better generalization (SAM) &nbsp; <b>grokking</b> &mdash; delayed generalization, where test accuracy jumps long after the training loss has already reached zero &nbsp; <b>neural tangent kernel (NTK)</b> &mdash; the fixed kernel that describes an infinitely wide net's training dynamics under gradient descent</div>
 
 </body>
 </html>

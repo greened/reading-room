@@ -8,65 +8,215 @@
 <body>
 
 <h1>Machine learning · Generative models</h1>
-<p class="tally">In-depth landmark list for this subtopic. <span class="badge b-pdf">PDF</span>open copy available &middot; <span class="badge b-web">DOI</span>publisher link only.</p>
+<p class="sub">How do you teach a machine to <em>make</em> data — images, audio, 3D scenes — that looks like the real thing? The papers below trace the four families that answer that question and how they converged on today's practice. Read them as a path: start with the two foundational frameworks (VAE and GAN), watch the GAN line learn to train and scale, cross over to the explicit-likelihood models (autoregressive nets and normalizing flows), then follow the score-based and diffusion thread that now dominates — ending with the text-to-image systems that put all of it under natural- language control.</p>
+<p class="tally">31 papers &middot; &asymp; <b>687 pp</b> of primary reading. &nbsp; Legend: <span class="badge b-pdf">PDF</span>open copy (see <span class="file">fetch.sh</span>)</p>
+<div class="why"><b>How to read this list.</b> The four families answer the same question with different trade-offs: VAEs give a smooth latent space but blurry samples; GANs give sharp samples but no likelihood and unstable training; autoregressive/flow models give exact likelihood at a sampling cost; diffusion trades many small denoising steps for both stability and fidelity. Track <em>what each buys and what it costs</em> as you read, and the field's arc — GANs, then diffusion — will make sense.</div>
 
-<ol class="papers">
+<h2>Latent-variable and adversarial foundations</h2>
+<p class="grouphdr">The two ideas everything else builds on: a learned latent space you can decode (VAE), and a learned critic that scores realism (GAN).</p>
+<ol class="papers" start="1">
   <li>
-    <span class="title">Auto-Encoding Variational Bayes (VAE)</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/1312.6114">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1312.6114">PDF</a></div>
-    <div class="why-here">Kingma, Welling, 2013, ICLR. The VAE and reparameterization trick; deep latent-variable generative modeling.</div>
+    <span class="title">Auto-Encoding Variational Bayes (VAE)</span> &mdash; Kingma, Welling
+    <div class="meta"><span class="badge b-pdf">PDF&middot;14pp</span>ICLR 2014 &middot; <a href="https://arxiv.org/abs/1312.6114">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1312.6114">PDF</a></div>
+    <div class="why-here">The VAE and the reparameterization trick; the template for deep latent-variable generative modeling.</div>
   </li>
   <li>
-    <span class="title">Generative Adversarial Nets (GAN)</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/1406.2661">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1406.2661">PDF</a></div>
-    <div class="why-here">Goodfellow et al., 2014, NeurIPS. Generation as an adversarial game; a decade of high-fidelity synthesis.</div>
+    <span class="title">Neural Discrete Representation Learning (VQ-VAE)</span> &mdash; van den Oord, Vinyals, Kavukcuoglu
+    <div class="meta"><span class="badge b-pdf">PDF&middot;11pp</span>NeurIPS 2017 &middot; <a href="https://arxiv.org/abs/1711.00937">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1711.00937">PDF</a></div>
+    <div class="why-here">Discrete latents via vector quantization; the basis for later token-based image and audio generators.</div>
   </li>
   <li>
-    <span class="title">Denoising Diffusion Probabilistic Models (DDPM)</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/2006.11239">arXiv</a> &middot; <a href="https://arxiv.org/pdf/2006.11239">PDF</a></div>
-    <div class="why-here">Ho, Jain, Abbeel, 2020, NeurIPS. Launched diffusion as the dominant image-generation approach.</div>
+    <span class="title">Generative Adversarial Nets (GAN)</span> &mdash; Goodfellow et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;9pp</span>NeurIPS 2014 &middot; <a href="https://arxiv.org/abs/1406.2661">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1406.2661">PDF</a></div>
+    <div class="why-here">Generation as an adversarial game between a generator and a discriminator; a decade of high-fidelity synthesis followed.</div>
   </li>
   <li>
-    <span class="title">DCGAN: Unsupervised Representation Learning with Deep Convolutional GANs</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/1511.06434">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1511.06434">PDF</a></div>
-    <div class="why-here">Radford, Metz, Chintala, 2016, ICLR. Stable conv-net GAN training; the image-GAN template.</div>
+    <span class="title">Conditional Generative Adversarial Nets (cGAN)</span> &mdash; Mirza, Osindero
+    <div class="meta"><span class="badge b-pdf">PDF&middot;7pp</span>arXiv 2014 &middot; <a href="https://arxiv.org/abs/1411.1784">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1411.1784">PDF</a></div>
+    <div class="why-here">Condition the generator and discriminator on a label — the small change that makes controllable generation possible.</div>
   </li>
   <li>
-    <span class="title">Wasserstein GAN</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/1701.07875">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1701.07875">PDF</a></div>
-    <div class="why-here">Arjovsky, Chintala, Bottou, 2017, ICML. Reframed GAN training around the Wasserstein distance for a meaningful loss.</div>
-  </li>
-  <li>
-    <span class="title">A Style-Based Generator Architecture (StyleGAN)</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/1812.04948">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1812.04948">PDF</a></div>
-    <div class="why-here">Karras, Laine, Aila, 2019, CVPR. High-resolution photorealistic synthesis with disentangled control.</div>
-  </li>
-  <li>
-    <span class="title">Variational Inference with Normalizing Flows</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/1505.05770">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1505.05770">PDF</a></div>
-    <div class="why-here">Rezende, Mohamed, 2015, ICML. Normalizing flows for flexible learnable posteriors.</div>
-  </li>
-  <li>
-    <span class="title">Density Estimation using Real NVP</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/1605.08803">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1605.08803">PDF</a></div>
-    <div class="why-here">Dinh, Sohl-Dickstein, Bengio, 2017, ICLR. Invertible coupling layers for exact-likelihood flow models.</div>
-  </li>
-  <li>
-    <span class="title">Generative Modeling by Estimating Gradients of the Data Distribution</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/1907.05600">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1907.05600">PDF</a></div>
-    <div class="why-here">Song, Ermon, 2019, NeurIPS. Score-based modeling via score matching + Langevin dynamics; diffusion's basis.</div>
-  </li>
-  <li>
-    <span class="title">Pixel Recurrent Neural Networks</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/1601.06759">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1601.06759">PDF</a></div>
-    <div class="why-here">van den Oord, Kalchbrenner, Kavukcuoglu, 2016, ICML. Autoregressive pixel-by-pixel image generation (PixelRNN/CNN).</div>
-  </li>
-  <li>
-    <span class="title">NeRF: Neural Radiance Fields</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/2003.08934">arXiv</a> &middot; <a href="https://arxiv.org/pdf/2003.08934">PDF</a></div>
-    <div class="why-here">Mildenhall et al., 2020, ECCV. Scenes as continuous volumetric radiance fields; revolutionized view synthesis.</div>
+    <span class="title">Unsupervised Representation Learning with Deep Convolutional GANs (DCGAN)</span> &mdash; Radford, Metz, Chintala
+    <div class="meta"><span class="badge b-pdf">PDF&middot;16pp</span>ICLR 2016 &middot; <a href="https://arxiv.org/abs/1511.06434">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1511.06434">PDF</a></div>
+    <div class="why-here">The conv-net architecture and training recipe that made image GANs stable — the template everyone copied.</div>
   </li>
 </ol>
+
+<h2>Making GANs train and scale</h2>
+<p class="grouphdr">GANs were notoriously unstable and low-resolution; this line made them reliable, high-fidelity, and controllable.</p>
+<ol class="papers" start="6" style="counter-reset:item 5;">
+  <li>
+    <span class="title">Improved Techniques for Training GANs</span> &mdash; Salimans et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;10pp</span>NeurIPS 2016 &middot; <a href="https://arxiv.org/abs/1606.03498">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1606.03498">PDF</a></div>
+    <div class="why-here">Feature matching, minibatch discrimination, and the Inception Score — the practical toolkit that tamed GAN training.</div>
+  </li>
+  <li>
+    <span class="title">Wasserstein GAN (WGAN)</span> &mdash; Arjovsky, Chintala, Bottou
+    <div class="meta"><span class="badge b-pdf">PDF&middot;32pp</span>ICML 2017 &middot; <a href="https://arxiv.org/abs/1701.07875">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1701.07875">PDF</a></div>
+    <div class="why-here">Reframes training around the Wasserstein distance, giving a loss that correlates with sample quality and rarely collapses.</div>
+  </li>
+  <li>
+    <span class="title">Progressive Growing of GANs</span> &mdash; Karras, Aila, Laine, Lehtinen
+    <div class="meta"><span class="badge b-pdf">PDF&middot;26pp</span>ICLR 2018 &middot; <a href="https://arxiv.org/abs/1710.10196">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1710.10196">PDF</a></div>
+    <div class="why-here">Grow generator and discriminator layer by layer to reach megapixel resolution — the first convincingly photorealistic GAN faces.</div>
+  </li>
+  <li>
+    <span class="title">A Style-Based Generator Architecture (StyleGAN)</span> &mdash; Karras, Laine, Aila
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>CVPR 2019 &middot; <a href="https://arxiv.org/abs/1812.04948">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1812.04948">PDF</a></div>
+    <div class="why-here">A generator that injects style per layer, giving disentangled, controllable high-resolution synthesis.</div>
+  </li>
+  <li>
+    <span class="title">Large Scale GAN Training for High Fidelity Natural Image Synthesis (BigGAN)</span> &mdash; Brock, Donahue, Simonyan
+    <div class="meta"><span class="badge b-pdf">PDF&middot;35pp</span>ICLR 2019 &middot; <a href="https://arxiv.org/abs/1809.11096">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1809.11096">PDF</a></div>
+    <div class="why-here">Scale, big batches, and the truncation trick push class-conditional ImageNet generation to then-unmatched fidelity.</div>
+  </li>
+</ol>
+
+<h2>Exact likelihood: autoregressive models and normalizing flows</h2>
+<p class="grouphdr">Unlike GANs, these assign explicit probabilities — you can measure likelihood and, for flows, sample and invert exactly. Read them for the other half of the design space.</p>
+<ol class="papers" start="11" style="counter-reset:item 10;">
+  <li>
+    <span class="title">Pixel Recurrent Neural Networks (PixelRNN/CNN)</span> &mdash; van den Oord, Kalchbrenner, Kavukcuoglu
+    <div class="meta"><span class="badge b-pdf">PDF&middot;11pp</span>ICML 2016 &middot; <a href="https://arxiv.org/abs/1601.06759">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1601.06759">PDF</a></div>
+    <div class="why-here">Model an image one pixel at a time as a product of conditionals — tractable exact likelihood, slow sampling.</div>
+  </li>
+  <li>
+    <span class="title">Conditional Image Generation with PixelCNN Decoders</span> &mdash; van den Oord et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;13pp</span>NeurIPS 2016 &middot; <a href="https://arxiv.org/abs/1606.05328">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1606.05328">PDF</a></div>
+    <div class="why-here">Gated PixelCNN with conditioning, the workhorse autoregressive decoder used well beyond images.</div>
+  </li>
+  <li>
+    <span class="title">WaveNet: A Generative Model for Raw Audio</span> &mdash; van den Oord et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;15pp</span>arXiv 2016 &middot; <a href="https://arxiv.org/abs/1609.03499">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1609.03499">PDF</a></div>
+    <div class="why-here">Dilated-causal-convolution autoregression over raw waveforms — the same recipe applied to audio, with a step-change in speech quality.</div>
+  </li>
+  <li>
+    <span class="title">Variational Inference with Normalizing Flows</span> &mdash; Rezende, Mohamed
+    <div class="meta"><span class="badge b-pdf">PDF&middot;10pp</span>ICML 2015 &middot; <a href="https://arxiv.org/abs/1505.05770">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1505.05770">PDF</a></div>
+    <div class="why-here">Compose invertible maps to turn a simple density into a flexible one — the founding paper for normalizing flows.</div>
+  </li>
+  <li>
+    <span class="title">NICE: Non-linear Independent Components Estimation</span> &mdash; Dinh, Krueger, Bengio
+    <div class="meta"><span class="badge b-pdf">PDF&middot;13pp</span>ICLR 2015 &middot; <a href="https://arxiv.org/abs/1410.8516">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1410.8516">PDF</a></div>
+    <div class="why-here">The first additive coupling layer with a trivial Jacobian — the trick that makes deep flows practical.</div>
+  </li>
+  <li>
+    <span class="title">Density Estimation using Real NVP</span> &mdash; Dinh, Sohl-Dickstein, Bengio
+    <div class="meta"><span class="badge b-pdf">PDF&middot;32pp</span>ICLR 2017 &middot; <a href="https://arxiv.org/abs/1605.08803">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1605.08803">PDF</a></div>
+    <div class="why-here">Affine coupling layers give exact-likelihood, exact-inverse flow models that scale to natural images.</div>
+  </li>
+  <li>
+    <span class="title">Glow: Generative Flow with Invertible 1x1 Convolutions</span> &mdash; Kingma, Dhariwal
+    <div class="meta"><span class="badge b-pdf">PDF&middot;15pp</span>NeurIPS 2018 &middot; <a href="https://arxiv.org/abs/1807.03039">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1807.03039">PDF</a></div>
+    <div class="why-here">Learnable 1x1 convolutions generalize the coupling permutation, yielding sharp flow-based samples and clean latent interpolation.</div>
+  </li>
+</ol>
+
+<h2>Score-based and diffusion models</h2>
+<p class="grouphdr">The now-dominant paradigm: corrupt data with noise, then learn to reverse it. Read Song–Ermon and DDPM together — they arrived at the same model from different directions — then follow the sampling, guidance, and speed refinements.</p>
+<ol class="papers" start="18" style="counter-reset:item 17;">
+  <li>
+    <span class="title">Generative Modeling by Estimating Gradients of the Data Distribution</span> &mdash; Song, Ermon
+    <div class="meta"><span class="badge b-pdf">PDF&middot;23pp</span>NeurIPS 2019 &middot; <a href="https://arxiv.org/abs/1907.05600">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1907.05600">PDF</a></div>
+    <div class="why-here">Score matching across noise scales plus Langevin sampling — the score-based root of modern diffusion.</div>
+  </li>
+  <li>
+    <span class="title">Denoising Diffusion Probabilistic Models (DDPM)</span> &mdash; Ho, Jain, Abbeel
+    <div class="meta"><span class="badge b-pdf">PDF&middot;25pp</span>NeurIPS 2020 &middot; <a href="https://arxiv.org/abs/2006.11239">arXiv</a> &middot; <a href="https://arxiv.org/pdf/2006.11239">PDF</a></div>
+    <div class="why-here">The simplified training objective that made diffusion work and set off the image-generation wave.</div>
+  </li>
+  <li>
+    <span class="title">Denoising Diffusion Implicit Models (DDIM)</span> &mdash; Song, Meng, Ermon
+    <div class="meta"><span class="badge b-pdf">PDF&middot;22pp</span>ICLR 2021 &middot; <a href="https://arxiv.org/abs/2010.02502">arXiv</a> &middot; <a href="https://arxiv.org/pdf/2010.02502">PDF</a></div>
+    <div class="why-here">A non-Markovian, deterministic sampler that cuts diffusion from hundreds of steps to tens.</div>
+  </li>
+  <li>
+    <span class="title">Improved Denoising Diffusion Probabilistic Models</span> &mdash; Nichol, Dhariwal
+    <div class="meta"><span class="badge b-pdf">PDF&middot;17pp</span>ICML 2021 &middot; <a href="https://arxiv.org/abs/2102.09672">arXiv</a> &middot; <a href="https://arxiv.org/pdf/2102.09672">PDF</a></div>
+    <div class="why-here">Learned variances and a cosine schedule that improve log-likelihood and sample quality.</div>
+  </li>
+  <li>
+    <span class="title">Score-Based Generative Modeling through Stochastic Differential Equations</span> &mdash; Song et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;36pp</span>ICLR 2021 &middot; <a href="https://arxiv.org/abs/2011.13456">arXiv</a> &middot; <a href="https://arxiv.org/pdf/2011.13456">PDF</a></div>
+    <div class="why-here">Unifies score-based models and DDPMs as discretizations of one SDE — the theoretical backbone of the field.</div>
+  </li>
+  <li>
+    <span class="title">Diffusion Models Beat GANs on Image Synthesis</span> &mdash; Dhariwal, Nichol
+    <div class="meta"><span class="badge b-pdf">PDF&middot;44pp</span>NeurIPS 2021 &middot; <a href="https://arxiv.org/abs/2105.05233">arXiv</a> &middot; <a href="https://arxiv.org/pdf/2105.05233">PDF</a></div>
+    <div class="why-here">Architecture improvements plus classifier guidance let diffusion overtake GANs on ImageNet — the turning point.</div>
+  </li>
+  <li>
+    <span class="title">Classifier-Free Diffusion Guidance</span> &mdash; Ho, Salimans
+    <div class="meta"><span class="badge b-pdf">PDF&middot;14pp</span>NeurIPS 2021 Workshop &middot; <a href="https://arxiv.org/abs/2207.12598">arXiv</a> &middot; <a href="https://arxiv.org/pdf/2207.12598">PDF</a></div>
+    <div class="why-here">Trade a separate classifier for jointly training conditional and unconditional models — the guidance trick every text-to-image system now uses.</div>
+  </li>
+  <li>
+    <span class="title">Consistency Models</span> &mdash; Song, Dhariwal, Chen, Sutskever
+    <div class="meta"><span class="badge b-pdf">PDF&middot;42pp</span>ICML 2023 &middot; <a href="https://arxiv.org/abs/2303.01469">arXiv</a> &middot; <a href="https://arxiv.org/pdf/2303.01469">PDF</a></div>
+    <div class="why-here">Learn a map straight to the data manifold for one- or few-step generation, attacking diffusion's core sampling cost.</div>
+  </li>
+</ol>
+
+<h2>Text-to-image generation at scale</h2>
+<p class="grouphdr">Put generation under natural-language control and scale to internet-sized data — where diffusion, guidance, and large text encoders combine into the systems most people have used.</p>
+<ol class="papers" start="26" style="counter-reset:item 25;">
+  <li>
+    <span class="title">Zero-Shot Text-to-Image Generation (DALL·E)</span> &mdash; Ramesh et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;20pp</span>ICML 2021 &middot; <a href="https://arxiv.org/abs/2102.12092">arXiv</a> &middot; <a href="https://arxiv.org/pdf/2102.12092">PDF</a></div>
+    <div class="why-here">A discrete VAE plus an autoregressive transformer over text-and-image tokens — the first broadly striking text-to-image model.</div>
+  </li>
+  <li>
+    <span class="title">GLIDE: Text-to-Image Generation and Editing with Guided Diffusion</span> &mdash; Nichol et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;20pp</span>ICML 2022 &middot; <a href="https://arxiv.org/abs/2112.10741">arXiv</a> &middot; <a href="https://arxiv.org/pdf/2112.10741">PDF</a></div>
+    <div class="why-here">Moves text-to-image onto diffusion with classifier-free guidance, and adds inpainting-style editing.</div>
+  </li>
+  <li>
+    <span class="title">High-Resolution Image Synthesis with Latent Diffusion Models (Stable Diffusion)</span> &mdash; Rombach et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;45pp</span>CVPR 2022 &middot; <a href="https://arxiv.org/abs/2112.10752">arXiv</a> &middot; <a href="https://arxiv.org/pdf/2112.10752">PDF</a></div>
+    <div class="why-here">Run diffusion in a compressed latent space, cutting cost enough to make open, high-resolution text-to-image practical.</div>
+  </li>
+  <li>
+    <span class="title">Hierarchical Text-Conditional Image Generation with CLIP Latents (DALL·E 2 / unCLIP)</span> &mdash; Ramesh et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;27pp</span>arXiv 2022 &middot; <a href="https://arxiv.org/abs/2204.06125">arXiv</a> &middot; <a href="https://arxiv.org/pdf/2204.06125">PDF</a></div>
+    <div class="why-here">A prior that maps text to a CLIP image embedding, then a diffusion decoder — quality plus controllable variation.</div>
+  </li>
+  <li>
+    <span class="title">Photorealistic Text-to-Image Diffusion Models with Deep Language Understanding (Imagen)</span> &mdash; Saharia et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;46pp</span>NeurIPS 2022 &middot; <a href="https://arxiv.org/abs/2205.11487">arXiv</a> &middot; <a href="https://arxiv.org/pdf/2205.11487">PDF</a></div>
+    <div class="why-here">Shows a large frozen text encoder plus cascaded diffusion is enough for state-of-the-art fidelity and text alignment.</div>
+  </li>
+</ol>
+
+<h2>Neural scene representation</h2>
+<p class="grouphdr">Generative modeling reaches 3D: represent a whole scene as a continuous function you can render from any viewpoint.</p>
+<ol class="papers" start="31" style="counter-reset:item 30;">
+  <li>
+    <span class="title">NeRF: Representing Scenes as Neural Radiance Fields for View Synthesis</span> &mdash; Mildenhall et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;25pp</span>ECCV 2020 &middot; <a href="https://arxiv.org/abs/2003.08934">arXiv</a> &middot; <a href="https://arxiv.org/pdf/2003.08934">PDF</a></div>
+    <div class="why-here">Fit an MLP mapping position and direction to color and density, then volume-render novel views — it reshaped 3D vision and graphics.</div>
+  </li>
+</ol>
+
+<div class="why">
+<b>Four families, one goal.</b> <em>VAEs</em> give a smooth, decodable latent space at
+the cost of blurry samples; <em>GANs</em> give sharp samples but no likelihood and
+brittle training; <em>autoregressive and flow</em> models give exact likelihood at a
+sampling cost; <em>diffusion</em> trades many small denoising steps for both stability
+and fidelity, and — with classifier-free guidance and latent-space compression — became
+the engine behind modern text-to-image systems.
+</div>
+
+<h2>Reference shelf &mdash; books</h2>
+<p class="grouphdr">The standard texts for the area; free copies linked where a legal one exists.</p>
+<ul class="refs">
+  <li><span class="badge b-book">BOOK&middot;800pp</span><b>Deep Learning</b> &mdash; Goodfellow, Bengio, Courville (2016) &middot; Chapter 20 (deep generative models) gives the pre-diffusion foundations — VAEs, GANs, and autoregressive models — with the math worked out. <a href="https://www.deeplearningbook.org/">page</a></li>
+  <li><span class="badge b-book">BOOK&middot;1352pp</span><b>Probabilistic Machine Learning: Advanced Topics</b> &mdash; Kevin Murphy (2023) &middot; A modern, unified treatment covering VAEs, normalizing flows, GANs, and diffusion in one notation. <a href="https://github.com/probml/pml2-book/releases/latest/download/book2.pdf">PDF</a></li>
+  <li><span class="badge b-book">BOOK&middot;541pp</span><b>Understanding Deep Learning</b> &mdash; Simon Prince (2023) &middot; Clean, figure-driven chapters on GANs, VAEs, normalizing flows, and diffusion — the gentlest first read of the shelf. <a href="https://github.com/udlbook/udlbook/releases/download/v5.0.3/UnderstandingDeepLearning_02_09_26_C.pdf">PDF</a></li>
+</ul>
+
+<h2>Key terms</h2>
+<p class="grouphdr">Vocabulary used across this list.</p>
+<div class="notekey"><b>latent variable</b> &mdash; an unobserved code a model decodes into data; the smooth space VAEs and flows learn &nbsp; <b>ELBO</b> &mdash; evidence lower bound; the tractable objective VAEs maximize in place of the intractable log-likelihood &nbsp; <b>reparameterization trick</b> &mdash; sampling a latent as a deterministic function of noise so gradients can flow through it &nbsp; <b>adversarial training</b> &mdash; training a generator against a discriminator that learns to tell real from generated &nbsp; <b>mode collapse</b> &mdash; a GAN failure where the generator produces only a few distinct outputs &nbsp; <b>Wasserstein distance</b> &mdash; an earth-mover metric between distributions; the loss WGAN optimizes for stable training &nbsp; <b>normalizing flow</b> &mdash; an invertible map from a simple density to a complex one, giving exact likelihood via the change-of-variables formula &nbsp; <b>autoregressive model</b> &mdash; factorizes data as a product of conditionals and generates one element at a time &nbsp; <b>score function</b> &mdash; the gradient of log-density; score-based models learn it and follow it toward high-density regions &nbsp; <b>Langevin dynamics</b> &mdash; noisy gradient ascent on the score that draws samples from a distribution &nbsp; <b>diffusion / denoising</b> &mdash; gradually add Gaussian noise to data, then train a model to reverse the process step by step &nbsp; <b>classifier-free guidance</b> &mdash; steer a conditional diffusion sample by extrapolating between its conditional and unconditional predictions &nbsp; <b>latent diffusion</b> &mdash; run the diffusion process in a compressed autoencoder latent instead of pixel space, cutting compute</div>
 
 </body>
 </html>

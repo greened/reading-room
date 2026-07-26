@@ -8,65 +8,221 @@
 <body>
 
 <h1>Machine learning · Reinforcement learning</h1>
-<p class="tally">In-depth landmark list for this subtopic. <span class="badge b-pdf">PDF</span>open copy available &middot; <span class="badge b-web">DOI</span>publisher link only.</p>
+<p class="sub">Reinforcement learning is the study of agents that learn from reward rather than labels. This guide follows the field's own logic: start with the tabular ideas that define its vocabulary — value functions, temporal-difference learning, off-policy control — then the policy-gradient family that optimizes behavior directly, then the deep-network era that scaled both to pixels and continuous control, then the distributed systems, exploration methods, and offline algorithms that industrialized it, then the planning-and-self-play line that mastered Go and chess, and finally RL from human feedback, where the field now touches everyone through large language models. Read top to bottom: each section assumes the one before it.</p>
+<p class="tally">30 papers &middot; &asymp; <b>577 pp</b> of primary reading. &nbsp; Legend: <span class="badge b-pdf">PDF</span>open copy (see <span class="file">fetch.sh</span>) &middot; <span class="badge b-web">DOI</span>publisher link only</p>
+<div class="why"><b>How to read this list.</b> The two foundational families are <em>value-based</em> (learn what states are worth, then act greedily) and <em>policy-gradient</em> (adjust the policy directly). Sections 1 and 2 give you each in its tabular, provable form; the deep-RL sections that follow are those same two ideas with neural-network function approximators and the engineering needed to make them stable. If you only read three papers, read Sutton's TD paper, DQN, and PPO.</div>
 
-<ol class="papers">
+<h2>Foundations — tabular RL</h2>
+<p class="grouphdr">The ideas every later paper assumes: value functions, bootstrapping, and off-policy control, all provable in the tabular setting.</p>
+<ol class="papers" start="1">
   <li>
-    <span class="title">Human-level control through deep reinforcement learning (DQN)</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1038/nature14236">DOI</a> &middot; <a href="https://web.stanford.edu/class/psych209/Readings/MnihEtAlHassibis15NatureControlDeepRL.pdf">PDF</a></div>
-    <div class="why-here">Mnih et al., 2015, Nature. Learned Atari from pixels; founded deep RL.</div>
+    <span class="title">Learning to Predict by the Methods of Temporal Differences</span> &mdash; Richard Sutton
+    <div class="meta"><span class="badge b-pdf">PDF&middot;37pp</span>Machine Learning 1988 &middot; <a href="https://doi.org/10.1007/BF00115009">DOI</a> &middot; <a href="http://incompleteideas.net/papers/sutton-88-with-erratum.pdf">PDF</a></div>
+    <div class="why-here">Introduced TD learning, RL's foundational idea: bootstrap a prediction from later predictions instead of waiting for the final outcome.</div>
   </li>
   <li>
-    <span class="title">Mastering the game of Go with deep neural networks and tree search (AlphaGo)</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1038/nature16961">DOI</a></div>
-    <div class="why-here">Silver et al., 2016, Nature. Deep policy/value nets + MCTS beat top humans at Go.</div>
+    <span class="title">Q-learning</span> &mdash; Chris Watkins, Peter Dayan
+    <div class="meta"><span class="badge b-pdf">PDF&middot;14pp</span>Machine Learning 1992 &middot; <a href="https://doi.org/10.1007/BF00992698">DOI</a> &middot; <a href="http://www.gatsby.ucl.ac.uk/~dayan/papers/cjch.pdf">PDF</a></div>
+    <div class="why-here">The canonical model-free, off-policy control algorithm, with a convergence proof — learn the optimal action-values while following any exploratory policy.</div>
   </li>
   <li>
-    <span class="title">Proximal Policy Optimization Algorithms (PPO)</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/1707.06347">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1707.06347">PDF</a></div>
-    <div class="why-here">Schulman, Wolski, Dhariwal, Radford, Klimov, 2017, arXiv. The robust policy-gradient method that became the RL/RLHF default.</div>
-  </li>
-  <li>
-    <span class="title">Learning to Predict by the Methods of Temporal Differences</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1007/BF00115009">DOI</a></div>
-    <div class="why-here">Sutton, 1988, Machine Learning. Introduced TD learning, RL's foundational bootstrapping method.</div>
-  </li>
-  <li>
-    <span class="title">Q-learning</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1007/BF00992698">DOI</a></div>
-    <div class="why-here">Watkins, Dayan, 1992, Machine Learning. The canonical model-free off-policy control algorithm, with convergence proof.</div>
-  </li>
-  <li>
-    <span class="title">Simple Statistical Gradient-Following Algorithms (REINFORCE)</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1007/BF00992696">DOI</a></div>
-    <div class="why-here">Williams, 1992, Machine Learning. The REINFORCE policy-gradient family.</div>
-  </li>
-  <li>
-    <span class="title">Asynchronous Methods for Deep RL (A3C)</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/1602.01783">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1602.01783">PDF</a></div>
-    <div class="why-here">Mnih et al., 2016, ICML. Lightweight asynchronous actor-critic beating prior deep-RL SOTA.</div>
-  </li>
-  <li>
-    <span class="title">Continuous Control with Deep RL (DDPG)</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/1509.02971">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1509.02971">PDF</a></div>
-    <div class="why-here">Lillicrap et al., 2016, ICLR. Deep Q-learning extended to continuous action spaces.</div>
-  </li>
-  <li>
-    <span class="title">Trust Region Policy Optimization (TRPO)</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/1502.05477">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1502.05477">PDF</a></div>
-    <div class="why-here">Schulman et al., 2015, ICML. Monotonic-improvement guarantees for stable policy optimization.</div>
-  </li>
-  <li>
-    <span class="title">AlphaZero: Mastering Chess and Shogi by Self-Play</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/1712.01815">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1712.01815">PDF</a></div>
-    <div class="why-here">Silver et al., 2017, arXiv. Superhuman chess/shogi/Go from self-play with one general algorithm.</div>
-  </li>
-  <li>
-    <span class="title">MuZero: Mastering Atari, Go, Chess and Shogi by Planning with a Learned Model</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/1911.08265">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1911.08265">PDF</a></div>
-    <div class="why-here">Schrittwieser et al., 2020, Nature. Matched AlphaZero without being given the rules.</div>
+    <span class="title">On-line Q-learning using Connectionist Systems (SARSA)</span> &mdash; Gavin Rummery, Mahesan Niranjan
+    <div class="meta"><span class="badge b-pdf">PDF&middot;21pp</span>Cambridge tech report 1994 &middot; <a href="http://mi.eng.cam.ac.uk/reports/svr-ftp/auto-pdf/rummery_tr166.pdf">PDF</a></div>
+    <div class="why-here">The on-policy counterpart to Q-learning and the origin of the SARSA update; the contrast between the two defines on- vs off-policy learning.</div>
   </li>
 </ol>
+
+<h2>Policy gradients — optimize the policy directly</h2>
+<p class="grouphdr">Instead of learning values and acting greedily, adjust the policy's parameters up the reward gradient — the family that scales to continuous actions and underlies RLHF.</p>
+<ol class="papers" start="4" style="counter-reset:item 3;">
+  <li>
+    <span class="title">Simple Statistical Gradient-Following Algorithms (REINFORCE)</span> &mdash; Ronald Williams
+    <div class="meta"><span class="badge b-pdf">PDF&middot;27pp</span>Machine Learning 1992 &middot; <a href="https://doi.org/10.1007/BF00992696">DOI</a> &middot; <a href="https://people.cs.umass.edu/~barto/courses/cs687/williams92simple.pdf">PDF</a></div>
+    <div class="why-here">The REINFORCE family: unbiased policy-gradient estimates from sampled returns, the root of every method in this section.</div>
+  </li>
+  <li>
+    <span class="title">Policy Gradient Methods for RL with Function Approximation</span> &mdash; Sutton, McAllester, Singh, Mansour
+    <div class="meta"><span class="badge b-pdf">PDF&middot;7pp</span>NeurIPS 2000 &middot; <a href="https://proceedings.neurips.cc/paper/1999/file/464d828b85b0bed98e80ade0a5c43b0f-Paper.pdf">PDF</a></div>
+    <div class="why-here">Proves the policy-gradient theorem for function approximators and introduces the actor-critic template the deep methods below all follow.</div>
+  </li>
+  <li>
+    <span class="title">A Natural Policy Gradient</span> &mdash; Sham Kakade
+    <div class="meta"><span class="badge b-pdf">PDF&middot;8pp</span>NeurIPS 2001 &middot; <a href="https://proceedings.neurips.cc/paper/2001/file/4b86abe48d358ecf194c56c69108433e-Paper.pdf">PDF</a></div>
+    <div class="why-here">Reshapes the gradient by the Fisher information metric so updates are invariant to how the policy is parameterized — the idea TRPO and PPO later make practical.</div>
+  </li>
+  <li>
+    <span class="title">Deterministic Policy Gradient Algorithms (DPG)</span> &mdash; Silver, Lever, Heess, Degris, Wierstra, Riedmiller
+    <div class="meta"><span class="badge b-pdf">PDF&middot;9pp</span>ICML 2014 &middot; <a href="http://proceedings.mlr.press/v32/silver14.pdf">PDF</a></div>
+    <div class="why-here">Shows a deterministic policy has a tractable gradient, setting up off-policy continuous control and DDPG.</div>
+  </li>
+</ol>
+
+<h2>Deep value-based RL — the breakthrough</h2>
+<p class="grouphdr">Neural nets as value-function approximators, plus the engineering (replay, target networks, and their successive fixes) that made them stable.</p>
+<ol class="papers" start="8" style="counter-reset:item 7;">
+  <li>
+    <span class="title">Human-level Control through Deep Reinforcement Learning (DQN)</span> &mdash; Mnih et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;13pp</span>Nature 2015 &middot; <a href="https://doi.org/10.1038/nature14236">DOI</a> &middot; <a href="https://web.stanford.edu/class/psych209/Readings/MnihEtAlHassibis15NatureControlDeepRL.pdf">PDF</a></div>
+    <div class="why-here">Learned to play Atari from pixels with experience replay and a target network; the paper that founded deep RL.</div>
+  </li>
+  <li>
+    <span class="title">Deep RL with Double Q-learning (Double DQN)</span> &mdash; van Hasselt, Guez, Silver
+    <div class="meta"><span class="badge b-pdf">PDF&middot;13pp</span>AAAI 2016 &middot; <a href="https://doi.org/10.1609/aaai.v30i1.10295">DOI</a> &middot; <a href="https://arxiv.org/pdf/1509.06461">PDF</a></div>
+    <div class="why-here">Diagnoses and corrects DQN's systematic overestimation of action values with a small, decisive change.</div>
+  </li>
+  <li>
+    <span class="title">Prioritized Experience Replay</span> &mdash; Schaul, Quan, Antonoglou, Silver
+    <div class="meta"><span class="badge b-pdf">PDF&middot;21pp</span>ICLR 2016 &middot; <a href="https://arxiv.org/abs/1511.05952">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1511.05952">PDF</a></div>
+    <div class="why-here">Replays surprising transitions more often, sharply improving DQN's sample efficiency.</div>
+  </li>
+  <li>
+    <span class="title">Dueling Network Architectures for Deep RL</span> &mdash; Wang et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;15pp</span>ICML 2016 &middot; <a href="https://arxiv.org/abs/1511.06581">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1511.06581">PDF</a></div>
+    <div class="why-here">Splits the value function into state-value and advantage streams, learning which states matter without learning each action's effect.</div>
+  </li>
+  <li>
+    <span class="title">A Distributional Perspective on Reinforcement Learning (C51)</span> &mdash; Bellemare, Dabney, Munos
+    <div class="meta"><span class="badge b-pdf">PDF&middot;19pp</span>ICML 2017 &middot; <a href="https://arxiv.org/abs/1707.06887">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1707.06887">PDF</a></div>
+    <div class="why-here">Learns the full distribution of returns instead of just their mean, a richer signal that became one of Rainbow's biggest ingredients.</div>
+  </li>
+  <li>
+    <span class="title">Rainbow: Combining Improvements in Deep RL</span> &mdash; Hessel et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;14pp</span>AAAI 2018 &middot; <a href="https://doi.org/10.1609/aaai.v32i1.11796">DOI</a> &middot; <a href="https://arxiv.org/pdf/1710.02298">PDF</a></div>
+    <div class="why-here">Shows the DQN extensions above are complementary and combines six of them into one strong agent — the capstone of the value-based line.</div>
+  </li>
+</ol>
+
+<h2>Deep policy-gradient &amp; actor-critic</h2>
+<p class="grouphdr">Bring deep networks to the policy-gradient family; these are the methods that dominate continuous control and became the RLHF default.</p>
+<ol class="papers" start="14" style="counter-reset:item 13;">
+  <li>
+    <span class="title">Asynchronous Methods for Deep RL (A3C)</span> &mdash; Mnih et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;19pp</span>ICML 2016 &middot; <a href="https://arxiv.org/abs/1602.01783">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1602.01783">PDF</a></div>
+    <div class="why-here">Parallel actors decorrelate experience without a replay buffer — a simple, fast deep actor-critic.</div>
+  </li>
+  <li>
+    <span class="title">Trust Region Policy Optimization (TRPO)</span> &mdash; Schulman, Levine, Moritz, Jordan, Abbeel
+    <div class="meta"><span class="badge b-pdf">PDF&middot;16pp</span>ICML 2015 &middot; <a href="https://arxiv.org/abs/1502.05477">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1502.05477">PDF</a></div>
+    <div class="why-here">Constrains each policy update to a trust region, giving monotonic-improvement guarantees and stable large-scale policy optimization.</div>
+  </li>
+  <li>
+    <span class="title">High-Dimensional Continuous Control Using Generalized Advantage Estimation (GAE)</span> &mdash; Schulman, Moritz, Levine, Jordan, Abbeel
+    <div class="meta"><span class="badge b-pdf">PDF&middot;14pp</span>ICLR 2016 &middot; <a href="https://arxiv.org/abs/1506.02438">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1506.02438">PDF</a></div>
+    <div class="why-here">The bias-variance advantage estimator that the trust-region methods rely on in practice.</div>
+  </li>
+  <li>
+    <span class="title">Proximal Policy Optimization Algorithms (PPO)</span> &mdash; Schulman, Wolski, Dhariwal, Radford, Klimov
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>arXiv 2017 &middot; <a href="https://arxiv.org/abs/1707.06347">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1707.06347">PDF</a></div>
+    <div class="why-here">Replaces TRPO's hard constraint with a clipped objective — the robust, simple policy-gradient method that became the RL and RLHF default.</div>
+  </li>
+  <li>
+    <span class="title">Continuous Control with Deep RL (DDPG)</span> &mdash; Lillicrap et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;14pp</span>ICLR 2016 &middot; <a href="https://arxiv.org/abs/1509.02971">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1509.02971">PDF</a></div>
+    <div class="why-here">Extends deterministic policy gradients and DQN-style replay to continuous action spaces.</div>
+  </li>
+  <li>
+    <span class="title">Addressing Function Approximation Error in Actor-Critic Methods (TD3)</span> &mdash; Fujimoto, van Hoof, Meger
+    <div class="meta"><span class="badge b-pdf">PDF&middot;15pp</span>ICML 2018 &middot; <a href="https://arxiv.org/abs/1802.09477">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1802.09477">PDF</a></div>
+    <div class="why-here">Brings Double-DQN's overestimation fix to continuous control with twin critics and delayed policy updates, turning DDPG into a reliable baseline.</div>
+  </li>
+  <li>
+    <span class="title">Soft Actor-Critic (SAC)</span> &mdash; Haarnoja, Zhou, Abbeel, Levine
+    <div class="meta"><span class="badge b-pdf">PDF&middot;14pp</span>ICML 2018 &middot; <a href="https://arxiv.org/abs/1801.01290">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1801.01290">PDF</a></div>
+    <div class="why-here">Adds a maximum-entropy objective for exploration and stability — the strong off-policy continuous-control baseline today.</div>
+  </li>
+</ol>
+
+<h2>Scaling up — distributed agents</h2>
+<p class="grouphdr">The same deep methods, re-engineered to run on hundreds of actors; this is how deep RL went from a single machine to industrial scale.</p>
+<ol class="papers" start="21" style="counter-reset:item 20;">
+  <li>
+    <span class="title">IMPALA: Scalable Distributed Deep-RL with Importance Weighted Actor-Learner Architectures</span> &mdash; Espeholt et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;22pp</span>ICML 2018 &middot; <a href="https://arxiv.org/abs/1802.01561">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1802.01561">PDF</a></div>
+    <div class="why-here">Decouples acting from learning across many machines and corrects the resulting off-policy lag with V-trace — the template for large-scale actor-critic.</div>
+  </li>
+  <li>
+    <span class="title">Distributed Prioritized Experience Replay (Ape-X)</span> &mdash; Horgan et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;19pp</span>ICLR 2018 &middot; <a href="https://arxiv.org/abs/1803.00933">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1803.00933">PDF</a></div>
+    <div class="why-here">Scales prioritized replay to hundreds of parallel actors feeding one learner, a large jump in both data and final performance for value-based agents.</div>
+  </li>
+</ol>
+
+<h2>Exploration &amp; offline RL</h2>
+<p class="grouphdr">Two hard problems the core methods sidestep: how to seek out reward when it is sparse, and how to learn from a fixed dataset with no environment to probe.</p>
+<ol class="papers" start="23" style="counter-reset:item 22;">
+  <li>
+    <span class="title">Exploration by Random Network Distillation (RND)</span> &mdash; Burda, Edwards, Storkey, Klimov
+    <div class="meta"><span class="badge b-pdf">PDF&middot;17pp</span>ICLR 2019 &middot; <a href="https://arxiv.org/abs/1810.12894">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1810.12894">PDF</a></div>
+    <div class="why-here">A simple, robust curiosity bonus — reward the agent for states a random network predicts poorly — that finally cracked hard-exploration games like Montezuma's Revenge.</div>
+  </li>
+  <li>
+    <span class="title">Conservative Q-Learning for Offline RL (CQL)</span> &mdash; Kumar, Zhou, Tucker, Levine
+    <div class="meta"><span class="badge b-pdf">PDF&middot;31pp</span>NeurIPS 2020 &middot; <a href="https://arxiv.org/abs/2006.04779">arXiv</a> &middot; <a href="https://arxiv.org/pdf/2006.04779">PDF</a></div>
+    <div class="why-here">Learns entirely from a fixed dataset by lower-bounding action values, so the policy can't be fooled into overrating actions it never saw — the strong offline baseline.</div>
+  </li>
+  <li>
+    <span class="title">Decision Transformer: Reinforcement Learning via Sequence Modeling</span> &mdash; Chen et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;21pp</span>NeurIPS 2021 &middot; <a href="https://arxiv.org/abs/2106.01345">arXiv</a> &middot; <a href="https://arxiv.org/pdf/2106.01345">PDF</a></div>
+    <div class="why-here">Recasts offline RL as conditional sequence prediction — a Transformer that outputs actions given a target return — dropping value functions and bootstrapping entirely.</div>
+  </li>
+</ol>
+
+<h2>Planning &amp; self-play — model-based mastery</h2>
+<p class="grouphdr">Combine learned value/policy networks with search; the AlphaGo lineage that reached superhuman play and then learned its own model of the game.</p>
+<ol class="papers" start="26" style="counter-reset:item 25;">
+  <li>
+    <span class="title">Mastering the Game of Go with Deep Neural Networks and Tree Search (AlphaGo)</span> &mdash; Silver et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;20pp</span>Nature 2016 &middot; <a href="https://doi.org/10.1038/nature16961">DOI</a> &middot; <a href="https://storage.googleapis.com/deepmind-media/alphago/AlphaGoNaturePaper.pdf">PDF</a></div>
+    <div class="why-here">Deep policy and value networks guiding Monte-Carlo tree search beat a top human at Go.</div>
+  </li>
+  <li>
+    <span class="title">Mastering Chess and Shogi by Self-Play (AlphaZero)</span> &mdash; Silver et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;19pp</span>arXiv 2017 &middot; <a href="https://arxiv.org/abs/1712.01815">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1712.01815">PDF</a></div>
+    <div class="why-here">Superhuman chess, shogi, and Go from self-play alone, with one general algorithm and no human games.</div>
+  </li>
+  <li>
+    <span class="title">Mastering Atari, Go, Chess and Shogi by Planning with a Learned Model (MuZero)</span> &mdash; Schrittwieser et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;21pp</span>Nature 2020 &middot; <a href="https://doi.org/10.1038/s41586-020-03051-4">DOI</a> &middot; <a href="https://arxiv.org/pdf/1911.08265">PDF</a></div>
+    <div class="why-here">Matches AlphaZero without being given the rules, learning a model sufficient for planning.</div>
+  </li>
+</ol>
+
+<h2>RL from human feedback — RL meets language models</h2>
+<p class="grouphdr">Where RL now touches everyone: learn a reward model from human preferences, then optimize a policy against it — the recipe behind aligned LLMs.</p>
+<ol class="papers" start="29" style="counter-reset:item 28;">
+  <li>
+    <span class="title">Deep Reinforcement Learning from Human Preferences</span> &mdash; Christiano, Leike, Brown, Martic, Legg, Amodei
+    <div class="meta"><span class="badge b-pdf">PDF&middot;17pp</span>NeurIPS 2017 &middot; <a href="https://arxiv.org/abs/1706.03741">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1706.03741">PDF</a></div>
+    <div class="why-here">Learns a reward model from pairwise human comparisons, avoiding hand-designed rewards — the conceptual core of RLHF.</div>
+  </li>
+  <li>
+    <span class="title">Training Language Models to Follow Instructions with Human Feedback (InstructGPT)</span> &mdash; Ouyang et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;68pp</span>NeurIPS 2022 &middot; <a href="https://arxiv.org/abs/2203.02155">arXiv</a> &middot; <a href="https://arxiv.org/pdf/2203.02155">PDF</a></div>
+    <div class="why-here">Applies preference-based RL (with PPO) to fine-tune GPT-3 into an instruction follower — the template for modern LLM alignment.</div>
+  </li>
+</ol>
+
+<div class="why">
+<b>Two families, one field.</b> Almost everything here is a variation on two ideas.
+<em>Value-based</em> methods (Q-learning, DQN and its fixes) learn how good states and
+actions are, then act greedily; they are sample-efficient and off-policy but awkward in
+continuous action spaces. <em>Policy-gradient</em> methods (REINFORCE, TRPO, PPO, SAC)
+adjust the policy directly; they handle continuous control and stochastic policies
+naturally, at the cost of higher variance. The deep-RL and self-play breakthroughs are
+these two families scaled up with neural networks and search — and RLHF is policy
+gradients pointed at a reward model learned from people.
+</div>
+
+<h2>Reference shelf &mdash; books</h2>
+<p class="grouphdr">The standard texts for the area; free copies linked where a legal one exists.</p>
+<ul class="refs">
+  <li><span class="badge b-book">BOOK&middot;548pp</span><b>Reinforcement Learning: An Introduction (2nd ed.)</b> &mdash; Richard Sutton, Andrew Barto (2018) &middot; The field's defining textbook and the framing every paper here inherits; read it alongside sections 1–2. <a href="http://incompleteideas.net/book/RLbook2020.pdf">PDF</a></li>
+  <li><span class="badge b-book">BOOK&middot;98pp</span><b>Algorithms for Reinforcement Learning</b> &mdash; Csaba Szepesvári (2010) &middot; A concise, rigorous companion that states the convergence results behind TD, Q-learning, and policy gradients. <a href="https://sites.ualberta.ca/~szepesva/papers/RLAlgsInMDPs.pdf">PDF</a></li>
+</ul>
+
+<h2>Key terms</h2>
+<p class="grouphdr">Vocabulary used across this list.</p>
+<div class="notekey"><b>value function</b> &mdash; the expected return from a state (V) or a state-action pair (Q) under a policy &nbsp; <b>temporal-difference (TD) learning</b> &mdash; updating a prediction toward a later, bootstrapped prediction rather than the final return &nbsp; <b>on-policy vs off-policy</b> &mdash; learning about the policy you follow (SARSA) vs a different target policy while behaving exploratorily (Q-learning) &nbsp; <b>policy gradient</b> &mdash; the gradient of expected return with respect to the policy's parameters; the basis of REINFORCE and its descendants &nbsp; <b>actor-critic</b> &mdash; a policy (actor) trained with a learned value estimate (critic) to reduce the variance of the policy gradient &nbsp; <b>advantage</b> &mdash; how much better an action is than the state's average, A(s,a) = Q(s,a) − V(s); GAE estimates it with tunable bias and variance &nbsp; <b>experience replay</b> &mdash; storing past transitions and sampling them to break temporal correlation and reuse data (DQN, DDPG) &nbsp; <b>natural gradient</b> &mdash; a policy update reshaped by the Fisher information metric so it is invariant to the policy's parameterization; the basis of TRPO and PPO &nbsp; <b>distributional RL</b> &mdash; learning the whole distribution of returns rather than just its expectation (C51), a richer training signal &nbsp; <b>trust region</b> &mdash; a bound on how far each policy update may move, keeping optimization stable (TRPO, PPO) &nbsp; <b>distributed RL</b> &mdash; decoupling many parallel actors from one learner to scale data collection (IMPALA, Ape-X) &nbsp; <b>exploration bonus</b> &mdash; an intrinsic reward added to encourage visiting novel states when extrinsic reward is sparse (RND) &nbsp; <b>offline (batch) RL</b> &mdash; learning a policy from a fixed dataset with no further interaction with the environment (CQL, Decision Transformer) &nbsp; <b>MCTS</b> &mdash; Monte-Carlo tree search; look-ahead search guided by learned networks in the AlphaGo lineage &nbsp; <b>RLHF</b> &mdash; reinforcement learning from human feedback: optimizing a policy against a reward model learned from human preferences</div>
 
 </body>
 </html>

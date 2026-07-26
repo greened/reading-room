@@ -8,60 +8,233 @@
 <body>
 
 <h1>Machine learning · Training, scaling &amp; practice</h1>
-<p class="tally">In-depth landmark list for this subtopic. <span class="badge b-pdf">PDF</span>open copy available &middot; <span class="badge b-web">DOI</span>publisher link only.</p>
+<p class="sub">How do you take a model that works on one GPU and train it a thousand times larger? This list follows that scaling story in the order the field discovered it: first make one model learn reliably (optimizers, normalization, schedules), then push the batch across more devices, then fit models that no longer fit in memory, then split them across machines, then buy parameters without buying compute (mixture-of-experts) and attention without buying memory (FlashAttention). Only then do the <em>scaling laws</em> tell you how to spend a compute budget — and the last two stages, cheap adaptation and alignment, turn one expensive pre-trained model into something usable.</p>
+<p class="tally">32 papers &middot; &asymp; <b>763 pp</b> of primary reading. &nbsp; Legend: <span class="badge b-pdf">PDF</span>open copy (see <span class="file">fetch.sh</span>) &middot; <span class="badge b-web">DOI</span>publisher link only</p>
+<div class="why"><b>How to read this list.</b> Read Sections 1–3 for the mechanics every large run rests on — the optimizer, the batch, the memory budget. Sections 4–6 are the three axes of "bigger than one device": parallelism, sparsity, and cheaper attention. Section 7 is the payoff — the empirical laws that say what to scale. If you only want to <em>use</em> big models rather than train them, jump to Sections 8–9 (distillation, PEFT, RLHF).</div>
 
-<ol class="papers">
+<h2>1 · How one model learns: optimizers, momentum, normalization</h2>
+<p class="grouphdr">Everything downstream is doing this same update at massive scale, so start with the update rule itself.</p>
+<ul class="comp">
+  <li><span class="badge b-pdf">PDF&middot;14pp</span><b>Companion — An overview of gradient descent optimization algorithms</b> &mdash; Sebastian Ruder The one-sitting map of SGD → momentum → Adam; read before the papers below. <a href="https://arxiv.org/pdf/1609.04747">PDF</a></li>
+  <li><span class="badge b-web">WEB</span><b>Companion — Why Momentum Really Works</b> &mdash; Gabriel Goh Interactive intuition for what momentum buys you. <a href="https://distill.pub/2017/momentum/">Distill</a></li>
+</ul>
+<ol class="papers" start="1">
   <li>
-    <span class="title">Distilling the Knowledge in a Neural Network</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/1503.02531">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1503.02531">PDF</a></div>
-    <div class="why-here">Hinton, Vinyals, Dean, 2015, NeurIPS Workshop. Knowledge distillation — compressing large models into deployable ones.</div>
+    <span class="title">On the Importance of Initialization and Momentum in Deep Learning</span> &mdash; Sutskever, Martens, Dahl, Hinton
+    <div class="meta"><span class="badge b-pdf">PDF&middot;9pp</span>ICML 2013 &middot; <a href="https://proceedings.mlr.press/v28/sutskever13.html">PMLR</a> &middot; <a href="https://proceedings.mlr.press/v28/sutskever13.pdf">PDF</a></div>
+    <div class="why-here">Well-tuned momentum is what makes deep nets trainable by first-order methods at all.</div>
   </li>
   <li>
-    <span class="title">Scaling Laws for Neural Language Models</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/2001.08361">arXiv</a> &middot; <a href="https://arxiv.org/pdf/2001.08361">PDF</a></div>
-    <div class="why-here">Kaplan et al., 2020, arXiv. Loss follows smooth power laws in model size, data, and compute.</div>
+    <span class="title">Adam: A Method for Stochastic Optimization</span> &mdash; Kingma, Ba
+    <div class="meta"><span class="badge b-pdf">PDF&middot;15pp</span>ICLR 2015 &middot; <a href="https://arxiv.org/abs/1412.6980">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1412.6980">PDF</a></div>
+    <div class="why-here">Per-parameter adaptive step sizes; still the default optimizer for most training.</div>
   </li>
   <li>
-    <span class="title">Training Compute-Optimal Large Language Models (Chinchilla)</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/2203.15556">arXiv</a> &middot; <a href="https://arxiv.org/pdf/2203.15556">PDF</a></div>
-    <div class="why-here">Hoffmann et al., 2022, NeurIPS. Corrected the compute-optimal recipe (scale data and parameters together).</div>
+    <span class="title">Decoupled Weight Decay Regularization (AdamW)</span> &mdash; Loshchilov, Hutter
+    <div class="meta"><span class="badge b-pdf">PDF&middot;19pp</span>ICLR 2019 &middot; <a href="https://arxiv.org/abs/1711.05101">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1711.05101">PDF</a></div>
+    <div class="why-here">Decoupled weight decay; the default Transformer optimizer.</div>
   </li>
   <li>
-    <span class="title">Mixed Precision Training</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/1710.03740">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1710.03740">PDF</a></div>
-    <div class="why-here">Micikevicius et al., 2018, ICLR. FP16 training with loss scaling + FP32 master weights; half the memory.</div>
+    <span class="title">Batch Normalization</span> &mdash; Ioffe, Szegedy
+    <div class="meta"><span class="badge b-pdf">PDF&middot;11pp</span>ICML 2015 &middot; <a href="https://arxiv.org/abs/1502.03167">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1502.03167">PDF</a></div>
+    <div class="why-here">Normalizing layer inputs to stabilize and dramatically speed up training.</div>
   </li>
   <li>
-    <span class="title">Decoupled Weight Decay Regularization (AdamW)</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/1711.05101">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1711.05101">PDF</a></div>
-    <div class="why-here">Loshchilov, Hutter, 2019, ICLR. Decoupled weight decay; the default Transformer optimizer.</div>
-  </li>
-  <li>
-    <span class="title">SGDR: Warm Restarts</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/1608.03983">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1608.03983">PDF</a></div>
-    <div class="why-here">Loshchilov, Hutter, 2017, ICLR. Cosine-annealing LR schedules with warm restarts.</div>
-  </li>
-  <li>
-    <span class="title">Deep RL from Human Preferences</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/1706.03741">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1706.03741">PDF</a></div>
-    <div class="why-here">Christiano et al., 2017, NeurIPS. Foundational RLHF: training from human preference comparisons.</div>
-  </li>
-  <li>
-    <span class="title">Training Language Models to Follow Instructions (InstructGPT)</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/2203.02155">arXiv</a> &middot; <a href="https://arxiv.org/pdf/2203.02155">PDF</a></div>
-    <div class="why-here">Ouyang et al., 2022, NeurIPS. RLHF instruction tuning; the recipe behind ChatGPT-style assistants.</div>
-  </li>
-  <li>
-    <span class="title">LoRA: Low-Rank Adaptation of Large Language Models</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/2106.09685">arXiv</a> &middot; <a href="https://arxiv.org/pdf/2106.09685">PDF</a></div>
-    <div class="why-here">Hu et al., 2022, ICLR. Low-rank adapters that slashed fine-tuning cost; launched PEFT.</div>
-  </li>
-  <li>
-    <span class="title">Emergent Abilities of Large Language Models</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/2206.07682">arXiv</a> &middot; <a href="https://arxiv.org/pdf/2206.07682">PDF</a></div>
-    <div class="why-here">Wei et al., 2022, TMLR. Scale-driven capabilities appearing abruptly beyond a threshold.</div>
+    <span class="title">SGDR: Stochastic Gradient Descent with Warm Restarts</span> &mdash; Loshchilov, Hutter
+    <div class="meta"><span class="badge b-pdf">PDF&middot;16pp</span>ICLR 2017 &middot; <a href="https://arxiv.org/abs/1608.03983">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1608.03983">PDF</a></div>
+    <div class="why-here">Cosine-annealing learning-rate schedules with warm restarts.</div>
   </li>
 </ol>
+
+<h2>2 · Scaling the batch: warmup and large-batch optimizers</h2>
+<p class="grouphdr">The first lever for speed is a bigger batch across more devices — but naive large batches lose accuracy.</p>
+<ol class="papers" start="6" style="counter-reset:item 5;">
+  <li>
+    <span class="title">Accurate, Large Minibatch SGD: Training ImageNet in 1 Hour</span> &mdash; Goyal et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>2017 &middot; <a href="https://arxiv.org/abs/1706.02677">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1706.02677">PDF</a></div>
+    <div class="why-here">The linear scaling rule plus learning-rate warmup — the recipe that made large-batch training work.</div>
+  </li>
+  <li>
+    <span class="title">Large Batch Training of Convolutional Networks (LARS)</span> &mdash; You, Gitman, Ginsburg
+    <div class="meta"><span class="badge b-pdf">PDF&middot;8pp</span>2017 &middot; <a href="https://arxiv.org/abs/1708.03888">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1708.03888">PDF</a></div>
+    <div class="why-here">Layer-wise adaptive rates that unlock batch sizes in the tens of thousands.</div>
+  </li>
+  <li>
+    <span class="title">Large Batch Optimization for Deep Learning: Training BERT in 76 Minutes (LAMB)</span> &mdash; You et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;37pp</span>ICLR 2020 &middot; <a href="https://arxiv.org/abs/1904.00962">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1904.00962">PDF</a></div>
+    <div class="why-here">LARS carried over to Transformers, the enabler of fast BERT pre-training.</div>
+  </li>
+  <li>
+    <span class="title">An Empirical Model of Large-Batch Training</span> &mdash; McCandlish, Kaplan, Amodei et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;35pp</span>2018 &middot; <a href="https://arxiv.org/abs/1812.06162">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1812.06162">PDF</a></div>
+    <div class="why-here">The gradient noise scale: a principled answer to how large a batch is actually worth it.</div>
+  </li>
+</ol>
+
+<h2>3 · Fitting bigger models in memory</h2>
+<p class="grouphdr">Bigger models than fit in memory: trade compute for memory, shrink the numbers, shard the optimizer state.</p>
+<ol class="papers" start="10" style="counter-reset:item 9;">
+  <li>
+    <span class="title">Training Deep Nets with Sublinear Memory Cost</span> &mdash; Chen, Xu, Zhang, Guestrin
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>2016 &middot; <a href="https://arxiv.org/abs/1604.06174">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1604.06174">PDF</a></div>
+    <div class="why-here">Gradient (activation) checkpointing: recompute activations instead of storing them.</div>
+  </li>
+  <li>
+    <span class="title">Mixed Precision Training</span> &mdash; Micikevicius et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>ICLR 2018 &middot; <a href="https://arxiv.org/abs/1710.03740">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1710.03740">PDF</a></div>
+    <div class="why-here">FP16 training with loss scaling and FP32 master weights; half the memory, most of the speed.</div>
+  </li>
+  <li>
+    <span class="title">ZeRO: Memory Optimizations Toward Training Trillion Parameter Models</span> &mdash; Rajbhandari et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;24pp</span>SC 2020 &middot; <a href="https://arxiv.org/abs/1910.02054">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1910.02054">PDF</a></div>
+    <div class="why-here">Shard optimizer state, gradients, and parameters across data-parallel ranks — the memory backbone of DeepSpeed.</div>
+  </li>
+</ol>
+
+<h2>4 · Parallelism across devices</h2>
+<p class="grouphdr">When one device isn't enough, split the model, not just the data — by layer, by pipeline stage, by tensor.</p>
+<ul class="comp">
+  <li><span class="badge b-web">WEB</span><b>Companion — How to Train Really Large Models on Many GPUs?</b> &mdash; Lilian Weng One post that ties data / pipeline / tensor / expert parallelism together; read before or alongside this section. <a href="https://lilianweng.github.io/posts/2021-09-25-train-large/">blog</a></li>
+  <li><span class="badge b-web">WEB</span><b>Companion — Model Parallelism</b> &mdash; Hugging Face docs Practical mapping of these ideas onto real training code. <a href="https://huggingface.co/docs/transformers/perf_train_gpu_many">guide</a></li>
+</ul>
+<ol class="papers" start="13" style="counter-reset:item 12;">
+  <li>
+    <span class="title">GPipe: Efficient Training of Giant Neural Networks Using Pipeline Parallelism</span> &mdash; Huang et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;11pp</span>NeurIPS 2019 &middot; <a href="https://arxiv.org/abs/1811.06965">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1811.06965">PDF</a></div>
+    <div class="why-here">Micro-batched pipeline parallelism that splits a model across stages with little idle time.</div>
+  </li>
+  <li>
+    <span class="title">Megatron-LM: Training Multi-Billion Parameter Language Models Using Model Parallelism</span> &mdash; Shoeybi et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;15pp</span>2019 &middot; <a href="https://arxiv.org/abs/1909.08053">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1909.08053">PDF</a></div>
+    <div class="why-here">Tensor (intra-layer) parallelism for Transformers, splitting each matmul across GPUs.</div>
+  </li>
+  <li>
+    <span class="title">Efficient Large-Scale Language Model Training on GPU Clusters Using Megatron-LM</span> &mdash; Narayanan et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;13pp</span>SC 2021 &middot; <a href="https://arxiv.org/abs/2104.04473">arXiv</a> &middot; <a href="https://arxiv.org/pdf/2104.04473">PDF</a></div>
+    <div class="why-here">Composing tensor + pipeline + data parallelism (3D / PTD-P) to scale to thousands of GPUs.</div>
+  </li>
+</ol>
+
+<h2>5 · Conditional computation: mixture of experts</h2>
+<p class="grouphdr">Grow the parameter count without growing per-token compute by routing each token to just a few experts.</p>
+<ol class="papers" start="16" style="counter-reset:item 15;">
+  <li>
+    <span class="title">Outrageously Large Neural Networks: The Sparsely-Gated Mixture-of-Experts Layer</span> &mdash; Shazeer et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;19pp</span>ICLR 2017 &middot; <a href="https://arxiv.org/abs/1701.06538">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1701.06538">PDF</a></div>
+    <div class="why-here">The gated MoE layer that revived conditional computation at scale.</div>
+  </li>
+  <li>
+    <span class="title">GShard: Scaling Giant Models with Conditional Computation and Automatic Sharding</span> &mdash; Lepikhin et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;35pp</span>2020 &middot; <a href="https://arxiv.org/abs/2006.16668">arXiv</a> &middot; <a href="https://arxiv.org/pdf/2006.16668">PDF</a></div>
+    <div class="why-here">MoE plus an annotation-based sharding compiler; a 600B-parameter translation model.</div>
+  </li>
+  <li>
+    <span class="title">Switch Transformers: Scaling to Trillion Parameter Models with Simple and Efficient Sparsity</span> &mdash; Fedus, Zoph, Shazeer
+    <div class="meta"><span class="badge b-pdf">PDF&middot;40pp</span>JMLR 2022 &middot; <a href="https://arxiv.org/abs/2101.03961">arXiv</a> &middot; <a href="https://arxiv.org/pdf/2101.03961">PDF</a></div>
+    <div class="why-here">Top-1 routing that simplifies and stabilizes MoE training to trillion-parameter scale.</div>
+  </li>
+</ol>
+
+<h2>6 · Making attention itself cheaper</h2>
+<p class="grouphdr">Quadratic attention is the other scaling wall; make it IO-aware and exact rather than approximate.</p>
+<ol class="papers" start="19" style="counter-reset:item 18;">
+  <li>
+    <span class="title">FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness</span> &mdash; Dao, Fu, Ermon, Rudra, Ré
+    <div class="meta"><span class="badge b-pdf">PDF&middot;34pp</span>NeurIPS 2022 &middot; <a href="https://arxiv.org/abs/2205.14135">arXiv</a> &middot; <a href="https://arxiv.org/pdf/2205.14135">PDF</a></div>
+    <div class="why-here">Tiling and recomputation make attention memory-linear and much faster — exactly, not approximately.</div>
+  </li>
+  <li>
+    <span class="title">FlashAttention-2: Faster Attention with Better Parallelism and Work Partitioning</span> &mdash; Tri Dao
+    <div class="meta"><span class="badge b-pdf">PDF&middot;14pp</span>2023 &middot; <a href="https://arxiv.org/abs/2307.08691">arXiv</a> &middot; <a href="https://arxiv.org/pdf/2307.08691">PDF</a></div>
+    <div class="why-here">Rebalances the work partitioning for a further ~2× on modern GPUs.</div>
+  </li>
+</ol>
+
+<h2>7 · Scaling laws: how to spend the compute</h2>
+<p class="grouphdr">With the machinery to train at scale in hand, the question becomes how to allocate parameters, data, and compute.</p>
+<ol class="papers" start="21" style="counter-reset:item 20;">
+  <li>
+    <span class="title">Scaling Laws for Neural Language Models</span> &mdash; Kaplan et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;30pp</span>2020 &middot; <a href="https://arxiv.org/abs/2001.08361">arXiv</a> &middot; <a href="https://arxiv.org/pdf/2001.08361">PDF</a></div>
+    <div class="why-here">Loss follows smooth power laws in model size, data, and compute.</div>
+  </li>
+  <li>
+    <span class="title">Language Models are Few-Shot Learners (GPT-3)</span> &mdash; Brown et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;75pp</span>NeurIPS 2020 &middot; <a href="https://arxiv.org/abs/2005.14165">arXiv</a> &middot; <a href="https://arxiv.org/pdf/2005.14165">PDF</a></div>
+    <div class="why-here">The scaling bet cashed out at 175B parameters; in-context learning emerges from scale alone.</div>
+  </li>
+  <li>
+    <span class="title">Training Compute-Optimal Large Language Models (Chinchilla)</span> &mdash; Hoffmann et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;36pp</span>NeurIPS 2022 &middot; <a href="https://arxiv.org/abs/2203.15556">arXiv</a> &middot; <a href="https://arxiv.org/pdf/2203.15556">PDF</a></div>
+    <div class="why-here">Corrected the compute-optimal recipe: scale data and parameters together, not just parameters.</div>
+  </li>
+  <li>
+    <span class="title">Emergent Abilities of Large Language Models</span> &mdash; Wei et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;30pp</span>TMLR 2022 &middot; <a href="https://arxiv.org/abs/2206.07682">arXiv</a> &middot; <a href="https://arxiv.org/pdf/2206.07682">PDF</a></div>
+    <div class="why-here">Some capabilities appear abruptly past a scale threshold — the flip side of smooth loss curves.</div>
+  </li>
+</ol>
+
+<h2>8 · Adapting big models cheaply</h2>
+<p class="grouphdr">Training from scratch is only half the story; distillation and parameter-efficient tuning make one big model reusable without retraining it.</p>
+<ol class="papers" start="25" style="counter-reset:item 24;">
+  <li>
+    <span class="title">Distilling the Knowledge in a Neural Network</span> &mdash; Hinton, Vinyals, Dean
+    <div class="meta"><span class="badge b-pdf">PDF&middot;9pp</span>2015 &middot; <a href="https://arxiv.org/abs/1503.02531">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1503.02531">PDF</a></div>
+    <div class="why-here">Compress a large model (or ensemble) into a small deployable one by training on its soft targets.</div>
+  </li>
+  <li>
+    <span class="title">Parameter-Efficient Transfer Learning for NLP (Adapters)</span> &mdash; Houlsby et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;13pp</span>ICML 2019 &middot; <a href="https://arxiv.org/abs/1902.00751">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1902.00751">PDF</a></div>
+    <div class="why-here">Freeze the backbone, train tiny inserted adapter layers — the first practical PEFT method.</div>
+  </li>
+  <li>
+    <span class="title">The Power of Scale for Parameter-Efficient Prompt Tuning</span> &mdash; Lester, Al-Rfou, Constant
+    <div class="meta"><span class="badge b-pdf">PDF&middot;15pp</span>EMNLP 2021 &middot; <a href="https://arxiv.org/abs/2104.08691">arXiv</a> &middot; <a href="https://arxiv.org/pdf/2104.08691">PDF</a></div>
+    <div class="why-here">Learn a handful of soft-prompt vectors; at scale it matches full fine-tuning.</div>
+  </li>
+  <li>
+    <span class="title">LoRA: Low-Rank Adaptation of Large Language Models</span> &mdash; Hu et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;26pp</span>ICLR 2022 &middot; <a href="https://arxiv.org/abs/2106.09685">arXiv</a> &middot; <a href="https://arxiv.org/pdf/2106.09685">PDF</a></div>
+    <div class="why-here">Low-rank adapters that slashed fine-tuning cost and became the default PEFT method.</div>
+  </li>
+  <li>
+    <span class="title">QLoRA: Efficient Finetuning of Quantized LLMs</span> &mdash; Dettmers, Pagnoni, Holtzman, Zettlemoyer
+    <div class="meta"><span class="badge b-pdf">PDF&middot;26pp</span>NeurIPS 2023 &middot; <a href="https://arxiv.org/abs/2305.14314">arXiv</a> &middot; <a href="https://arxiv.org/pdf/2305.14314">PDF</a></div>
+    <div class="why-here">4-bit quantization plus LoRA fits fine-tuning of a 65B model on one GPU.</div>
+  </li>
+</ol>
+
+<h2>9 · Aligning models to human intent</h2>
+<p class="grouphdr">The final training stage: turn a capable next-token predictor into a model that does what people ask.</p>
+<ol class="papers" start="30" style="counter-reset:item 29;">
+  <li>
+    <span class="title">Deep Reinforcement Learning from Human Preferences</span> &mdash; Christiano et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;17pp</span>NeurIPS 2017 &middot; <a href="https://arxiv.org/abs/1706.03741">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1706.03741">PDF</a></div>
+    <div class="why-here">Foundational RLHF: learn a reward model from human preference comparisons.</div>
+  </li>
+  <li>
+    <span class="title">Training Language Models to Follow Instructions with Human Feedback (InstructGPT)</span> &mdash; Ouyang et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;68pp</span>NeurIPS 2022 &middot; <a href="https://arxiv.org/abs/2203.02155">arXiv</a> &middot; <a href="https://arxiv.org/pdf/2203.02155">PDF</a></div>
+    <div class="why-here">RLHF instruction tuning; the recipe behind ChatGPT-style assistants.</div>
+  </li>
+  <li>
+    <span class="title">Direct Preference Optimization: Your Language Model Is Secretly a Reward Model (DPO)</span> &mdash; Rafailov et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;27pp</span>NeurIPS 2023 &middot; <a href="https://arxiv.org/abs/2305.18290">arXiv</a> &middot; <a href="https://arxiv.org/pdf/2305.18290">PDF</a></div>
+    <div class="why-here">Aligns directly from preferences with a simple classification loss — RLHF without the RL.</div>
+  </li>
+</ol>
+
+<h2>Reference shelf &mdash; books</h2>
+<p class="grouphdr">The standard texts for the area; free copies linked where a legal one exists.</p>
+<ul class="refs">
+  <li><span class="badge b-book">BOOK&middot;800pp</span><b>Deep Learning</b> &mdash; Goodfellow, Bengio, Courville (2016) &middot; Chapter 8 (optimization for training deep models) is the textbook treatment behind SGD, momentum, Adam, and batch norm. <a href="https://www.deeplearningbook.org/">page</a></li>
+  <li><span class="badge b-book">BOOK&middot;1000pp</span><b>Dive into Deep Learning</b> &mdash; Zhang, Lipton, Li, Smola (2023) &middot; The optimization and computational-performance chapters cover these algorithms with runnable code and exercises. <a href="https://d2l.ai/chapter_optimization/index.html">page</a></li>
+</ul>
+
+<h2>Key terms</h2>
+<p class="grouphdr">Vocabulary used across this list.</p>
+<div class="notekey"><b>linear scaling rule</b> &mdash; scale the learning rate in proportion to the batch size when using large batches &nbsp; <b>warmup</b> &mdash; ramp the learning rate up from near zero over the first steps to stabilize early large-batch training &nbsp; <b>gradient noise scale</b> &mdash; a measure of how much a larger batch still reduces gradient variance; predicts the useful batch size &nbsp; <b>activation checkpointing</b> &mdash; discard intermediate activations in the forward pass and recompute them in the backward pass to save memory &nbsp; <b>mixed precision / loss scaling</b> &mdash; train in FP16/BF16 while scaling the loss so small gradients survive the reduced range &nbsp; <b>data parallelism</b> &mdash; replicate the model on each device and split the batch; average the gradients &nbsp; <b>tensor (model) parallelism</b> &mdash; split the weights of a single layer across devices &nbsp; <b>pipeline parallelism</b> &mdash; assign consecutive layers to different devices and stream micro-batches through them &nbsp; <b>ZeRO sharding</b> &mdash; partition optimizer state, gradients, and parameters across data-parallel ranks instead of replicating them &nbsp; <b>mixture of experts (MoE)</b> &mdash; a layer of many sub-networks with a gate that routes each token to only a few, adding parameters without adding per-token compute &nbsp; <b>compute-optimal</b> &mdash; the parameter/data split that minimizes loss for a fixed compute budget (the Chinchilla result) &nbsp; <b>PEFT</b> &mdash; parameter-efficient fine-tuning: adapt a frozen model by training a small number of extra parameters (adapters, prompts, LoRA) &nbsp; <b>RLHF</b> &mdash; reinforcement learning from human feedback: fine-tune a model against a reward model learned from human preferences</div>
 
 </body>
 </html>

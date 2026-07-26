@@ -2,61 +2,220 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Machine learning · Computer vision (CNNs &amp; detection)</title>
+<title>Machine learning · Computer vision</title>
 <link rel="stylesheet" href="../../lib/guide.css">
 </head>
 <body>
 
-<h1>Machine learning · Computer vision (CNNs &amp; detection)</h1>
-<p class="tally">In-depth landmark list for this subtopic. <span class="badge b-pdf">PDF</span>open copy available &middot; <span class="badge b-web">DOI</span>publisher link only.</p>
+<h1>Machine learning · Computer vision</h1>
+<p class="sub">How machines learned to see. The path runs in five stages: first the <b>backbones</b> that learn general visual features from ImageNet, then <b>detectors</b> that localize objects, then <b>dense prediction</b> that labels every pixel, then the <b>transformer</b> architectures that displaced the convolutional recipe, and finally the <b>foundation models</b> that fold vision, language, and generation into one promptable interface. Read each stage in order — every later stage reuses the machinery of the earlier ones.</p>
+<p class="tally">32 papers &middot; &asymp; <b>533 pp</b> of primary reading. &nbsp; Legend: <span class="badge b-pdf">PDF</span>open copy (see <span class="file">fetch.sh</span>) &middot; <span class="badge b-web">DOI</span>publisher link only</p>
+<div class="why"><b>How to read this list.</b> Start with the backbones: AlexNet through ResNet is the story of how depth was made trainable, and almost everything downstream plugs one of these networks in as a feature extractor. Detection and segmentation then show two ways to <em>use</em> those features — boxes and per-pixel masks. Only after that do the Transformer papers make sense as a replacement for convolution, and CLIP/SAM/diffusion as what you build once the backbone is a general-purpose visual encoder.</div>
 
-<ol class="papers">
+<h2>Backbones — learning visual features</h2>
+<p class="grouphdr">Start here: these classification networks are the feature extractors every detector and segmenter reuses.</p>
+<ol class="papers" start="1">
   <li>
-    <span class="title">ImageNet Classification with Deep Convolutional Neural Networks (AlexNet)</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks">page</a> &middot; <a href="https://www.image-net.org/static_files/files/supervision.pdf">PDF</a></div>
-    <div class="why-here">Krizhevsky, Sutskever, Hinton, 2012, NeurIPS. The ImageNet win that started the modern deep-learning boom.</div>
+    <span class="title">ImageNet Classification with Deep Convolutional Neural Networks (AlexNet)</span> &mdash; Krizhevsky, Sutskever, Hinton
+    <div class="meta"><span class="badge b-pdf">PDF&middot;9pp</span>NeurIPS 2012 &middot; <a href="https://papers.nips.cc/paper_files/paper/2012/hash/c399862d3b9d6b76c8436e924a68c45b-Abstract.html">page</a> &middot; <a href="https://proceedings.neurips.cc/paper_files/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf">PDF</a></div>
+    <div class="why-here">The ImageNet win that started the modern deep-learning boom; the paper every later backbone answers.</div>
   </li>
   <li>
-    <span class="title">Very Deep Convolutional Networks for Large-Scale Image Recognition (VGG)</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/1409.1556">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1409.1556">PDF</a></div>
-    <div class="why-here">Simonyan, Zisserman, 2015, ICLR. Depth with small 3x3 filters; a durable transfer-learning backbone.</div>
+    <span class="title">Very Deep Convolutional Networks for Large-Scale Image Recognition (VGG)</span> &mdash; Simonyan, Zisserman
+    <div class="meta"><span class="badge b-pdf">PDF&middot;14pp</span>ICLR 2015 &middot; <a href="https://arxiv.org/abs/1409.1556">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1409.1556">PDF</a></div>
+    <div class="why-here">Depth built from stacked 3×3 filters; a simple, durable transfer-learning backbone.</div>
   </li>
   <li>
-    <span class="title">Faster R-CNN: Towards Real-Time Object Detection with Region Proposal Networks</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/1506.01497">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1506.01497">PDF</a></div>
-    <div class="why-here">Ren, He, Girshick, Sun, 2015, NeurIPS. The reference two-stage detector.</div>
+    <span class="title">Going Deeper with Convolutions (GoogLeNet/Inception)</span> &mdash; Szegedy et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>CVPR 2015 &middot; <a href="https://doi.org/10.1109/CVPR.2015.7298594">DOI</a> &middot; <a href="https://arxiv.org/pdf/1409.4842">PDF</a></div>
+    <div class="why-here">The multi-branch Inception module: more depth at controlled compute.</div>
   </li>
   <li>
-    <span class="title">You Only Look Once (YOLO)</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/1506.02640">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1506.02640">PDF</a></div>
-    <div class="why-here">Redmon, Divvala, Girshick, Farhadi, 2016, CVPR. Detection as single-shot regression — the real-time paradigm.</div>
+    <span class="title">Batch Normalization</span> &mdash; Ioffe, Szegedy
+    <div class="meta"><span class="badge b-pdf">PDF&middot;11pp</span>ICML 2015 &middot; <a href="https://arxiv.org/abs/1502.03167">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1502.03167">PDF</a></div>
+    <div class="why-here">Normalizing layer activations to train deep nets faster and far more stably — the enabling trick for what follows.</div>
   </li>
   <li>
-    <span class="title">Going Deeper with Convolutions (GoogLeNet/Inception)</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/1409.4842">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1409.4842">PDF</a></div>
-    <div class="why-here">Szegedy et al., 2015, CVPR. The multi-branch Inception module; depth with controlled compute.</div>
+    <span class="title">Deep Residual Learning for Image Recognition (ResNet)</span> &mdash; He, Zhang, Ren, Sun
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>CVPR 2016 &middot; <a href="https://doi.org/10.1109/CVPR.2016.90">DOI</a> &middot; <a href="https://arxiv.org/pdf/1512.03385">PDF</a></div>
+    <div class="why-here">Skip connections make 100+ layer networks trainable; still the default backbone a decade later.</div>
   </li>
   <li>
-    <span class="title">Fully Convolutional Networks for Semantic Segmentation</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/1411.4038">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1411.4038">PDF</a></div>
-    <div class="why-here">Long, Shelhamer, Darrell, 2015, CVPR. Made per-pixel dense prediction end-to-end trainable.</div>
+    <span class="title">Densely Connected Convolutional Networks (DenseNet)</span> &mdash; Huang, Liu, Van der Maaten, Weinberger
+    <div class="meta"><span class="badge b-pdf">PDF&middot;9pp</span>CVPR 2017 &middot; <a href="https://doi.org/10.1109/CVPR.2017.243">DOI</a> &middot; <a href="https://arxiv.org/pdf/1608.06993">PDF</a></div>
+    <div class="why-here">Connects every layer to every later one, so features are reused and gradients flow freely — ResNet's accuracy with far fewer parameters.</div>
   </li>
   <li>
-    <span class="title">U-Net: Convolutional Networks for Biomedical Image Segmentation</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/1505.04597">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1505.04597">PDF</a></div>
-    <div class="why-here">Ronneberger, Fischer, Brox, 2015, MICCAI. Encoder-decoder with skip connections; the default segmentation (and diffusion) backbone.</div>
+    <span class="title">Squeeze-and-Excitation Networks (SENet)</span> &mdash; Hu, Shen, Sun
+    <div class="meta"><span class="badge b-pdf">PDF&middot;13pp</span>CVPR 2018 &middot; <a href="https://doi.org/10.1109/CVPR.2018.00745">DOI</a> &middot; <a href="https://arxiv.org/pdf/1709.01507">PDF</a></div>
+    <div class="why-here">A lightweight block that recalibrates feature-map channels by learned importance; the ImageNet 2017 winner and the first taste of attention inside a CNN.</div>
   </li>
   <li>
-    <span class="title">Mask R-CNN</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/1703.06870">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1703.06870">PDF</a></div>
-    <div class="why-here">He, Gkioxari, Dollár, Girshick, 2017, ICCV. Faster R-CNN + a mask branch; the instance-segmentation standard.</div>
+    <span class="title">EfficientNet: Rethinking Model Scaling</span> &mdash; Tan, Le
+    <div class="meta"><span class="badge b-pdf">PDF&middot;11pp</span>ICML 2019 &middot; <a href="https://arxiv.org/abs/1905.11946">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1905.11946">PDF</a></div>
+    <div class="why-here">Compound scaling of depth, width, and resolution for accuracy at far lower FLOPs.</div>
   </li>
   <li>
-    <span class="title">EfficientNet: Rethinking Model Scaling</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/1905.11946">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1905.11946">PDF</a></div>
-    <div class="why-here">Tan, Le, 2019, ICML. Compound scaling of depth/width/resolution for accuracy at far lower FLOPs.</div>
+    <span class="title">A ConvNet for the 2020s (ConvNeXt)</span> &mdash; Liu, Mao, Wu, Feichtenhofer, Darrell, Xie
+    <div class="meta"><span class="badge b-pdf">PDF&middot;15pp</span>CVPR 2022 &middot; <a href="https://doi.org/10.1109/CVPR52688.2022.01167">DOI</a> &middot; <a href="https://arxiv.org/pdf/2201.03545">PDF</a></div>
+    <div class="why-here">Modernizes a plain ResNet with the design and training choices behind Vision Transformers and matches them — evidence that much of ViT's gain was recipe, not attention. Read it as the bridge into the Transformer section.</div>
   </li>
 </ol>
+
+<h2>Object detection — from regions to real time</h2>
+<p class="grouphdr">With a backbone in hand, the next problem is localization. This section traces detection from slow region proposals to single-shot real-time nets.</p>
+<ol class="papers" start="10" style="counter-reset:item 9;">
+  <li>
+    <span class="title">Rich Feature Hierarchies for Object Detection (R-CNN)</span> &mdash; Girshick, Donahue, Darrell, Malik
+    <div class="meta"><span class="badge b-pdf">PDF&middot;21pp</span>CVPR 2014 &middot; <a href="https://doi.org/10.1109/CVPR.2014.81">DOI</a> &middot; <a href="https://arxiv.org/pdf/1311.2524">PDF</a></div>
+    <div class="why-here">The first paper to put a CNN backbone under object detection; slow, but it set the template.</div>
+  </li>
+  <li>
+    <span class="title">Fast R-CNN</span> &mdash; Girshick
+    <div class="meta"><span class="badge b-pdf">PDF&middot;9pp</span>ICCV 2015 &middot; <a href="https://doi.org/10.1109/ICCV.2015.169">DOI</a> &middot; <a href="https://arxiv.org/pdf/1504.08083">PDF</a></div>
+    <div class="why-here">Shares convolution across proposals and adds RoI pooling — orders of magnitude faster than R-CNN.</div>
+  </li>
+  <li>
+    <span class="title">Faster R-CNN: Real-Time Detection with Region Proposal Networks</span> &mdash; Ren, He, Girshick, Sun
+    <div class="meta"><span class="badge b-pdf">PDF&middot;14pp</span>NeurIPS 2015 &middot; <a href="https://arxiv.org/abs/1506.01497">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1506.01497">PDF</a></div>
+    <div class="why-here">Learns the proposals too (the RPN), giving one end-to-end network; the reference two-stage detector.</div>
+  </li>
+  <li>
+    <span class="title">You Only Look Once (YOLO)</span> &mdash; Redmon, Divvala, Girshick, Farhadi
+    <div class="meta"><span class="badge b-pdf">PDF&middot;10pp</span>CVPR 2016 &middot; <a href="https://doi.org/10.1109/CVPR.2016.91">DOI</a> &middot; <a href="https://arxiv.org/pdf/1506.02640">PDF</a></div>
+    <div class="why-here">Detection recast as a single regression pass — the real-time, one-stage paradigm.</div>
+  </li>
+  <li>
+    <span class="title">SSD: Single Shot MultiBox Detector</span> &mdash; Liu et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;17pp</span>ECCV 2016 &middot; <a href="https://doi.org/10.1007/978-3-319-46448-0_2">DOI</a> &middot; <a href="https://arxiv.org/pdf/1512.02325">PDF</a></div>
+    <div class="why-here">One-stage detection across multiple feature-map scales; the other half of the real-time detection story.</div>
+  </li>
+  <li>
+    <span class="title">Feature Pyramid Networks for Object Detection (FPN)</span> &mdash; Lin, Dollár, Girshick, He, Hariharan, Belongie
+    <div class="meta"><span class="badge b-pdf">PDF&middot;10pp</span>CVPR 2017 &middot; <a href="https://doi.org/10.1109/CVPR.2017.106">DOI</a> &middot; <a href="https://arxiv.org/pdf/1612.03144">PDF</a></div>
+    <div class="why-here">A top-down pyramid that gives detectors multi-scale features cheaply; now a standard neck.</div>
+  </li>
+  <li>
+    <span class="title">Focal Loss for Dense Object Detection (RetinaNet)</span> &mdash; Lin, Goyal, Girshick, He, Dollár
+    <div class="meta"><span class="badge b-pdf">PDF&middot;10pp</span>ICCV 2017 &middot; <a href="https://doi.org/10.1109/ICCV.2017.324">DOI</a> &middot; <a href="https://arxiv.org/pdf/1708.02002">PDF</a></div>
+    <div class="why-here">Fixes the class-imbalance that held one-stage detectors back, closing the accuracy gap with two-stage.</div>
+  </li>
+  <li>
+    <span class="title">Deformable Convolutional Networks</span> &mdash; Dai, Qi, Xiong, Li, Zhang, Hu, Wei
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>ICCV 2017 &middot; <a href="https://doi.org/10.1109/ICCV.2017.89">DOI</a> &middot; <a href="https://arxiv.org/pdf/1703.06211">PDF</a></div>
+    <div class="why-here">Lets convolution sample from learned, input-dependent offsets so the receptive field bends to object shape — a drop-in boost for detection and segmentation.</div>
+  </li>
+  <li>
+    <span class="title">FCOS: Fully Convolutional One-Stage Object Detection</span> &mdash; Tian, Shen, Chen, He
+    <div class="meta"><span class="badge b-pdf">PDF&middot;13pp</span>ICCV 2019 &middot; <a href="https://doi.org/10.1109/ICCV.2019.00972">DOI</a> &middot; <a href="https://arxiv.org/pdf/1904.01355">PDF</a></div>
+    <div class="why-here">Drops anchors entirely and predicts boxes per pixel, matching anchor-based detectors with a far simpler design — the anchor-free turn.</div>
+  </li>
+</ol>
+
+<h2>Dense prediction — semantic &amp; instance segmentation</h2>
+<p class="grouphdr">Detection stops at boxes. These papers label every pixel, and the last one fuses detection with segmentation.</p>
+<ol class="papers" start="19" style="counter-reset:item 18;">
+  <li>
+    <span class="title">Fully Convolutional Networks for Semantic Segmentation (FCN)</span> &mdash; Long, Shelhamer, Darrell
+    <div class="meta"><span class="badge b-pdf">PDF&middot;10pp</span>CVPR 2015 &middot; <a href="https://doi.org/10.1109/CVPR.2015.7298965">DOI</a> &middot; <a href="https://arxiv.org/pdf/1411.4038">PDF</a></div>
+    <div class="why-here">Dropped the dense layers so a classification net produces per-pixel labels end-to-end.</div>
+  </li>
+  <li>
+    <span class="title">U-Net: Convolutional Networks for Biomedical Image Segmentation</span> &mdash; Ronneberger, Fischer, Brox
+    <div class="meta"><span class="badge b-pdf">PDF&middot;8pp</span>MICCAI 2015 &middot; <a href="https://doi.org/10.1007/978-3-319-24574-4_28">DOI</a> &middot; <a href="https://arxiv.org/pdf/1505.04597">PDF</a></div>
+    <div class="why-here">Encoder–decoder with skip connections; still the default segmentation (and diffusion) backbone.</div>
+  </li>
+  <li>
+    <span class="title">DeepLab: Atrous Convolution &amp; Fully Connected CRFs</span> &mdash; Chen, Papandreou, Kokkinos, Murphy, Yuille
+    <div class="meta"><span class="badge b-pdf">PDF&middot;14pp</span>TPAMI 2018 &middot; <a href="https://doi.org/10.1109/TPAMI.2017.2699184">DOI</a> &middot; <a href="https://arxiv.org/pdf/1606.00915">PDF</a></div>
+    <div class="why-here">Uses dilated (atrous) convolution to widen the receptive field without losing resolution, then sharpens boundaries with a CRF — the reference semantic-segmentation recipe.</div>
+  </li>
+  <li>
+    <span class="title">Pyramid Scene Parsing Network (PSPNet)</span> &mdash; Zhao, Shi, Qi, Wang, Jia
+    <div class="meta"><span class="badge b-pdf">PDF&middot;11pp</span>CVPR 2017 &middot; <a href="https://doi.org/10.1109/CVPR.2017.660">DOI</a> &middot; <a href="https://arxiv.org/pdf/1612.01105">PDF</a></div>
+    <div class="why-here">Pools context at multiple spatial scales so a segmenter reasons about the whole scene, not just local patches.</div>
+  </li>
+  <li>
+    <span class="title">Mask R-CNN</span> &mdash; He, Gkioxari, Dollár, Girshick
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>ICCV 2017 &middot; <a href="https://doi.org/10.1109/ICCV.2017.322">DOI</a> &middot; <a href="https://arxiv.org/pdf/1703.06870">PDF</a></div>
+    <div class="why-here">Faster R-CNN plus a mask branch: the instance-segmentation standard, and the point where detection and segmentation converge.</div>
+  </li>
+</ol>
+
+<h2>Transformers take over vision</h2>
+<p class="grouphdr">Once the backbone toolkit is clear, the Transformer arrives — first as a detector head, then as the backbone itself, then as something you can pretrain without labels.</p>
+<ol class="papers" start="24" style="counter-reset:item 23;">
+  <li>
+    <span class="title">End-to-End Object Detection with Transformers (DETR)</span> &mdash; Carion, Massa, Synnaeve, Usunier, Kirillov, Zagoruyko
+    <div class="meta"><span class="badge b-pdf">PDF&middot;26pp</span>ECCV 2020 &middot; <a href="https://doi.org/10.1007/978-3-030-58452-8_13">DOI</a> &middot; <a href="https://arxiv.org/pdf/2005.12872">PDF</a></div>
+    <div class="why-here">Detection as set prediction with a Transformer — no anchors, no NMS; the bridge from convolution to attention.</div>
+  </li>
+  <li>
+    <span class="title">An Image Is Worth 16×16 Words (ViT)</span> &mdash; Dosovitskiy et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;22pp</span>ICLR 2021 &middot; <a href="https://arxiv.org/abs/2010.11929">arXiv</a> &middot; <a href="https://arxiv.org/pdf/2010.11929">PDF</a></div>
+    <div class="why-here">A pure Transformer on image patches matches CNNs at scale — the backbone shift.</div>
+  </li>
+  <li>
+    <span class="title">Swin Transformer: Hierarchical Vision Transformer using Shifted Windows</span> &mdash; Liu et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;14pp</span>ICCV 2021 &middot; <a href="https://doi.org/10.1109/ICCV48922.2021.00986">DOI</a> &middot; <a href="https://arxiv.org/pdf/2103.14030">PDF</a></div>
+    <div class="why-here">Reintroduces a hierarchy and local windows, making ViT a practical general-purpose backbone for detection and segmentation.</div>
+  </li>
+  <li>
+    <span class="title">Masked Autoencoders Are Scalable Vision Learners (MAE)</span> &mdash; He, Chen, Xie, Li, Dollár, Girshick
+    <div class="meta"><span class="badge b-pdf">PDF&middot;14pp</span>CVPR 2022 &middot; <a href="https://doi.org/10.1109/CVPR52688.2022.01553">DOI</a> &middot; <a href="https://arxiv.org/pdf/2111.06377">PDF</a></div>
+    <div class="why-here">Masks most of an image and trains a ViT to reconstruct it — BERT-style self-supervised pretraining that scales vision without labels.</div>
+  </li>
+</ol>
+
+<h2>Foundation models — language supervision &amp; promptable vision</h2>
+<p class="grouphdr">Read last: these treat the backbone as a general visual encoder and pair it with language, self-supervision, prompting, or generation — and one last paper opens the 3D frontier.</p>
+<ol class="papers" start="28" style="counter-reset:item 27;">
+  <li>
+    <span class="title">Learning Transferable Visual Models from Natural Language Supervision (CLIP)</span> &mdash; Radford et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;48pp</span>ICML 2021 &middot; <a href="https://arxiv.org/abs/2103.00020">arXiv</a> &middot; <a href="https://arxiv.org/pdf/2103.00020">PDF</a></div>
+    <div class="why-here">Contrastive image–text pretraining yields zero-shot classification and the vision encoder behind modern multimodal systems.</div>
+  </li>
+  <li>
+    <span class="title">DINOv2: Learning Robust Visual Features without Supervision</span> &mdash; Oquab et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;32pp</span>TMLR 2024 &middot; <a href="https://arxiv.org/abs/2304.07193">arXiv</a> &middot; <a href="https://arxiv.org/pdf/2304.07193">PDF</a></div>
+    <div class="why-here">Self-distillation at scale gives a frozen encoder whose features transfer to classification, segmentation, and depth with no fine-tuning — the self-supervised counterpart to CLIP.</div>
+  </li>
+  <li>
+    <span class="title">High-Resolution Image Synthesis with Latent Diffusion Models (Stable Diffusion)</span> &mdash; Rombach, Blattmann, Lorenz, Esser, Ommer
+    <div class="meta"><span class="badge b-pdf">PDF&middot;45pp</span>CVPR 2022 &middot; <a href="https://doi.org/10.1109/CVPR52688.2022.01042">DOI</a> &middot; <a href="https://arxiv.org/pdf/2112.10752">PDF</a></div>
+    <div class="why-here">Runs diffusion in a compressed latent space, making high-res text-to-image generation practical.</div>
+  </li>
+  <li>
+    <span class="title">Segment Anything (SAM)</span> &mdash; Kirillov et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;30pp</span>ICCV 2023 &middot; <a href="https://doi.org/10.1109/ICCV51070.2023.00371">DOI</a> &middot; <a href="https://arxiv.org/pdf/2304.02643">PDF</a></div>
+    <div class="why-here">A promptable segmentation foundation model trained on a billion masks — segmentation's zero-shot moment.</div>
+  </li>
+  <li>
+    <span class="title">NeRF: Representing Scenes as Neural Radiance Fields for View Synthesis</span> &mdash; Mildenhall, Srinivasan, Tancik, Barron, Ramamoorthi, Ng
+    <div class="meta"><span class="badge b-pdf">PDF&middot;25pp</span>ECCV 2020 &middot; <a href="https://doi.org/10.1007/978-3-030-58452-8_24">DOI</a> &middot; <a href="https://arxiv.org/pdf/2003.08934">PDF</a></div>
+    <div class="why-here">Fits a small network to a scene's radiance and renders photorealistic novel views — the paper that opened the neural-rendering and 3D-reconstruction frontier.</div>
+  </li>
+</ol>
+
+<div class="why">
+<b>One toolkit, reused four times.</b> A <em>backbone</em> (AlexNet → ResNet → ViT) learns
+general features once. <em>Detection</em> adds a head that predicts boxes; <em>segmentation</em>
+adds one that predicts masks; <em>foundation models</em> keep the encoder and swap the
+objective for language alignment (CLIP), prompting (SAM), or generation (diffusion). Read
+the backbones first and every later paper reads as "the same features, a different head."
+</div>
+
+<h2>Reference shelf &mdash; books</h2>
+<p class="grouphdr">The standard texts for the area; free copies linked where a legal one exists.</p>
+<ul class="refs">
+  <li><span class="badge b-book">BOOK&middot;541pp</span><b>Understanding Deep Learning</b> &mdash; Simon J.D. Prince (2023) &middot; Modern, visual treatment of CNNs, ResNets, and Vision Transformers — the best free entry point to the architectures above. <a href="https://github.com/udlbook/udlbook/releases/download/v5.0.3/UnderstandingDeepLearning_02_09_26_C.pdf">PDF</a></li>
+  <li><span class="badge b-book">BOOK&middot;1230pp</span><b>Computer Vision: Algorithms and Applications (2nd ed.)</b> &mdash; Richard Szeliski (2022) &middot; The comprehensive reference for vision as a field, from geometry to recognition; free draft PDF on the author's site. <a href="https://szeliski.org/Book/">page</a></li>
+  <li><span class="badge b-book">BOOK&middot;800pp</span><b>Deep Learning</b> &mdash; Goodfellow, Bengio, Courville (2016) &middot; Chapter 9 (Convolutional Networks) is the standard theory reference for the backbone papers. <a href="https://www.deeplearningbook.org/">page</a></li>
+</ul>
+
+<h2>Key terms</h2>
+<p class="grouphdr">Vocabulary used across this list.</p>
+<div class="notekey"><b>backbone</b> &mdash; the pretrained classification network (VGG, ResNet, ViT) reused as a feature extractor by detectors and segmenters &nbsp; <b>convolution</b> &mdash; a spatially-shared filter that exploits image locality; the core operation of a CNN &nbsp; <b>residual / skip connection</b> &mdash; adding a layer's input to its output so gradients flow through very deep stacks &nbsp; <b>dense connectivity</b> &mdash; connecting each layer to every later one so features are reused throughout the network (DenseNet) &nbsp; <b>batch normalization</b> &mdash; normalizing activations within a mini-batch to stabilize and speed training &nbsp; <b>channel attention</b> &mdash; reweighting a feature map's channels by learned importance, as in Squeeze-and-Excitation &nbsp; <b>region proposal</b> &mdash; candidate object boxes a two-stage detector classifies and refines (the RPN in Faster R-CNN) &nbsp; <b>anchor</b> &mdash; a predefined reference box of fixed scale/aspect that a detector regresses from &nbsp; <b>anchor-free detection</b> &mdash; predicting boxes directly at each location instead of regressing from predefined anchors (FCOS) &nbsp; <b>NMS (non-maximum suppression)</b> &mdash; a post-process that removes overlapping duplicate detections &nbsp; <b>RoI pooling</b> &mdash; extracting a fixed-size feature map from an arbitrary region for per-box prediction &nbsp; <b>semantic vs. instance segmentation</b> &mdash; labeling every pixel by class vs. separating individual object instances &nbsp; <b>dilated (atrous) convolution</b> &mdash; a convolution with gaps between sampled positions, widening the receptive field without downsampling (DeepLab) &nbsp; <b>feature pyramid</b> &mdash; multi-scale feature maps so one network handles objects of very different sizes &nbsp; <b>patch embedding</b> &mdash; splitting an image into fixed patches and treating each as a token for a Transformer &nbsp; <b>self-supervised learning</b> &mdash; learning representations from unlabeled data via a pretext task such as masking or self-distillation &nbsp; <b>masked image modeling</b> &mdash; a self-supervised task that hides image patches and trains the network to reconstruct them (MAE) &nbsp; <b>contrastive learning</b> &mdash; training paired examples (image–text in CLIP) to agree while pushing mismatches apart &nbsp; <b>zero-shot</b> &mdash; applying a model to classes or prompts it was never explicitly trained to output &nbsp; <b>latent diffusion</b> &mdash; running the denoising diffusion process in a compressed latent space rather than pixel space &nbsp; <b>promptable segmentation</b> &mdash; producing a mask from a user prompt (point, box, text) at inference, as SAM does &nbsp; <b>neural radiance field</b> &mdash; a network mapping 3D position and view direction to color and density, rendered to synthesize novel views (NeRF)</div>
 
 </body>
 </html>

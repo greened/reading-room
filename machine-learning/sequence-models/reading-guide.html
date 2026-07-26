@@ -8,55 +8,163 @@
 <body>
 
 <h1>Machine learning · Sequence models</h1>
-<p class="tally">In-depth landmark list for this subtopic. <span class="badge b-pdf">PDF</span>open copy available &middot; <span class="badge b-web">DOI</span>publisher link only.</p>
+<p class="sub">How neural networks learn from ordered data — text, speech, time series — before the Transformer took over. The path runs in six moves: first see <em>why</em> plain recurrent networks are hard to train, then the gated cells (LSTM, GRU) that fixed it, then the vector <em>representations</em> those models consume, then the encoder-decoder-plus-attention recipe that turned recurrence into translation, then the losses that let sequences be generated and labeled end to end, and finally the state-space models that are now challenging recurrence on its own ground.</p>
+<p class="tally">20 papers &middot; &asymp; <b>377 pp</b> of primary reading. &nbsp; Legend: <span class="badge b-pdf">PDF</span>open copy (see <span class="file">fetch.sh</span>) &middot; <span class="badge b-web">DOI</span>publisher link only</p>
+<div class="why"><b>How to read this list.</b> Start with the foundations to feel the vanishing-gradient problem in your hands — every later design is a response to it. Read LSTM and GRU as two answers to the same question, then let the representation papers (word2vec → GloVe → ELMo) show what a "token" became. Attention enters here in its <em>original recurrent setting</em> (Bahdanau, Luong); the Transformer that dropped recurrence entirely lives in the sibling `../transformers/` topic — read this first, then go there.</div>
 
-<ol class="papers">
+<h2>Foundations — recurrence and why it is hard</h2>
+<p class="grouphdr">Start here: the recurrent idea, its training algorithm, and the gradient problem that everything after is trying to solve.</p>
+<ol class="papers" start="1">
   <li>
-    <span class="title">Long Short-Term Memory</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1162/neco.1997.9.8.1735">DOI</a></div>
-    <div class="why-here">Hochreiter, Schmidhuber, 1997, Neural Computation. The gated recurrent cell that dominated sequence modeling for two decades.</div>
+    <span class="title">Finding Structure in Time</span> &mdash; Jeffrey Elman
+    <div class="meta"><span class="badge b-pdf">PDF&middot;33pp</span>Cognitive Science 1990 &middot; <a href="https://doi.org/10.1207/s15516709cog1402_1">DOI</a> &middot; <a href="https://gwern.net/doc/ai/nn/rnn/1990-elman.pdf">PDF</a></div>
+    <div class="why-here">The simple recurrent network: feed a network its own previous hidden state and it discovers structure — word boundaries, grammatical categories — from sequence alone. The origin of the recurrent hidden state.</div>
   </li>
   <li>
-    <span class="title">Efficient Estimation of Word Representations in Vector Space (word2vec)</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/1301.3781">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1301.3781">PDF</a></div>
-    <div class="why-here">Mikolov, Chen, Corrado, Dean, 2013, ICLR Workshop. Cheap, semantically meaningful word embeddings.</div>
+    <span class="title">Backpropagation Through Time: What It Does and How to Do It</span> &mdash; Paul Werbos
+    <div class="meta"><span class="badge b-pdf">PDF&middot;11pp</span>Proceedings of the IEEE 1990 &middot; <a href="https://doi.org/10.1109/5.58337">DOI</a> &middot; <a href="http://www.werbos.com/Neural/BTT.pdf">PDF</a></div>
+    <div class="why-here">Unroll a recurrent net across time and it becomes a deep feed-forward net you can train by ordinary backprop. The algorithm every RNN is still trained with.</div>
   </li>
   <li>
-    <span class="title">Sequence to Sequence Learning with Neural Networks</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/1409.3215">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1409.3215">PDF</a></div>
-    <div class="why-here">Sutskever, Vinyals, Le, 2014, NeurIPS. The encoder-decoder framework; the direct precursor to attention.</div>
+    <span class="title">Learning Long-Term Dependencies with Gradient Descent Is Difficult</span> &mdash; Bengio, Simard, Frasconi
+    <div class="meta"><span class="badge b-web">DOI&middot;10pp</span>IEEE Transactions on Neural Networks 1994 &middot; <a href="https://doi.org/10.1109/72.279181">DOI</a></div>
+    <div class="why-here">The bad news, proved: gradients through many time steps vanish or explode, so plain RNNs cannot learn long-range dependencies. The problem statement for the next thirty years.</div>
   </li>
   <li>
-    <span class="title">Learning Phrase Representations using RNN Encoder-Decoder (GRU)</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/1406.1078">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1406.1078">PDF</a></div>
-    <div class="why-here">Cho et al., 2014, EMNLP. Introduced the GRU and the RNN encoder-decoder for NMT.</div>
-  </li>
-  <li>
-    <span class="title">Connectionist Temporal Classification (CTC)</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/1143844.1143891">DOI</a></div>
-    <div class="why-here">Graves, Fernández, Gomez, Schmidhuber, 2006, ICML. The CTC loss for end-to-end sequence labeling without pre-aligned data.</div>
-  </li>
-  <li>
-    <span class="title">Generating Sequences With Recurrent Neural Networks</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/1308.0850">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1308.0850">PDF</a></div>
-    <div class="why-here">Graves, 2013, arXiv. LSTMs generate long-range coherent text and handwriting.</div>
-  </li>
-  <li>
-    <span class="title">Deep Contextualized Word Representations (ELMo)</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/1802.05365">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1802.05365">PDF</a></div>
-    <div class="why-here">Peters et al., 2018, NAACL. Deep contextual embeddings; the move to pretrained contextual reps.</div>
-  </li>
-  <li>
-    <span class="title">GloVe: Global Vectors for Word Representation</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://aclanthology.org/D14-1162/">page</a> &middot; <a href="https://aclanthology.org/D14-1162.pdf">PDF</a></div>
-    <div class="why-here">Pennington, Socher, Manning, 2014, EMNLP. Global log-bilinear word vectors, a standard embedding baseline.</div>
-  </li>
-  <li>
-    <span class="title">Pointer Networks</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://arxiv.org/abs/1506.03134">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1506.03134">PDF</a></div>
-    <div class="why-here">Vinyals, Fortunato, Jaitly, 2015, NeurIPS. Attention that points at input positions; precursor to copy/attention.</div>
+    <span class="title">On the Difficulty of Training Recurrent Neural Networks</span> &mdash; Pascanu, Mikolov, Bengio
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>ICML 2013 &middot; <a href="https://arxiv.org/abs/1211.5063">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1211.5063">PDF</a></div>
+    <div class="why-here">Revisits Bengio's result with a geometric picture and two practical fixes still used everywhere: gradient clipping for explosion, and a regularizer for vanishing.</div>
   </li>
 </ol>
+
+<h2>Gated recurrence — cells that remember</h2>
+<p class="grouphdr">The direct answer to the vanishing gradient: a cell state with multiplicative gates that let information flow across many steps unchanged.</p>
+<ol class="papers" start="5" style="counter-reset:item 4;">
+  <li>
+    <span class="title">Long Short-Term Memory</span> &mdash; Hochreiter, Schmidhuber
+    <div class="meta"><span class="badge b-pdf">PDF&middot;46pp</span>Neural Computation 1997 &middot; <a href="https://doi.org/10.1162/neco.1997.9.8.1735">DOI</a> &middot; <a href="https://deeplearning.cs.cmu.edu/F23/document/readings/LSTM.pdf">PDF</a></div>
+    <div class="why-here">The gated recurrent cell whose constant error carousel carries gradients across long gaps. It dominated sequence modeling for two decades.</div>
+  </li>
+  <li>
+    <span class="title">Learning to Forget: Continual Prediction with LSTM</span> &mdash; Gers, Schmidhuber, Cummins
+    <div class="meta"><span class="badge b-web">DOI&middot;21pp</span>Neural Computation 2000 &middot; <a href="https://doi.org/10.1162/089976600300015015">DOI</a></div>
+    <div class="why-here">Adds the forget gate that lets a cell reset itself — the piece missing from the 1997 design and the form of LSTM everyone actually uses.</div>
+  </li>
+  <li>
+    <span class="title">Learning Phrase Representations using RNN Encoder-Decoder (GRU)</span> &mdash; Cho, van Merriënboer, Bahdanau, Bengio et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;15pp</span>EMNLP 2014 &middot; <a href="https://arxiv.org/abs/1406.1078">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1406.1078">PDF</a></div>
+    <div class="why-here">Introduces the GRU — a gated cell with fewer parameters than LSTM — and the encoder-decoder framing this list returns to in the transduction section.</div>
+  </li>
+  <li>
+    <span class="title">LSTM: A Search Space Odyssey</span> &mdash; Greff, Srivastava, Koutník, Steunebrink, Schmidhuber
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>IEEE TNNLS 2017 &middot; <a href="https://arxiv.org/abs/1503.04069">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1503.04069">PDF</a></div>
+    <div class="why-here">A large ablation over LSTM variants: which gates matter, which do not. The empirical settle-up on the gated cell.</div>
+  </li>
+</ol>
+
+<h2>Representations — the vectors sequence models consume</h2>
+<p class="grouphdr">Before transduction, the input token itself became a learned vector. This is what changed underneath every model above.</p>
+<ol class="papers" start="9" style="counter-reset:item 8;">
+  <li>
+    <span class="title">Efficient Estimation of Word Representations in Vector Space (word2vec)</span> &mdash; Mikolov, Chen, Corrado, Dean
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>ICLR Workshop 2013 &middot; <a href="https://arxiv.org/abs/1301.3781">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1301.3781">PDF</a></div>
+    <div class="why-here">Cheap, semantically meaningful word embeddings from a shallow predictive model — the vectors where "king − man + woman ≈ queen".</div>
+  </li>
+  <li>
+    <span class="title">GloVe: Global Vectors for Word Representation</span> &mdash; Pennington, Socher, Manning
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>EMNLP 2014 &middot; <a href="https://aclanthology.org/D14-1162/">page</a> &middot; <a href="https://aclanthology.org/D14-1162.pdf">PDF</a></div>
+    <div class="why-here">Derives embeddings from global co-occurrence counts rather than local windows — the other standard embedding baseline, and a cleaner objective to reason about.</div>
+  </li>
+  <li>
+    <span class="title">Deep Contextualized Word Representations (ELMo)</span> &mdash; Peters, Neumann, Iyyer, Gardner, Clark, Lee, Zettlemoyer
+    <div class="meta"><span class="badge b-pdf">PDF&middot;15pp</span>NAACL 2018 &middot; <a href="https://arxiv.org/abs/1802.05365">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1802.05365">PDF</a></div>
+    <div class="why-here">Embeddings that depend on the whole sentence, produced by a pretrained bidirectional LSTM. The pivot from static vectors to pretrained contextual representations that BERT and GPT would run with.</div>
+  </li>
+</ol>
+
+<h2>Sequence transduction — encoder-decoder and attention</h2>
+<p class="grouphdr">Turning one sequence into another. Attention is born here, as a fix to a recurrent bottleneck, before it becomes the whole model next door.</p>
+<ol class="papers" start="12" style="counter-reset:item 11;">
+  <li>
+    <span class="title">Sequence to Sequence Learning with Neural Networks</span> &mdash; Sutskever, Vinyals, Le
+    <div class="meta"><span class="badge b-pdf">PDF&middot;9pp</span>NeurIPS 2014 &middot; <a href="https://arxiv.org/abs/1409.3215">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1409.3215">PDF</a></div>
+    <div class="why-here">Encode the source into one fixed vector, decode the target from it. Clean, general, and end-to-end — the framework attention was invented to repair.</div>
+  </li>
+  <li>
+    <span class="title">Neural Machine Translation by Jointly Learning to Align and Translate (Bahdanau attention)</span> &mdash; Bahdanau, Cho, Bengio
+    <div class="meta"><span class="badge b-pdf">PDF&middot;15pp</span>ICLR 2015 &middot; <a href="https://arxiv.org/abs/1409.0473">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1409.0473">PDF</a></div>
+    <div class="why-here">Lets the decoder look back at all encoder states through a learned soft alignment, removing the single-vector bottleneck. The direct ancestor of the Transformer's attention.</div>
+  </li>
+  <li>
+    <span class="title">Effective Approaches to Attention-based Neural Machine Translation</span> &mdash; Luong, Pham, Manning
+    <div class="meta"><span class="badge b-pdf">PDF&middot;11pp</span>EMNLP 2015 &middot; <a href="https://arxiv.org/abs/1508.04025">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1508.04025">PDF</a></div>
+    <div class="why-here">Global vs. local attention and the dot-product scoring function — the concrete attention variant that fed straight into later architectures.</div>
+  </li>
+  <li>
+    <span class="title">Pointer Networks</span> &mdash; Vinyals, Fortunato, Jaitly
+    <div class="meta"><span class="badge b-pdf">PDF&middot;9pp</span>NeurIPS 2015 &middot; <a href="https://arxiv.org/abs/1506.03134">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1506.03134">PDF</a></div>
+    <div class="why-here">Uses attention not to blend inputs but to <em>point</em> at input positions, so the output vocabulary is the input itself. The seed of copy mechanisms and pointer-generator models.</div>
+  </li>
+</ol>
+
+<h2>Generation and labeling</h2>
+<p class="grouphdr">Losses and decoders that let a sequence model produce or annotate a sequence directly, without pre-aligned targets.</p>
+<ol class="papers" start="16" style="counter-reset:item 15;">
+  <li>
+    <span class="title">Connectionist Temporal Classification (CTC)</span> &mdash; Graves, Fernández, Gomez, Schmidhuber
+    <div class="meta"><span class="badge b-pdf">PDF&middot;8pp</span>ICML 2006 &middot; <a href="https://doi.org/10.1145/1143844.1143891">DOI</a> &middot; <a href="https://www.cs.toronto.edu/~graves/icml_2006.pdf">PDF</a></div>
+    <div class="why-here">A loss that sums over all alignments between input frames and output labels, enabling end-to-end speech and handwriting recognition without a pre-segmented training set.</div>
+  </li>
+  <li>
+    <span class="title">Generating Sequences With Recurrent Neural Networks</span> &mdash; Alex Graves
+    <div class="meta"><span class="badge b-pdf">PDF&middot;43pp</span>arXiv 2013 &middot; <a href="https://arxiv.org/abs/1308.0850">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1308.0850">PDF</a></div>
+    <div class="why-here">Shows LSTMs generating long-range coherent text and handwriting one step at a time, and introduces the attention-based handwriting synthesis that presages soft alignment.</div>
+  </li>
+  <li>
+    <span class="title">WaveNet: A Generative Model for Raw Audio</span> &mdash; van den Oord, Dieleman, Zen et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;15pp</span>arXiv 2016 &middot; <a href="https://arxiv.org/abs/1609.03499">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1609.03499">PDF</a></div>
+    <div class="why-here">Autoregressive generation of raw waveforms with dilated causal convolutions — the convolutional alternative to recurrence for long sequences, and a bridge to modern audio models.</div>
+  </li>
+</ol>
+
+<h2>Beyond recurrence — state-space models</h2>
+<p class="grouphdr">The current challenger: sequence models that keep recurrence's linear-time inference but train like a convolution, closing the gap the Transformer opened on long context.</p>
+<ol class="papers" start="19" style="counter-reset:item 18;">
+  <li>
+    <span class="title">Efficiently Modeling Long Sequences with Structured State Spaces (S4)</span> &mdash; Gu, Goel, Ré
+    <div class="meta"><span class="badge b-pdf">PDF&middot;32pp</span>ICLR 2022 &middot; <a href="https://arxiv.org/abs/2111.00396">arXiv</a> &middot; <a href="https://arxiv.org/pdf/2111.00396">PDF</a></div>
+    <div class="why-here">A linear state-space layer, parameterized for stability, that handles tens-of-thousands-step dependencies — reframing the recurrence-vs-convolution choice as two views of one operator.</div>
+  </li>
+  <li>
+    <span class="title">Mamba: Linear-Time Sequence Modeling with Selective State Spaces</span> &mdash; Gu, Dao
+    <div class="meta"><span class="badge b-pdf">PDF&middot;36pp</span>COLM 2024 &middot; <a href="https://arxiv.org/abs/2312.00752">arXiv</a> &middot; <a href="https://arxiv.org/pdf/2312.00752">PDF</a></div>
+    <div class="why-here">Makes the state-space parameters input-dependent (selective), recovering the content-based reasoning attention gives while keeping linear-time inference. The paper that put SSMs back in contention with the Transformer.</div>
+  </li>
+</ol>
+
+<div class="why">
+<b>Three ways to mix context across a sequence.</b> <em>Recurrence</em> (RNN, LSTM, GRU)
+carries a hidden state forward step by step — linear-time, but hard to parallelize and
+prone to forgetting. <em>Attention</em> (Bahdanau onward, and the whole
+<code>../transformers/</code> topic) lets every position look at every other directly —
+parallel and long-range, but quadratic in sequence length. <em>State-space models</em>
+(S4, Mamba) aim for the best of both: a recurrence you can also evaluate as a convolution,
+linear-time yet able to reach far back. This list walks the first line and hands off to
+the second next door; the third is where the frontier now sits.
+</div>
+
+<h2>Reference shelf &mdash; books</h2>
+<p class="grouphdr">The standard texts for the area; free copies linked where a legal one exists.</p>
+<ul class="refs">
+  <li><span class="badge b-book">BOOK</span><b>Speech and Language Processing (3rd ed. draft)</b> &mdash; Jurafsky &amp; Martin (2024 &middot; ~600pp) &middot; The standard NLP text; the RNN, LSTM, and sequence-labeling chapters cover most of this list from the ground up. <a href="https://web.stanford.edu/~jurafsky/slp3/">PDF</a></li>
+  <li><span class="badge b-book">BOOK</span><b>Dive into Deep Learning</b> &mdash; Zhang, Lipton, Li, Smola (2023 &middot; ~1000pp) &middot; The recurrent-network chapters pair every equation with runnable code and exercises. <a href="https://d2l.ai/chapter_recurrent-neural-networks/index.html">page</a></li>
+  <li><span class="badge b-book">BOOK</span><b>Deep Learning</b> &mdash; Goodfellow, Bengio, Courville (2016 &middot; ~800pp) &middot; Chapter 10, <em>Sequence Modeling: Recurrent and Recursive Nets</em>, is the textbook treatment of BPTT, LSTM, and the gradient problem. <a href="https://www.deeplearningbook.org/contents/rnn.html">page</a></li>
+  <li><span class="badge b-buy">BUY&middot;309pp</span><b>Neural Network Methods for Natural Language Processing</b> &mdash; Yoav Goldberg (2017) &middot; Embeddings and recurrent architectures for NLP, written just as this era matured. <a href="https://link.springer.com/book/10.1007/978-3-031-02165-7">page</a></li>
+</ul>
+
+<h2>Key terms</h2>
+<p class="grouphdr">Vocabulary used across this list.</p>
+<div class="notekey"><b>recurrent network (RNN)</b> &mdash; a network that feeds its own hidden state back in at each time step, giving it a memory of the sequence so far &nbsp; <b>BPTT</b> &mdash; backpropagation through time; training an RNN by unrolling it across steps into a deep feed-forward net &nbsp; <b>vanishing / exploding gradient</b> &mdash; the decay or blow-up of gradients over many time steps that keeps plain RNNs from learning long-range dependencies &nbsp; <b>gate</b> &mdash; a learned multiplicative valve (input, forget, output) that controls what an LSTM/GRU cell keeps, discards, or emits &nbsp; <b>cell state</b> &mdash; the LSTM's long-term memory channel, along which gradients can flow nearly unchanged &nbsp; <b>embedding</b> &mdash; a learned dense vector standing in for a discrete token; the input representation for the models here &nbsp; <b>encoder-decoder</b> &mdash; an architecture that reads a source sequence into a representation, then generates a target sequence from it &nbsp; <b>attention / alignment</b> &mdash; a learned weighting that lets a decoder position draw on a weighted mix of encoder positions instead of a single summary vector &nbsp; <b>teacher forcing</b> &mdash; feeding the true previous token (not the model's own prediction) as input during training &nbsp; <b>beam search</b> &mdash; decoding that keeps the k best partial sequences at each step rather than committing greedily &nbsp; <b>autoregressive</b> &mdash; generating a sequence one element at a time, each conditioned on those already produced &nbsp; <b>CTC</b> &mdash; connectionist temporal classification; a loss that marginalizes over all input-to-label alignments so no pre-segmentation is needed &nbsp; <b>dilated causal convolution</b> &mdash; a convolution that skips inputs at a fixed stride and never looks ahead, giving a large receptive field over past samples (WaveNet) &nbsp; <b>state-space model (SSM)</b> &mdash; a sequence layer defined by a linear recurrence that can also be run as a convolution; selective SSMs make its parameters depend on the input (S4, Mamba)</div>
 
 </body>
 </html>
