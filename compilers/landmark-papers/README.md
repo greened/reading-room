@@ -46,32 +46,44 @@ depth on any theme, follow the arrow to its subtopic.
 
 ### Foundations — the machinery every optimizer rests on
 *Start here: what an analysis IS (a fixed point on a lattice), why approximating it is sound, and the representation that finally made it sparse.*
+
 1. **A Unified Approach to Global Program Optimization** — Gary Kildall · POPL 1973 · 14pp · [DOI](https://doi.org/10.1145/512927.512945) · [PDF](https://calhoun.nps.edu/server/api/core/bitstreams/54e90734-ceb5-4f4f-94f6-83e51cd2da73/content). The first unified lattice-theoretic dataflow framework, of which constant folding, CSE, and liveness are all instances. → intermediate-representations-and-dataflow/
+
 2. **Abstract Interpretation: A Unified Lattice Model** — Patrick Cousot, Radhia Cousot · POPL 1977 · 15pp · [DOI](https://doi.org/10.1145/512950.512973) · [PDF](https://www.di.ens.fr/~cousot/publications.www/CousotCousot-POPL-77-ACM-p238--252-1977.pdf). The theory beneath dataflow: an analysis as a sound over-approximation of the semantics, with widening for termination. → abstract-interpretation/
+
 3. **Efficiently Computing Static Single Assignment Form and the Control Dependence Graph** — Cytron, Ferrante, Rosen, Wegman, Zadeck · ACM TOPLAS 1991 · 40pp · [DOI](https://doi.org/10.1145/115372.115320) · [PDF](https://web.eecs.umich.edu/~mahlke/courses/583f23/reading/cytron_toplas_91.pdf). The dominance-frontier construction that made SSA cheap to build — the representation under LLVM, GCC, and MLIR alike. → intermediate-representations-and-dataflow/
 
 ### The enabling analysis — what memory a pointer can reach
 *Before most transforms are safe you must know what each pointer may refer to; this is the analysis nearly everything else is only as precise as.*
+
 4. **Points-to Analysis in Almost Linear Time** — Bjarne Steensgaard · POPL 1996 · 10pp · [DOI](https://doi.org/10.1145/237721.237727) · [PDF](https://www.cs.cornell.edu/courses/cs711/2005fa/papers/steensgaard-popl96.pdf). Unification-based points-to analysis, one of the two poles (with Andersen's inclusion model) the whole field interpolates between. → pointer-analysis/
 
 ### Classic optimization and the back end
 *With the framework, SSA, and aliasing in hand: eliminate redundant computation, then map an unbounded value space onto finite registers.*
+
 5. **Lazy Code Motion** — Jens Knoop, Oliver Rüthing, Bernhard Steffen · PLDI 1992 · 11pp · [DOI](https://doi.org/10.1145/143095.143136) · [PDF](http://rsim.cs.uiuc.edu/arch/qual_papers/compilers/knoop92.pdf). Recasts partial-redundancy elimination as clean unidirectional analyses with optimal placement — the version compilers actually implement. → classical-optimization/
+
 6. **Register Allocation & Spilling via Graph Coloring** — Gregory J. Chaitin · SIGPLAN Compiler Construction 1982 · 8pp · [DOI](https://doi.org/10.1145/800230.806984) · [PDF](https://web.eecs.umich.edu/~mahlke/courses/583f12/reading/chaitin82.pdf). Cast register assignment as coloring the interference graph — the model the whole back end is built on. → register-allocation-and-scheduling/
 
 ### Loops, dependence, and parallelism
 *The other half of optimization — reorder and parallelize loops once dependence proves it legal, first as vectors, then as polyhedral geometry.*
+
 7. **Automatic Translation of FORTRAN Programs to Vector Form** — Randy Allen, Ken Kennedy · ACM TOPLAS 1987 · 52pp · [DOI](https://doi.org/10.1145/29873.29875) · [PDF](http://rsim.cs.uiuc.edu/arch/qual_papers/compilers/allen87.pdf). The foundational dependence-based loop vectorization algorithm. → vectorization-and-parallelization/
+
 8. **A Practical Automatic Polyhedral Parallelizer and Locality Optimizer (Pluto)** — Bondhugula, Hartono, Ramanujam, Sadayappan · PLDI 2008 · 13pp · [DOI](https://doi.org/10.1145/1375581.1375595) · [PDF](https://www.ece.lsu.edu/jxr/Publications-pdf/pldi08.pdf). The cost model that made the polyhedral model usable, tiling for parallelism and locality at once. → vectorization-and-parallelization/
 
 ### Reusable infrastructure
 *A modern compiler is less a program than shared infrastructure — a common IR and passes that plug into it, generalized until many IRs coexist.*
+
 9. **LLVM: A Compilation Framework for Lifelong Program Analysis & Transformation** — Chris Lattner, Vikram Adve · CGO 2004 · 12pp · [DOI](https://doi.org/10.1109/CGO.2004.1281665) · [PDF](https://llvm.org/pubs/2004-01-30-CGO-LLVM.pdf). The typed SSA IR and pluggable-pass framework that became the industry's common substrate. → compiler-infrastructure/
+
 10. **MLIR: Scaling Compiler Infrastructure for Domain Specific Computation** — Lattner, Amini, Bondhugula, Cohen, Davis, Pienaar, Riddle, Shpeisman, Vasilache, Zinenko · CGO 2021 · 21pp · [DOI](https://doi.org/10.1109/CGO51591.2021.9370308) · [PDF](https://arxiv.org/pdf/2002.11054). Multi-level, dialect-based IR in which domain-specific and low-level representations coexist and lower into one another. → compiler-infrastructure/
 
 ### Trusting the output — verification and validation
 *The field's answer to "is the optimized code still correct?": prove the whole compiler once, or check each transformation as it runs.*
+
 11. **Formal Verification of a Realistic Compiler (CompCert)** — Xavier Leroy · CACM 2009 · 8pp · [DOI](https://doi.org/10.1145/1538788.1538814) · [PDF](https://xavierleroy.org/publi/compcert-CACM.pdf). The first mechanically verified optimizing C compiler — the reference point for whole-compiler correctness. → verified-compilation/
+
 12. **Provably Correct Peephole Optimizations with Alive** — Lopes, Menendez, Nagarakatte, Regehr · PLDI 2015 · 11pp · [DOI](https://doi.org/10.1145/2737924.2737965) · [PDF](https://users.cs.utah.edu/~regehr/papers/pldi15.pdf). SMT-based verification of LLVM peephole optimizations, now part of everyday LLVM practice. → verified-compilation/
 
 ## Reading paths
@@ -107,6 +119,7 @@ story on.
   Ferrante–Ottenstein–Warren's program dependence graph and Click–Paleczny's
   sea-of-nodes. The standouts are Kildall's unified framework, the Cytron et al. SSA
   algorithm, and the sea-of-nodes IR that production JITs adopted.
+
 - **classical-optimization/** — The scalar transformations that define the field's
   working vocabulary: constant propagation and folding, value numbering and global value
   numbering, partial-redundancy elimination, strength reduction, dead-code elimination,
@@ -115,6 +128,7 @@ story on.
   one idea. The standouts are Wegman–Zadeck's sparse conditional constant propagation,
   Knoop–Rüthing–Steffen's lazy code motion, and the Futamura projections that recast the
   whole area as partial evaluation.
+
 - **register-allocation-and-scheduling/** — The back end's twin problems: mapping an
   unbounded value space onto a finite register file, and ordering instructions so a
   pipelined machine stays busy. Chaitin's 1982 graph-coloring model anchors allocation,
@@ -122,6 +136,7 @@ story on.
   and so easy to color, and Fisher's trace scheduling opens the scheduling track that
   closes on the phase-ordering problem of doing both at once. The standouts are Chaitin's
   coloring allocator, SSA-based allocation, and trace scheduling.
+
 - **vectorization-and-parallelization/** — Turning a sequential loop into SIMD lanes or
   many cores without changing what it computes, all resting on dependence analysis to
   prove the reordering legal. It builds from Allen–Kennedy's dependence-based
@@ -129,6 +144,7 @@ story on.
   Bondhugula's Pluto cost model — out to superword-level parallelism for short vectors
   and the work-stealing runtimes (Cilk) that scale it across processors. The standouts
   are Allen–Kennedy, Feautrier's scheduling, and Pluto.
+
 - **pointer-analysis/** — Deciding what each pointer may refer to, the enabling analysis
   nearly every other one is only as precise as. Hind's survey fixes the design axes —
   flow-, context-, field-, and object-sensitivity — along which every algorithm trades
@@ -136,6 +152,7 @@ story on.
   unification model are the two poles the rest of the field interpolates between and
   scales up to whole programs. The standouts are Andersen's and Steensgaard's analyses
   and Hind's survey.
+
 - **abstract-interpretation/** — The theory of sound static analysis by approximation,
   founded on Cousot & Cousot's 1977 and 1979 papers on Galois connections and fixpoints.
   From that base it treats each design choice in turn — numeric domains (intervals,
@@ -143,6 +160,7 @@ story on.
   via IFDS/IDE, shape analysis for the heap, and CEGAR for automatic refinement — and
   ends on the Astrée analyzer proving avionics code free of run-time errors. The
   standouts are the Cousots' founding papers, the IFDS framework, and Astrée.
+
 - **compiler-infrastructure/** — The modern compiler seen as reusable infrastructure: a
   shared IR, pluggable passes, and machinery for optimizing across translation units, at
   link time, on the binary, and at run time. It spans LLVM and MLIR, cross-module and
@@ -150,6 +168,7 @@ story on.
   (HotSpot, Truffle/Graal), and the polyhedral and tensor/DSL compilers (Pluto, Halide,
   TVM) that specialize the substrate for one domain. The standouts are LLVM, MLIR, and
   Halide.
+
 - **verified-compilation/** — Two ways to trust generated code: prove the compiler
   correct once and for all, or check each transformation as it runs. The first line runs
   through CompCert's mechanized C compiler and CakeML reaching all the way down to
@@ -165,43 +184,58 @@ The vocabulary these papers assume, cutting across every subtopic above.
 - **SSA (static single assignment)** — an IR in which every variable is assigned
   exactly once, so each use has one unambiguous definition; the representation LLVM,
   GCC, and MLIR all build on.
+
 - **dataflow lattice** — the ordered set of facts an analysis tracks (e.g. "constant,
   variable, or unknown"), whose meet operation combines facts arriving on different
   paths and guarantees a unique solution.
+
 - **fixed point** — the stable solution a dataflow analysis iterates toward: the point
   at which one more pass over the program changes nothing.
+
 - **dominance frontier** — the set of program points where two control paths merge and
   a value's definition can no longer be assumed; where SSA construction places its φ
   (phi) nodes.
+
 - **PRE (partial-redundancy elimination)** — hoisting a computation that is redundant on
   *some* but not all incoming paths so it is evaluated once; lazy code motion is its
   canonical formulation.
+
 - **value numbering** — assigning the same symbolic number to computations that provably
   yield the same value so a redundant one can be replaced by the earlier result; global
   value numbering (GVN) does this across a whole function's SSA form.
+
 - **register allocation / graph coloring** — assigning a program's unbounded values to a
   finite register file by coloring the interference graph so that no two
   simultaneously-live values share a register.
+
 - **interference graph** — a graph whose nodes are values and whose edges join values
   live at the same time; a valid register assignment is a proper coloring of it.
+
 - **instruction scheduling** — reordering the instructions in a block or region to hide
   functional-unit and memory latency and keep a pipelined or VLIW machine busy, subject
   to the dependences that fix which orderings are legal.
+
 - **dependence** — an ordering constraint between two operations (they touch the same
   location, one writing) that must be preserved; loop-carried dependences decide when a
   loop can be vectorized or parallelized.
+
 - **polyhedral model** — representing loop nests and their iteration spaces as integer
   polyhedra so that tiling, fusion, and parallelization become affine transformations of
   geometry.
+
 - **points-to / alias analysis** — computing, for each pointer, the set of memory
   locations it may refer to; two pointers *alias* when their points-to sets overlap.
+
 - **abstract interpretation** — a framework for sound static analysis that computes a
   decidable over-approximation of a program's exact (uncomputable) behavior, connected to
   the concrete semantics by a Galois connection.
+
 - **widening** — an operator that accelerates or forces termination of a fixpoint
   iteration over an infinite-height domain by jumping to a safe over-approximation.
+
 - **lowering** — rewriting a program from a higher-level, more abstract IR into one
   closer to the machine; in MLIR this proceeds dialect by dialect, each dialect a
   self-contained set of operations and types that lowers into the next.
+
 - **translation validation** — verifying that a single compiler *run* preserved
   semantics, checking the output rather than proving the whole compiler correct.

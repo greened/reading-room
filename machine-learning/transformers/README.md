@@ -8,12 +8,15 @@ A pedagogical path through the papers that define the Transformer, with intuitio
 
 ### Watch / read first — intuition before the papers
 *Ground the notation visually before opening a paper; these turn the equations into geometry.*
+
 - **3Blue1Brown — "But what is a GPT?" and "Attention, visually explained"** — [video](https://www.youtube.com/watch?v=wjZofJX0v4M) · [video](https://www.youtube.com/watch?v=eMlx5fFNoYc). Embeddings as directions, dot-product as alignment, softmax as soft selection.
 - **Jay Alammar — "The Illustrated Transformer"** — [web](https://jalammar.github.io/illustrated-transformer/). The canonical diagram-driven walkthrough of Q/K/V and multi-head attention.
 
 ### Stage 1 — the idea, then the architecture
 *Motivation before mechanism; then the core paper, read alongside its equation-by-equation companions.*
+
 1. **Neural Machine Translation by Jointly Learning to Align and Translate** — Bahdanau, Cho, Bengio · ICLR 2015 · 15pp · [arXiv](https://arxiv.org/abs/1409.0473) · [PDF](https://arxiv.org/pdf/1409.0473). Attention in its original RNN setting — see *why* attention exists before it becomes the whole model.
+
 2. **Attention Is All You Need** — Vaswani et al. · NeurIPS 2017 · 15pp · [arXiv](https://arxiv.org/abs/1706.03762) · [PDF](https://arxiv.org/pdf/1706.03762). The core paper: full encoder–decoder transformer, multi-head self-attention, positional encoding, tied embeddings. Read most carefully — and alongside these:
    - **The Annotated Transformer** (Harvard NLP) — [web](https://nlp.seas.harvard.edu/annotated-transformer/). Each equation next to the PyTorch that computes it.
    - **Dive into Deep Learning — Attention & Transformers chapter** — [web](https://d2l.ai/chapter_attention-mechanisms-and-transformers/index.html). Equations + runnable code + exercises.
@@ -21,29 +24,41 @@ A pedagogical path through the papers that define the Transformer, with intuitio
 
 ### Stage 2 — details the core paper only references
 *Short papers filling in two things paper 2 uses but doesn't derive: tied embeddings, and where tokens come from.*
+
 3. **Using the Output Embedding to Tie Word Embeddings** — Press, Wolf · EACL 2017 · 7pp · [arXiv](https://arxiv.org/abs/1608.05859) · [PDF](https://arxiv.org/pdf/1608.05859). Why the input embedding and the pre-softmax de-embedding can be the same matrix.
+
 4. **Neural Machine Translation of Rare Words with Subword Units (BPE)** — Sennrich, Haddow, Birch · ACL 2016 · 11pp · [arXiv](https://arxiv.org/abs/1508.07909) · [PDF](https://arxiv.org/pdf/1508.07909). Byte-pair encoding — how the token vocabulary is built.
    - **Karpathy — "Let's build the GPT Tokenizer"** — [video](https://www.youtube.com/watch?v=zduSFxRajkE). Tokenization built in code, start to finish.
+
 5. **Google's Neural Machine Translation System (WordPiece)** — Wu et al. · 2016 · 23pp · [arXiv](https://arxiv.org/abs/1609.08144) · [PDF](https://arxiv.org/pdf/1609.08144). Source of WordPiece (BERT's tokenizer) and a large seq2seq system from just before the transformer.
+
 6. **SentencePiece** — Kudo, Richardson · EMNLP 2018 · 6pp · [arXiv](https://arxiv.org/abs/1808.06226) · [PDF](https://arxiv.org/pdf/1808.06226). Language-agnostic tokenization on raw text — the tooling most modern vocabularies are trained with.
 
 ### Stage 3 — architecture refinements
 *Only meaningful once you know the base block: where it normalizes, and how far it can attend.*
+
 7. **On Layer Normalization in the Transformer Architecture (Pre-LN)** — Xiong et al. · ICML 2020 · 17pp · [arXiv](https://arxiv.org/abs/2002.04745) · [PDF](https://arxiv.org/pdf/2002.04745). Post-LN vs Pre-LN: why moving the layer norm inside the residual branch lets deep transformers train without warmup.
+
 8. **Transformer-XL** — Dai et al. · ACL 2019 · 20pp · [arXiv](https://arxiv.org/abs/1901.02860) · [PDF](https://arxiv.org/pdf/1901.02860). Segment-level recurrence + relative positions to attend beyond a fixed window — the first serious answer to fixed context length.
 
 ### Stage 4 — the three model families
 *Each is one specialization of the core architecture — encoder-only, decoder-only, vision — and reads fast once Stages 1–3 are in hand.*
+
 9. **BERT: Pre-training of Deep Bidirectional Transformers** — Devlin et al. · NAACL 2019 · 16pp · [arXiv](https://arxiv.org/abs/1810.04805) · [PDF](https://arxiv.org/pdf/1810.04805). *Encoder-only.* Bidirectional masked-LM pretraining of the encoder stack.
    - **Jay Alammar — "The Illustrated BERT"** — [web](https://jalammar.github.io/illustrated-bert/). The diagram-driven walkthrough.
+
 10. **Improving Language Understanding by Generative Pre-Training (GPT-1)** — Radford et al. · 2018 · 12pp · [PDF](https://cdn.openai.com/research-covers/language-unsupervised/language_understanding_paper.pdf). *Decoder-only.* Generative pretraining of a masked-self-attention decoder stack — the start of the GPT line.
+
 11. **Language Models are Unsupervised Multitask Learners (GPT-2)** — Radford et al. · 2019 · 24pp · [PDF](https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf). Scaling the decoder-only model; zero-shot task transfer from a bigger LM.
     - **Jay Alammar — "The Illustrated GPT-2"** — [web](https://jalammar.github.io/illustrated-gpt2/). The diagram-driven walkthrough.
+
 12. **Language Models are Few-Shot Learners (GPT-3)** — Brown et al. · NeurIPS 2020 · 75pp · [arXiv](https://arxiv.org/abs/2005.14165) · [PDF](https://arxiv.org/pdf/2005.14165). Scaling further; in-context / few-shot learning emerges without gradient updates. (Longest in the set — skim the appendices.)
     - **Karpathy — "Let's build GPT: from scratch, in code"** — [video](https://www.youtube.com/watch?v=kCc8FmEb1nY). The capstone: build a decoder-only model yourself.
+
 13. **An Image is Worth 16×16 Words (ViT)** — Dosovitskiy et al. · ICLR 2021 · 22pp · [arXiv](https://arxiv.org/abs/2010.11929) · [PDF](https://arxiv.org/pdf/2010.11929). *Vision.* Feed image patches to a plain transformer encoder — the architecture isn't language-specific.
 
 ## Reference shelf — books & deep-dives
+
 - **FREE** **Understanding Deep Learning** — Prince · MIT Press 2023 · 541pp · [PDF](https://github.com/udlbook/udlbook/releases/download/v5.0.3/UnderstandingDeepLearning_02_09_26_C.pdf). Best figures; strong attention/transformer chapters.
 - **FREE** **Mathematics for Machine Learning** — Deisenroth, Faisal, Ong · 2020 · 417pp · [PDF](https://mml-book.github.io/book/mml-book.pdf). The linear algebra / calculus / probability behind the notation.
 - **FREE** **The Little Book of Deep Learning** — Fleuret · 2023 · 189pp · [PDF](https://fleuret.org/public/lbdl.pdf). Compact; covers attention/transformers.

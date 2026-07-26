@@ -25,35 +25,47 @@ not taken (VLIW) and the machine whose ISA-as-contract idea organizes everything
 
 ### Ground rules — how we measure and what bounds us
 *Start here: architecture is a quantitative discipline, so before any mechanism, fix what caps a design and the one model architects reason with.*
+
 1. **Validity of the Single Processor Approach to Achieving Large Scale Computing Capabilities** — Gene Amdahl · AFIPS 1967 · 4pp · [DOI](https://doi.org/10.1145/1465482.1465560) · [PDF](https://web.archive.org/web/20191029093307id_/http://www-inst.eecs.berkeley.edu/~n252/paper/Amdahl.pdf). The origin of Amdahl's Law: however many processors you add, a fixed serial fraction caps the speedup — the first and most durable limit every later design runs into. → quantitative-principles/
+
 2. **Roofline: An Insightful Visual Performance Model for Multicore Architectures** — Williams, Waterman, Patterson · CACM 2009 · 11pp · [DOI](https://doi.org/10.1145/1498765.1498785) · [PDF](https://escholarship.org/content/qt78h8v7mr/qt78h8v7mr.pdf). The back-of-the-envelope model architects still reach for: plot attainable performance against operational intensity and one picture shows whether a design is compute- or bandwidth-bound. → quantitative-principles/
 
 ### The high-performance core — parallelism in one instruction stream
 *With the limits in view, the first lever is overlapping instructions within a single thread — and keeping that wide core fed past its branches.*
+
 3. **An Efficient Algorithm for Exploiting Multiple Arithmetic Units** — Robert M. Tomasulo · IBM J. R&D 1967 · 9pp · [DOI](https://doi.org/10.1147/rd.111.0025) · [PDF](https://www.cs.virginia.edu/~evans/greatworks/tomasulo.pdf). Reservation stations, register renaming, and the common data bus — the dynamic-scheduling engine at the heart of every out-of-order core built since. → superscalar-and-out-of-order/
+
 4. **Combining Branch Predictors** — Scott McFarling · DEC WRL TN-36 1993 · 29pp · [PDF](https://www.ece.ucdavis.edu/~akella/270W05/mcfarling93combining.pdf). A wide out-of-order core stalls without accurate branch prediction; this defined gshare and the tournament predictor that most 1990s cores shipped — the template later predictors refine. → branch-prediction-and-speculation/
 
 ### Feeding the core — the memory hierarchy
 *A fast core starves without a memory system that hides latency; it is one idea repeated at every scale.*
+
 5. **Cache Memories** — Alan Jay Smith · ACM Computing Surveys 1982 · 58pp · [DOI](https://doi.org/10.1145/356887.356892) · [PDF](https://home.engineering.iastate.edu/~zzhang/courses/cpre581-f05/reading/smith-csur82-cache.pdf). The survey that systematized cache design — placement, replacement, line size, write policy — and the single best foundation for the whole hierarchy behind every fast core. → memory-systems-and-storage/
 
 ### From one core to many
 *When a single core could no longer get faster for free, keeping many cores' views of memory correct became everyone's problem.*
+
 6. **How to Make a Multiprocessor Computer That Correctly Executes Multiprocess Programs** — Leslie Lamport · IEEE TC 1979 · 2pp · [DOI](https://doi.org/10.1109/TC.1979.1675439) · [PDF](https://lamport.azurewebsites.net/pubs/multi.pdf). Two pages that define sequential consistency — the gold-standard shared-memory contract against which every coherence protocol and relaxed model is measured. → multicore-and-memory-consistency/
 
 ### When general-purpose scaling ended — specialize, and scale out
 *Post-Dennard, performance comes from silicon specialized to a workload, and from treating the whole datacenter as one machine.*
+
 7. **In-Datacenter Performance Analysis of a Tensor Processing Unit (TPU)** — Jouppi et al. · ISCA 2017 · 17pp · [DOI](https://doi.org/10.1145/3079856.3080246) · [PDF](https://arxiv.org/pdf/1704.04760). A systolic matrix unit in production — the landmark domain-specific-accelerator case study, complete with the roofline analysis of why it wins. → domain-specific-accelerators/
+
 8. **Web Search for a Planet: The Google Cluster Architecture** — Barroso, Dean, Hölzle · IEEE Micro 2003 · 7pp · [DOI](https://doi.org/10.1109/MM.2003.1196112) · [PDF](https://static.googleusercontent.com/media/research.google.com/en//archive/googlecluster-ieee.pdf). Reliable planet-scale search built from unreliable commodity parts — the paper that reframed the datacenter itself as the unit of design. → warehouse-scale-computing/
 
 ### Studying the machine — and where it bites back
 *How architects evaluate a design before there is silicon, and the security cost of the speculation that made cores fast.*
+
 9. **The gem5 Simulator** — Binkert et al. · SIGARCH CAN 2011 · 7pp · [DOI](https://doi.org/10.1145/2024716.2024718) · [PDF](https://research.cs.wisc.edu/multifacet/papers/can11_gem5.pdf). Architecture advances by simulation before silicon; the M5+GEMS merger became the field's de facto full-system, cycle-level simulator and the tool most studies here were run on. → simulation-and-modeling-tools/
+
 10. **Spectre Attacks: Exploiting Speculative Execution** — Kocher, Horn, Fogh, et al. · IEEE S&P 2019 · 16pp · [DOI](https://doi.org/10.1109/SP.2019.00002) · [PDF](https://arxiv.org/pdf/1801.01203). The speculation that makes cores fast also leaks secrets: training the branch predictor to speculate past a security check opened a whole class of transient-execution attacks. → hardware-security/
 
 ### The roads not taken, and the machines that set the vocabulary
 *Close with an unconventional design that pushed the boundary, and the landmark machine whose ISA endured long after its hardware.*
+
 11. **Very Long Instruction Word Architectures and the ELI-512** — Joseph A. Fisher · ISCA 1983 · 11pp · [DOI](https://doi.org/10.1145/800046.801649) · [PDF](https://people.eecs.berkeley.edu/~kubitron/courses/cs252-S09/handouts/papers/p263-fisher.pdf). The founding VLIW paper: expose all the parallelism statically and let the compiler pack very wide instructions — the road-not-taken whose ideas resurface in DSPs, GPUs, and Itanium. → weird-architectures/
+
 12. **Architecture of the IBM System/360** — Amdahl, Blaauw, Brooks · IBM J. R&D 1964 · 15pp · [DOI](https://doi.org/10.1147/rd.82.0087) · [PDF](https://people.eecs.berkeley.edu/~culler/courses/cs252-s05/papers/amdahl.pdf). The founding statement that an instruction set is a durable contract spanning many implementations — the architecture-vs-microarchitecture distinction that organizes the whole field. → important-machines/
 
 ## Reference shelf — books

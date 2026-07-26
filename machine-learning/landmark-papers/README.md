@@ -34,32 +34,44 @@ trained model into an agent. For depth on any theme, follow the arrow to its sub
 
 ### Foundations — how a deep net learns
 *Start here: the algorithm that trains every network below, then the two architectures that first proved perception and real depth could be learned by gradient descent.*
+
 1. **Learning representations by back-propagating errors** — Rumelhart, Hinton, Williams · Nature 1986 · 4pp · [DOI](https://doi.org/10.1038/323533a0) · [PDF](https://www.cs.toronto.edu/~hinton/absps/naturebp.pdf). The practical algorithm for training multi-layer nets — the engine under everything below. → deep-learning-foundations/
+
 2. **ImageNet Classification with Deep Convolutional Neural Networks (AlexNet)** — Krizhevsky, Sutskever, Hinton · NeurIPS 2012 · 9pp · [page](https://papers.nips.cc/paper_files/paper/2012/hash/c399862d3b9d6b76c8436e924a68c45b-Abstract.html) · [PDF](https://proceedings.neurips.cc/paper_files/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf). The GPU-trained ImageNet win that started the modern deep-learning boom. → computer-vision/
+
 3. **Deep Residual Learning for Image Recognition (ResNet)** — He, Zhang, Ren, Sun · CVPR 2016 · 12pp · [DOI](https://doi.org/10.1109/CVPR.2016.90) · [PDF](https://arxiv.org/pdf/1512.03385). Residual/skip connections that made depth past 100 layers trainable, now a fixture inside Transformers too. → deep-learning-foundations/
 
 ### Sequences and representations
 *Language and time series need memory and a notion of a "token"; these are the gated recurrent cell that dominated sequence modeling for two decades and the learned embedding every later model consumes.*
+
 4. **Long Short-Term Memory** — Hochreiter, Schmidhuber · Neural Computation 1997 · 46pp · [DOI](https://doi.org/10.1162/neco.1997.9.8.1735) · [PDF](https://deeplearning.cs.cmu.edu/F23/document/readings/LSTM.pdf). The gated cell whose constant error carousel carries gradients across long gaps, answering the vanishing-gradient problem. → sequence-models/
+
 5. **Efficient Estimation of Word Representations in Vector Space (word2vec)** — Mikolov, Chen, Corrado, Dean · ICLR Workshop 2013 · 12pp · [arXiv](https://arxiv.org/abs/1301.3781) · [PDF](https://arxiv.org/pdf/1301.3781). Cheap, semantically meaningful word embeddings — the "king − man + woman ≈ queen" vectors the field standardized on. → sequence-models/
 
 ### Attention takes over
 *Recurrence and convolution both gave way to one architecture that mixes context by attention alone — now the substrate under almost everything, with its own family treated in depth next door.*
+
 6. **Attention Is All You Need** — Vaswani et al. · NeurIPS 2017 · 15pp · [arXiv](https://arxiv.org/abs/1706.03762) · [PDF](https://arxiv.org/pdf/1706.03762). The Transformer: pure self-attention, parallel and long-range, that became the backbone of BERT, GPT, and ViT. → transformers/
 
 ### Learning to generate
 *A parallel track — not classifying data but producing it. Read the adversarial game and the diffusion process together: the two families the field converged through, ending on the one that now dominates.*
+
 7. **Generative Adversarial Nets (GAN)** — Goodfellow et al. · NeurIPS 2014 · 9pp · [arXiv](https://arxiv.org/abs/1406.2661) · [PDF](https://arxiv.org/pdf/1406.2661). Generation framed as a game between a generator and a discriminator — the start of a decade of high-fidelity synthesis. → generative-models/
+
 8. **Denoising Diffusion Probabilistic Models (DDPM)** — Ho, Jain, Abbeel · NeurIPS 2020 · 25pp · [arXiv](https://arxiv.org/abs/2006.11239) · [PDF](https://arxiv.org/pdf/2006.11239). Corrupt data with noise and learn to reverse it step by step — the objective that set off the image-generation wave. → generative-models/
 
 ### Learning from reward
 *Where the signal is a reward, not a label. Deep value learning first cracked pixels; learned search then reached superhuman play.*
+
 9. **Human-level Control through Deep Reinforcement Learning (DQN)** — Mnih et al. · Nature 2015 · 13pp · [DOI](https://doi.org/10.1038/nature14236) · [PDF](https://web.stanford.edu/class/psych209/Readings/MnihEtAlHassibis15NatureControlDeepRL.pdf). Learned to play Atari from raw pixels with experience replay and a target network — the founding deep-RL result. → reinforcement-learning/
+
 10. **Mastering the Game of Go with Deep Neural Networks and Tree Search (AlphaGo)** — Silver et al. · Nature 2016 · 20pp · [DOI](https://doi.org/10.1038/nature16961) · [PDF](https://storage.googleapis.com/deepmind-media/alphago/AlphaGoNaturePaper.pdf). Deep policy and value networks guiding tree search beat a top human at Go — the lineage behind AlphaZero and MuZero. → reinforcement-learning/
 
 ### Scale, and what to do with it
 *With the architectures in hand, the questions become how to spend a compute budget — and how to turn a trained model into something that acts.*
+
 11. **Scaling Laws for Neural Language Models** — Kaplan et al. · 2020 · 30pp · [arXiv](https://arxiv.org/abs/2001.08361) · [PDF](https://arxiv.org/pdf/2001.08361). Loss follows smooth power laws in model size, data, and compute — turning model-building into budget allocation. → training-and-scaling/
+
 12. **ReAct: Synergizing Reasoning and Acting in Language Models** — Yao et al. · ICLR 2023 · 33pp · [arXiv](https://arxiv.org/abs/2210.03629) · [PDF](https://arxiv.org/pdf/2210.03629). Interleave reasoning traces with tool calls and observations — the thought→act→observe loop that turns a model into an agent. → agentic-ai/
 
 ## Reference shelf — books
