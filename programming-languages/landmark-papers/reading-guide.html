@@ -2,101 +2,136 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Programming Languages — Landmark Papers (Survey)</title>
+<title>Programming languages · Landmark papers (a survey)</title>
 <link rel="stylesheet" href="../../lib/guide.css">
 </head>
 <body>
 
-<h1>Programming Languages &mdash; Landmark Papers</h1>
-<p class="sub">A cross-cutting survey of the field's most important papers. Folder: <span class="file">reading-room/programming-languages/</span> &middot; canonical references live in the sibling subtopic dirs.</p>
-<p class="tally">Roughly a dozen papers that define programming-language theory and practice, in a sensible reading order (language design and types, then logics, memory models, and modern type systems). Each entry points to the subtopic dir that treats it in depth. &nbsp; Legend: <span class="badge b-pdf">PDF</span>open copy available (see <span class="file">fetch.sh</span>) &middot; <span class="badge b-web">DOI</span>publisher link only.</p>
+<h1>Programming languages · Landmark papers (a survey)</h1>
+<p class="sub">Twelve papers a language designer or implementer should have read at least once — the slice across this whole area, one or two standouts per subtopic, each pointing back to the directory that treats it in depth. Read them as a path, not by date: first the semantic kernel a language is sugar over, the assertion logic that says what correctness even means, and the abstract-interpretation theory that reuses a semantics as sound approximation (Landin, Hoare, Cousot &amp; Cousot); then types as a lightweight proof a program can't go wrong (System F and Hindley–Milner inference); then the monad that structures effects in a pure language; the separation logic that finally lets a proof reason locally about the mutable heap; the memory models that pin down what a shared read may return (Java, C++); the gradual typing that carries static types into code never written for them; and finally the machine-checked proofs where all of this scales to whole systems people run (seL4, RustBelt). For depth on any theme, follow the arrow to its subtopic.</p>
+<p class="tally">12 papers &middot; &asymp; <b>202 pp</b> of primary reading. &nbsp; Legend: <span class="badge b-pdf">PDF</span>open copy (see <span class="file">fetch.sh</span>) &middot; <span class="badge b-web">DOI</span>publisher link only</p>
+<div class="why"><b>How to read this survey.</b> Each entry is a landmark, not the last word — the subtopic directory it points to lists the surrounding work: the predecessors, the refinements, and the systems that grew out of it. Read top to bottom; the order builds the semantic and logical machinery a language rests on, spends it first on types and effects and then on the hard cases of heap and concurrency, and closes with the verified systems that are the field's payoff.</div>
 
-<ol class="papers">
+<h2>Foundations — meaning, and the logic of correctness</h2>
+<p class="grouphdr">Start here: what a language is sugar over, what it means to prove a program correct, and how a semantics is reused as sound approximation.</p>
+<ol class="papers" start="1">
   <li>
-    <span class="title">The Next 700 Programming Languages</span> &mdash; P. J. Landin
-    <div class="meta"><span class="badge b-pdf">PDF</span>CACM 1966 &middot; <a href="https://doi.org/10.1145/365230.365257">doi:10.1145/365230.365257</a> &middot; &rarr; <span class="file">semantics-and-language-design/</span></div>
-    <div class="why-here">Frames the whole family of languages around a small applicative core (ISWIM).</div>
+    <span class="title">The Next 700 Programming Languages</span> &mdash; Peter J. Landin
+    <div class="meta"><span class="badge b-pdf">PDF&middot;10pp</span>CACM 1966 &middot; <a href="https://doi.org/10.1145/365230.365257">DOI</a> &middot; <a href="https://www.cs.cmu.edu/~crary/819-f09/Landin66.pdf">PDF</a></div>
+    <div class="why-here">Frames the whole family of languages around one small applicative core (ISWIM) — the case that syntax is sugar over a semantic kernel, and the starting point for thinking about language design at all. → semantics-and-language-design/</div>
   </li>
   <li>
     <span class="title">An Axiomatic Basis for Computer Programming</span> &mdash; C. A. R. Hoare
-    <div class="meta"><span class="badge b-web">DOI</span>CACM 1969 &middot; <a href="https://doi.org/10.1145/363235.363259">doi:10.1145/363235.363259</a> &middot; &rarr; <span class="file">program-logics-and-verification/</span></div>
-    <div class="why-here">Introduces Hoare logic and the pre/postcondition triple &mdash; the origin of program logics.</div>
-  </li>
-  <li>
-    <span class="title">Towards a Theory of Type Structure</span> &mdash; John C. Reynolds
-    <div class="meta"><span class="badge b-pdf">PDF</span>Programming Symposium 1974 &middot; <a href="https://doi.org/10.1007/3-540-06859-7_148">doi:10.1007/3-540-06859-7_148</a> &middot; &rarr; <span class="file">types-and-polymorphism/</span></div>
-    <div class="why-here">Introduces the polymorphic lambda calculus (System F), the backbone of typed functional languages.</div>
+    <div class="meta"><span class="badge b-pdf">PDF&middot;6pp</span>CACM 1969 &middot; <a href="https://doi.org/10.1145/363235.363259">DOI</a> &middot; <a href="https://www.cs.cmu.edu/~crary/819-f09/Hoare69.pdf">PDF</a></div>
+    <div class="why-here">Introduces the Hoare triple `{P} C {Q}` and its inference rules — reasoning about a program as deduction, the grammar every later program logic extends. → program-logics-and-verification/</div>
   </li>
   <li>
     <span class="title">Abstract Interpretation: A Unified Lattice Model for Static Analysis</span> &mdash; Patrick &amp; Radhia Cousot
-    <div class="meta"><span class="badge b-pdf">PDF</span>POPL 1977 &middot; <a href="https://doi.org/10.1145/512950.512973">doi:10.1145/512950.512973</a> &middot; &rarr; <span class="file">semantics-and-language-design/</span></div>
-    <div class="why-here">The lattice-and-Galois-connection theory underlying essentially all sound static analysis.</div>
-  </li>
-  <li>
-    <span class="title">A Theory of Type Polymorphism in Programming</span> &mdash; Robin Milner
-    <div class="meta"><span class="badge b-pdf">PDF</span>JCSS 1978 &middot; <a href="https://doi.org/10.1016/0022-0000(78)90014-4">doi:10.1016/0022-0000(78)90014-4</a> &middot; &rarr; <span class="file">types-and-polymorphism/</span></div>
-    <div class="why-here">Gives let-polymorphism and Algorithm W, the type-inference core of ML/Haskell.</div>
-  </li>
-  <li>
-    <span class="title">Comprehending Monads</span> &mdash; Philip Wadler
-    <div class="meta"><span class="badge b-pdf">PDF</span>LFP 1990 &middot; <a href="https://doi.org/10.1145/91556.91592">doi:10.1145/91556.91592</a> &middot; &rarr; <span class="file">monads-and-effects/</span></div>
-    <div class="why-here">Brings Moggi's monads into practical programming &mdash; effectful pure functional code made tractable.</div>
-  </li>
-  <li>
-    <span class="title">Separation Logic: A Logic for Shared Mutable Data Structures</span> &mdash; John C. Reynolds
-    <div class="meta"><span class="badge b-web">DOI</span>LICS 2002 &middot; <a href="https://doi.org/10.1109/LICS.2002.1029817">doi:10.1109/LICS.2002.1029817</a> &middot; &rarr; <span class="file">program-logics-and-verification/</span></div>
-    <div class="why-here">The frame rule and local reasoning about heap-manipulating programs.</div>
-  </li>
-  <li>
-    <span class="title">The Java Memory Model</span> &mdash; Manson, Pugh, Adve
-    <div class="meta"><span class="badge b-pdf">PDF</span>POPL 2005 &middot; <a href="https://doi.org/10.1145/1040305.1040336">doi:10.1145/1040305.1040336</a> &middot; &rarr; <span class="file">concurrency-and-memory-models/</span></div>
-    <div class="why-here">The first rigorous language-level memory model (data-race-freedom, happens-before).</div>
-  </li>
-  <li>
-    <span class="title">Gradual Typing for Functional Languages</span> &mdash; Siek, Taha
-    <div class="meta"><span class="badge b-pdf">PDF</span>Scheme Workshop 2006 &middot; <a href="https://scheme2006.cs.uchicago.edu/13-siek.pdf">scheme2006</a> &middot; &rarr; <span class="file">practical-type-systems/</span></div>
-    <div class="why-here">Coins gradual typing and the consistency relation for mixing static and dynamic checking.</div>
-  </li>
-  <li>
-    <span class="title">seL4: Formal Verification of an OS Kernel</span> &mdash; Klein et al.
-    <div class="meta"><span class="badge b-pdf">PDF</span>SOSP 2009 &middot; <a href="https://doi.org/10.1145/1629575.1629596">doi:10.1145/1629575.1629596</a> &middot; &rarr; <span class="file">program-logics-and-verification/</span></div>
-    <div class="why-here">First machine-checked functional-correctness proof of a general-purpose OS kernel.</div>
-  </li>
-  <li>
-    <span class="title">Mathematizing C++ Concurrency</span> &mdash; Batty, Owens, Sarkar, Sewell, Weber
-    <div class="meta"><span class="badge b-pdf">PDF</span>POPL 2011 &middot; <a href="https://doi.org/10.1145/1926385.1926394">doi:10.1145/1926385.1926394</a> &middot; &rarr; <span class="file">concurrency-and-memory-models/</span></div>
-    <div class="why-here">Formalizes the C11/C++11 relaxed-atomics model, the template for modern concurrency standards.</div>
-  </li>
-  <li>
-    <span class="title">RustBelt: Securing the Foundations of the Rust Programming Language</span> &mdash; Jung, Jourdan, Krebbers, Dreyer
-    <div class="meta"><span class="badge b-pdf">PDF</span>POPL 2018 &middot; <a href="https://doi.org/10.1145/3158154">doi:10.1145/3158154</a> &middot; &rarr; <span class="file">program-logics-and-verification/</span></div>
-    <div class="why-here">First formal safety proof for a realistic Rust subset, reconciling unsafe libraries with a safe type system.</div>
+    <div class="meta"><span class="badge b-pdf">PDF&middot;15pp</span>POPL 1977 &middot; <a href="https://doi.org/10.1145/512950.512973">DOI</a> &middot; <a href="https://www.di.ens.fr/~cousot/publications.www/CousotCousot-POPL-77-ACM-p238--252-1977.pdf">PDF</a></div>
+    <div class="why-here">Reuses a language's semantics as a sound over-approximation over an abstract domain, tied to the concrete one by a Galois connection — the theory under every static analyzer. → semantics-and-language-design/</div>
   </li>
 </ol>
 
-<h2>Going deeper</h2>
-<p class="grouphdr">This survey is the slice across the whole area; each subtopic dir treats its theme in depth and lists more papers.</p>
-<ul class="comp">
-  <li><span class="badge b-web">DIR</span><span class="file">semantics-and-language-design/</span> &mdash; Landin, Hoare, SOS, abstract interpretation.</li>
-  <li><span class="badge b-web">DIR</span><span class="file">types-and-polymorphism/</span> &mdash; System F, Hindley-Milner, Cardelli-Wegner, parametricity.</li>
-  <li><span class="badge b-web">DIR</span><span class="file">monads-and-effects/</span> &mdash; monads and algebraic effect handlers.</li>
-  <li><span class="badge b-web">DIR</span><span class="file">concurrency-and-memory-models/</span> &mdash; pi-calculus, Java and C++ memory models.</li>
-  <li><span class="badge b-web">DIR</span><span class="file">program-logics-and-verification/</span> &mdash; subtyping, separation logic, seL4, CompCert, RustBelt.</li>
-  <li><span class="badge b-web">DIR</span><span class="file">practical-type-systems/</span> &mdash; gradual, blame, refinement/liquid, linear types, QuickCheck.</li>
-</ul>
-<p class="grouphdr">Run <span class="file">fetch.sh</span> to download the openly-available PDFs; paywalled entries are DOI links above.</p>
+<h2>Types — a lightweight proof a program can't go wrong</h2>
+<p class="grouphdr">With a semantics in hand, the first thing to build on it: type structure, the discipline that catches whole classes of error before a program runs.</p>
+<ol class="papers" start="4" style="counter-reset:item 3;">
+  <li>
+    <span class="title">Towards a Theory of Type Structure</span> &mdash; John C. Reynolds
+    <div class="meta"><span class="badge b-pdf">PDF&middot;18pp</span>Programming Symposium 1974 &middot; <a href="https://doi.org/10.1007/3-540-06859-7_148">DOI</a> &middot; <a href="https://www.cis.upenn.edu/~stevez/cis670/pdfs/Reynolds74.pdf">PDF</a></div>
+    <div class="why-here">The polymorphic (second-order) λ-calculus — System F — giving abstraction over types a precise semantics, with the representation-independence intuition that later became parametricity. → types-and-polymorphism/</div>
+  </li>
+  <li>
+    <span class="title">A Theory of Type Polymorphism in Programming</span> &mdash; Robin Milner
+    <div class="meta"><span class="badge b-pdf">PDF&middot;28pp</span>JCSS 1978 &middot; <a href="https://doi.org/10.1016/0022-0000(78)90014-4">DOI</a> &middot; <a href="https://homepages.inf.ed.ac.uk/wadler/papers/papers-we-love/milner-type-polymorphism.pdf">PDF</a></div>
+    <div class="why-here">Let-polymorphism and Algorithm W: type inference for a real language, with the slogan that well-typed programs don't go wrong — the discipline behind ML, Haskell, and every language with inferred generics. → types-and-polymorphism/</div>
+  </li>
+</ol>
+
+<h2>Structuring effects in a pure language</h2>
+<p class="grouphdr">Types alone say what a value is; the next problem is what a computation does — how a language without side effects still performs state, exceptions, and I/O.</p>
+<ol class="papers" start="6" style="counter-reset:item 5;">
+  <li>
+    <span class="title">Comprehending Monads</span> &mdash; Philip Wadler
+    <div class="meta"><span class="badge b-pdf">PDF&middot;19pp</span>LFP 1990 &middot; <a href="https://doi.org/10.1145/91556.91592">DOI</a> &middot; <a href="https://plv.mpi-sws.org/plerg/papers/comprehending-monads.pdf">PDF</a></div>
+    <div class="why-here">Brings Moggi's monads into practical programming as the way a pure language sequences a "notion of computation" — one abstraction covering state, exceptions, continuations, and I/O. → monads-and-effects/</div>
+  </li>
+</ol>
+
+<h2>Reasoning about the mutable heap</h2>
+<p class="grouphdr">Hoare logic works until pointers alias; the repair that made program logic scale to real, heap-manipulating code.</p>
+<ol class="papers" start="7" style="counter-reset:item 6;">
+  <li>
+    <span class="title">Separation Logic: A Logic for Shared Mutable Data Structures</span> &mdash; John C. Reynolds
+    <div class="meta"><span class="badge b-pdf">PDF&middot;20pp</span>LICS 2002 &middot; <a href="https://doi.org/10.1109/LICS.2002.1029817">DOI</a> &middot; <a href="https://www.cs.cmu.edu/~jcr/seplogic.pdf">PDF</a></div>
+    <div class="why-here">Separating conjunction and the frame rule let a proof mention only the heap cells a command actually touches — the fix that made Hoare-style reasoning local, and later scaled to concurrency through Iris. → program-logics-and-verification/</div>
+  </li>
+</ol>
+
+<h2>Concurrency — what a shared read returns</h2>
+<p class="grouphdr">Once threads share memory the question is no longer whether a program is proved but what a read may even observe; the models that made that a precise language-level contract.</p>
+<ol class="papers" start="8" style="counter-reset:item 7;">
+  <li>
+    <span class="title">The Java Memory Model</span> &mdash; Manson, Pugh, Adve
+    <div class="meta"><span class="badge b-pdf">PDF&middot;14pp</span>POPL 2005 &middot; <a href="https://doi.org/10.1145/1040305.1040336">DOI</a> &middot; <a href="http://rsim.cs.uiuc.edu/Pubs/popl05.pdf">PDF</a></div>
+    <div class="why-here">The first rigorous language-level memory model, built on happens-before and data-race-freedom — the contract that lets weak hardware present a sequentially consistent face to well-behaved programs. → concurrency-and-memory-models/</div>
+  </li>
+  <li>
+    <span class="title">Mathematizing C++ Concurrency</span> &mdash; Batty, Owens, Sarkar, Sewell, Weber
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>POPL 2011 &middot; <a href="https://doi.org/10.1145/1926385.1926394">DOI</a> &middot; <a href="https://www.cl.cam.ac.uk/~pes20/cpp/popl085ap-sewell.pdf">PDF</a></div>
+    <div class="why-here">A fully formal, mechanized semantics for the C11/C++11 relaxed-atomics model, exposing defects in the standard's prose — the memory model mainstream systems code now targets. → concurrency-and-memory-models/</div>
+  </li>
+</ol>
+
+<h2>Types meet real programs</h2>
+<p class="grouphdr">Theory in the calculus is one thing; carrying it into code that was never written for it is the practical frontier.</p>
+<ol class="papers" start="10" style="counter-reset:item 9;">
+  <li>
+    <span class="title">Gradual Typing for Functional Languages</span> &mdash; Jeremy Siek, Walid Taha
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>Scheme Workshop 2006 &middot; <a href="http://scheme2006.cs.uchicago.edu/13-siek.pdf">PDF</a></div>
+    <div class="why-here">Coins gradual typing and the <em>consistency</em> relation that lets fully-typed and untyped code interoperate at a boundary — how static types reach the dynamic code already in production (and the idea behind TypeScript and Typed Racket). → practical-type-systems/</div>
+  </li>
+</ol>
+
+<h2>The payoff — whole verified systems</h2>
+<p class="grouphdr">The end state the logic and types were aiming at: machine-checked proofs of software people actually run.</p>
+<ol class="papers" start="11" style="counter-reset:item 10;">
+  <li>
+    <span class="title">seL4: Formal Verification of an OS Kernel</span> &mdash; Klein et al.
+    <div class="meta"><span class="badge b-pdf">PDF&middot;14pp</span>SOSP 2009 &middot; <a href="https://doi.org/10.1145/1629575.1629596">DOI</a> &middot; <a href="https://plsyssec.github.io/cse227-spring25/papers/sel4.pdf">PDF</a></div>
+    <div class="why-here">The first machine-checked functional-correctness proof of a general-purpose OS kernel — verification at the scale of a system people actually run. → program-logics-and-verification/</div>
+  </li>
+  <li>
+    <span class="title">RustBelt: Securing the Foundations of the Rust Programming Language</span> &mdash; Jung, Jourdan, Krebbers, Dreyer
+    <div class="meta"><span class="badge b-pdf">PDF&middot;34pp</span>POPL 2018 &middot; <a href="https://doi.org/10.1145/3158154">DOI</a> &middot; <a href="https://plv.mpi-sws.org/rustbelt/popl18/paper.pdf">PDF</a></div>
+    <div class="why-here">The first formal safety proof for a realistic Rust subset, built in the Iris separation logic — where program logic, types, and ownership meet a language millions ship. → program-logics-and-verification/</div>
+  </li>
+</ol>
 
 <h2>Reference shelf &mdash; books</h2>
 <p class="grouphdr">The standard texts for the area; free copies linked where a legal one exists.</p>
 <ul class="refs">
-  <li><span class="badge b-buy">BUY</span><b>Types and Programming Languages (TAPL)</b> &mdash; Benjamin C. Pierce (2002) &middot; the standard graduate introduction to type systems. <a href="https://www.cis.upenn.edu/~bcpierce/tapl/">page</a></li>
-  <li><span class="badge b-buy">BUY</span><b>Advanced Topics in Types and Programming Languages</b> &mdash; Pierce (ed.) (2005) &middot; deeper chapters: dependent types, effects, modules. <a href="https://www.cis.upenn.edu/~bcpierce/attapl/">page</a></li>
-  <li><span class="badge b-book">FREE</span><b>Practical Foundations for Programming Languages</b> &mdash; Robert Harper (2nd ed., 2016) &middot; reconstructs language features from type-structure first principles (free abridged PDF). <a href="https://www.cs.cmu.edu/~rwh/pfpl/abbrev.pdf">PDF</a></li>
-  <li><span class="badge b-buy">BUY</span><b>The Formal Semantics of Programming Languages</b> &mdash; Glynn Winskel (1993) &middot; accessible first course in operational/denotational/axiomatic semantics. <a href="https://mitpress.mit.edu/9780262731034/the-formal-semantics-of-programming-languages/">page</a></li>
-  <li><span class="badge b-book">FREE</span><b>Software Foundations</b> &mdash; Pierce et al. &middot; machine-checked (Coq/Rocq) course in logic, PL semantics, verification (free HTML). <a href="https://softwarefoundations.cis.upenn.edu/">page</a></li>
-  <li><span class="badge b-book">FREE</span><b>Concrete Semantics with Isabelle/HOL</b> &mdash; Nipkow, Klein (2014) &middot; operational semantics + verification, fully mechanized (free PDF). <a href="https://concrete-semantics.org/concrete-semantics.pdf">PDF</a></li>
-  <li><span class="badge b-book">FREE</span><b>Certified Programming with Dependent Types</b> &mdash; Adam Chlipala (2013) &middot; building certified programs and proofs in Coq (free PDF). <a href="http://adam.chlipala.net/cpdt/cpdt.pdf">PDF</a></li>
+  <li><span class="badge b-buy">BUY&middot;623pp</span><b>Types and Programming Languages (TAPL)</b> &mdash; Benjamin C. Pierce (2002) &middot; The standard graduate introduction to type systems — the single book that ties operational semantics, inference, System F, subtyping, and soundness proofs together. <a href="https://www.cis.upenn.edu/~bcpierce/tapl/">page</a></li>
+  <li><span class="badge b-buy">BUY&middot;574pp</span><b>Advanced Topics in Types and Programming Languages</b> &mdash; Benjamin C. Pierce (ed.) (2005) &middot; The follow-on volume: dependent types, effects, linearity, and modules, one research-depth chapter per topic. <a href="https://www.cis.upenn.edu/~bcpierce/attapl/">page</a></li>
+  <li><span class="badge b-book">BOOK&middot;512pp</span><b>Practical Foundations for Programming Languages</b> &mdash; Robert Harper (2nd ed. 2016) &middot; Reconstructs language features from type-structure first principles in a uniform judgement-based style; a free abridged draft is on the author's page. <a href="https://www.cs.cmu.edu/~rwh/pfpl/abbrev.pdf">PDF</a></li>
+  <li><span class="badge b-buy">BUY&middot;384pp</span><b>The Formal Semantics of Programming Languages</b> &mdash; Glynn Winskel (1993) &middot; The accessible first course in operational, denotational, and axiomatic semantics — the groundwork the Landin, Hoare, and Cousot entries assume. <a href="https://mitpress.mit.edu/9780262731034/">page</a></li>
+  <li><span class="badge b-book">BOOK</span><b>Software Foundations</b> &mdash; Benjamin C. Pierce et al. &middot; A machine-checked (Coq/Rocq) course in logic, PL semantics, and verification — the hands-on way to work the type-soundness and Hoare-logic material by yourself. <a href="https://softwarefoundations.cis.upenn.edu/">book</a></li>
+  <li><span class="badge b-book">BOOK&middot;308pp</span><b>Concrete Semantics with Isabelle/HOL</b> &mdash; Tobias Nipkow, Gerwin Klein (2014) &middot; Operational semantics and Hoare logic developed as fully mechanized proofs — the working companion to the verification end of this list. <a href="https://concrete-semantics.org/concrete-semantics.pdf">PDF</a></li>
+  <li><span class="badge b-book">BOOK&middot;400pp</span><b>Certified Programming with Dependent Types</b> &mdash; Adam Chlipala (2013) &middot; Building certified programs and proofs in Coq — the tooling behind seL4- and RustBelt-style mechanized proofs. <a href="http://adam.chlipala.net/cpdt/cpdt.pdf">PDF</a></li>
 </ul>
+
+<h2>Going deeper</h2>
+<ul class="comp">
+  <li><span class="badge b-web">DIR</span><b>semantics-and-language-design/</b> &mdash; the λ-calculus and the first languages, operational / denotational / axiomatic semantics, reduction semantics, and abstract interpretation.</li>
+  <li><span class="badge b-web">DIR</span><b>types-and-polymorphism/</b> &mdash; type inference, System F and parametricity, existentials and data abstraction, type classes, subtyping, and dependent types.</li>
+  <li><span class="badge b-web">DIR</span><b>monads-and-effects/</b> &mdash; monads and monad transformers, applicatives and arrows, and algebraic effects and handlers.</li>
+  <li><span class="badge b-web">DIR</span><b>concurrency-and-memory-models/</b> &mdash; the message-passing calculi (CSP, pi, actors, session types) and shared-memory consistency (sequential consistency, the Java/C++ models, x86-TSO, transactional memory).</li>
+  <li><span class="badge b-web">DIR</span><b>program-logics-and-verification/</b> &mdash; Hoare and separation logic, rely/guarantee, Iris, and the machine-checked systems (seL4, CompCert, RustBelt).</li>
+  <li><span class="badge b-web">DIR</span><b>practical-type-systems/</b> &mdash; gradual typing, refinement and dependent types in practice, linear and ownership types, session types, effect systems, and property-based testing.</li>
+</ul>
+
+<h2>Key terms</h2>
+<p class="grouphdr">Vocabulary used across this list.</p>
+<div class="notekey"><b>semantic kernel</b> &mdash; the small core calculus a full language is defined as syntactic sugar over (Landin's ISWIM) &nbsp; <b>Hoare triple</b> &mdash; `{P} C {Q}`: if precondition P holds and command C terminates, postcondition Q holds &nbsp; <b>abstract interpretation</b> &mdash; sound approximation of a program's semantics over an abstract domain, tied to the concrete one by a Galois connection &nbsp; <b>System F</b> &mdash; the second-order (polymorphic) λ-calculus: types may quantify universally over types (`∀X. …`) &nbsp; <b>parametric polymorphism</b> &mdash; one definition behaving uniformly at every type, the source of "free theorems." &nbsp; <b>Hindley–Milner</b> &mdash; the let-polymorphic type system with decidable inference (Algorithm W) behind ML and Haskell &nbsp; <b>monad</b> &mdash; an interface for sequencing effectful computations while keeping them values in a pure language &nbsp; <b>separating conjunction / frame rule</b> &mdash; `P * Q` holds on disjoint heaps; the rule that makes heap reasoning local &nbsp; <b>data-race-freedom</b> &mdash; the contract that a program with no unsynchronized conflicting accesses still gets sequential consistency on a weak model &nbsp; <b>gradual typing</b> &mdash; a discipline where typed, untyped, and partially-typed code interoperate, with checks inserted at the boundaries</div>
 
 </body>
 </html>

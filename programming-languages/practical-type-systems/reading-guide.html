@@ -8,65 +8,212 @@
 <body>
 
 <h1>Programming languages · Practical type systems</h1>
-<p class="tally">In-depth landmark list for this subtopic. <span class="badge b-pdf">PDF</span>open copy available &middot; <span class="badge b-web">DOI</span>publisher link only.</p>
+<p class="sub">Type theory earns its keep when it meets real programs: legacy code that was never typed, untrusted input, shared mutable memory, concurrent protocols, and side effects. This guide follows the ideas that carried type theory out of the calculus and into working languages. The reading path climbs in rungs — start with <b>gradual typing</b> (how static types coexist with dynamic code), move to <b>refinement types</b> (types that carry logical predicates), then <b>dependent types</b> tamed for real programming, then <b>linear and ownership types</b> (tracking <em>how</em> a value is used, the road to Rust), then <b>session types</b> (typing the messages between processes), then <b>effect systems</b> (typing what a computation <em>does</em>), then <b>information-flow types</b> (typing <em>where</em> a value's data may travel), and close with <b>property-based testing</b>, the tool that takes over where the type system stops.</p>
+<p class="tally">30 papers &middot; &asymp; <b>705 pp</b> of primary reading. &nbsp; Legend: <span class="badge b-pdf">PDF</span>open copy (see <span class="file">fetch.sh</span>) &middot; <span class="badge b-web">DOI</span>publisher link only</p>
+<div class="why"><b>How to read this list.</b> Each section is one rung of that ladder and reads well on its own, so dip into whichever problem you have — dynamic-to-static migration, richer specifications, safe memory, protocols, effects, security. But the sections are ordered so each borrows vocabulary from the last: consistency and blame set up refinement, refinement sets up dependency, linearity sets up sessions and effects, and effects set up information flow.</div>
 
-<ol class="papers">
+<h2>Gradual typing: static and dynamic code in one program</h2>
+<p class="grouphdr">First, because it is the most immediate practical question — how do types coexist with the untyped code already in production?</p>
+<ol class="papers" start="1">
   <li>
-    <span class="title">Gradual Typing for Functional Languages</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://scheme2006.cs.uchicago.edu/13-siek.pdf">PDF</a></div>
-    <div class="why-here">Siek, Taha, 2006, Scheme Workshop. Coins gradual typing and the consistency relation.</div>
+    <span class="title">Contracts for Higher-Order Functions</span> &mdash; Findler, Felleisen
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>ICFP 2002 &middot; <a href="https://doi.org/10.1145/581478.581484">DOI</a> &middot; <a href="https://www2.ccs.neu.edu/racket/pubs/icfp2002-ff.pdf">PDF</a></div>
+    <div class="why-here">The runtime-checking substrate gradual typing is built on, and the first correct account of <em>blame</em> for higher-order values.</div>
   </li>
   <li>
-    <span class="title">Well-Typed Programs Can't Be Blamed</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1007/978-3-642-00590-9_1">DOI</a> &middot; <a href="https://users.cs.northwestern.edu/~robby/pubs/papers/esop2009-wf.pdf">PDF</a></div>
-    <div class="why-here">Wadler, Findler, 2009, ESOP. The blame calculus and blame theorem.</div>
+    <span class="title">Gradual Typing for Functional Languages</span> &mdash; Siek, Taha
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>Scheme Workshop 2006 &middot; <a href="http://scheme2006.cs.uchicago.edu/13-siek.pdf">PDF</a></div>
+    <div class="why-here">Coins gradual typing and the <em>consistency</em> relation that lets typed and untyped code interoperate at a boundary.</div>
   </li>
   <li>
-    <span class="title">Liquid Types</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/1375581.1375602">DOI</a> &middot; <a href="https://goto.ucsd.edu/~rjhala/liquid/liquid_types_techrep.pdf">PDF</a></div>
-    <div class="why-here">Rondon, Kawaguchi, Jhala, 2008, PLDI. SMT-decidable refinement types with inference.</div>
+    <span class="title">Well-Typed Programs Can't Be Blamed</span> &mdash; Wadler, Findler
+    <div class="meta"><span class="badge b-pdf">PDF&middot;32pp</span>ESOP 2009 &middot; <a href="https://doi.org/10.1007/978-3-642-00590-9_1">DOI</a> &middot; <a href="https://users.cs.northwestern.edu/~robby/pubs/papers/esop2009-wf.pdf">PDF</a></div>
+    <div class="why-here">The blame calculus and the blame theorem: when a boundary fails, the fault always lies with the less-typed side.</div>
   </li>
   <li>
-    <span class="title">Linear Haskell</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/3158093">DOI</a> &middot; <a href="https://arxiv.org/pdf/1710.09756">PDF</a></div>
-    <div class="why-here">Bernardy, Boespflug, Newton, Peyton Jones, Spiwack, 2018, POPL. Retrofits linear types onto a mainstream language.</div>
+    <span class="title">The Design and Implementation of Typed Scheme</span> &mdash; Tobin-Hochstadt, Felleisen
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>POPL 2008 &middot; <a href="https://doi.org/10.1145/1328438.1328486">DOI</a> &middot; <a href="https://www2.ccs.neu.edu/racket/pubs/popl08-thf.pdf">PDF</a></div>
+    <div class="why-here"><em>Occurrence typing</em> — sound static types laid over idiomatic untyped code (Typed Racket) by reading the control flow programmers already write.</div>
   </li>
   <li>
-    <span class="title">QuickCheck: A Lightweight Tool for Random Testing of Haskell Programs</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/351240.351266">DOI</a> &middot; <a href="https://www.cis.upenn.edu/~bcpierce/courses/552-2008/resources/icfp-quickcheck.pdf">PDF</a></div>
-    <div class="why-here">Claessen, Hughes, 2000, ICFP. Property-based random testing.</div>
+    <span class="title">Understanding TypeScript</span> &mdash; Bierman, Abadi, Torgersen
+    <div class="meta"><span class="badge b-pdf">PDF&middot;25pp</span>ECOOP 2014 &middot; <a href="https://doi.org/10.1007/978-3-662-44202-9_11">DOI</a> &middot; <a href="https://users.soe.ucsc.edu/~abadi/Papers/FTS-submitted.pdf">PDF</a></div>
+    <div class="why-here">A formal account of the type system that took gradual typing mainstream, including exactly where it is deliberately unsound.</div>
   </li>
   <li>
-    <span class="title">Language Primitives and Type Discipline for Structured Communication (session types)</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1007/BFb0053567">DOI</a></div>
-    <div class="why-here">Honda, Vasconcelos, Kubo, 1998, ESOP. Foundational binary session types.</div>
+    <span class="title">Safe &amp; Efficient Gradual Typing for TypeScript</span> &mdash; Rastogi, Swamy, Fournet, Bierman, Vekris
+    <div class="meta"><span class="badge b-pdf">PDF&middot;24pp</span>POPL 2015 &middot; <a href="https://doi.org/10.1145/2676726.2676971">DOI</a> &middot; <a href="https://arxiv.org/pdf/1411.3183">PDF</a></div>
+    <div class="why-here">How to buy back soundness for TypeScript without paying ruinous runtime costs.</div>
   </li>
   <li>
-    <span class="title">Multiparty Asynchronous Session Types</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/1328438.1328472">DOI</a></div>
-    <div class="why-here">Honda, Yoshida, Carbone, 2008, POPL. Typing multiparty communication protocols.</div>
+    <span class="title">Space-Efficient Gradual Typing</span> &mdash; Herman, Tomb, Flanagan
+    <div class="meta"><span class="badge b-pdf">PDF&middot;25pp</span>HOSC 2010 &middot; <a href="https://doi.org/10.1007/s10990-011-9066-z">DOI</a> &middot; <a href="https://users.soe.ucsc.edu/~cormac/papers/hosc10.pdf">PDF</a></div>
+    <div class="why-here">Casts pile up without bound as a value crosses a boundary back and forth; the fix is coercions that compose in constant space — the first serious reckoning with gradual typing's runtime cost.</div>
   </li>
   <li>
-    <span class="title">Contracts for Higher-Order Functions</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/581478.581484">DOI</a> &middot; <a href="https://www2.ccs.neu.edu/racket/pubs/icfp2002-ff.pdf">PDF</a></div>
-    <div class="why-here">Findler, Felleisen, 2002, ICFP. Correct blame assignment for higher-order contracts.</div>
+    <span class="title">Is Sound Gradual Typing Dead?</span> &mdash; Takikawa, Feltey, Greenman, New, Vitek, Felleisen
+    <div class="meta"><span class="badge b-pdf">PDF&middot;13pp</span>POPL 2016 &middot; <a href="https://doi.org/10.1145/2837614.2837630">DOI</a> &middot; <a href="https://www2.ccs.neu.edu/racket/pubs/popl16-tfgnvf.pdf">PDF</a></div>
+    <div class="why-here">The empirical reckoning: the runtime cost of <em>fully</em> sound gradual typing, and why most languages settle for less.</div>
   </li>
   <li>
-    <span class="title">The Design and Implementation of Typed Scheme</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/1328438.1328486">DOI</a> &middot; <a href="https://www2.ccs.neu.edu/racket/pubs/popl08-thf.pdf">PDF</a></div>
-    <div class="why-here">Tobin-Hochstadt, Felleisen, 2008, POPL. Occurrence typing; sound types over an untyped language (Typed Racket).</div>
-  </li>
-  <li>
-    <span class="title">Dependent Types in Practical Programming</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/292540.292560">DOI</a></div>
-    <div class="why-here">Xi, Pfenning, 1999, POPL. A restricted, decidable dependent-type discipline (DML).</div>
-  </li>
-  <li>
-    <span class="title">Towards a Practical Programming Language Based on Dependent Type Theory</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://www.cse.chalmers.se/~ulfn/papers/thesis.pdf">PDF</a></div>
-    <div class="why-here">Ulf Norell, 2007, PhD thesis (Chalmers). The design of Agda.</div>
+    <span class="title">Abstracting Gradual Typing</span> &mdash; Garcia, Clark, Tanter
+    <div class="meta"><span class="badge b-pdf">PDF&middot;14pp</span>POPL 2016 &middot; <a href="https://doi.org/10.1145/2837614.2837670">DOI</a> &middot; <a href="https://www.cs.ubc.ca/~rxg/agt.pdf">PDF</a></div>
+    <div class="why-here">A recipe for <em>deriving</em> a gradual type system from a static one — read the dynamic type as an abstraction of the types it could stand for — turning gradual typing from a series of one-off designs into a method.</div>
   </li>
 </ol>
+
+<h2>Refinement types: types that carry logical predicates</h2>
+<p class="grouphdr">Next, because once a type can be optional it can also say more — attach a predicate and let a solver check it.</p>
+<ol class="papers" start="10" style="counter-reset:item 9;">
+  <li>
+    <span class="title">Refinement Types for ML</span> &mdash; Freeman, Pfenning
+    <div class="meta"><span class="badge b-pdf">PDF&middot;10pp</span>PLDI 1991 &middot; <a href="https://doi.org/10.1145/113445.113468">DOI</a> &middot; <a href="https://www.cs.cmu.edu/~fp/papers/pldi91.pdf">PDF</a></div>
+    <div class="why-here">The origin: intersection-typed refinements of ML datatypes, decidable by construction.</div>
+  </li>
+  <li>
+    <span class="title">Liquid Types</span> &mdash; Rondon, Kawaguchi, Jhala
+    <div class="meta"><span class="badge b-pdf">PDF&middot;11pp</span>PLDI 2008 &middot; <a href="https://doi.org/10.1145/1375581.1375602">DOI</a> &middot; <a href="https://goto.ucsd.edu/~rjhala/papers/liquid_types.pdf">PDF</a></div>
+    <div class="why-here">Refinements restricted to an SMT-decidable logic <em>with inference</em> — the form that made refinement types usable at scale.</div>
+  </li>
+  <li>
+    <span class="title">Refinement Types for Haskell</span> &mdash; Vazou, Seidel, Jhala, Vytiniotis, Peyton Jones
+    <div class="meta"><span class="badge b-pdf">PDF&middot;15pp</span>ICFP 2014 &middot; <a href="https://doi.org/10.1145/2628136.2628161">DOI</a> &middot; <a href="https://goto.ucsd.edu/~rjhala/papers/refinement_types_for_haskell.pdf">PDF</a></div>
+    <div class="why-here">Liquid types retrofitted onto a lazy, higher-order production language — LiquidHaskell.</div>
+  </li>
+  <li>
+    <span class="title">Refinement Types for TypeScript</span> &mdash; Vekris, Cosman, Jhala
+    <div class="meta"><span class="badge b-pdf">PDF&middot;16pp</span>PLDI 2016 &middot; <a href="https://doi.org/10.1145/2908080.2908110">DOI</a> &middot; <a href="https://ranjitjhala.github.io/static/refinement_types_for_typescript.pdf">PDF</a></div>
+    <div class="why-here">Liquid refinement carried into a real imperative, mutable-heap language, taming JavaScript idioms like value-based overloading and reflection.</div>
+  </li>
+</ol>
+
+<h2>Dependent types, made practical</h2>
+<p class="grouphdr">Then, because refinement is dependency held back for decidability; here it is let out, but disciplined for real programs.</p>
+<ol class="papers" start="14" style="counter-reset:item 13;">
+  <li>
+    <span class="title">Simple Unification-based Type Inference for GADTs</span> &mdash; Peyton Jones, Vytiniotis, Weirich, Washburn
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>ICFP 2006 &middot; <a href="https://doi.org/10.1145/1159803.1159811">DOI</a> &middot; <a href="https://www.cs.tufts.edu/comp/150FP/archive/simon-peyton-jones/gadt-icfp.pdf">PDF</a></div>
+    <div class="why-here">Generalized algebraic data types let a constructor refine the type of the value it builds, so pattern matching recovers type equalities — the pragmatic foothold that brought dependently-typed idioms into mainstream Haskell, with inference that stays predictable.</div>
+  </li>
+  <li>
+    <span class="title">Eliminating Array Bound Checking Through Dependent Types</span> &mdash; Xi, Pfenning
+    <div class="meta"><span class="badge b-pdf">PDF&middot;9pp</span>PLDI 1998 &middot; <a href="https://doi.org/10.1145/277650.277732">DOI</a> &middot; <a href="https://www.cs.cmu.edu/~fp/papers/pldi98dml.pdf">PDF</a></div>
+    <div class="why-here">Dependent types earning their keep on a concrete optimization: proving array accesses safe and dropping the checks.</div>
+  </li>
+  <li>
+    <span class="title">Dependent Types in Practical Programming</span> &mdash; Xi, Pfenning
+    <div class="meta"><span class="badge b-pdf">PDF&middot;14pp</span>POPL 1999 &middot; <a href="https://doi.org/10.1145/292540.292560">DOI</a> &middot; <a href="https://www.cs.cmu.edu/~fp/papers/popl99.pdf">PDF</a></div>
+    <div class="why-here">Dependent ML: a restricted, <em>decidable</em> dependent-type discipline that keeps type checking practical.</div>
+  </li>
+  <li>
+    <span class="title">Towards a Practical Programming Language Based on Dependent Type Theory</span> &mdash; Norell
+    <div class="meta"><span class="badge b-pdf">PDF&middot;166pp</span>PhD thesis, Chalmers 2007 &middot; <a href="https://www.cse.chalmers.se/~ulfn/papers/thesis.pdf">PDF</a></div>
+    <div class="why-here">The design of Agda — full dependent types as a language you can actually program in.</div>
+  </li>
+</ol>
+
+<h2>Linear, ownership &amp; resource types</h2>
+<p class="grouphdr">Next, because the other axis of practicality is not richer values but tighter use — types that count how often, and in what state, a value may be touched.</p>
+<ol class="papers" start="18" style="counter-reset:item 17;">
+  <li>
+    <span class="title">Typestate: A Programming Language Concept for Enhancing Software Reliability</span> &mdash; Strom, Yemini
+    <div class="meta"><span class="badge b-web">DOI&middot;15pp</span>IEEE TSE 1986 &middot; <a href="https://doi.org/10.1109/TSE.1986.6312929">DOI</a></div>
+    <div class="why-here">The original idea that the operations a variable permits depend on its <em>state</em>, not just its type — so reading before initialization or using a resource after it is closed becomes a compile-time error. The ancestor of borrow-checking and protocol types.</div>
+  </li>
+  <li>
+    <span class="title">Ownership Types for Flexible Alias Protection</span> &mdash; Clarke, Potter, Noble
+    <div class="meta"><span class="badge b-pdf">PDF&middot;17pp</span>OOPSLA 1998 &middot; <a href="https://doi.org/10.1145/286936.286947">DOI</a> &middot; <a href="https://www.cs.cornell.edu/courses/cs711/2005fa/papers/cpn-oopsla98.pdf">PDF</a></div>
+    <div class="why-here">Types that bound where references may escape — the aliasing discipline behind ownership in later languages.</div>
+  </li>
+  <li>
+    <span class="title">Linear Haskell</span> &mdash; Bernardy, Boespflug, Newton, Peyton Jones, Spiwack
+    <div class="meta"><span class="badge b-pdf">PDF&middot;36pp</span>POPL 2018 &middot; <a href="https://doi.org/10.1145/3158093">DOI</a> &middot; <a href="https://arxiv.org/pdf/1710.09756">PDF</a></div>
+    <div class="why-here">Retrofits linear types onto a mainstream language without splitting it in two — linearity as a property of function arrows.</div>
+  </li>
+  <li>
+    <span class="title">RustBelt: Securing the Foundations of the Rust Programming Language</span> &mdash; Jung, Jourdan, Krebbers, Dreyer
+    <div class="meta"><span class="badge b-pdf">PDF&middot;34pp</span>POPL 2018 &middot; <a href="https://doi.org/10.1145/3158154">DOI</a> &middot; <a href="https://people.mpi-sws.org/~dreyer/papers/rustbelt/paper.pdf">PDF</a></div>
+    <div class="why-here">The first rigorous soundness proof for Rust's ownership-and-borrowing type system, including its `unsafe` core.</div>
+  </li>
+</ol>
+
+<h2>Session types: typing communication</h2>
+<p class="grouphdr">Then, because ownership disciplines <em>values</em>; session types apply the same idea to <em>conversations</em> — the sequence of messages on a channel.</p>
+<ol class="papers" start="22" style="counter-reset:item 21;">
+  <li>
+    <span class="title">Language Primitives and Type Discipline for Structured Communication</span> &mdash; Honda, Vasconcelos, Kubo
+    <div class="meta"><span class="badge b-pdf">PDF&middot;17pp</span>ESOP 1998 &middot; <a href="https://doi.org/10.1007/BFb0053567">DOI</a> &middot; <a href="https://www.di.fc.ul.pt/~vv/papers/honda.vasconcelos.kubo_language-primitives.pdf">PDF</a></div>
+    <div class="why-here">Foundational <em>binary</em> session types: a type describes the protocol a two-party channel must follow.</div>
+  </li>
+  <li>
+    <span class="title">Multiparty Asynchronous Session Types</span> &mdash; Honda, Yoshida, Carbone
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>POPL 2008 &middot; <a href="https://doi.org/10.1145/1328438.1328472">DOI</a> &middot; <a href="https://www.doc.ic.ac.uk/~yoshida/multiparty/multiparty.pdf">PDF</a></div>
+    <div class="why-here">Global protocol types projected onto each participant, so a whole multi-party interaction type-checks end to end.</div>
+  </li>
+</ol>
+
+<h2>Effect systems in practice</h2>
+<p class="grouphdr">Next, because a type can say not only what a value <em>is</em> but what a computation <em>does</em> — the effects it may perform.</p>
+<ol class="papers" start="24" style="counter-reset:item 23;">
+  <li>
+    <span class="title">The Type and Effect Discipline</span> &mdash; Talpin, Jouvelot
+    <div class="meta"><span class="badge b-web">DOI&middot;52pp</span>Information and Computation 1994 &middot; <a href="https://doi.org/10.1006/inco.1994.1046">DOI</a></div>
+    <div class="why-here">The framework that reconstructs both a principal type <em>and</em> a minimal effect for implicitly typed programs.</div>
+  </li>
+  <li>
+    <span class="title">Handlers of Algebraic Effects</span> &mdash; Plotkin, Pretnar
+    <div class="meta"><span class="badge b-pdf">PDF&middot;15pp</span>ESOP 2009 &middot; <a href="https://doi.org/10.1007/978-3-642-00590-9_7">DOI</a> &middot; <a href="https://homepages.inf.ed.ac.uk/gdp/publications/Effect_Handlers.pdf">PDF</a></div>
+    <div class="why-here">Effect <em>handlers</em> — the exception-handler generalization that turned effect systems into a programming construct.</div>
+  </li>
+  <li>
+    <span class="title">Koka: Programming with Row-Polymorphic Effect Types</span> &mdash; Leijen
+    <div class="meta"><span class="badge b-pdf">PDF&middot;27pp</span>MSFP 2014 &middot; <a href="https://arxiv.org/abs/1406.2061">arXiv</a> &middot; <a href="https://arxiv.org/pdf/1406.2061">PDF</a></div>
+    <div class="why-here">A working language that infers effect <em>rows</em> and makes a function's latent effects part of its type.</div>
+  </li>
+  <li>
+    <span class="title">Retrofitting Effect Handlers onto OCaml</span> &mdash; Sivaramakrishnan, Dolan, White, Jaffer, Kelly, Madhavapeddy
+    <div class="meta"><span class="badge b-pdf">PDF&middot;16pp</span>PLDI 2021 &middot; <a href="https://doi.org/10.1145/3453483.3454039">DOI</a> &middot; <a href="https://kcsrk.info/papers/drafts/retro-concurrency.pdf">PDF</a></div>
+    <div class="why-here">How algebraic effects became a production feature: OCaml 5's effect handlers, added to a decades-old language without breaking its runtime, and the substrate for its new concurrency.</div>
+  </li>
+</ol>
+
+<h2>Information-flow &amp; security types</h2>
+<p class="grouphdr">Then, because a type can also police <em>where</em> information travels — who may observe a value — turning confidentiality and integrity into a static discipline.</p>
+<ol class="papers" start="28" style="counter-reset:item 27;">
+  <li>
+    <span class="title">JFlow: Practical Mostly-Static Information Flow Control</span> &mdash; Myers
+    <div class="meta"><span class="badge b-pdf">PDF&middot;17pp</span>POPL 1999 &middot; <a href="https://doi.org/10.1145/292540.292561">DOI</a> &middot; <a href="https://www.cs.cornell.edu/andru/papers/popl99/popl99.pdf">PDF</a></div>
+    <div class="why-here">Security labels attached to data in a real Java extension (Jif), checked by the type system so secrets cannot leak to public outputs — information-flow control made usable.</div>
+  </li>
+  <li>
+    <span class="title">Information Flow Inference for ML</span> &mdash; Pottier, Simonet
+    <div class="meta"><span class="badge b-pdf">PDF&middot;13pp</span>POPL 2002 &middot; <a href="https://doi.org/10.1145/503272.503302">DOI</a> &middot; <a href="http://cristal.inria.fr/~simonet/publis/fpottier-simonet-popl02.pdf">PDF</a></div>
+    <div class="why-here">Information-flow security recast as type <em>inference</em> for an ML-like language (FlowCaml): the programmer writes ordinary code and the compiler infers the flow constraints, with a proof of noninterference.</div>
+  </li>
+</ol>
+
+<h2>Where types stop: property-based testing</h2>
+<p class="grouphdr">Last, because no practical type system checks everything; property-based testing is the type-adjacent tool that covers the rest.</p>
+<ol class="papers" start="30" style="counter-reset:item 29;">
+  <li>
+    <span class="title">QuickCheck: A Lightweight Tool for Random Testing of Haskell Programs</span> &mdash; Claessen, Hughes
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>ICFP 2000 &middot; <a href="https://doi.org/10.1145/351240.351266">DOI</a> &middot; <a href="https://www.cis.upenn.edu/~bcpierce/courses/552-2008/resources/icfp-quickcheck.pdf">PDF</a></div>
+    <div class="why-here">Specifications written as typed properties, checked against generated inputs — the idea now copied into every major language.</div>
+  </li>
+</ol>
+
+<h2>Reference shelf &mdash; books</h2>
+<p class="grouphdr">The standard texts for the area; free copies linked where a legal one exists.</p>
+<ul class="refs">
+  <li><span class="badge b-buy">BUY&middot;645pp</span><b>Types and Programming Languages</b> &mdash; Benjamin C. Pierce (2002) &middot; The standard first text; the vocabulary and proof techniques this whole list assumes. <a href="https://mitpress.mit.edu/9780262162098/types-and-programming-languages/">page</a></li>
+  <li><span class="badge b-buy">BUY&middot;589pp</span><b>Advanced Topics in Types and Programming Languages</b> &mdash; Benjamin C. Pierce (ed.) (2005) &middot; Dependent types, effects, linearity, and more at research depth — the natural sequel to TAPL. <a href="https://mitpress.mit.edu/9780262162289/advanced-topics-in-types-and-programming-languages/">page</a></li>
+  <li><span class="badge b-book">BOOK</span><b>Programming Language Foundations in Agda</b> &mdash; Wadler, Kokke, Siek (2022) &middot; Learn dependent types by building the metatheory in Agda; the hands-on companion to the DML and Agda entries above. <a href="https://plfa.github.io/">book</a></li>
+  <li><span class="badge b-book">BOOK</span><b>The Rust Programming Language</b> &mdash; Klabnik, Nichols (2023) &middot; Ownership and borrowing as a working programmer meets them — the practical face of RustBelt's theory. <a href="https://doc.rust-lang.org/book/">book</a></li>
+</ul>
+
+<h2>Key terms</h2>
+<p class="grouphdr">Vocabulary used across this list.</p>
+<div class="notekey"><b>gradual typing</b> &mdash; a type system where fully-typed, fully-untyped, and partially-typed code interoperate, with checks inserted at the boundaries &nbsp; <b>consistency</b> &mdash; the relation (not transitive) that says two types <em>may</em> agree once the dynamic type `?` is allowed to match anything &nbsp; <b>blame</b> &mdash; the runtime attribution of a boundary failure to the party that broke its contract; a sound system blames only the less-typed side &nbsp; <b>occurrence typing</b> &mdash; refining a variable's type along a control-flow path from the tests the program already performs &nbsp; <b>refinement type</b> &mdash; a base type paired with a logical predicate, e.g. `{v:Int | v &gt; 0}` &nbsp; <b>liquid type</b> &mdash; a refinement type restricted to an SMT-decidable logic so refinements can be <em>inferred</em>, not just checked &nbsp; <b>dependent type</b> &mdash; a type that may mention program values, e.g. an array type indexed by its length &nbsp; <b>GADT</b> &mdash; a generalized algebraic data type whose constructors constrain their result type, so pattern matching recovers type equalities &nbsp; <b>linear type</b> &mdash; a type whose values must be used exactly once, enabling safe in-place update and manual resource handling &nbsp; <b>typestate</b> &mdash; the set of operations a value permits in its current <em>state</em>, a refinement of its type; using a value outside a valid state is a static error &nbsp; <b>ownership / borrowing</b> &mdash; a discipline that gives each value a unique owner and controls aliasing, so memory is freed without a garbage collector &nbsp; <b>session type</b> &mdash; a type describing the protocol (message sequence and choices) a communication channel must follow &nbsp; <b>effect system</b> &mdash; a type discipline that tracks the side effects (state, exceptions, IO) a computation may perform &nbsp; <b>algebraic effect / handler</b> &mdash; effects given by operations whose meaning is supplied by an enclosing handler, generalizing exception handling &nbsp; <b>information-flow type</b> &mdash; a type annotated with a security label that constrains where a value's information may flow &nbsp; <b>noninterference</b> &mdash; the security property that public outputs do not depend on secret inputs &nbsp; <b>property-based testing</b> &mdash; checking a typed logical property against many randomly generated inputs, shrinking any counterexample found</div>
 
 </body>
 </html>

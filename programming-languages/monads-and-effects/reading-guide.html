@@ -8,50 +8,116 @@
 <body>
 
 <h1>Programming languages · Monads &amp; algebraic effects</h1>
-<p class="tally">In-depth landmark list for this subtopic. <span class="badge b-pdf">PDF</span>open copy available &middot; <span class="badge b-web">DOI</span>publisher link only.</p>
+<p class="sub">How do you do input, state, and exceptions in a language that forbids side effects? Two answers dominate. <em>Monads</em> thread the effect through the types, one layer at a time; <em>algebraic effects and handlers</em> name the operations and let a surrounding handler decide what they mean. The papers below walk that arc: start with Wadler's gentle case for monads, drop down to Moggi's semantics that justifies them, watch monads reach real languages and learn to compose, meet the weaker and stronger relatives (applicative functors, arrows), then follow the algebraic-effects line from Plotkin and Power's theory to the handlers, languages, and libraries in use today.</p>
+<p class="tally">14 papers &middot; &asymp; <b>291 pp</b> of primary reading. &nbsp; Legend: <span class="badge b-pdf">PDF</span>open copy (see <span class="file">fetch.sh</span>) &middot; <span class="badge b-web">DOI</span>publisher link only</p>
+<div class="why"><b>How to read this list.</b> If you only want the intuition, read Wadler (<em>Comprehending Monads</em>, then <em>Monads for functional programming</em>) and stop. For the semantics behind it, read Moggi. The second half is the modern story: monads compose awkwardly (transformers), so effects were re-based on algebra (Plotkin–Power) and given handlers (Plotkin–Pretnar) that now drive Eff, Koka, and the extensible-effects libraries. Theory-first readers can flip the two halves.</div>
 
-<ol class="papers">
+<h2>Why monads — structuring effects in a pure language</h2>
+<p class="grouphdr">Start with the programming problem monads solve, in Wadler's own unhurried exposition.</p>
+<ol class="papers" start="1">
   <li>
-    <span class="title">Comprehending Monads</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/91556.91592">DOI</a> &middot; <a href="https://plv.mpi-sws.org/plerg/papers/comprehending-monads.pdf">PDF</a></div>
-    <div class="why-here">Philip Wadler, 1990, LFP. Brings Moggi's monads into practical programming.</div>
+    <span class="title">Comprehending Monads</span> &mdash; Philip Wadler
+    <div class="meta"><span class="badge b-pdf">PDF&middot;19pp</span>LFP 1990 &middot; <a href="https://doi.org/10.1145/91556.91592">DOI</a> &middot; <a href="https://plv.mpi-sws.org/plerg/papers/comprehending-monads.pdf">PDF</a></div>
+    <div class="why-here">Brings Moggi's monads into practical programming, framed through list comprehensions — the friendliest possible entry point.</div>
   </li>
   <li>
-    <span class="title">Handlers of Algebraic Effects</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1007/978-3-642-00590-9_7">DOI</a></div>
-    <div class="why-here">Plotkin, Pretnar, 2009, ESOP. Effect handlers, the modern alternative to monad transformers.</div>
+    <span class="title">The Essence of Functional Programming</span> &mdash; Philip Wadler
+    <div class="meta"><span class="badge b-pdf">PDF&middot;14pp</span>POPL 1992 &middot; <a href="https://doi.org/10.1145/143165.143169">DOI</a> &middot; <a href="https://www.st.cs.uni-saarland.de/edu/seminare/2005/advanced-fp/docs/wadler-essence-fp.pdf">PDF</a></div>
+    <div class="why-here">Structures one interpreter many ways — state, exceptions, continuations — each as a monad, showing monads as a practical structuring device.</div>
   </li>
   <li>
-    <span class="title">Notions of Computation and Monads</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1016/0890-5401(91">DOI</a></div>
-    <div class="why-here">Eugenio Moggi, 1991, Information and Computation. Monads as a semantic framework for effects. 90052-4)</div>
-  </li>
-  <li>
-    <span class="title">The Essence of Functional Programming</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/143165.143169">DOI</a></div>
-    <div class="why-here">Philip Wadler, 1992, POPL. Monads as a practical structuring device for effects.</div>
-  </li>
-  <li>
-    <span class="title">Imperative Functional Programming</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/158511.158524">DOI</a></div>
-    <div class="why-here">Peyton Jones, Wadler, 1993, POPL. Monadic IO: imperative computation in a pure language.</div>
-  </li>
-  <li>
-    <span class="title">Extensible Effects: An Alternative to Monad Transformers</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/2503778.2503791">DOI</a> &middot; <a href="https://okmij.org/ftp/Haskell/extensible/exteff.pdf">PDF</a></div>
-    <div class="why-here">Kiselyov, Sabry, Swords, 2013, Haskell Symp. Composable alternative to stacked transformers.</div>
-  </li>
-  <li>
-    <span class="title">Koka: Programming with Row Polymorphic Effect Types</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.4204/EPTCS.153.8">DOI</a> &middot; <a href="https://arxiv.org/pdf/1406.2061">PDF</a></div>
-    <div class="why-here">Daan Leijen, 2014, MSFP/EPTCS. Row-polymorphism to track effects in the type system.</div>
-  </li>
-  <li>
-    <span class="title">Programming with Algebraic Effects and Handlers (Eff)</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1016/j.jlamp.2014.02.001">DOI</a> &middot; <a href="https://arxiv.org/pdf/1203.1539">PDF</a></div>
-    <div class="why-here">Bauer, Pretnar, 2015, JLAMP. The Eff language; structured algebraic effects + handlers.</div>
+    <span class="title">Monads for functional programming</span> &mdash; Philip Wadler
+    <div class="meta"><span class="badge b-pdf">PDF&middot;31pp</span>Advanced Functional Programming (LNCS 925) 1995 &middot; <a href="https://doi.org/10.1007/3-540-59451-5_2">DOI</a> &middot; <a href="https://homepages.inf.ed.ac.uk/wadler/papers/marktoberdorf/baastad.pdf">PDF</a></div>
+    <div class="why-here">The definitive tutorial; if any single paper makes monads click, it is this one.</div>
   </li>
 </ol>
+
+<h2>The semantic foundation</h2>
+<p class="grouphdr">Where monads came from: Moggi's categorical account of what a "notion of computation" is.</p>
+<ol class="papers" start="4" style="counter-reset:item 3;">
+  <li>
+    <span class="title">Notions of Computation and Monads</span> &mdash; Eugenio Moggi
+    <div class="meta"><span class="badge b-pdf">PDF&middot;29pp</span>Information and Computation 1991 &middot; <a href="https://doi.org/10.1016/0890-5401(91)90052-4">DOI</a> &middot; <a href="https://person.dibris.unige.it/moggi-eugenio/ftp/ic91.pdf">PDF</a></div>
+    <div class="why-here">The origin: a monad is a model of a notion of computation, and effectful programs are Kleisli arrows. Read after Wadler so the categorical machinery has something concrete to attach to.</div>
+  </li>
+</ol>
+
+<h2>Monads reach real languages</h2>
+<p class="grouphdr">From theory to Haskell: monadic I/O, and how to combine more than one effect at once.</p>
+<ol class="papers" start="5" style="counter-reset:item 4;">
+  <li>
+    <span class="title">Imperative Functional Programming</span> &mdash; Simon Peyton Jones, Philip Wadler
+    <div class="meta"><span class="badge b-pdf">PDF&middot;15pp</span>POPL 1993 &middot; <a href="https://doi.org/10.1145/158511.158524">DOI</a> &middot; <a href="https://www.microsoft.com/en-us/research/wp-content/uploads/1993/01/imperative.pdf">PDF</a></div>
+    <div class="why-here">Monadic I/O: how a pure language does genuine imperative computation without cheating. This is the design that shipped in Haskell.</div>
+  </li>
+  <li>
+    <span class="title">Monad Transformers and Modular Interpreters</span> &mdash; Sheng Liang, Paul Hudak, Mark Jones
+    <div class="meta"><span class="badge b-pdf">PDF&middot;11pp</span>POPL 1995 &middot; <a href="https://doi.org/10.1145/199448.199528">DOI</a> &middot; <a href="https://web.engr.oregonstate.edu/~walkiner/teaching/cs583-sp21/files/Liang-MonadTransformers.pdf">PDF</a></div>
+    <div class="why-here">Stacking effects: build a monad from reusable transformer layers. The standard answer to "how do I use two effects at once" — and the pain point algebraic effects later set out to fix.</div>
+  </li>
+</ol>
+
+<h2>Beyond monads — weaker and stronger relatives</h2>
+<p class="grouphdr">Two abstractions on either side of the monad: applicatives ask for less, arrows offer more.</p>
+<ol class="papers" start="7" style="counter-reset:item 6;">
+  <li>
+    <span class="title">Applicative Programming with Effects</span> &mdash; Conor McBride, Ross Paterson
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>JFP 2008 &middot; <a href="https://doi.org/10.1017/S0956796807006326">DOI</a> &middot; <a href="https://www.staff.city.ac.uk/~ross/papers/Applicative.pdf">PDF</a></div>
+    <div class="why-here">The applicative functor: weaker than a monad (no data-dependent sequencing) but more composable, and the right tool for effects whose structure is fixed in advance.</div>
+  </li>
+  <li>
+    <span class="title">Generalising Monads to Arrows</span> &mdash; John Hughes
+    <div class="meta"><span class="badge b-pdf">PDF&middot;41pp</span>Science of Computer Programming 2000 &middot; <a href="https://doi.org/10.1016/S0167-6423(99)00023-4">DOI</a> &middot; <a href="https://www.cse.chalmers.se/~rjmh/Papers/arrows.pdf">PDF</a></div>
+    <div class="why-here">Arrows abstract computations that a monad can't quite capture — static analysis of pipelines, dataflow, parsers. The other direction from applicatives.</div>
+  </li>
+</ol>
+
+<h2>Algebraic effects and handlers</h2>
+<p class="grouphdr">The modern reframing: effects are operations of an algebraic theory, handlers are their interpreters.</p>
+<ol class="papers" start="9" style="counter-reset:item 8;">
+  <li>
+    <span class="title">Algebraic Operations and Generic Effects</span> &mdash; Gordon Plotkin, John Power
+    <div class="meta"><span class="badge b-pdf">PDF&middot;26pp</span>Applied Categorical Structures 2003 &middot; <a href="https://doi.org/10.1023/A:1023064908962">DOI</a> &middot; <a href="https://homepages.inf.ed.ac.uk/gdp/publications/alg_ops_gen_effects.pdf">PDF</a></div>
+    <div class="why-here">The theory: rather than take monads as given, present effects as operations satisfying equations. This is the foundation the whole algebraic-effects line rests on.</div>
+  </li>
+  <li>
+    <span class="title">Handlers of Algebraic Effects</span> &mdash; Gordon Plotkin, Matija Pretnar
+    <div class="meta"><span class="badge b-pdf">PDF&middot;15pp</span>ESOP 2009 &middot; <a href="https://doi.org/10.1007/978-3-642-00590-9_7">DOI</a> &middot; <a href="https://homepages.inf.ed.ac.uk/gdp/publications/Effect_Handlers.pdf">PDF</a></div>
+    <div class="why-here">Handlers: a control construct that interprets the operations of #9, generalising exception handling to <em>any</em> effect. The pivot from theory to a usable programming feature.</div>
+  </li>
+</ol>
+
+<h2>Effects in practice — languages and libraries</h2>
+<p class="grouphdr">How handlers became something you can program with: dedicated languages, row-typed effect systems, and library encodings.</p>
+<ol class="papers" start="11" style="counter-reset:item 10;">
+  <li>
+    <span class="title">Programming with Algebraic Effects and Handlers (Eff)</span> &mdash; Andrej Bauer, Matija Pretnar
+    <div class="meta"><span class="badge b-pdf">PDF&middot;25pp</span>JLAMP 2015 &middot; <a href="https://doi.org/10.1016/j.jlamp.2014.02.001">DOI</a> &middot; <a href="https://arxiv.org/pdf/1203.1539">PDF</a></div>
+    <div class="why-here">The Eff language: what it feels like to write real programs with algebraic effects and handlers.</div>
+  </li>
+  <li>
+    <span class="title">Koka: Programming with Row Polymorphic Effect Types</span> &mdash; Daan Leijen
+    <div class="meta"><span class="badge b-pdf">PDF&middot;27pp</span>MSFP 2014 &middot; <a href="https://doi.org/10.4204/EPTCS.153.8">DOI</a> &middot; <a href="https://arxiv.org/pdf/1406.2061">PDF</a></div>
+    <div class="why-here">Puts effects in the type system with row polymorphism, so a function's type states exactly which effects it may perform. The type-and-effect answer to the same problem.</div>
+  </li>
+  <li>
+    <span class="title">Data Types à la Carte</span> &mdash; Wouter Swierstra
+    <div class="meta"><span class="badge b-pdf">PDF&middot;14pp</span>JFP 2008 &middot; <a href="https://doi.org/10.1017/S0956796808006758">DOI</a> &middot; <a href="https://webspace.science.uu.nl/~swier004/publications/2008-jfp.pdf">PDF</a></div>
+    <div class="why-here">Free monads over composable signature functors — the technique behind combining effects as data, and the conceptual bridge to library-level effect systems.</div>
+  </li>
+  <li>
+    <span class="title">Extensible Effects: An Alternative to Monad Transformers</span> &mdash; Oleg Kiselyov, Amr Sabry, Cameron Swords
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>Haskell Symposium 2013 &middot; <a href="https://doi.org/10.1145/2503778.2503791">DOI</a> &middot; <a href="https://okmij.org/ftp/Haskell/extensible/exteff.pdf">PDF</a></div>
+    <div class="why-here">Effects as an open union interpreted by handlers, in a plain Haskell library — algebraic effects meeting monad transformers on the transformers' home turf.</div>
+  </li>
+</ol>
+
+<h2>Reference shelf &mdash; books</h2>
+<p class="grouphdr">The standard texts for the area; free copies linked where a legal one exists.</p>
+<ul class="refs">
+  <li><span class="badge b-book">BOOK&middot;498pp</span><b>Category Theory for Programmers</b> &mdash; Bartosz Milewski (2019) &middot; Functors, natural transformations, and monads from the categorical side, written for programmers — the background Moggi and Plotkin–Power assume. <a href="https://github.com/hmemcpy/milewski-ctfp-pdf/releases/download/v1.3.0/category-theory-for-programmers.pdf">PDF</a></li>
+  <li><span class="badge b-buy">BUY&middot;320pp</span><b>Programming in Haskell (2nd ed.)</b> &mdash; Graham Hutton (2016) &middot; Chapters 12–14 are the gentlest hands-on path through functors, applicatives, and monads before you hit the papers. <a href="https://www.cambridge.org/core/books/programming-in-haskell/8FED82E807EF4D5B57DA0DB02BA004F9">page</a></li>
+</ul>
 
 </body>
 </html>

@@ -8,65 +8,182 @@
 <body>
 
 <h1>Programming languages · Types, polymorphism &amp; abstraction</h1>
-<p class="tally">In-depth landmark list for this subtopic. <span class="badge b-pdf">PDF</span>open copy available &middot; <span class="badge b-web">DOI</span>publisher link only.</p>
+<p class="sub">A type system is a lightweight proof that a program can't go wrong, and the whole subject is a search for how much of that proof a compiler can supply on its own. This guide follows one path: start where types touch everyday code — automatic inference in the ML tradition — then climb to the calculus underneath it (System F and parametric polymorphism), see how the same machinery explains data abstraction, cover the <em>other</em> polymorphism (overloading, via type classes), add subtyping and bounded quantification, push types to their logical limit with dependent types and Curry-Howard, and finish with the practical inference tricks real compilers use once Hindley-Milner's guarantees break.</p>
+<p class="tally">23 papers &middot; &asymp; <b>885 pp</b> of primary reading. &nbsp; Legend: <span class="badge b-pdf">PDF</span>open copy (see <span class="file">fetch.sh</span>) &middot; <span class="badge b-web">DOI</span>publisher link only</p>
+<div class="why"><b>Three kinds of polymorphism.</b> Christopher Strachey's old split, sharpened by Cardelli and Wegner, is the map for this whole list. <em>Parametric</em> polymorphism (one definition, uniform over all types — System F, ML generics), <em>ad-hoc</em> polymorphism (one name, different code per type — overloading, type classes), and <em>subtype</em> polymorphism (a value of one type usable where another is expected). Read the intro paragraph first, then take the sections in order; each builds vocabulary the next one assumes. Foundations come first on purpose, but the ordering is pedagogical, not chronological.</div>
 
-<ol class="papers">
+<h2>Type inference and the ML tradition</h2>
+<p class="grouphdr">Start where types meet everyday programming: inferring them automatically, so the programmer rarely writes one down.</p>
+<ol class="papers" start="1">
   <li>
-    <span class="title">Towards a Theory of Type Structure</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1007/3-540-06859-7_148">DOI</a> &middot; <a href="https://www.cis.upenn.edu/~stevez/cis670/pdfs/Reynolds74.pdf">PDF</a></div>
-    <div class="why-here">John C. Reynolds, 1974, Programming Symposium (LNCS 19). Introduces the polymorphic lambda calculus (System F).</div>
+    <span class="title">The Principal Type-Scheme of an Object in Combinatory Logic</span> &mdash; J. Roger Hindley
+    <div class="meta"><span class="badge b-web">DOI&middot;32pp</span>Trans. AMS 1969 &middot; <a href="https://doi.org/10.2307/1995158">DOI</a></div>
+    <div class="why-here">The origin of the <em>principal type</em> — every typable term has a single most-general type that all its types are instances of. The "H" in Hindley-Milner; paywalled, so a DOI only.</div>
   </li>
   <li>
-    <span class="title">A Theory of Type Polymorphism in Programming</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1016/0022-0000(78">DOI</a> &middot; <a href="https://research.cs.queensu.ca/home/cordy/cisc860/Biblio/hurd/misc/milner78.pdf">PDF</a></div>
-    <div class="why-here">Robin Milner, 1978, JCSS. Let-polymorphism and Algorithm W. 90014-4)</div>
+    <span class="title">A Theory of Type Polymorphism in Programming</span> &mdash; Robin Milner
+    <div class="meta"><span class="badge b-pdf">PDF&middot;28pp</span>JCSS 1978 &middot; <a href="https://doi.org/10.1016/0022-0000(78)90014-4">DOI</a> &middot; <a href="https://homepages.inf.ed.ac.uk/wadler/papers/papers-we-love/milner-type-polymorphism.pdf">PDF</a></div>
+    <div class="why-here">Let-polymorphism and Algorithm W: rediscovers principal types for a real language and proves that well-typed programs don't go wrong.</div>
   </li>
   <li>
-    <span class="title">Principal Type-Schemes for Functional Programs</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/582153.582176">DOI</a> &middot; <a href="https://courses.cs.washington.edu/courses/cse503/10wi/readings/p207-damas.pdf">PDF</a></div>
-    <div class="why-here">Damas, Milner, 1982, POPL. The formal foundation of Hindley-Milner inference.</div>
+    <span class="title">Principal Type-Schemes for Functional Programs</span> &mdash; Luís Damas, Robin Milner
+    <div class="meta"><span class="badge b-pdf">PDF&middot;6pp</span>POPL 1982 &middot; <a href="https://doi.org/10.1145/582153.582176">DOI</a> &middot; <a href="https://steshaw.org/hm/milner-damas.pdf">PDF</a></div>
+    <div class="why-here">The tight, formal statement of the Hindley-Milner system, with soundness and completeness of inference — the paper everyone cites.</div>
   </li>
   <li>
-    <span class="title">On Understanding Types, Data Abstraction, and Polymorphism</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/6041.6042">DOI</a> &middot; <a href="https://lucacardelli.name/papers/onunderstanding.a4.pdf">PDF</a></div>
-    <div class="why-here">Cardelli, Wegner, 1985, ACM Computing Surveys. The definitive synthesis of polymorphism, subtyping, and abstraction.</div>
-  </li>
-  <li>
-    <span class="title">Theorems for Free!</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/99370.99404">DOI</a></div>
-    <div class="why-here">Philip Wadler, 1989, FPCA. Turns parametricity into free theorems.</div>
-  </li>
-  <li>
-    <span class="title">Interprétation fonctionnelle… (System F)</span>
-    <div class="meta"><span class="badge b-web">DOI</span></div>
-    <div class="why-here">Jean-Yves Girard, 1972, Thèse d'État, Paris VII. Introduced System F (second-order lambda calculus) and reducibility.</div>
-  </li>
-  <li>
-    <span class="title">Abstract Types Have Existential Type</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/44501.45065">DOI</a></div>
-    <div class="why-here">Mitchell, Plotkin, 1988, ACM TOPLAS. ADTs are precisely existential types; the basis of data abstraction/modules.</div>
-  </li>
-  <li>
-    <span class="title">How to Make ad-hoc Polymorphism Less ad hoc (type classes)</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/75277.75283">DOI</a></div>
-    <div class="why-here">Wadler, Blott, 1989, POPL. Introduced type classes.</div>
-  </li>
-  <li>
-    <span class="title">Local Type Inference</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/345099.345100">DOI</a></div>
-    <div class="why-here">Pierce, Turner, 2000, ACM TOPLAS. Practical inference for subtyping + explicit polymorphism.</div>
-  </li>
-  <li>
-    <span class="title">Complete and Easy Bidirectional Typechecking for Higher-Rank Polymorphism</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/2500365.2500582">DOI</a> &middot; <a href="https://arxiv.org/pdf/1306.6032">PDF</a></div>
-    <div class="why-here">Dunfield, Krishnaswami, 2013, ICFP. The standard bidirectional algorithm blueprint.</div>
-  </li>
-  <li>
-    <span class="title">OutsideIn(X): Modular Type Inference with Local Assumptions</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1017/S0956796811000098">DOI</a> &middot; <a href="https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/jfp-outsidein.pdf">PDF</a></div>
-    <div class="why-here">Vytiniotis, Peyton Jones, Schrijvers, Sulzmann, 2011, JFP. GHC's inference for GADTs/type families.</div>
+    <span class="title">Basic Polymorphic Typechecking</span> &mdash; Luca Cardelli
+    <div class="meta"><span class="badge b-pdf">PDF&middot;29pp</span>Sci. Comput. Program. 1987 &middot; <a href="https://doi.org/10.1016/0167-6423(87)90019-0">DOI</a> &middot; <a href="http://lucacardelli.name/Papers/BasicTypechecking.pdf">PDF</a></div>
+    <div class="why-here">How to actually <em>build</em> a Hindley-Milner checker — unification, the occurs check, generalization — with running code. Read it right after the theory to make the algorithm concrete.</div>
   </li>
 </ol>
+
+<h2>Parametric polymorphism and System F</h2>
+<p class="grouphdr">The calculus behind "one definition, uniform over every type," and what quantifying over types actually buys you.</p>
+<ol class="papers" start="5" style="counter-reset:item 4;">
+  <li>
+    <span class="title">Interprétation fonctionnelle et élimination des coupures (System F)</span> &mdash; Jean-Yves Girard
+    <div class="meta"><span class="badge b-pdf">PDF&middot;230pp</span>Thèse d'État, Paris VII 1972 &middot; <a href="http://girard.perso.math.cnrs.fr/These.pdf">PDF</a></div>
+    <div class="why-here">The birth of the second-order (polymorphic) lambda calculus, invented for proof theory, with the reducibility method that proves it terminating. In French; use the companion below as the English gateway.</div>
+  </li>
+  <li>
+    <span class="title">Towards a Theory of Type Structure</span> &mdash; John C. Reynolds
+    <div class="meta"><span class="badge b-pdf">PDF&middot;18pp</span>Programming Symposium (LNCS 19) 1974 &middot; <a href="https://doi.org/10.1007/3-540-06859-7_148">DOI</a> &middot; <a href="https://www.cis.upenn.edu/~stevez/cis670/pdfs/Reynolds74.pdf">PDF</a></div>
+    <div class="why-here">System F, discovered independently from a programming-language angle, with the representation-independence intuition that later became parametricity.</div>
+  </li>
+  <li>
+    <span class="title">Types, Abstraction and Parametric Polymorphism</span> &mdash; John C. Reynolds
+    <div class="meta"><span class="badge b-pdf">PDF&middot;11pp</span>IFIP Information Processing 1983 &middot; <a href="https://www.cs.cmu.edu/~crary/819-f09/Reynolds83.pdf">PDF</a></div>
+    <div class="why-here">Makes "parametric" precise: a polymorphic function must act <em>uniformly</em>, formalized by relations preserved across types — the abstraction theorem.</div>
+  </li>
+  <li>
+    <span class="title">Theorems for Free!</span> &mdash; Philip Wadler
+    <div class="meta"><span class="badge b-pdf">PDF&middot;13pp</span>FPCA 1989 &middot; <a href="https://doi.org/10.1145/99370.99404">DOI</a> &middot; <a href="https://people.mpi-sws.org/~dreyer/tor/papers/wadler.pdf">PDF</a></div>
+    <div class="why-here">Turns Reynolds's parametricity into a cookbook: a function's <em>type alone</em> implies theorems about it. The payoff of the previous paper, in one sitting.</div>
+  </li>
+</ol>
+
+<h2>Data abstraction and existential types</h2>
+<p class="grouphdr">The mirror image of universal quantification: hiding a type is exactly quantifying over it existentially — this is what modules and abstract data types mean.</p>
+<ol class="papers" start="9" style="counter-reset:item 8;">
+  <li>
+    <span class="title">On Understanding Types, Data Abstraction, and Polymorphism</span> &mdash; Luca Cardelli, Peter Wegner
+    <div class="meta"><span class="badge b-pdf">PDF&middot;42pp</span>ACM Comput. Surv. 1985 &middot; <a href="https://doi.org/10.1145/6041.6042">DOI</a> &middot; <a href="http://lucacardelli.name/Papers/OnUnderstanding.A4.pdf">PDF</a></div>
+    <div class="why-here">The synthesis that organizes the whole field — universal vs. existential quantification, subtyping, and bounded quantification, all in the Fun calculus. The map for everything below.</div>
+  </li>
+  <li>
+    <span class="title">Abstract Types Have Existential Type</span> &mdash; John C. Mitchell, Gordon Plotkin
+    <div class="meta"><span class="badge b-pdf">PDF&middot;33pp</span>ACM TOPLAS 1988 &middot; <a href="https://doi.org/10.1145/44501.45065">DOI</a> &middot; <a href="https://theory.stanford.edu/~jcm/papers/mitch-plotkin-88.pdf">PDF</a></div>
+    <div class="why-here">The precise result: an abstract data type is an existential type, `pack`/`open` its introduction and elimination — the type-theoretic foundation of modules.</div>
+  </li>
+</ol>
+
+<h2>Ad-hoc polymorphism done principledly</h2>
+<p class="grouphdr">The other polymorphism: resolving an operation by the type it is used at, and how Haskell turned unruly overloading into something with a semantics.</p>
+<ol class="papers" start="11" style="counter-reset:item 10;">
+  <li>
+    <span class="title">How to Make ad-hoc Polymorphism Less ad hoc</span> &mdash; Philip Wadler, Stephen Blott
+    <div class="meta"><span class="badge b-pdf">PDF&middot;17pp</span>POPL 1989 &middot; <a href="https://doi.org/10.1145/75277.75283">DOI</a> &middot; <a href="https://people.csail.mit.edu/dnj/teaching/6898/papers/wadler88.pdf">PDF</a></div>
+    <div class="why-here">Introduces <em>type classes</em> and the dictionary-passing translation — overloading with a principled type system and a compilation story.</div>
+  </li>
+  <li>
+    <span class="title">A System of Constructor Classes</span> &mdash; Mark P. Jones
+    <div class="meta"><span class="badge b-pdf">PDF&middot;10pp</span>FPCA 1993 &middot; <a href="https://doi.org/10.1145/165180.165190">DOI</a> &middot; <a href="https://web.cecs.pdx.edu/~mpj/pubs/fpca93.pdf">PDF</a></div>
+    <div class="why-here">Lifts type classes to type constructors, giving `Functor` and `Monad` their types — the step that made the class system genuinely higher-order.</div>
+  </li>
+</ol>
+
+<h2>Subtyping and bounded quantification</h2>
+<p class="grouphdr">Types related by inclusion, driven by object-oriented needs — and where the theory runs into its decidability limits.</p>
+<ol class="papers" start="13" style="counter-reset:item 12;">
+  <li>
+    <span class="title">F-Bounded Polymorphism for Object-Oriented Programming</span> &mdash; Canning, Cook, Hill, Olthoff, Mitchell
+    <div class="meta"><span class="badge b-pdf">PDF&middot;8pp</span>FPCA 1989 &middot; <a href="https://doi.org/10.1145/99370.99392">DOI</a> &middot; <a href="https://www.cs.utexas.edu/~wcook/papers/FBound89/CookFBound89.pdf">PDF</a></div>
+    <div class="why-here">Bounds a type variable by a type that mentions the variable itself — the pattern behind recursive generic interfaces (Java's `&lt;T extends Comparable&lt;T&gt;&gt;`).</div>
+  </li>
+  <li>
+    <span class="title">An Extension of System F with Subtyping (F-sub)</span> &mdash; Cardelli, Martini, Mitchell, Scedrov
+    <div class="meta"><span class="badge b-pdf">PDF&middot;44pp</span>Inf. Comput. 1994 &middot; <a href="https://doi.org/10.1006/inco.1994.1013">DOI</a> &middot; <a href="http://lucacardelli.name/Papers/FSub.A4.pdf">PDF</a></div>
+    <div class="why-here">The canonical calculus combining parametric polymorphism with subtyping, plus its equational theory — the workhorse model for typed object-oriented languages.</div>
+  </li>
+  <li>
+    <span class="title">Bounded Quantification is Undecidable</span> &mdash; Benjamin C. Pierce
+    <div class="meta"><span class="badge b-web">DOI&middot;35pp</span>Inf. Comput. 1994 &middot; <a href="https://doi.org/10.1145/143165.143228">DOI</a></div>
+    <div class="why-here">The sharp negative result: subtype checking in full F-sub is undecidable, which is <em>why</em> real languages restrict it. A DOI only — no legal open copy.</div>
+  </li>
+</ol>
+
+<h2>Dependent types and the Curry-Howard correspondence</h2>
+<p class="grouphdr">Push types to their logical limit: propositions as types, proofs as programs — the road to Coq, Agda, and modern proof assistants.</p>
+<ol class="papers" start="16" style="counter-reset:item 15;">
+  <li>
+    <span class="title">The Formulae-as-Types Notion of Construction</span> &mdash; William A. Howard
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>1980 (circulated 1969) &middot; <a href="https://www.cs.cmu.edu/~crary/819-f09/Howard80.pdf">PDF</a></div>
+    <div class="why-here">The Curry-Howard correspondence written down: propositions are types, proofs are terms, proof normalization is evaluation.</div>
+  </li>
+  <li>
+    <span class="title">Intuitionistic Type Theory</span> &mdash; Per Martin-Löf
+    <div class="meta"><span class="badge b-pdf">PDF&middot;57pp</span>Bibliopolis 1984 (Padua lectures) &middot; <a href="https://raw.githubusercontent.com/michaelt/martin-lof/master/pdfs/Bibliopolis-Book-retypeset-1984.pdf">PDF</a></div>
+    <div class="why-here">The type theory where types may depend on values, with dependent products and sums — the foundation Agda, Coq, and Lean all descend from.</div>
+  </li>
+  <li>
+    <span class="title">The Calculus of Constructions</span> &mdash; Thierry Coquand, Gérard Huet
+    <div class="meta"><span class="badge b-web">DOI&middot;26pp</span>Inf. Comput. 1988 &middot; <a href="https://doi.org/10.1016/0890-5401(88)90005-3">DOI</a></div>
+    <div class="why-here">Unifies polymorphism and dependent types in one calculus at the top of the lambda cube — the theory Coq is built on. Paywalled, so a DOI only.</div>
+  </li>
+</ol>
+
+<h2>Practical inference beyond ML: higher-rank, local, bidirectional</h2>
+<p class="grouphdr">How real compilers keep inference usable once first-class polymorphism, subtyping, and GADTs break Hindley-Milner's completeness.</p>
+<ol class="papers" start="19" style="counter-reset:item 18;">
+  <li>
+    <span class="title">Putting Type Annotations to Work</span> &mdash; Martin Odersky, Konstantin Läufer
+    <div class="meta"><span class="badge b-pdf">PDF&middot;14pp</span>POPL 1996 &middot; <a href="https://doi.org/10.1145/237721.237729">DOI</a> &middot; <a href="https://publikationen.bibliothek.kit.edu/44298/776748">PDF</a></div>
+    <div class="why-here">Extends Hindley-Milner with explicit higher-rank annotations, so polymorphic arguments can be typed where full inference is impossible — the algorithm GHC still uses.</div>
+  </li>
+  <li>
+    <span class="title">Local Type Inference</span> &mdash; Benjamin C. Pierce, David N. Turner
+    <div class="meta"><span class="badge b-pdf">PDF&middot;44pp</span>ACM TOPLAS 2000 &middot; <a href="https://doi.org/10.1145/345099.345100">DOI</a> &middot; <a href="https://www.cis.upenn.edu/~bcpierce/papers/lti-toplas.pdf">PDF</a></div>
+    <div class="why-here">Inference that flows types only between adjacent nodes, for languages with subtyping and explicit polymorphism where global inference is undecidable.</div>
+  </li>
+  <li>
+    <span class="title">Practical Type Inference for Arbitrary-Rank Types</span> &mdash; Peyton Jones, Vytiniotis, Weirich, Shields
+    <div class="meta"><span class="badge b-pdf">PDF&middot;82pp</span>JFP 2007 &middot; <a href="https://doi.org/10.1017/S0956796806006034">DOI</a> &middot; <a href="https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/putting.pdf">PDF</a></div>
+    <div class="why-here">The thorough, implementation-oriented account of higher-rank inference — bidirectional propagation and subsumption — worked out for a real compiler.</div>
+  </li>
+  <li>
+    <span class="title">Complete and Easy Bidirectional Typechecking for Higher-Rank Polymorphism</span> &mdash; Jana Dunfield, Neelakantan Krishnaswami
+    <div class="meta"><span class="badge b-pdf">PDF&middot;14pp</span>ICFP 2013 &middot; <a href="https://doi.org/10.1145/2500365.2500582">DOI</a> &middot; <a href="https://arxiv.org/pdf/1306.6032">PDF</a></div>
+    <div class="why-here">The clean, teachable bidirectional algorithm — sound, complete, decidable — that most modern implementations start from. The PDF is the extended version with full proofs.</div>
+  </li>
+  <li>
+    <span class="title">OutsideIn(X): Modular Type Inference with Local Assumptions</span> &mdash; Vytiniotis, Peyton Jones, Schrijvers, Sulzmann
+    <div class="meta"><span class="badge b-pdf">PDF&middot;80pp</span>JFP 2011 &middot; <a href="https://doi.org/10.1017/S0956796811000098">DOI</a> &middot; <a href="https://simon.peytonjones.org/assets/pdfs/outsideinx.pdf">PDF</a></div>
+    <div class="why-here">GHC's inference engine for GADTs and type families: how to stay principled when local equality assumptions make naive generalization unsound.</div>
+  </li>
+</ol>
+
+<div class="why">
+<b>One idea, three faces.</b> Universal quantification (<em>∀</em>) is parametric
+polymorphism — a term that works uniformly at every type (System F, ML generics).
+Existential quantification (<em>∃</em>) is data abstraction — a package that hides which
+type it uses (modules, ADTs). Bounded quantification (<em>∀ X &lt;: T</em>) marries
+polymorphism to subtyping — a term uniform over every <em>subtype</em> of a bound. The
+same quantifier machinery, read three ways, organizes almost everything on this list;
+the practical-inference section is the long tail of making it decidable in a compiler.
+</div>
+
+<h2>Reference shelf &mdash; books</h2>
+<p class="grouphdr">The standard texts for the area; free copies linked where a legal one exists.</p>
+<ul class="refs">
+  <li><span class="badge b-buy">BUY&middot;623pp</span><b>Types and Programming Languages</b> &mdash; Benjamin C. Pierce (2002) &middot; The standard graduate text; the single book that ties inference, System F, subtyping, and existentials together. <a href="https://www.cis.upenn.edu/~bcpierce/tapl/">page</a></li>
+  <li><span class="badge b-buy">BUY&middot;574pp</span><b>Advanced Topics in Types and Programming Languages</b> &mdash; Benjamin C. Pierce (ed.) (2005) &middot; The follow-on volume — dependent types, F-sub metatheory, type inference — one chapter per topic. <a href="https://www.cis.upenn.edu/~bcpierce/attapl/">page</a></li>
+  <li><span class="badge b-book">BOOK&middot;512pp</span><b>Practical Foundations for Programming Languages</b> &mdash; Robert Harper (2016) &middot; A modern, uniform treatment built on judgments and rules; the second edition's draft is free from the author's page. <a href="https://www.cs.cmu.edu/~rwh/pfpl.html">page</a></li>
+  <li><span class="badge b-book">BOOK</span><b>Software Foundations (Vol. 2: Programming Language Foundations)</b> &mdash; Pierce et al. &middot; Type systems and their soundness proofs, mechanized in Coq — the hands-on complement to the papers above. <a href="https://softwarefoundations.cis.upenn.edu/">book</a></li>
+</ul>
+
+<h2>Key terms</h2>
+<p class="grouphdr">Vocabulary used across this list.</p>
+<div class="notekey"><b>principal type</b> &mdash; the single most-general type of a term, of which all its other types are instances &nbsp; <b>let-polymorphism</b> &mdash; Hindley-Milner's rule that generalizes a type only at `let` bindings, keeping inference decidable &nbsp; <b>parametric polymorphism</b> &mdash; one definition that behaves uniformly across all types (System F, ML generics) &nbsp; <b>ad-hoc polymorphism</b> &mdash; one name, different implementations chosen by type (overloading, type classes) &nbsp; <b>subtype polymorphism</b> &mdash; using a value of one type wherever a supertype is expected &nbsp; <b>System F</b> &mdash; the second-order lambda calculus: types may quantify universally over types (`∀X. …`) &nbsp; <b>universal type</b> &mdash; `∀X. T`, a value usable at every instantiation of `X`; the type of a parametric term &nbsp; <b>existential type</b> &mdash; `∃X. T`, a package that hides a concrete type; the type of an abstract data type or module &nbsp; <b>bounded quantification</b> &mdash; quantifying over all subtypes of a bound (`∀ X &lt;: T. …`) &nbsp; <b>F-bounded polymorphism</b> &mdash; a bound that mentions the quantified variable itself (`X &lt;: F[X]`) &nbsp; <b>parametricity</b> &mdash; the theorem that a parametric term respects relations across types, yielding "free theorems." &nbsp; <b>Curry-Howard correspondence</b> &mdash; propositions are types, proofs are programs, proof normalization is evaluation &nbsp; <b>dependent type</b> &mdash; a type that may mention (depend on) a value, e.g. `Vector n` &nbsp; <b>higher-rank type</b> &mdash; a type with `∀` to the left of an arrow, so a function may take a polymorphic argument &nbsp; <b>bidirectional typing</b> &mdash; splitting the checker into a <em>checking</em> mode (type given) and a <em>synthesis</em> mode (type inferred), so annotations are needed only where inference can't decide &nbsp; <b>predicative / impredicative</b> &mdash; whether a quantified variable may be instantiated with a type that itself contains quantifiers; impredicative instantiation makes full inference undecidable &nbsp; <b>dictionary-passing</b> &mdash; compiling type classes by passing a record of the overloaded operations as a hidden argument</div>
 
 </body>
 </html>

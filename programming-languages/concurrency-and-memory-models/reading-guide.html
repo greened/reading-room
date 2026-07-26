@@ -8,55 +8,208 @@
 <body>
 
 <h1>Programming languages · Concurrency &amp; memory models</h1>
-<p class="tally">In-depth landmark list for this subtopic. <span class="badge b-pdf">PDF</span>open copy available &middot; <span class="badge b-web">DOI</span>publisher link only.</p>
+<p class="sub">Concurrency asks two different questions, and this list follows both. First, how do we <em>describe</em> interacting processes at all — the message-passing tradition from CSP through the pi-calculus and actors. Second, once threads share memory, what does a read actually <em>return</em> — the consistency and memory-model tradition from sequential consistency through the Java and C++ models to relaxed atomics. The path starts with the one primitive both need, a partial order of events, then walks the message-passing calculi, tackles the classic mutual-exclusion problem with nothing but reads and writes, pivots to shared-memory correctness and the nonblocking data structures built on it, lifts the model into real languages, descends to what actual hardware does, and closes with transactional memory as an alternative discipline.</p>
+<p class="tally">27 papers &middot; &asymp; <b>564 pp</b> of primary reading. &nbsp; Legend: <span class="badge b-pdf">PDF</span>open copy (see <span class="file">fetch.sh</span>) &middot; <span class="badge b-web">DOI</span>publisher link only</p>
+<div class="why"><b>Two questions, one reading path.</b> Read top to bottom: process calculi first (how to model communication), then the mutual-exclusion algorithms and shared-memory consistency (what memory guarantees), then the language and hardware models that make those guarantees real. The two halves meet at <em>data-race-freedom</em> — the contract in paper 13 that both the Java and C++ models are built on.</div>
 
-<ol class="papers">
+<h2>Ordering — the one primitive everything needs</h2>
+<p class="grouphdr">Concurrency has no global clock; every model below rests on a partial order of events.</p>
+<ol class="papers" start="1">
   <li>
-    <span class="title">A Calculus of Mobile Processes, I</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1016/0890-5401(92">DOI</a> &middot; <a href="https://www.cis.upenn.edu/~stevez/cis670/pdfs/pi-calculus.pdf">PDF</a></div>
-    <div class="why-here">Milner, Parrow, Walker, 1992, Information and Computation. The pi-calculus. 90008-4)</div>
-  </li>
-  <li>
-    <span class="title">The Java Memory Model</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/1040305.1040336">DOI</a> &middot; <a href="http://rsim.cs.uiuc.edu/Pubs/popl05.pdf">PDF</a></div>
-    <div class="why-here">Manson, Pugh, Adve, 2005, POPL. The first rigorous language-level memory model (data-race-freedom, happens-before).</div>
-  </li>
-  <li>
-    <span class="title">Mathematizing C++ Concurrency</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/1926385.1926394">DOI</a> &middot; <a href="https://www.cl.cam.ac.uk/~pes20/cpp/popl085ap-sewell.pdf">PDF</a></div>
-    <div class="why-here">Batty, Owens, Sarkar, Sewell, Weber, 2011, POPL. Formalizes the C11/C++11 relaxed-atomics model.</div>
-  </li>
-  <li>
-    <span class="title">Communicating Sequential Processes (CSP)</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/359576.359585">DOI</a></div>
-    <div class="why-here">C. A. R. Hoare, 1978, CACM. Foundational message-passing concurrency.</div>
-  </li>
-  <li>
-    <span class="title">A Calculus of Communicating Systems (CCS)</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1007/3-540-10235-3">DOI</a></div>
-    <div class="why-here">Robin Milner, 1980, LNCS 92. Algebraic, compositional theory of concurrent processes.</div>
-  </li>
-  <li>
-    <span class="title">Time, Clocks, and the Ordering of Events in a Distributed System</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/359545.359563">DOI</a> &middot; <a href="https://lamport.azurewebsites.net/pubs/time-clocks.pdf">PDF</a></div>
-    <div class="why-here">Leslie Lamport, 1978, CACM. Happens-before and logical clocks.</div>
-  </li>
-  <li>
-    <span class="title">Threads Cannot Be Implemented as a Library</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/1065010.1065042">DOI</a></div>
-    <div class="why-here">Hans-J. Boehm, 2005, PLDI. Why threading needs first-class language/memory-model support.</div>
-  </li>
-  <li>
-    <span class="title">x86-TSO: A Rigorous and Usable Programmer's Model for x86 Multiprocessors</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/1785414.1785443">DOI</a> &middot; <a href="https://www.cl.cam.ac.uk/~pes20/weakmemory/cacm.pdf">PDF</a></div>
-    <div class="why-here">Sewell, Sarkar, Owens, Zappa Nardelli, Myreen, 2010, CACM. A precise total-store-order model for real x86.</div>
-  </li>
-  <li>
-    <span class="title">A Promising Semantics for Relaxed-Memory Concurrency</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/3009837.3009850">DOI</a> &middot; <a href="https://people.mpi-sws.org/~dreyer/papers/promising/paper.pdf">PDF</a></div>
-    <div class="why-here">Kang, Hur, Lahav, Vafeiadis, Dreyer, 2017, POPL. Resolves out-of-thin-air for relaxed atomics.</div>
+    <span class="title">Time, Clocks, and the Ordering of Events in a Distributed System</span> &mdash; Leslie Lamport
+    <div class="meta"><span class="badge b-pdf">PDF&middot;8pp</span>CACM 1978 &middot; <a href="https://doi.org/10.1145/359545.359563">DOI</a> &middot; <a href="https://lamport.azurewebsites.net/pubs/time-clocks.pdf">PDF</a></div>
+    <div class="why-here">Defines happens-before and logical clocks — the partial order of events that every model of concurrency below quietly assumes.</div>
   </li>
 </ol>
+
+<h2>Message-passing models — concurrency without shared memory</h2>
+<p class="grouphdr">The algebraic tradition: describe processes by how they communicate, then reason equationally.</p>
+<ol class="papers" start="2" style="counter-reset:item 1;">
+  <li>
+    <span class="title">Communicating Sequential Processes (CSP)</span> &mdash; C. A. R. Hoare
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>CACM 1978 &middot; <a href="https://doi.org/10.1145/359576.359585">DOI</a> &middot; <a href="https://www.cs.cmu.edu/~crary/819-f09/Hoare78.pdf">PDF</a></div>
+    <div class="why-here">The founding paper of message-passing concurrency: processes that interact only by synchronized communication, with no shared store.</div>
+  </li>
+  <li>
+    <span class="title">A Calculus of Communicating Systems (CCS)</span> &mdash; Robin Milner
+    <div class="meta"><span class="badge b-web">DOI&middot;171pp</span>LNCS 92, 1980 &middot; <a href="https://doi.org/10.1007/3-540-10235-3">DOI</a></div>
+    <div class="why-here">An algebraic, compositional theory of concurrent processes, with bisimulation as the notion of process equivalence.</div>
+  </li>
+  <li>
+    <span class="title">A Calculus of Mobile Processes, Part I (the pi-calculus)</span> &mdash; Milner, Parrow, Walker
+    <div class="meta"><span class="badge b-pdf">PDF&middot;40pp</span>Information and Computation 1992 &middot; <a href="https://doi.org/10.1016/0890-5401(92)90008-4">DOI</a> &middot; <a href="https://www.cis.upenn.edu/~stevez/cis670/pdfs/pi-calculus.pdf">PDF</a></div>
+    <div class="why-here">Extends CCS so channels themselves can be sent as messages — concurrency with a communication topology that changes as the program runs.</div>
+  </li>
+  <li>
+    <span class="title">A Universal Modular ACTOR Formalism for Artificial Intelligence</span> &mdash; Hewitt, Bishop, Steiger
+    <div class="meta"><span class="badge b-pdf">PDF&middot;11pp</span>IJCAI 1973 &middot; <a href="https://www.ijcai.org/Proceedings/73/Papers/027B.pdf">PDF</a></div>
+    <div class="why-here">The actor model: independent agents that communicate only by asynchronous messages — the lineage behind Erlang and Akka.</div>
+  </li>
+  <li>
+    <span class="title">Language Primitives and Type Discipline for Structured Communication-Based Programming</span> &mdash; Honda, Vasconcelos, Kubo
+    <div class="meta"><span class="badge b-web">DOI&middot;17pp</span>ESOP 1998 &middot; <a href="https://doi.org/10.1007/BFb0053567">DOI</a></div>
+    <div class="why-here">Introduces session types — types that describe a whole protocol on a channel, so the type checker rules out mismatched message exchanges.</div>
+  </li>
+</ol>
+
+<h2>Mutual exclusion — the first shared-memory problem</h2>
+<p class="grouphdr">Before asking what a memory model guarantees, solve the canonical coordination problem with nothing but shared reads and writes.</p>
+<ol class="papers" start="7" style="counter-reset:item 6;">
+  <li>
+    <span class="title">Solution of a Problem in Concurrent Programming Control</span> &mdash; Edsger W. Dijkstra
+    <div class="meta"><span class="badge b-pdf">PDF&middot;1pp</span>CACM 1965 &middot; <a href="https://doi.org/10.1145/365559.365617">DOI</a> &middot; <a href="https://harrymoreno.com/assets/greatPapersInCompSci/5.2_-_Solution_to_a_problem_in_concurrent_process_control-Edsger_W._Dijkstra.pdf">PDF</a></div>
+    <div class="why-here">States the <em>n</em>-process mutual-exclusion problem and gives the first correct software solution (Dekker's, generalized) — the starting point for everything about locks.</div>
+  </li>
+  <li>
+    <span class="title">A New Solution of Dijkstra's Concurrent Programming Problem (the Bakery Algorithm)</span> &mdash; Leslie Lamport
+    <div class="meta"><span class="badge b-pdf">PDF&middot;3pp</span>CACM 1974 &middot; <a href="https://doi.org/10.1145/361082.361093">DOI</a> &middot; <a href="https://lamport.azurewebsites.net/pubs/bakery.pdf">PDF</a></div>
+    <div class="why-here">Mutual exclusion using only single-writer reads and writes, with no atomic read-modify-write — and robust to a process failing mid-protocol.</div>
+  </li>
+  <li>
+    <span class="title">Myths About the Mutual Exclusion Problem</span> &mdash; Gary L. Peterson
+    <div class="meta"><span class="badge b-pdf">PDF&middot;2pp</span>Information Processing Letters 1981 &middot; <a href="https://doi.org/10.1016/0020-0190(81)90106-X">DOI</a> &middot; <a href="https://zoo.cs.yale.edu/classes/cs323/doc/Peterson.pdf">PDF</a></div>
+    <div class="why-here">The two-line two-process algorithm now taught everywhere, showing the classic solutions were far more complicated than the problem required.</div>
+  </li>
+</ol>
+
+<h2>Shared memory — what is correct, and what can you build?</h2>
+<p class="grouphdr">Now the hard case: many threads over one store. Before defining a memory model, fix what "correct" even means.</p>
+<ol class="papers" start="10" style="counter-reset:item 9;">
+  <li>
+    <span class="title">How to Make a Multiprocessor Computer That Correctly Executes Multiprocess Programs</span> &mdash; Leslie Lamport
+    <div class="meta"><span class="badge b-pdf">PDF&middot;2pp</span>IEEE ToC 1979 &middot; <a href="https://doi.org/10.1109/TC.1979.1675439">DOI</a> &middot; <a href="https://lamport.azurewebsites.net/pubs/multi.pdf">PDF</a></div>
+    <div class="why-here">Defines sequential consistency — the intuitive "as if the threads were interleaved in program order" model that every weaker model is measured against.</div>
+  </li>
+  <li>
+    <span class="title">Linearizability: A Correctness Condition for Concurrent Objects</span> &mdash; Herlihy, Wing
+    <div class="meta"><span class="badge b-pdf">PDF&middot;30pp</span>TOPLAS 1990 &middot; <a href="https://doi.org/10.1145/78969.78972">DOI</a> &middot; <a href="https://cs.brown.edu/~mph/HerlihyW90/p463-herlihy.pdf">PDF</a></div>
+    <div class="why-here">The standard correctness criterion for concurrent data structures: each operation appears to take effect atomically at some instant between its call and its return.</div>
+  </li>
+  <li>
+    <span class="title">Wait-Free Synchronization</span> &mdash; Maurice Herlihy
+    <div class="meta"><span class="badge b-pdf">PDF&middot;26pp</span>TOPLAS 1991 &middot; <a href="https://doi.org/10.1145/114005.102808">DOI</a> &middot; <a href="https://cs.brown.edu/~mph/Herlihy91/p124-herlihy.pdf">PDF</a></div>
+    <div class="why-here">The consensus hierarchy: ranks synchronization primitives by how many threads they can coordinate wait-free, explaining why compare-and-swap is universal.</div>
+  </li>
+  <li>
+    <span class="title">Weak Ordering — A New Definition</span> &mdash; Adve, Hill
+    <div class="meta"><span class="badge b-pdf">PDF&middot;13pp</span>ISCA 1990 &middot; <a href="https://doi.org/10.1145/325164.325100">DOI</a> &middot; <a href="https://people.eecs.berkeley.edu/~kubitron/courses/cs252-F03/handouts/papers/p363-adve.pdf">PDF</a></div>
+    <div class="why-here">Recasts weak memory as a contract: the hardware promises sequential consistency exactly to programs that are data-race-free — the idea every language model below adopts.</div>
+  </li>
+</ol>
+
+<h2>Building nonblocking structures — and reclaiming their memory</h2>
+<p class="grouphdr">With a correctness criterion and the wait-free hierarchy in hand, build real lock-free structures — where freeing memory becomes the hard part.</p>
+<ol class="papers" start="14" style="counter-reset:item 13;">
+  <li>
+    <span class="title">Simple, Fast, and Practical Non-Blocking and Blocking Concurrent Queue Algorithms</span> &mdash; Michael, Scott
+    <div class="meta"><span class="badge b-pdf">PDF&middot;9pp</span>PODC 1996 &middot; <a href="https://doi.org/10.1145/248052.248106">DOI</a> &middot; <a href="https://www.cs.rochester.edu/~scott/papers/1996_PODC_queues.pdf">PDF</a></div>
+    <div class="why-here">The Michael-Scott queue — the lock-free queue still shipped in standard libraries — and a clear encounter with the ABA problem that compare-and-swap invites.</div>
+  </li>
+  <li>
+    <span class="title">Hazard Pointers: Safe Memory Reclamation for Lock-Free Objects</span> &mdash; Maged M. Michael
+    <div class="meta"><span class="badge b-pdf">PDF&middot;14pp</span>IEEE TPDS 2004 &middot; <a href="https://doi.org/10.1109/TPDS.2004.8">DOI</a> &middot; <a href="https://www.eecg.utoronto.ca/~amza/ece1747h/papers/hazard_pointers.pdf">PDF</a></div>
+    <div class="why-here">Solves the central practical problem of lock-free code — when is it safe to free a node another thread may still touch — without a garbage collector, and kills ABA along the way.</div>
+  </li>
+  <li>
+    <span class="title">Read-Copy Update: Using Execution History to Solve Concurrency Problems</span> &mdash; McKenney, Slingwine
+    <div class="meta"><span class="badge b-pdf">PDF&middot;10pp</span>PDCS 1998 &middot; <a href="http://www.rdrop.com/users/paulmck/RCU/rclockpdcsproof.pdf">PDF</a></div>
+    <div class="why-here">RCU: make readers almost free by deferring reclamation until every pre-existing reader has passed a quiescent state — the synchronization workhorse of the Linux kernel.</div>
+  </li>
+</ol>
+
+<h2>Putting the memory model in the language</h2>
+<p class="grouphdr">Programmers don't target hardware directly; the model has to live in C, C++, and Java — and it has to be sound for the compiler too.</p>
+<ol class="papers" start="17" style="counter-reset:item 16;">
+  <li>
+    <span class="title">Threads Cannot Be Implemented as a Library</span> &mdash; Hans-J. Boehm
+    <div class="meta"><span class="badge b-pdf">PDF&middot;10pp</span>PLDI 2005 &middot; <a href="https://doi.org/10.1145/1065010.1065042">DOI</a> &middot; <a href="https://web.archive.org/web/2018/http://www.hpl.hp.com/techreports/2004/HPL-2004-209.pdf">PDF</a></div>
+    <div class="why-here">Shows a thread library alone cannot give correct semantics — the compiler and language must know about concurrency — the argument that forced memory models into C and C++.</div>
+  </li>
+  <li>
+    <span class="title">Foundations of the C++ Concurrency Memory Model</span> &mdash; Boehm, Adve
+    <div class="meta"><span class="badge b-pdf">PDF&middot;11pp</span>PLDI 2008 &middot; <a href="https://doi.org/10.1145/1375581.1375591">DOI</a> &middot; <a href="https://rsim.cs.illinois.edu/Pubs/08PLDI.pdf">PDF</a></div>
+    <div class="why-here">The data-race-free foundation of the C++11/C11 model that standardized atomics and fences for mainstream systems languages.</div>
+  </li>
+  <li>
+    <span class="title">The Java Memory Model</span> &mdash; Manson, Pugh, Adve
+    <div class="meta"><span class="badge b-pdf">PDF&middot;14pp</span>POPL 2005 &middot; <a href="https://doi.org/10.1145/1040305.1040336">DOI</a> &middot; <a href="http://rsim.cs.uiuc.edu/Pubs/popl05.pdf">PDF</a></div>
+    <div class="why-here">The first rigorous language-level memory model, built on happens-before and data-race-freedom — and the source of the notorious out-of-thin-air problem.</div>
+  </li>
+  <li>
+    <span class="title">Mathematizing C++ Concurrency</span> &mdash; Batty, Owens, Sarkar, Sewell, Weber
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>POPL 2011 &middot; <a href="https://doi.org/10.1145/1926385.1926394">DOI</a> &middot; <a href="https://www.cl.cam.ac.uk/~pes20/cpp/popl085ap-sewell.pdf">PDF</a></div>
+    <div class="why-here">A fully formal, mechanized semantics for the C11/C++11 relaxed-atomics model, exposing defects in the standard's prose.</div>
+  </li>
+  <li>
+    <span class="title">Common Compiler Optimisations Are Invalid in the C11 Memory Model, and What We Can Do About It</span> &mdash; Vafeiadis, Balabonski, Chakraborty, Morisset, Zappa Nardelli
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>POPL 2015 &middot; <a href="https://doi.org/10.1145/2676726.2676995">DOI</a> &middot; <a href="https://plv.mpi-sws.org/c11comp/popl15.pdf">PDF</a></div>
+    <div class="why-here">Shows textbook optimizations are unsound under C11 as written — the compiler-facing half of the out-of-thin-air problem, with concrete fixes.</div>
+  </li>
+</ol>
+
+<h2>Real hardware and the hard cases</h2>
+<p class="grouphdr">Actual machines are weaker than sequential consistency; the weakest need their own models, and relaxed atomics still resist a clean semantics.</p>
+<ol class="papers" start="22" style="counter-reset:item 21;">
+  <li>
+    <span class="title">x86-TSO: A Rigorous and Usable Programmer's Model for x86 Multiprocessors</span> &mdash; Sewell, Sarkar, Owens, Zappa Nardelli, Myreen
+    <div class="meta"><span class="badge b-pdf">PDF&middot;9pp</span>CACM 2010 &middot; <a href="https://doi.org/10.1145/1785414.1785443">DOI</a> &middot; <a href="https://www.cl.cam.ac.uk/~pes20/weakmemory/cacm.pdf">PDF</a></div>
+    <div class="why-here">A precise, tractable total-store-order model for real x86 hardware — what "relaxed" actually means on the machine most code runs on.</div>
+  </li>
+  <li>
+    <span class="title">Understanding POWER Multiprocessors</span> &mdash; Sarkar, Sewell, Alglave, Maranget, Williams
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>PLDI 2011 &middot; <a href="https://doi.org/10.1145/1993498.1993520">DOI</a> &middot; <a href="https://www.cl.cam.ac.uk/~pes20/ppc-supplemental/pldi105-sarkar.pdf">PDF</a></div>
+    <div class="why-here">An operational model for the very weak memory of POWER (and, by extension, ARM) — the counterpart to x86-TSO for the machines that reorder the most.</div>
+  </li>
+  <li>
+    <span class="title">Herding Cats: Modelling, Simulation, Testing, and Data Mining for Weak Memory</span> &mdash; Alglave, Maranget, Tautschnig
+    <div class="meta"><span class="badge b-pdf">PDF&middot;74pp</span>TOPLAS 2014 &middot; <a href="https://doi.org/10.1145/2627752">DOI</a> &middot; <a href="http://www0.cs.ucl.ac.uk/staff/j.alglave/papers/toplas14.pdf">PDF</a></div>
+    <div class="why-here">A general axiomatic framework (the `cat` language and `herd` tool) that captures x86, POWER, and ARM uniformly and tests them against real silicon.</div>
+  </li>
+  <li>
+    <span class="title">A Promising Semantics for Relaxed-Memory Concurrency</span> &mdash; Kang, Hur, Lahav, Vafeiadis, Dreyer
+    <div class="meta"><span class="badge b-pdf">PDF&middot;19pp</span>POPL 2017 &middot; <a href="https://doi.org/10.1145/3009837.3009850">DOI</a> &middot; <a href="https://people.mpi-sws.org/~dreyer/papers/promising/paper.pdf">PDF</a></div>
+    <div class="why-here">Solves the long-standing out-of-thin-air problem for relaxed atomics with a semantics of "promised" future writes.</div>
+  </li>
+</ol>
+
+<h2>A different discipline — transactional memory</h2>
+<p class="grouphdr">Instead of locks and fences, make groups of accesses atomic and let the runtime referee.</p>
+<ol class="papers" start="26" style="counter-reset:item 25;">
+  <li>
+    <span class="title">Transactional Memory: Architectural Support for Lock-Free Data Structures</span> &mdash; Herlihy, Moss
+    <div class="meta"><span class="badge b-pdf">PDF&middot;12pp</span>ISCA 1993 &middot; <a href="https://doi.org/10.1145/165123.165164">DOI</a> &middot; <a href="https://cs.brown.edu/~mph/HerlihyM93/herlihy93transactional.pdf">PDF</a></div>
+    <div class="why-here">Proposes hardware transactions as an alternative to locks: commit a group of memory accesses atomically, or abort and retry.</div>
+  </li>
+  <li>
+    <span class="title">Software Transactional Memory</span> &mdash; Shavit, Touitou
+    <div class="meta"><span class="badge b-pdf">PDF&middot;10pp</span>PODC 1995 &middot; <a href="https://doi.org/10.1145/224964.224987">DOI</a> &middot; <a href="https://groups.csail.mit.edu/tds/papers/Shavit/ShavitTouitou-podc95.pdf">PDF</a></div>
+    <div class="why-here">Realizes transactional memory purely in software, launching the STM line of research.</div>
+  </li>
+</ol>
+
+<div class="why">
+<b>Two traditions, one goal.</b> The <em>message-passing</em> calculi (CSP, CCS, pi,
+actors, session types) avoid shared state entirely and reason about processes by how they
+communicate. The <em>shared-memory</em> line — from the mutual-exclusion algorithms and
+sequential consistency, through linearizability and the nonblocking structures built on
+it, up to the Java and C++ models, x86-TSO, the POWER/ARM models, and the promising
+semantics — confronts the store head-on and asks what a read may return. They converge on
+one contract, <em>data-race-freedom</em>, which lets weak hardware present a strong,
+sequentially consistent face to well-behaved programs.
+</div>
+
+<h2>Reference shelf &mdash; books</h2>
+<p class="grouphdr">The standard texts for the area; free copies linked where a legal one exists.</p>
+<ul class="refs">
+  <li><span class="badge b-book">BOOK&middot;260pp</span><b>Communicating Sequential Processes</b> &mdash; C. A. R. Hoare (1985) &middot; Hoare's own book-length development of CSP, kept free online. <a href="https://web.archive.org/web/2019/http://www.usingcsp.com/cspbook.pdf">PDF</a></li>
+  <li><span class="badge b-book">BOOK&middot;662pp</span><b>Is Parallel Programming Hard, And, If So, What Can You Do About It?</b> &mdash; Paul E. McKenney (2023) &middot; The practitioner's companion — RCU, memory barriers, and lock-free technique from the person who put RCU in the kernel. <a href="https://kernel.org/pub/linux/kernel/people/paulmck/perfbook/perfbook.2023.06.11a.pdf">PDF</a></li>
+  <li><span class="badge b-buy">BUY&middot;536pp</span><b>The Art of Multiprocessor Programming</b> &mdash; Herlihy, Shavit (Rev. ed. 2012) &middot; The standard text — linearizability, the wait-free hierarchy, and transactional memory in one place. <a href="https://www.amazon.com/dp/0124159508">page</a></li>
+  <li><span class="badge b-buy">BUY&middot;294pp</span><b>A Primer on Memory Consistency and Cache Coherence</b> &mdash; Nagarajan, Sorin, Hill, Wood (2nd ed. 2020) &middot; The bridge from language memory models down to what caches and hardware actually do. <a href="https://link.springer.com/book/10.1007/978-3-031-01764-3">page</a></li>
+</ul>
+
+<h2>Key terms</h2>
+<p class="grouphdr">Vocabulary used across this list.</p>
+<div class="notekey"><b>happens-before</b> &mdash; a partial order on events; if it does not order two accesses, they may be observed in either order &nbsp; <b>mutual exclusion</b> &mdash; the guarantee that at most one process is in its critical section at a time &nbsp; <b>sequential consistency (SC)</b> &mdash; the model where the program behaves as <em>some</em> interleaving of each thread's operations, each in program order &nbsp; <b>linearizability</b> &mdash; each concurrent operation appears to take effect atomically at a single point between its call and its return &nbsp; <b>data-race-free (DRF)</b> &mdash; a program with no two conflicting accesses left unordered by synchronization; on a weak model such programs still get SC &nbsp; <b>wait-free / lock-free</b> &mdash; progress guarantees: every thread finishes in a bounded number of steps (wait-free) / some thread always makes progress (lock-free) &nbsp; <b>compare-and-swap (CAS)</b> &mdash; an atomic read-modify-write that updates a location only if it still holds an expected value; the universal primitive of the wait-free hierarchy &nbsp; <b>ABA problem</b> &mdash; a CAS succeeds because a value returned to its old bit pattern, hiding an intervening change; the hazard nonblocking reclamation schemes exist to prevent &nbsp; <b>hazard pointer</b> &mdash; a per-thread published pointer marking a node still in use, so reclamation knows it must not free it yet &nbsp; <b>RCU (read-copy-update)</b> &mdash; near-free reads plus deferred reclamation: free a node only after every reader active when it was unlinked has finished &nbsp; <b>memory fence / barrier</b> &mdash; an instruction that constrains how memory operations may be reordered around it &nbsp; <b>relaxed atomic</b> &mdash; an atomic access that permits reordering, trading ordering guarantees for speed &nbsp; <b>out-of-thin-air</b> &mdash; a pathological relaxed-atomics outcome where a value appears with no write justifying it; the defect the promising semantics repairs &nbsp; <b>TSO (total store order)</b> &mdash; the x86 model: stores are buffered and may be reordered after later loads, but all cores agree on the order of stores &nbsp; <b>bisimulation</b> &mdash; the equivalence used in CCS and the pi-calculus: two processes that can match each other's moves step for step</div>
 
 </body>
 </html>

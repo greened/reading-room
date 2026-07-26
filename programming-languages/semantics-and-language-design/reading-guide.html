@@ -8,60 +8,188 @@
 <body>
 
 <h1>Programming languages · Semantics &amp; language design</h1>
-<p class="tally">In-depth landmark list for this subtopic. <span class="badge b-pdf">PDF</span>open copy available &middot; <span class="badge b-web">DOI</span>publisher link only.</p>
+<p class="sub">What does a program <em>mean</em>? This guide follows the answers historically and pedagogically: first a minimal model of computation and the earliest languages built on it, then the three classical ways to pin meaning down — <b>operational</b> (how a program runs), <b>denotational</b> (what it maps to mathematically), and <b>axiomatic</b> (what you can prove about it) — then the ideas that language design grew from that core: <b>type structure and polymorphism</b>, the <b>syntactic/reduction</b> methods that dominate modern PL theory, <b>monads</b> for structuring effects, and finally <b>abstract interpretation</b>, semantics reused as sound approximation. Read the sections in order; within each, read top to bottom.</p>
+<p class="tally">25 papers &middot; &asymp; <b>758 pp</b> of primary reading. &nbsp; Legend: <span class="badge b-pdf">PDF</span>open copy (see <span class="file">fetch.sh</span>) &middot; <span class="badge b-web">DOI</span>publisher link only</p>
+<div class="why"><b>How to read this list.</b> You do not need all of it to start. Read Church and McCarthy for the roots, one paper from each of the three semantics styles (Plotkin, Scott–Strachey, Hoare), then jump to whichever line you care about — types, reduction semantics, or monads. The older denotational papers are the heaviest going; the operational and syntactic papers are the most directly useful if you build languages or compilers today.</div>
 
-<ol class="papers">
+<h2>Foundations — computation, and the first languages</h2>
+<p class="grouphdr">Start at the roots: a minimal model of computation, and the languages that first took meaning seriously.</p>
+<ol class="papers" start="1">
   <li>
-    <span class="title">The Next 700 Programming Languages</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/365230.365257">DOI</a> &middot; <a href="https://www.cs.cmu.edu/~crary/819-f09/Landin66.pdf">PDF</a></div>
-    <div class="why-here">P. J. Landin, 1966, CACM. Frames the whole family of languages around a small applicative core (ISWIM).</div>
+    <span class="title">An Unsolvable Problem of Elementary Number Theory</span> &mdash; Alonzo Church
+    <div class="meta"><span class="badge b-pdf">PDF&middot;19pp</span>American J. of Mathematics 1936 &middot; <a href="https://doi.org/10.2307/2371045">DOI</a> &middot; <a href="https://www.ics.uci.edu/~lopes/teaching/inf212W12/readings/church.pdf">PDF</a></div>
+    <div class="why-here">Introduces the λ-calculus — the substitution-and-application model that every functional language and most semantics rest on.</div>
   </li>
   <li>
-    <span class="title">An Axiomatic Basis for Computer Programming</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/363235.363259">DOI</a></div>
-    <div class="why-here">C. A. R. Hoare, 1969, CACM. Introduces Hoare logic and the pre/postcondition triple.</div>
+    <span class="title">Recursive Functions of Symbolic Expressions and Their Computation by Machine, Part I</span> &mdash; John McCarthy
+    <div class="meta"><span class="badge b-pdf">PDF&middot;34pp</span>CACM 1960 &middot; <a href="https://doi.org/10.1145/367177.367199">DOI</a> &middot; <a href="https://www-formal.stanford.edu/jmc/recursive.pdf">PDF</a></div>
+    <div class="why-here">Defined LISP and `eval` — a language whose interpreter is written in the language itself, launching functional programming.</div>
   </li>
   <li>
-    <span class="title">A Structural Approach to Operational Semantics</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1016/j.jlap.2004.05.001">DOI</a> &middot; <a href="https://homepages.inf.ed.ac.uk/gdp/publications/sos_jlap.pdf">PDF</a></div>
-    <div class="why-here">Gordon D. Plotkin, 1981/2004, JLAP. Founds structural operational semantics (SOS).</div>
+    <span class="title">The Mechanical Evaluation of Expressions</span> &mdash; Peter J. Landin
+    <div class="meta"><span class="badge b-pdf">PDF&middot;13pp</span>Computer Journal 1964 &middot; <a href="https://doi.org/10.1093/comjnl/6.4.308">DOI</a> &middot; <a href="https://www.cs.cmu.edu/~crary/819-f09/Landin64.pdf">PDF</a></div>
+    <div class="why-here">The SECD machine: the first precise abstract machine for evaluating expressions, the ancestor of every operational account of a functional language.</div>
   </li>
   <li>
-    <span class="title">Abstract Interpretation</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://doi.org/10.1145/512950.512973">DOI</a> &middot; <a href="https://www.di.ens.fr/~cousot/publications.www/CousotCousot-POPL-77-ACM-p238--252-1977.pdf">PDF</a></div>
-    <div class="why-here">Patrick &amp; Radhia Cousot, 1977, POPL. The lattice/Galois-connection theory underlying sound static analysis.</div>
+    <span class="title">The Next 700 Programming Languages</span> &mdash; Peter J. Landin
+    <div class="meta"><span class="badge b-pdf">PDF&middot;10pp</span>CACM 1966 &middot; <a href="https://doi.org/10.1145/365230.365257">DOI</a> &middot; <a href="https://www.cs.cmu.edu/~crary/819-f09/Landin66.pdf">PDF</a></div>
+    <div class="why-here">Frames the whole family of languages around one small applicative core (ISWIM) — the case that syntax is sugar over a semantic kernel.</div>
   </li>
   <li>
-    <span class="title">Toward a Mathematical Semantics for Computer Languages</span>
-    <div class="meta"><span class="badge b-pdf">PDF</span><a href="https://www.cs.ox.ac.uk/files/3228/PRG06.pdf">PDF</a></div>
-    <div class="why-here">Scott, Strachey, 1971, Oxford PRG-6. The founding statement of denotational semantics.</div>
-  </li>
-  <li>
-    <span class="title">Definitional Interpreters for Higher-Order Programming Languages</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/800194.805852">DOI</a></div>
-    <div class="why-here">John C. Reynolds, 1972, ACM Annual Conf. Defunctionalization; meta-circular vs definitional interpreters.</div>
-  </li>
-  <li>
-    <span class="title">A Syntactic Approach to Type Soundness</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1006/inco.1994.1093">DOI</a></div>
-    <div class="why-here">Wright, Felleisen, 1994, Information and Computation. The standard progress-and-preservation soundness method.</div>
-  </li>
-  <li>
-    <span class="title">The Syntactic Theories of Sequential Control and State</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1016/0304-3975(92">DOI</a></div>
-    <div class="why-here">Felleisen, Hieb, 1992, TCS. Reduction semantics of control and state via evaluation contexts. 90014-7)</div>
-  </li>
-  <li>
-    <span class="title">Recursive Functions of Symbolic Expressions… (LISP), Part I</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1145/367177.367199">DOI</a></div>
-    <div class="why-here">John McCarthy, 1960, CACM. Defined LISP; launched functional programming.</div>
-  </li>
-  <li>
-    <span class="title">Fundamental Concepts in Programming Languages</span>
-    <div class="meta"><span class="badge b-web">DOI</span><a href="https://doi.org/10.1023/A:1010000313106">DOI</a></div>
-    <div class="why-here">Christopher Strachey, 1967/2000, HOSC. l-values/r-values, parametric vs ad-hoc polymorphism, first-class values.</div>
+    <span class="title">Can Programming Be Liberated from the von Neumann Style?</span> &mdash; John Backus
+    <div class="meta"><span class="badge b-pdf">PDF&middot;29pp</span>CACM 1978 &middot; <a href="https://doi.org/10.1145/359576.359579">DOI</a> &middot; <a href="https://worrydream.com/refs/Backus-CanProgrammingBeLiberated.pdf">PDF</a></div>
+    <div class="why-here">Backus's Turing lecture: a manifesto for algebra-of-programs language design over word-at-a-time imperative code — read it for <em>why</em> you would choose a semantics.</div>
   </li>
 </ol>
+
+<h2>The three semantics styles — operational</h2>
+<p class="grouphdr">How a program runs, step by step: the style that dominates modern PL research and mechanized proofs.</p>
+<ol class="papers" start="6" style="counter-reset:item 5;">
+  <li>
+    <span class="title">A Structural Approach to Operational Semantics</span> &mdash; Gordon D. Plotkin
+    <div class="meta"><span class="badge b-pdf">PDF&middot;134pp</span>1981 / JLAP 2004 &middot; <a href="https://doi.org/10.1016/j.jlap.2004.05.001">DOI</a> &middot; <a href="https://homepages.inf.ed.ac.uk/gdp/publications/sos_jlap.pdf">PDF</a></div>
+    <div class="why-here">The Aarhus lecture notes that founded structural operational semantics (SOS): meaning as inductively-defined transition rules over syntax. Long, but the source; sample the early chapters.</div>
+  </li>
+  <li>
+    <span class="title">Definitional Interpreters for Higher-Order Programming Languages</span> &mdash; John C. Reynolds
+    <div class="meta"><span class="badge b-pdf">PDF&middot;35pp</span>ACM Annual Conf. 1972 &middot; <a href="https://doi.org/10.1145/800194.805852">DOI</a> &middot; <a href="https://www.cs.tufts.edu/~nr/cs257/archive/john-reynolds/definterps.pdf">PDF</a></div>
+    <div class="why-here">Meta-circular vs. definitional interpreters, and <em>defunctionalization</em> — the bridge from an interpreter you can read to a machine you can implement.</div>
+  </li>
+</ol>
+
+<h2>The three semantics styles — denotational</h2>
+<p class="grouphdr">What a program maps to as a mathematical object; the deepest and most demanding of the three.</p>
+<ol class="papers" start="8" style="counter-reset:item 7;">
+  <li>
+    <span class="title">Fundamental Concepts in Programming Languages</span> &mdash; Christopher Strachey
+    <div class="meta"><span class="badge b-pdf">PDF&middot;39pp</span>lectures 1967 / HOSC 2000 &middot; <a href="https://doi.org/10.1023/A:1010000313106">DOI</a> &middot; <a href="https://www.cs.cmu.edu/~crary/819-f09/Strachey67.pdf">PDF</a></div>
+    <div class="why-here">The vocabulary the field still uses: l-values vs. r-values, first-class values, parametric vs. ad-hoc polymorphism. Read before the heavier denotational papers.</div>
+  </li>
+  <li>
+    <span class="title">Toward a Mathematical Semantics for Computer Languages</span> &mdash; Dana Scott &amp; Christopher Strachey
+    <div class="meta"><span class="badge b-pdf">PDF&middot;49pp</span>Oxford PRG-6 1971 &middot; <a href="https://www.cs.ox.ac.uk/files/3228/PRG06.pdf">PDF</a></div>
+    <div class="why-here">The founding statement of denotational semantics: programs denote elements of domains, and recursion is a least fixed point.</div>
+  </li>
+  <li>
+    <span class="title">Continuations: A Mathematical Semantics for Handling Full Jumps</span> &mdash; Christopher Strachey &amp; Christopher Wadsworth
+    <div class="meta"><span class="badge b-web">DOI&middot;18pp</span>Oxford PRG-11 1974 / HOSC 2000 &middot; <a href="https://doi.org/10.1023/A:1010026413531">DOI</a></div>
+    <div class="why-here">The denotational meaning of jumps and control via continuations — the concept that later reappears everywhere from compilers to `call/cc`.</div>
+  </li>
+</ol>
+
+<h2>The three semantics styles — axiomatic</h2>
+<p class="grouphdr">Meaning as what you can prove: assertions and the pre/postcondition method.</p>
+<ol class="papers" start="11" style="counter-reset:item 10;">
+  <li>
+    <span class="title">An Axiomatic Basis for Computer Programming</span> &mdash; C. A. R. Hoare
+    <div class="meta"><span class="badge b-pdf">PDF&middot;6pp</span>CACM 1969 &middot; <a href="https://doi.org/10.1145/363235.363259">DOI</a> &middot; <a href="https://www.cs.cmu.edu/~crary/819-f09/Hoare69.pdf">PDF</a></div>
+    <div class="why-here">Introduces Hoare logic and the `{P} C {Q}` triple — reasoning about programs as deduction, the root of program verification.</div>
+  </li>
+</ol>
+
+<h2>Types, abstraction, and polymorphism</h2>
+<p class="grouphdr">Language design through type structure: universally-quantified types, inference, and the theorems types buy you.</p>
+<ol class="papers" start="12" style="counter-reset:item 11;">
+  <li>
+    <span class="title">Towards a Theory of Type Structure</span> &mdash; John C. Reynolds
+    <div class="meta"><span class="badge b-pdf">PDF&middot;18pp</span>Programming Symposium 1974 &middot; <a href="https://doi.org/10.1007/3-540-06859-7_148">DOI</a> &middot; <a href="https://www.cs.cmu.edu/~crary/819-f09/Reynolds74.pdf">PDF</a></div>
+    <div class="why-here">The polymorphic (second-order) λ-calculus — System F — giving abstraction over types a precise semantics.</div>
+  </li>
+  <li>
+    <span class="title">A Theory of Type Polymorphism in Programming</span> &mdash; Robin Milner
+    <div class="meta"><span class="badge b-pdf">PDF&middot;28pp</span>JCSS 1978 &middot; <a href="https://doi.org/10.1016/0022-0000(78)90014-4">DOI</a> &middot; <a href="https://homepages.inf.ed.ac.uk/wadler/papers/papers-we-love/milner-type-polymorphism.pdf">PDF</a></div>
+    <div class="why-here">Let-polymorphism and the type-inference discipline behind ML, Haskell, and every language with inferred generics.</div>
+  </li>
+  <li>
+    <span class="title">Principal Type-Schemes for Functional Programs</span> &mdash; Luís Damas &amp; Robin Milner
+    <div class="meta"><span class="badge b-pdf">PDF&middot;7pp</span>POPL 1982 &middot; <a href="https://doi.org/10.1145/582153.582176">DOI</a> &middot; <a href="https://steshaw.org/hm/milner-damas.pdf">PDF</a></div>
+    <div class="why-here">Algorithm W: proves inference finds a principal (most general) type, making Hindley–Milner practical.</div>
+  </li>
+  <li>
+    <span class="title">Types, Abstraction and Parametric Polymorphism</span> &mdash; John C. Reynolds
+    <div class="meta"><span class="badge b-pdf">PDF&middot;11pp</span>IFIP 1983 &middot; <a href="https://people.mpi-sws.org/~dreyer/tor/papers/reynolds.pdf">PDF</a></div>
+    <div class="why-here">Parametricity: a polymorphic function must behave <em>uniformly</em> at every type — the semantic meaning of "generic".</div>
+  </li>
+  <li>
+    <span class="title">Theorems for Free!</span> &mdash; Philip Wadler
+    <div class="meta"><span class="badge b-pdf">PDF&middot;13pp</span>FPCA 1989 &middot; <a href="https://doi.org/10.1145/99370.99404">DOI</a> &middot; <a href="https://people.mpi-sws.org/~dreyer/tor/papers/wadler.pdf">PDF</a></div>
+    <div class="why-here">Turns Reynolds's parametricity into free theorems you can read straight off a polymorphic type — the accessible way in.</div>
+  </li>
+  <li>
+    <span class="title">On Understanding Types, Data Abstraction, and Polymorphism</span> &mdash; Luca Cardelli &amp; Peter Wegner
+    <div class="meta"><span class="badge b-pdf">PDF&middot;42pp</span>Computing Surveys 1985 &middot; <a href="https://doi.org/10.1145/6041.6042">DOI</a> &middot; <a href="http://lucacardelli.name/Papers/OnUnderstanding.A4.pdf">PDF</a></div>
+    <div class="why-here">The survey that organized the whole design space — universal vs. ad-hoc polymorphism, subtyping, abstraction — into one map.</div>
+  </li>
+</ol>
+
+<h2>Reduction semantics and syntactic type soundness</h2>
+<p class="grouphdr">A purely syntactic account of evaluation, control, and state — and the soundness proof method it made routine.</p>
+<ol class="papers" start="18" style="counter-reset:item 17;">
+  <li>
+    <span class="title">The Syntactic Theories of Sequential Control and State</span> &mdash; Matthias Felleisen &amp; Robert Hieb
+    <div class="meta"><span class="badge b-pdf">PDF&middot;36pp</span>TCS 1992 &middot; <a href="https://doi.org/10.1016/0304-3975(92)90014-7">DOI</a> &middot; <a href="https://www2.ccs.neu.edu/racket/pubs/tcs92-fh.pdf">PDF</a></div>
+    <div class="why-here">Evaluation contexts and reduction semantics: a calculus for control and mutable state without leaving the syntax.</div>
+  </li>
+  <li>
+    <span class="title">On the Expressive Power of Programming Languages</span> &mdash; Matthias Felleisen
+    <div class="meta"><span class="badge b-pdf">PDF&middot;45pp</span>SCP 1991 &middot; <a href="https://doi.org/10.1016/0167-6423(91)90036-W">DOI</a> &middot; <a href="https://www2.ccs.neu.edu/racket/pubs/scp91-felleisen.pdf">PDF</a></div>
+    <div class="why-here">A formal definition of what it means for one language feature to be "more expressive" than another — macro-expressibility, via the same reduction machinery.</div>
+  </li>
+  <li>
+    <span class="title">A Syntactic Approach to Type Soundness</span> &mdash; Andrew K. Wright &amp; Matthias Felleisen
+    <div class="meta"><span class="badge b-web">DOI&middot;57pp</span>Information and Computation 1994 &middot; <a href="https://doi.org/10.1006/inco.1994.1093">DOI</a></div>
+    <div class="why-here">Progress-and-preservation: the standard, teachable recipe for proving a type system sound, built directly on reduction semantics.</div>
+  </li>
+</ol>
+
+<h2>Structuring meaning — monads and modular semantics</h2>
+<p class="grouphdr">Once meaning is compositional, structure the effects: monads unify state, exceptions, and I/O and let semantics be assembled from parts.</p>
+<ol class="papers" start="21" style="counter-reset:item 20;">
+  <li>
+    <span class="title">Notions of Computation and Monads</span> &mdash; Eugenio Moggi
+    <div class="meta"><span class="badge b-pdf">PDF&middot;29pp</span>Information and Computation 1991 &middot; <a href="https://doi.org/10.1016/0890-5401(91)90052-4">DOI</a> &middot; <a href="https://person.dibris.unige.it/moggi-eugenio/ftp/ic91.pdf">PDF</a></div>
+    <div class="why-here">The insight that "a computation producing an A" is a monad — one abstraction covering state, exceptions, continuations, and nondeterminism.</div>
+  </li>
+  <li>
+    <span class="title">The Essence of Functional Programming</span> &mdash; Philip Wadler
+    <div class="meta"><span class="badge b-web">DOI&middot;14pp</span>POPL 1992 &middot; <a href="https://doi.org/10.1145/143165.143169">DOI</a></div>
+    <div class="why-here">Brings Moggi's monads down to earth as a programming technique for structuring interpreters and effects — no category theory required.</div>
+  </li>
+  <li>
+    <span class="title">Imperative Functional Programming</span> &mdash; Simon Peyton Jones &amp; Philip Wadler
+    <div class="meta"><span class="badge b-pdf">PDF&middot;15pp</span>POPL 1993 &middot; <a href="https://doi.org/10.1145/158511.158524">DOI</a> &middot; <a href="https://www.cs.tufts.edu/~nr/cs257/archive/simon-peyton-jones/imperative.pdf">PDF</a></div>
+    <div class="why-here">Monadic I/O: how a pure language does real side effects without losing referential transparency — the design that shipped in Haskell.</div>
+  </li>
+  <li>
+    <span class="title">Monad Transformers and Modular Interpreters</span> &mdash; Sheng Liang, Paul Hudak &amp; Mark Jones
+    <div class="meta"><span class="badge b-pdf">PDF&middot;42pp</span>POPL 1995 &middot; <a href="https://doi.org/10.1145/199448.199528">DOI</a> &middot; <a href="http://cs.yale.edu/publications/techreports/tr1109.pdf">PDF</a></div>
+    <div class="why-here">Builds a language's semantics by stacking feature modules (state, exceptions, continuations) as monad transformers — modular denotational semantics in practice.</div>
+  </li>
+</ol>
+
+<h2>Semantics as approximation</h2>
+<p class="grouphdr">Reuse a language's semantics as a sound over-approximation — the theory under every static analyzer.</p>
+<ol class="papers" start="25" style="counter-reset:item 24;">
+  <li>
+    <span class="title">Abstract Interpretation: A Unified Lattice Model for Static Analysis</span> &mdash; Patrick &amp; Radhia Cousot
+    <div class="meta"><span class="badge b-pdf">PDF&middot;15pp</span>POPL 1977 &middot; <a href="https://doi.org/10.1145/512950.512973">DOI</a> &middot; <a href="https://www.di.ens.fr/~cousot/publications.www/CousotCousot-POPL-77-ACM-p238--252-1977.pdf">PDF</a></div>
+    <div class="why-here">The lattice / Galois-connection theory that makes an analysis provably sound with respect to the language's semantics.</div>
+  </li>
+</ol>
+
+<h2>Reference shelf &mdash; books</h2>
+<p class="grouphdr">The standard texts for the area; free copies linked where a legal one exists.</p>
+<ul class="refs">
+  <li><span class="badge b-book">BOOK&middot;657pp</span><b>Structure and Interpretation of Computer Programs</b> &mdash; Harold Abelson &amp; Gerald Jay Sussman (2nd ed. 1996) &middot; Learn semantics by writing evaluators; the metacircular evaluator makes McCarthy's `eval` concrete. <a href="https://web.mit.edu/6.001/6.037/sicp.pdf">PDF</a></li>
+  <li><span class="badge b-book">BOOK&middot;231pp</span><b>Programming Languages: Application and Interpretation</b> &mdash; Shriram Krishnamurthi (2007) &middot; Builds interpreters that <em>are</em> the semantics — state, control, and types, one feature at a time. <a href="https://www.plai.org/3/2/PLAI%20Version%203.2.2%20electronic.pdf">PDF</a></li>
+  <li><span class="badge b-buy">BUY&middot;645pp</span><b>Types and Programming Languages</b> &mdash; Benjamin C. Pierce (2002) &middot; The standard modern text for operational semantics, type systems, and syntactic soundness proofs. <a href="https://mitpress.mit.edu/9780262162098/">page</a></li>
+  <li><span class="badge b-buy">BUY&middot;384pp</span><b>Formal Semantics of Programming Languages</b> &mdash; Glynn Winskel (1993) &middot; The operational / denotational / axiomatic groundwork, worked through carefully. <a href="https://mitpress.mit.edu/9780262731034/">page</a></li>
+  <li><span class="badge b-buy">BUY&middot;512pp</span><b>Practical Foundations for Programming Languages</b> &mdash; Robert Harper (2nd ed. 2016) &middot; A uniform, judgement-based development of statics and dynamics across a wide range of language features. <a href="https://www.cs.cmu.edu/~rwh/pfpl.html">page</a></li>
+</ul>
+
+<h2>Key terms</h2>
+<p class="grouphdr">Vocabulary used across this list.</p>
+<div class="notekey"><b>operational semantics</b> &mdash; meaning given by rules describing how a program executes, step by step (small-step / SOS) or as a whole (big-step) &nbsp; <b>denotational semantics</b> &mdash; meaning given by mapping each program to a mathematical object (an element of a domain) &nbsp; <b>axiomatic semantics</b> &mdash; meaning given by the assertions provable about a program, as in Hoare logic &nbsp; <b>domain</b> &mdash; a partially ordered set with limits, used to give meaning to recursion as a least fixed point &nbsp; <b>continuation</b> &mdash; a first-class representation of "the rest of the computation", used to model jumps and control &nbsp; <b>parametric polymorphism</b> &mdash; one definition usable at many types, behaving uniformly across all of them (System F, ML generics) &nbsp; <b>parametricity</b> &mdash; the property that a polymorphic program cannot inspect the types it is instantiated at, yielding "free theorems" &nbsp; <b>evaluation context</b> &mdash; a program with a hole marking where the next reduction step happens; the core device of reduction semantics &nbsp; <b>progress &amp; preservation</b> &mdash; the two lemmas of a syntactic type-soundness proof: well-typed terms don't get stuck, and stay well-typed as they reduce &nbsp; <b>monad</b> &mdash; an abstraction packaging a notion of computation (state, exceptions, I/O) so effects compose and can be added modularly &nbsp; <b>abstract interpretation</b> &mdash; sound approximation of a program's semantics over an abstract domain, connected to the concrete one by a Galois connection</div>
 
 </body>
 </html>
